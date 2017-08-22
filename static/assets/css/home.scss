@@ -1,0 +1,24 @@
+@import '../css/px2rem.scss';
+
+#header{
+    padding:px2rem(20) px2rem(20) px2rem(40);
+    background-color: #fff;
+    .orientation{
+
+    }
+    ul{
+        width: 100%;
+        height: px2rem(340);
+        background: url(/static/assets/images/beijing_wode.png) no-repeat center;
+        background-size:100% px2rem(340);
+        display: flex;
+    }
+    li{
+        flex: 1;
+    }
+    .photo{
+        
+    }
+}
+
+
