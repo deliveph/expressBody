@@ -28,8 +28,8 @@ input,
 select,
 textarea,
 button {
-    margin: 0;
-    padding: 0
+  margin: 0;
+  padding: 0
 }
 
 
@@ -37,7 +37,7 @@ button {
 
 fieldset,
 img {
-    border: 0 none
+  border: 0 none
 }
 
 
@@ -48,7 +48,7 @@ ul,
 ol,
 menu,
 li {
-    list-style: none
+  list-style: none
 }
 
 
@@ -56,7 +56,7 @@ li {
 
 blockquote,
 q {
-    quotes: none
+  quotes: none
 }
 
 
@@ -66,8 +66,8 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-    content: '';
-    content: none
+  content: '';
+  content: none
 }
 
 
@@ -77,23 +77,23 @@ input,
 select,
 textarea,
 button {
-    vertical-align: middle
+  vertical-align: middle
 }
 
 
 /* 重置表单控件垂直居中*/
 
 button {
-    border: 0 none;
-    background-color: transparent;
-    cursor: pointer
+  border: 0 none;
+  background-color: transparent;
+  cursor: pointer
 }
 
 
 /* 重置表单button按钮效果 */
 
 body {
-    background: #fff
+  background: #fff
 }
 
 
@@ -106,18 +106,18 @@ input,
 select,
 textarea,
 button {
-    font-size: 12px;
-    line-height: 1;
-    font-family: "Microsoft YaHei";
-    color: #666
+  font-size: 12px;
+  line-height: 1;
+  font-family: "Microsoft YaHei";
+  color: #666
 }
 
 
 /* 重置页面文字属性 */
 
 a {
-    color: #666;
-    text-decoration: none
+  color: #666;
+  text-decoration: none
 }
 
 
@@ -125,7 +125,7 @@ a {
 
 a:active,
 a:hover {
-    text-decoration: none
+  text-decoration: none
 }
 
 
@@ -138,32 +138,32 @@ code,
 dfn,
 em,
 var {
-    font-style: normal;
-    font-weight: normal
+  font-style: normal;
+  font-weight: normal
 }
 
 
 /* 重置样式标签的样式 */
 
 caption {
-    display: none;
+  display: none;
 }
 
 
 /* 重置表格标题为隐藏 */
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    border-spacing: 0;
-    table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
 }
 
 
 /* 重置table属性 */
 
 img {
-    vertical-align: top
+  vertical-align: top
 }
 
 
@@ -176,10 +176,12 @@ img {
 /* 取消a标签点击后的虚线框 */
 
 a {
-    outline: none;
+  outline: none;
 }
 
-a:active {}
+a:active {
+  
+}
 
 
 /* 设置页面文字等在拖动鼠标选中情况下的背景色与文字颜色 */
@@ -194,7 +196,7 @@ a:active {}
 /*清除浮动*/
 
 .clear {
-    clear: both;
+  clear: both;
 }
 
 
@@ -202,44 +204,58 @@ a:active {}
 
 .clearfix:before,
 .clearfix:after {
-    content: '';
-    display: table;
+  content: '';
+  display: table;
 }
 
 .clearfix:after {
-    clear: both;
+  clear: both;
 }
-
-.por {
-    position: relative
+.col-1{
+  width: 10%;
 }
-
-.poa {
-    position: absolute
+.col-2{
+  width: 20%;
 }
-
-fl {
-    float: left
+.col-3{
+  width: 30%;
 }
-
-fr {
-    float: right
+.col-4{
+  width: 40%;
 }
-
-.hg20 {
-    height: 0.2rem;
-    background-color: #ebebeb;
+.col-5{
+  width: 50%;
 }
-
-.hg30 {
-    height: 0.3rem;
-    background-color: #ebebeb;
+.col-6{
+  width: 60%;
 }
-
-.hide {
-    display: none
+.col-7{
+  width: 70%;
 }
-
+.col-8{
+  width: 80%;
+}
+.col-9{
+  width: 90%;
+}
+.dis{
+  display: block;
+}
+.dis-in{
+  display: inline-block;
+}
+.t-c{
+  text-align: center;
+}
+.t-l{
+  text-align: left;
+}
+.t-r{
+  text-align: right
+}
 body{
-    background-color:#f2f3f4; 
+  background-color: #f0f2f5;
+}
+input,textare{
+  outline:none;  
 }
