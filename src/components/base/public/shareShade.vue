@@ -1,5 +1,5 @@
 <template>
-    <div class="shareShade por hide">
+    <div class="shareShade por">
         <div class="shareShade_main">
             <img src="/static/assets/images/icon_guidance.png" class="shade_arrow poa">
             <img src="/static/assets/images/icon_wenzi.png" class="shade_text poa">

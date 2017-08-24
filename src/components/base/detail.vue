@@ -7,10 +7,15 @@
             </div>
         </div>
         <div class="footer_btn">
-            <button>充值</button>
-            <button>分享</button>
+            <div v-if="status == 'ad'">
+                <button>立即体验</button>
+            </div>
+            <div v-else>
+                <button @click="rechargeBtn">充值</button>
+                <button @click="share = !share">分享</button>
+            </div>
         </div>
-        <shareshade></shareshade>
+        <shareshade v-show="share" @click.native="share = !share"></shareshade>
     </div>
 </template>
 
@@ -19,11 +24,21 @@
     export default {
         data(){
             return{
-
+                share: false,
+                status: 'free'
             }
         },
         components:{
            Shareshade
+        },
+        methods: {
+            rechargeBtn(){
+                this.$router.push({path: '/recharge'})
+            }
+        },
+        created(){
+            let types = this.$route.query.type;
+            this.status = types;
         }
     }    
 </script>
@@ -59,6 +74,11 @@
         line-height:px2rem(90);
         position: fixed;
         bottom: 0;
+        div{
+            display: flex;
+            width: 100%;
+            height: 0.45rem;
+        }
         button{
             flex:1;
             font-size:px2rem(34);

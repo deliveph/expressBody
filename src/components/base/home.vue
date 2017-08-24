@@ -6,42 +6,44 @@
       <div class="entrance_list">
         <ul>
             <li>
-                <a href="#">
+                <router-link :to="{name:'Collection'}">
                     <img src="/static/assets/images/btn_shou@2x.png" />
                     <p>代收快递</p>
-                </a>
+                </router-link>
             </li>
             <li>
-                <a href="#">
+                <router-link :to="{name:'Collection'}">
                     <img src="/static/assets/images/btn_ji.png" />
                     <p>代寄快递</p>
-                </a>
+                </router-link>
             </li>
             <li>
-                <a href="#">
+                <router-link :to="{name:'Collection'}">
                     <img src="/static/assets/images/btn_cha.png" />
                     <p>查询快递</p>
-                </a>
+                </router-link>
             </li>
             <li>
-                <a href="#">
+                <router-link :to="{name:'Collection'}">
                     <img src="/static/assets/images/btn_me.png" />
                     <p>个人中心</p>
-                </a>
+                </router-link>
             </li>
         </ul>
       </div>
       <div class="hg30"></div>
       <div class="advertisement_banner">
-        <img src="/static/assets/images/banner.png" />
+        <router-link :to="{name:'Detail',query:{type:'ad'}}">
+            <img src="/static/assets/images/picture_fuwu.png" />
+        </router-link>
       </div>
       <div class="footer_btn">
         <ul>
             <li>
-                <a href="javascript:;" v-on:click="messageBox">免费寄快递</a>
+                <router-link :to="{name:'Detail',query:{type:'free'}}">免费寄快递</router-link>
             </li>
             <li>
-                <a href="#">免费代收快递</a>
+                <router-link :to="{name:'Detail',query:{type:'free'}}">免费代收快递</router-link>
             </li>
         </ul>
       </div>
