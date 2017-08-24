@@ -1,22 +1,15 @@
 <template>
   <div id="app">
-      <Vheader></Vheader>
-      <banner></banner>
-      <page></page>
+      <detail></detail>
   </div>
 </template>
 
 <script>
-// import '../src/static/assets/js/adaptive_mobile.js';
-import Vheader from './components/base/public/header'
-import Banner from './components/base/public/banner'
-import {swiper,swiperSlide} from 'vue-awesome-swiper'
-import Page from './components/page'
+// import Home from './components/base/home'
+import Detail from './components/base/detail'
 export default {
     components:{
-      Vheader,
-      Banner,
-      Page
+      Detail
     },
     methods:{      
     }
@@ -24,7 +17,6 @@ export default {
 </script>
 
 <style>
-/* @import '/static/assets/css/base.css'; */
 #app {
   font-family: 'Avenir', 'Microsoft YaHei', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
