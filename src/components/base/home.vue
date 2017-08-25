@@ -18,13 +18,13 @@
                 </router-link>
             </li>
             <li>
-                <router-link :to="{name:'Collection'}">
+                <router-link :to="{name:'Inquire'}">
                     <img src="/static/assets/images/btn_cha.png" />
                     <p>查询快递</p>
                 </router-link>
             </li>
             <li>
-                <router-link :to="{name:'Collection'}">
+                <router-link :to="{name:'User'}">
                     <img src="/static/assets/images/btn_me.png" />
                     <p>个人中心</p>
                 </router-link>

@@ -10,7 +10,7 @@
             <div v-if="status == 'ad'">
                 <button>立即体验</button>
             </div>
-            <div v-else>
+            <div v-else-if="status == 'free'">
                 <button @click="rechargeBtn">充值</button>
                 <button @click="share = !share">分享</button>
             </div>
