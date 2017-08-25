@@ -175,6 +175,12 @@
                             &.icon5{
                                 background: url(../images/icon_state.png) no-repeat center;
                             }
+                            &.icon6{
+                                background: url(../images/icon_change_password.png) no-repeat center;
+                            }
+                            &.icon7{
+                                background: url(../images/icon_-retrieve_password.png) no-repeat center;
+                            }
                         }
                     }
                     em{
@@ -484,6 +490,28 @@
         height: px2rem(340);
         background: url(../images/my_background.png) no-repeat;
         background-size: cover;
+        ul.document{
+            display: flex;padding: px2rem(20) 4% 0 4%;
+            li{
+                flex: 1;
+                a{
+                    color: #fff;font-size: px2rem(28);
+                }
+                &:last-child{
+                    text-align: right
+                }
+            }
+        }
+        .bal-img{
+            width: px2rem(116);height: px2rem(98); margin: 0 auto;background: url(../images/icon_balance.png) no-repeat;background-size: cover;
+        }
+        h6{
+            font-size: px2rem(90);color: #fff;padding: px2rem(20) 0;
+            font-weight: normal;text-align: center;
+        }
+        p{
+            text-align: center;font-size: px2rem(24);color: #fff;
+        }
     }
     .balace-option{
         display: flex;
@@ -511,8 +539,154 @@
             font-size: px2rem(30);height: px2rem(70);line-height: px2rem(70);
             color: #999;font-weight: normal;
             &:before{
-                content: '';display: inline-block;width: px2rem(4) ;height: px2rem(30);background: #366931;
+                content: '';display: inline-block;width: px2rem(4) ;height: px2rem(30);background: #366931;margin-right: px2rem(10);vertical-align: middle;
             }
+        }
+        .income-item{
+            li{
+                padding: px2rem(30) 0 px2rem(30) px2rem(10);border-top: 1px solid #f1f1f1;
+                display: flex;flex-direction: row;
+                .income-info{
+                    // height: px2rem(70);
+                    p{
+                        font-size: px2rem(30);color: #333;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;height: px2rem(30)
+                    }
+                    span{
+                        display: block;font-size: px2rem(24);color: #999;margin-top: px2rem(20);
+                    }
+                }
+                .income-add{
+                    p{
+                        font-weight:bold;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+                        font-size: px2rem(40);
+                        &.add{
+                            color: #fd2073;
+                        }
+                        &.subtract{
+                            color: #666;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+/** invite friends **/
+.ft-red{
+    font-size: px2rem(30);color: #fd2073;
+}
+.ml60{
+    margin-left: px2rem(60);
+}
+.invite-wrapper{
+    width: 100%;
+    h4{
+        font-size: px2rem(30);color: #999;font-weight: normal;text-align: center;
+        height: px2rem(90);line-height: px2rem(90);
+        i{
+            font-style: normal;
+        }
+    }
+    .invite-table{
+        width: 100%;background-color:#fff;
+        tr{
+            border-bottom: 1px solid #f1f1f1;
+            th{
+                font-size: px2rem(30);
+                color: #333;
+                height: px2rem(90);
+                line-height: px2rem(90);
+            }
+            td{
+                font-size: px2rem(28);
+                color: #666;
+                height: px2rem(90);
+                line-height: px2rem(90);
+                text-align: center;
+            }
+        }
+    }
+}
+/** find **/
+.find-wrapper{
+    margin-top: px2rem(60);
+    text-align: center;
+    h6{
+        font-weight: normal;color: #366931;font-size: px2rem(34);
+    }
+    p{
+        font-size: px2rem(28);color: #999;padding: px2rem(30) 0;
+    }
+    .code-box{
+        .input-code{
+            display: flex;padding: px2rem(30) 4%;background:#fff;border-bottom:1px solid #f1f1f1;
+            input{
+                height: px2rem(40);line-height: px2rem(40);border: 0;border-right:1px solid #d6d9e0;font-size: px2rem(30);
+            }
+            button{
+                border: 0;font-size: px2rem(30);color: #366931;text-align: center;
+            }
+        }
+        .next-btn{
+            margin-top: px2rem(80);
+        }
+    }
+}
+/***coupon**/
+.coupon-list{
+    li{
+        margin: px2rem(30) 3.5% 0 3.5%;
+        background: url(../images/coupons_nouse.png) no-repeat;
+        background-size: cover !important;
+        height: px2rem(188);
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        .coupon-l{
+            width: 36%;
+            a{
+                display: block;
+                padding: px2rem(40) px2rem(30);
+                i{
+                    border-color: #fff;width: px2rem(30);height: px2rem(30);border: px2rem(6) solid #fff;border-right: none;border-top: none;
+                }
+                span{
+                    font-size: px2rem(48);color: #fff;font-weight: bold;display: inline-block;width: px2rem(140);line-height: px2rem(56);
+                    vertical-align: middle;
+                }
+            }
+        }
+        .coupon-r{
+            width: 64%;
+            .coupon-info{
+                padding:px2rem(30);
+            }
+            h6{
+                font-weight: normal;color:#fff;font-size:px2rem(36);
+                span{
+                    font-size: px2rem(70);margin-right: px2rem(10);
+                }
+            }
+            p{
+                margin-top: px2rem(26);font-size: px2rem(24);color: #fff;
+            }
+        }
+        .past-icon{
+            position: absolute;
+            background: url(../images/icon_use.png) no-repeat;
+            background-size: cover;
+            right: px2rem(10);top: px2rem(10);
+            width: px2rem(84);height: px2rem(84);
+        }
+    }
+    &.after{
+        li{
+            background: url(../images/coupons_nouse1.png) no-repeat;
+        }
+    }
+    &.past{
+        li{
+            background: url(../images/coupons_nouse2.png) no-repeat;
         }
     }
 }
