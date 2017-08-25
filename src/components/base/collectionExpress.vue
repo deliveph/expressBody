@@ -46,6 +46,10 @@
                         <label for="">期望上门时间</label>
                         <select name="" id="">
                             <option value="">一小时内</option>
+                            <option value="">08:00 ~ 09:00</option>
+                            <option value="">09:00 ~ 10:00</option>
+                            <option value="">10:00 ~ 11:00</option>
+                            <option value="">11:00 ~ 12:00</option>
                         </select>
                         <i></i>
                     </div>
@@ -91,6 +95,7 @@ export default {
 
 <style lang="scss" scoped>
     @import '../../../static/assets/css/px2rem.scss';
+    @import '../../../static/assets/css/express.scss';
 
     .mint-navbar{
         .mint-tab-item{
