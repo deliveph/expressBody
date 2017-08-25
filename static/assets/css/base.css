@@ -179,9 +179,7 @@ a {
   outline: none;
 }
 
-a:active {
-  
-}
+a:active {}
 
 
 /* 设置页面文字等在拖动鼠标选中情况下的背景色与文字颜色 */
@@ -211,51 +209,98 @@ a:active {
 .clearfix:after {
   clear: both;
 }
-.col-1{
+
+.col-1 {
   width: 10%;
 }
-.col-2{
+
+.col-2 {
   width: 20%;
 }
-.col-3{
+
+.col-3 {
   width: 30%;
 }
-.col-4{
+
+.col-4 {
   width: 40%;
 }
-.col-5{
+
+.col-5 {
   width: 50%;
 }
-.col-6{
+
+.col-6 {
   width: 60%;
 }
-.col-7{
+
+.col-7 {
   width: 70%;
 }
-.col-8{
+
+.col-8 {
   width: 80%;
 }
-.col-9{
+
+.col-9 {
   width: 90%;
 }
-.dis{
+
+.dis {
   display: block;
 }
-.dis-in{
+
+.dis-in {
   display: inline-block;
 }
-.t-c{
+
+.t-c {
   text-align: center;
 }
-.t-l{
+
+.t-l {
   text-align: left;
 }
-.t-r{
+
+.t-r {
   text-align: right
 }
-body{
+
+body {
   background-color: #f0f2f5;
 }
-input,textare{
-  outline:none;  
+
+input,
+textare {
+  outline: none;
+}
+
+.por {
+  position: relative
+}
+
+.poa {
+  position: absolute
+}
+
+fl {
+  float: left
+}
+
+fr {
+  float: right
+}
+
+.hg20 {
+  height: 0.2rem;
+  background-color: #ebebeb;
+}
+
+.hg30 {
+  height: 0.3rem;
+  background-color: #ebebeb;
+}
+
+.hide {
+  display: none
 }

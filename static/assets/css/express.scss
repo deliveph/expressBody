@@ -1,13 +1,129 @@
 .forthwith_box{
+    padding-bottom: px2rem(150);
     h3{
         font-size: px2rem(30);
         color: #333;
+        padding:px2rem(40) 0 px2rem(20) px2rem(30);
+    }
+    .forthwith_msg{
+        background-color:#fff;
+        .forthwith_li{
+            height: px2rem(90);
+            line-height: px2rem(90);
+            border-bottom: 1px solid #f2f3f4;
+            display: flex;
+            label{
+                font-size: px2rem(28);
+                color: #666;
+                min-width: px2rem(170);
+                padding-left:px2rem(30);
+                text-align: left;
+            }
+            input{
+                flex: 1;
+                font-size: px2rem(28);
+                color: #999;
+                height: px2rem(70);
+                line-height: px2rem(70);
+                padding:px2rem(10);
+                border:0;
+            }
+        }
     }
     .ex_msg{
-        padding:0 px2rem(30);
         .ex_li{
-            label{
+        }
+        .ex_time{
+            margin-top:0;
+            border-top:0;
+        }
+    }
+    .addressee_msg{
+        .default{
+            height: px2rem(70);
+            line-height: px2rem(70);
+            padding-left:px2rem(30);
+            input{
                 
+                margin-right: px2rem(20);
+            }
+            span{
+                font-size: px2rem(24);
+                color: #333;
+            }
+        }
+    }
+    .expect_time{
+        margin-top:px2rem(40);
+        height: px2rem(90);
+        line-height: px2rem(90);
+        border-top: 1px solid #f2f3f4;
+        display: flex;
+        // flex-direction:column;
+        justify-content: space-between;
+        background-color:#fff; 
+        label{
+            font-size: px2rem(28);
+            color: #666;
+            min-width: px2rem(170);
+            padding-left:px2rem(30);
+            text-align: left;
+            flex: 0;
+        }
+        select{
+            flex: 1;
+            font-size: px2rem(28);
+            color: #999;
+            border:0;
+            text-align: right
+        }
+    }
+    .readAgreement{
+        margin:px2rem(60) 0;
+        padding-left:px2rem(30);
+        input{
+            margin-right: px2rem(10);
+        }
+        span{
+            font-size: px2rem(24);
+            color: #333;
+        }
+        a{
+            font-size: px2rem(24);
+            color: #356931;
+            margin-left:px2rem(12);
+        }
+    }
+    .submit{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: px2rem(150);
+        line-height: px2rem(150);
+        display: flex;
+        background-color: #fff;
+        border-top:1px solid #e5e5e5; 
+           
+        p{
+            flex:1;
+            font-size: px2rem(28);
+            color: #999;
+            text-align: center;
+        }
+        .btn{
+            flex:1;
+            text-align: center;
+            width: px2rem(240);
+            margin:0 auto;
+            button{
+                font-size: px2rem(28);
+                color: #fff;
+                width: px2rem(240);
+                height: px2rem(90);
+                line-height: px2rem(90);
+                text-align: center;
+                border-radius: px2rem(10);
+                background-color: #356931;
             }
         }
     }
