@@ -7,7 +7,7 @@
                         <dt><router-link to="/person"><img src="/static/assets/images/icon_success.png" alt=""></router-link></dt>
                         <dd>
                             <p class="nom-info-name"><router-link to="/person">快递7817589</router-link></p>
-                            <span class="nom-info-level"></span>
+                            <grade class="m0"></grade>
                         </dd>
                     </dl>
                     <div class="col-1 nom-arrow">
@@ -29,7 +29,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link to="">
+                    <router-link to="/coupon">
                         <div class="actions-num">
                             <em>125</em><i class="coupon"></i>
                         </div>
@@ -122,7 +122,11 @@
     </div>
 </template>
 <script>
+    import Grade from '../../components/grade'
     export default{
+        components:{
+            Grade
+        }
     }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>

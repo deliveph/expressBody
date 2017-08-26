@@ -165,19 +165,140 @@
     .inquire_main{
         margin-top:px2rem(20);
         background-color:#fff; 
+        padding:px2rem(40) 0 px2rem(68);
+        box-shadow:0px px2rem(4) px2rem(16) rgba(164,164,164,.17);
         .import{
+            width: 90%;
             height: px2rem(80);
             line-height: px2rem(80);
             display: flex;
+            background-color: #f2f2f2;
+            margin: 0 auto;
             input{
-                border:0;
                 flex: 1;
+                border:0;
+                background-color: #f2f2f2;
+                padding:0 px2rem(30);
+                font-size: px2rem(28);
+                color: #666;
             }
             .richscan{
-                flex: 1;
-                width: px2rem(30);
+                margin-right: px2rem(15);
+                i{
+                    width: px2rem(50);
+                    height: px2rem(50);
+                    background:url(/static/assets/images/btn_scan.png) no-repeat center; 
+                    background-size:px2rem(30); 
+                    display: inline-block;
+                    vertical-align: top;
+                    margin-top:px2rem(14);
+                }
+            }
+        }
+
+        .btn{
+            width: 90%;
+            margin:0 auto;
+            margin-top:px2rem(68);
+            button{
+                font-size: px2rem(30);
+                color: #fff;
+                width: 100%;
+                height: px2rem(90);
+                line-height: px2rem(90);
+                border-radius: px2rem(10);
+                text-align: center;
+                background-color: #366931;
+            }
+        }
+    }
+
+    .order_list{
+        padding:0 px2rem(30);
+        h3{
+            font-size: px2rem(30);
+            color: #333;
+            margin:px2rem(60) 0 px2rem(20);
+            &::before{
+                content: "";
+                width: px2rem(6);
                 height: px2rem(30);
-                
+                background-color: #356930;
+                margin-right: px2rem(10);
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        ul{
+
+        }
+        li{
+            display: flex;
+            min-height: px2rem(204);
+            background-color: #fff;
+            margin-bottom: px2rem(30);
+            padding:px2rem(20) px2rem(20) px2rem(10);
+            border-radius: px2rem(10);
+            box-shadow:0px px2rem(4) px2rem(16) rgba(164,164,164,.17);
+            i{
+                width: px2rem(52);
+                height: px2rem(52);
+                display: inline-block;
+                margin-right: px2rem(20);
+                flex: 1;
+                vertical-align: top;
+                &.icon_send{
+                   background: url('/static/assets/images/icon_ji.png') no-repeat center;
+                   background-size:px2rem(52); 
+                }
+                &.icon_put{
+                    background: url('/static/assets/images/icon_shou.png') no-repeat center;
+                    background-size:px2rem(52); 
+                }
+            }
+            .odd{
+                flex: 1;
+                display: inline-block;
+                .order_number{
+                    font-size: px2rem(28);
+                    color: #999;
+                    margin-top:px2rem(10);  
+                }
+                .site{
+                    display: flex;
+                    margin-top:px2rem(30);
+                    h4{
+                        font-size: px2rem(34);
+                        color: #333;
+                    }
+                    p{
+                        font-size: px2rem(28);
+                        color: #999;
+                        margin-top:px2rem(20);
+                    }
+                    .starting{
+                        flex: 1;
+                        width: px2rem(262);
+                    }
+                    .receipt{
+                        flex: 1;
+                        width: px2rem(262);
+                        text-align:right;
+                    }
+                    .center{
+                        flex: 1;
+                        width: px2rme(320);
+                        height: 1px;
+                        background-color: #e1e1e1;
+                        margin-top:px2rem(20);
+                    }
+                }
+            } 
+            .express_number{
+                font-size: px2rem(28);
+                color: #999;
+                margin-top:px2rem(20)
             }
         }
     }
