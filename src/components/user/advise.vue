@@ -47,13 +47,11 @@
             </div>
         </div>
         -->
-
+        <!-- 
         <mt-navbar class="page-part" v-model="selected">  
             <mt-tab-item id="1">我要投诉</mt-tab-item>  
             <mt-tab-item id="2">我要建议</mt-tab-item>  
         </mt-navbar>  
-  
-        <!-- tabcontainer -->  
         <mt-tab-container v-model="selected">
             <mt-tab-container-item id="1">  
                 <div class="advise-info">
@@ -136,6 +134,7 @@
                 </div>
             </mt-tab-container-item>  
         </mt-tab-container> 
+        -->  
     </div>
 </template>
 

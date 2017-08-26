@@ -20,6 +20,12 @@ import findpaypwd from '@/components/user/findpaypwd'
 import coupon from '@/components/user/coupon'
 import Result from '@/components/base/inquireResult'
 import Send from '@/components/base/sendExpress'
+import order from '@/components/user/order'
+import waitaccept from '@/components/user/waitaccept'
+import accept from '@/components/user/accept'
+import waitpay from '@/components/user/waitpay'
+import finish from '@/components/user/finish'
+
 
 Vue.use(Router)
 
@@ -39,11 +45,16 @@ export default new Router({
     { path: '/balance', name: 'balance', component: balance }, //余额
     { path: '/inquire', name: 'Inquire', component: Inquire },  //查询快递
     { path: '/result', name: 'Result', component: Result },  //快递结果
-    { path: '/send', name: 'Send', component: Send }  //寄快递
+    { path: '/send', name: 'Send', component: Send },  //寄快递
     { path: '/Invite', name: 'Invite', component: Invite }, //邀请好友
     { path: '/result', name: 'payResult', component: payResult }, //充值结果（成功/失败）
     { path: '/payset', name: 'payset', component: payset },//支付设置
     { path: '/findpaypwd', name: 'findpaypwd', component: findpaypwd },//找回支付密码
     { path: '/coupon', name: 'coupon', component: coupon },//我的优惠券
+    { path: '/order', name: 'order', component: order },//全部订单
+    { path: '/waitaccept', name: 'waitaccept', component: waitaccept },//待接单
+    { path: '/accept', name: 'accept', component: accept },//已接单
+    { path: '/waitpay', name: 'waitpay', component: waitpay },//已接单
+    { path: '/finish', name: 'finish', component: finish },//已完成
   ]
 })

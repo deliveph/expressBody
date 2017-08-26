@@ -1,5 +1,6 @@
 <template>
     <div class="wrapper">
+        <!--
         <mt-navbar class="page-part" v-model="selected">  
             <mt-tab-item id="1">立即使用(3)</mt-tab-item>  
             <mt-tab-item id="2">使用记录(30)</mt-tab-item>  
@@ -68,6 +69,7 @@
                 </div>
             </mt-tab-container-item>
         </mt-tab-container> 
+        -->
     </div>
 </template>
 

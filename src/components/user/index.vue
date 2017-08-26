@@ -51,11 +51,11 @@
             <div class="cen-item">
                 <div class="all-order">
                     <span>全部订单</span>
-                    <router-link to="/order">查看全部订单<i class="arrow-right"></i></router-link>
+                    <router-link :to="{name:'order',query:{type:'1'}}">查看全部订单<i class="arrow-right"></i></router-link>
                 </div>
                 <ul class="order-list">
                     <li>
-                        <router-link to="">
+                        <router-link to="/waitaccept">
                             <i class="oicon1"></i>
                             <em>待接单</em>
                         </router-link>
@@ -63,19 +63,19 @@
                     <li>
                         <router-link to="">
                             <i class="oicon2"></i>
-                            <em>待配送</em>
+                            <em>已接单</em>
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="">
+                        <router-link to="/waitpay">
                             <i class="oicon3"></i>
-                            <em>已配送</em>
+                            <em>待支付</em>
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="">
+                        <router-link to="/finish">
                             <i class="oicon4"></i>
-                            <em>已完成</em>
+                            <em>待评价</em>
                         </router-link>
                     </li>
                 </ul>
