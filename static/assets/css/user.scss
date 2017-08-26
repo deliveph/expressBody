@@ -690,3 +690,121 @@
         }
     }
 }
+/** order **/
+.order-list{
+    ul{
+        padding: 0 4%;
+        li{
+            margin-top: px2rem(20);
+            background: #fff;
+            border-radius: px2rem(10);
+            min-height: px2rem(204);
+            box-shadow:0px px2rem(4) px2rem(16) rgba(164,164,164,.17);
+            a{
+                display: block;
+                margin: 0 px2rem(10);
+                padding: px2rem(14) 0;
+                display: -webkit-box;
+                border-bottom: 1px solid #f1f1f1;
+                i{
+                    width: px2rem(52);
+                    height: px2rem(52);
+                    display: inline-block;
+                    margin-right: px2rem(20);
+                    flex: 1;
+                    vertical-align: top;
+                    &.icon_send{
+                    background: url('/static/assets/images/icon_ji.png') no-repeat center;
+                    background-size:px2rem(52); 
+                    }
+                    &.icon_put{
+                        background: url('/static/assets/images/icon_shou.png') no-repeat center;
+                        background-size:px2rem(52); 
+                    }
+                }
+                .odd{
+                    width: 84%;
+                    position: relative;
+                    .order_number{
+                        font-size: px2rem(28);
+                        color: #999;
+                        margin-top:px2rem(10);  
+                    }
+                    .site{
+                        display: flex;
+                        margin:px2rem(30) 0;
+                        h4{
+                            font-size: px2rem(34);
+                            color: #333;
+                        }
+                        p{
+                            font-size: px2rem(28);
+                            color: #999;
+                            margin-top:px2rem(20);
+                        }
+                        .starting{
+                            flex: 1;
+                            width: px2rem(262);
+                        }
+                        .receipt{
+                            flex: 1;
+                            width: px2rem(262);
+                            text-align:right;
+                        }
+                        .center{
+                            flex: 1;
+                            height: 1px;
+                            background-color: #e1e1e1;
+                            margin-top:px2rem(20);
+                        }
+                    }
+                    .order-status{
+                        font-size: px2rem(28);
+                        color: #fd2073;
+                        position: absolute;
+                        top: px2rem(10);
+                        right: 0;
+                    }
+                } 
+                .express_number{
+                    font-size: px2rem(28);
+                    color: #999;
+                    margin-top:px2rem(20)
+                }
+            }
+            .order-option{
+                padding: px2rem(16) px2rem(14);text-align:right;
+                .order-btn{
+                    padding: 0 px2rem(20);
+                    height: px2rem(50);
+                    line-height: px2rem(50);
+                    font-size: px2rem(28);color: #999;
+                    display: inline-block;
+                    text-align: center;
+                    border: 1px solid #d6d9e0;
+                    border-radius: px2rem(8);
+                }
+            }
+            &.put{
+                a{
+                    
+                }
+            }
+            .express_number{
+                font-size: px2rem(28);
+                color: #999;
+                margin-top:px2rem(20);
+                margin-bottom:px2rem(20)
+            }
+        }
+    }
+}
+.no-order{
+    .no-img{
+        background: url(../images/no_order.png) no-repeat;background-size: cover;width: px2rem(244);height: px2rem(186);
+        margin: px2rem(102) auto;
+    }
+    p{
+        text-align: center;font-size:px2ren(28);color: #999
+    }
+}
