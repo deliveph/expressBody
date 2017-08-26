@@ -9,6 +9,7 @@ import wx from 'weixin-js-sdk'
 Vue.config.productionTip = false
 Vue.prototype.$ajax = axios
 Vue.prototype.SDKRegister = wx
+Vue.prototype.comm = comm
 
 /* eslint-disable no-new */
 new Vue({
