@@ -18,6 +18,7 @@ import payResult from '@/components/user/payResult'
 import payset from '@/components/user/paysetting'
 import findpaypwd from '@/components/user/findpaypwd'
 import coupon from '@/components/user/coupon'
+import order from '@/components/user/order'
 
 Vue.use(Router)
 
@@ -41,5 +42,6 @@ export default new Router({
     { path: '/payset', name: 'payset', component: payset },//支付设置
     { path: '/findpaypwd', name: 'findpaypwd', component: findpaypwd },//找回支付密码
     { path: '/coupon', name: 'coupon', component: coupon },//我的优惠券
+    { path: '/order', name: 'order', component: order },//全部订单
   ]
 })
