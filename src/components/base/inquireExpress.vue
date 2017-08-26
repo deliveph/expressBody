@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
+// import { Toast } from 'mint-ui';
 export default {
     data(){
         return{
@@ -66,17 +66,17 @@ export default {
         }
     },
     methods:{
-        see(){
-            let odd = this.$refs.odd.value;
-            if(odd == ''){
-                Toast('请输入快递单号');
-                return false;
-            }
-            this.$router.push({path: '/result'})
-        },
-        richscan(){
-            Toast('暂未开发');
-        }
+        // see(){
+        //     let odd = this.$refs.odd.value;
+        //     if(odd == ''){
+        //         Toast('请输入快递单号');
+        //         return false;
+        //     }
+        //     this.$router.push({path: '/result'})
+        // },
+        // richscan(){
+        //     Toast('暂未开发');
+        // }
     }
 }
 </script>

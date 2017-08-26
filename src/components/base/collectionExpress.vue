@@ -1,10 +1,9 @@
 <template>
     <div class="collection">
-        <mt-navbar v-model="selected">
+        <!-- <mt-navbar v-model="selected">
             <mt-tab-item id="1">即时收件</mt-tab-item>
             <mt-tab-item id="2">预约收件</mt-tab-item>
         </mt-navbar>
-        <!-- tab-container -->
         <mt-tab-container v-model="selected">
             <mt-tab-container-item id="1">
                 <div class="forthwith_box">
@@ -137,25 +136,25 @@
                     </div>
                 </div>
             </mt-tab-container-item>
-        </mt-tab-container>
+        </mt-tab-container> -->
     </div>
 </template>
 
 <script>
-import { Navbar, TabItem } from 'mint-ui';
+// import { Navbar, TabItem } from 'mint-ui';
 export default {
     data() {
         return{
-            selected:'1'
+            // selected:'1'
         }
     },
     components: {
-        Navbar,
-        TabItem
+        // Navbar,
+        // TabItem
     },
     methods:{
         submitBtn(){
-            this.$router.push({path: '/Detail'})
+            this.$router.push({path: '/detail'})
         }
     }
 }

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { Toast, MessageBox, Indicator } from 'mint-ui'
+// import { Toast, MessageBox, Indicator } from 'mint-ui'
 
 export default {
   data () {

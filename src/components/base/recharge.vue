@@ -80,7 +80,7 @@ export default {
                 align-items:center;/*垂直居中*/
                 justify-content: center;
                 text-align: center;
-                margin-right:px2rem(26);
+                margin-right:px2rem(20);
                 margin-bottom: px2rem(36);
                 cursor: pointer;
                 &:hover,.active{
