@@ -12,7 +12,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link :to="{name:'Collection'}">
+                <router-link :to="{name:'Send'}">
                     <img src="/static/assets/images/btn_ji.png" />
                     <p>代寄快递</p>
                 </router-link>
@@ -24,7 +24,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link :to="{name:'User'}">
+                <router-link :to="{name:'user'}">
                     <img src="/static/assets/images/btn_me.png" />
                     <p>个人中心</p>
                 </router-link>

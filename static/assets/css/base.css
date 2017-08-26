@@ -304,3 +304,11 @@ fr {
 .hide {
   display: none
 }
+
+.mt20{
+  margin-top:0.2rem;
+}
+
+.pdlf30{
+  padding:0 0.15rem;
+}
