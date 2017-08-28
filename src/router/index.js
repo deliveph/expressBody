@@ -25,7 +25,14 @@ import waitaccept from '@/components/user/waitaccept'
 import accept from '@/components/user/accept'
 import waitpay from '@/components/user/waitpay'
 import finish from '@/components/user/finish'
-
+import evaluate from '@/components/user/evaluate'
+import evalresult from '@/components/user/evalresult'
+import confirm from '@/components/user/confirm'
+import orderdetail from '@/components/user/orderdetail'
+import repget from '@/components/user/repget'
+import ordercancel from '@/components/user/ordercancel'
+import discount from '@/components/user/discount'
+import friends from '@/components/user/friends'
 
 Vue.use(Router)
 
@@ -54,7 +61,15 @@ export default new Router({
     { path: '/order', name: 'order', component: order },//全部订单
     { path: '/waitaccept', name: 'waitaccept', component: waitaccept },//待接单
     { path: '/accept', name: 'accept', component: accept },//已接单
-    { path: '/waitpay', name: 'waitpay', component: waitpay },//已接单
+    { path: '/waitpay', name: 'waitpay', component: waitpay },//待支付
     { path: '/finish', name: 'finish', component: finish },//已完成
+    { path: '/evaluate', name: 'evaluate', component: evaluate },//去评价
+    { path: '/evalresult', name: 'evalresult', component: evalresult },//评价结果页面
+    { path: '/confirm', name: 'confirm', component: confirm },//确认订单
+    { path: '/orderdetail', name: 'orderdetail', component: orderdetail },//订单详情
+    { path: '/repget', name: 'repget', component: repget },//代收订单详情
+    { path: '/ordercancel', name: 'ordercancel', component: ordercancel },//订单取消
+    { path: '/discount', name: 'discount', component: discount },//领劵中心
+    { path: '/friends', name: 'friends', component: friends },//好友列表
   ]
 })
