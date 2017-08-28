@@ -1,14 +1,14 @@
- var comm = {
-   onItemClick(index,ref,cls,data){
 
-        var that = this;
-        console.log(index);
-        console.log(ref)
-        console.log(cls)
-        console.log(data)
-        let els = this.$refs.ref.querySelectorAll(cls);
-        for (let i = 0; i < els.length; i++) {
-            that.data = index;
-        }
-    } 
+export default function init(that,index,ref,cls,dt) {
+    // console.log('wwe')
+    // console.log(that);
+    console.log(index,'xiabiao')
+    console.log(dt ,'waimian d ')
+    let els = ref.querySelectorAll(cls);
+
+    for (let i = 0; i < els.length; i++) {
+        dt = index;
+        console.log(index)
+        console.log(dt)
+    }
 }
