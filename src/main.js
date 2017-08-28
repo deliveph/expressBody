@@ -9,7 +9,9 @@ import wx from 'weixin-js-sdk'
 Vue.config.productionTip = false
 Vue.prototype.$ajax = axios
 Vue.prototype.SDKRegister = wx
-Vue.prototype.comm = comm
+
+import  { ToastPlugin } from 'vux'
+Vue.use(ToastPlugin)
 
 /* eslint-disable no-new */
 new Vue({
