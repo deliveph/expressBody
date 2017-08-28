@@ -17,7 +17,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link  to="">
+                <router-link  to="/waitpay">
                     <span>待支付</span>
                 </router-link>
             </li>
@@ -31,7 +31,7 @@
         <div class="order-list">
             <ul>
                 <li class="send">
-                    <router-link :to="{name:'waitaccept'}">
+                    <router-link to="/orderdetail">
                         <i class="icon_send"></i>
                         <div class="odd">
                             <p class="order_number">订单号：

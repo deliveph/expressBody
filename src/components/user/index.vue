@@ -37,7 +37,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link to="">
+                    <router-link to="/friends">
                         <div class="actions-num">
                             <em>125</em><i class="friend"></i>
                         </div>
@@ -51,7 +51,7 @@
             <div class="cen-item">
                 <div class="all-order">
                     <span>全部订单</span>
-                    <router-link :to="{name:'order',query:{type:'1'}}">查看全部订单<i class="arrow-right"></i></router-link>
+                    <router-link :to="{name:'order'}">查看全部订单<i class="arrow-right"></i></router-link>
                 </div>
                 <ul class="order-list">
                     <li>
@@ -61,7 +61,7 @@
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="">
+                        <router-link to="/accept">
                             <i class="oicon2"></i>
                             <em>已接单</em>
                         </router-link>
@@ -83,7 +83,7 @@
             <div class="cen-item">
                 <ul class="some-item">
                     <li>
-                        <router-link to="/">
+                        <router-link to="/Invite">
                             <span><i class="icon1"></i>邀请好友</span>
                             <em><i class="arrow-right"></i></em>
                         </router-link>

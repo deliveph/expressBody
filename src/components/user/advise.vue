@@ -4,7 +4,7 @@
             <tab-item class="vux-center" v-for="(item, index) in list2" :key="index" @on-item-click="onItemClick(index)"><span>{{item}}</span></tab-item>
         </tab>
         <div class="advise-wrapper" v-model="index" ref="advise">
-            <div class="advise-info" v-if=" box == 0 ">
+            <div class="advise-info" v-if=" index == 0 ">
                 <div class="advise-info-box">
                     <div class="advise-item">
                         <p>请选择你要反馈的意见类型(必填)11</p>
@@ -86,9 +86,6 @@
 </template>
 
 <script>
-    import complain from './issue/complain'
-    import suggest from './issue/suggest'
-
     import { Tab, TabItem } from 'vux'
 
     const list = () => ['我要投诉', '我要建议']
@@ -104,16 +101,16 @@
                 getBarWidth: function (index) {
                     // return (index + 1) * 22 + 'px'
                 },
-                box: 0,
+                // box: 0,
             }
         },
         methods: {
             onItemClick(index) {
                 var that = this
-                let els = this.$refs.advise.querySelectorAll('div.advise-info')
-                for (let i = 0; i < els.length; i++) {
-                    that.box = index
-                }
+                // let els = this.$refs.advise.querySelectorAll('div.advise-info')
+                // for (let i = 0; i < els.length; i++) {
+                //     that.box = index
+                // }
             }   
         }
     }

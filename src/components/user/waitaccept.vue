@@ -1,12 +1,10 @@
 <template>
     <div class="wrapper">
-        <!--
-        <mt-navbar class="page-part" v-model="selected">  
-            <mt-tab-item id="1">我寄的(3)</mt-tab-item>  
-            <mt-tab-item id="2">代收的(30)</mt-tab-item>  
-        </mt-navbar>  
-        <mt-tab-container v-model="selected">
-            <mt-tab-container-item id="1">  
+        <tab :line-width=2 v-model="index">
+            <tab-item class="vux-center" v-for="(item, index) in list" :key="index"><span>{{item.name}}({{item.num}})</span></tab-item>
+        </tab>
+        <div class="order-container" v-model="index">
+            <div class="order-con-box" v-if="index == 0">
                 <div class="order-list">
                     <ul>
                         <li class="send">
@@ -42,8 +40,8 @@
                     <div class="no-img"></div>
                     <p>暂无订单</p>
                 </div>
-            </mt-tab-container-item>  
-            <mt-tab-container-item id="2">  
+            </div>
+            <div class="order-con-box" v-else>
                 <div class="order-list">
                     <ul>
                         <li class="put">
@@ -65,17 +63,25 @@
                     <div class="no-img"></div>
                     <p>暂无订单</p>
                 </div>
-            </mt-tab-container-item>  
-        </mt-tab-container>
-        -->
+            </div>
+        </div>
     </div>
 </template>
 <script>
+    import { Tab, TabItem } from 'vux'
     export default{
         data() {
             return{
-                selected: '1'
+                index: 0,
+                list: [
+                    { name: '我寄的', 'num': '3' },
+                    { name: '代收的', 'num': '5' },
+                ]
             }
+        },
+        components: {
+            Tab,
+            TabItem
         }
     }
 </script>
@@ -83,21 +89,24 @@
 <style lang="scss">
     @import '../../../static/assets/css/px2rem.scss';
 
-    .mint-navbar .mint-tab-item.is-selected{
-        color: #366931;
+    .vux-tab .vux-tab-item.vux-tab-selected{
+        color: #366931 !important;border-bottom:none !important;
     }
-    .mint-navbar .mint-tab-item .mint-tab-item-label{
-        font-size: px2rem(28) !important;
-        display: inline-block;
-        padding-bottom:px2rem(20);
+    .vux-tab .vux-tab-item.vux-tab-selected span{
+        border-bottom:3px solid  #366931 !important;
+        padding-bottom:px2rem(14)
     }
-    .mint-navbar .mint-tab-item.is-selected{
-        border-bottom:0;
+    .vux-tab-ink-bar{
+        background-color:none !important
     }
-    .mint-navbar .mint-tab-item{
-        padding:px2rem(20) 0 0 0;
+    .vux-tab-item + .vux-tab-ink-bar{
+        display:none !important;
     }
-    .mint-navbar .mint-tab-item.is-selected .mint-tab-item-label{
-        border-bottom: 2px solid #366931;
+    .vux-slider > .vux-swiper{
+        min-height: -webkit-fill-available;
+    }
+    .vux-slider > .vux-swiper{
+        overflow: auto !important;
+        position: relative;
     }
 </style>
