@@ -29,7 +29,20 @@
                         </router-link>
                         <p>深圳市南山区高新园大冲国际商务中心5号楼501深圳市南山区高新园大冲国际商务中心5号楼501深圳市南山区高新园大冲国际商务中心5号楼501</p>
                     </li>
-                    
+                    <!--快递宝宝端-->
+                    <li>
+                        <router-link to="">
+                            <span>我的评分</span>
+                            <em><span>4.8</span></em>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link to="/modifypwd">
+                            <span>修改密码</span>
+                            <em><span></span><i class="arrow-right"></i></em>
+                        </router-link>
+                    </li>
+                    <!--快递宝宝端-->
                 </ul>
             </div>
         </div>

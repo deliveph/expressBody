@@ -95,7 +95,7 @@
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="">
+                        <router-link to="/address">
                             <span><i class="icon3"></i>地址列表</span>
                             <em><i class="arrow-right"></i></em>
                         </router-link>

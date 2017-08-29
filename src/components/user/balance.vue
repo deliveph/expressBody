@@ -48,6 +48,10 @@
                     </li>
                 </ul>
             </div>
+            <div class="no-balance">
+                <img src="/static/assets/images/no_record.png" alt="">
+                <p>暂无余额明细</p>
+            </div>
         </div>
     </div>
 </template>

@@ -363,8 +363,27 @@
     margin-top: px2rem(46);
 }
 .league-banner{
-    background: url(../images/banner.png) no-repeat;
+    background: url(../images/inquire_bg.png) no-repeat;
     width: 100%;height: px2rem(420);background-size: cover
+}
+.league-sink{
+    .league-form{
+        margin-top:px2rem(20);
+        .league-item{
+            line-height: px2rem(90);background-color: #fff;border-bottom: 1px solid #f1f1f1;padding:0 4%;
+            label{
+                font-size: px2rem(28);color: #666;margin-right: px2rem(20);vertical-align: middle;
+            }
+            input{
+                font-size: px2rem(28);color: #333;border: 0;height: px2rem(40);vertical-align: middle;
+                
+            }
+            textarea{
+                padding: px2rem(20) 0;height: px2rem(150);width: 100%;resize: none;border: 0;
+            }
+            
+        }
+    }
 }
 
 .person{
@@ -815,12 +834,13 @@
     }
 }
 .no-order{
+    margin-top: px2rem(102);
     .no-img{
-        background: url(../images/no_order.png) no-repeat;background-size: cover;width: px2rem(244);height: px2rem(186);
-        margin: px2rem(102) auto;
+        background: url(../images/no_indent.png) no-repeat;background-size: cover;width: px2rem(250);height: px2rem(250);
+        margin: 0 auto;
     }
     p{
-        text-align: center;font-size:px2ren(28);color: #999
+        text-align: center;font-size:px2rem(28);color: #999;margin-top: px2rem(40);
     }
 }
 .appraise{
@@ -845,6 +865,9 @@
                 margin-right: px2rem(50);width: px2rem(50);height: px2rem(50);background: url(../images/evaluate_xing_def.png) no-repeat;
                 background-size: cover;
             }
+        }
+        .appraise-start{
+            padding: px2rem(75);
         }
     }
     .commit-eval{
@@ -1004,12 +1027,84 @@
     }
 }
 .ask-wrapper{
+    background: #fff;
     .ask-banner{
         width: 100%;height: px2rem(420);background: url(/static/assets/images/banner.png) no-repeat;background-size: cover;
     }
     .ask-container{
         h1{
-            font-size: px2rem(36);color: #333;text-align: center;
+            font-size: px2rem(36);color: #333;text-align: center;line-height: px2rem(46);margin-top: px2rem(54);margin-bottom: px2rem(64);
+        }
+        .invite-friend{
+            width: 74%;margin: 0 auto;
+            .invite-info{
+                line-height: px2rem(90);border-radius: px2rem(10);border: 1px solid #f1f1f1;margin-bottom: px2rem(20);padding: 0 px2rem(40);
+                label{
+                    font-size: px2rem(28);color: #666;vertical-align: middle;
+                }
+                input{
+                    font-size: px2rem(28);color: #333;
+                    vertical-align: middle;border: 0;
+                }
+                &.info-dis{
+                    display: flex;border:0;padding: 0;
+                }
+                .invite-code{
+                    border: 1px solid #f1f1f1;width: 55%;padding: 0 px2rem(20) 0 px2rem(40) ;border-radius: px2rem(10);
+                    input{
+                        width: 59%;
+                    }
+                }
+                .invite-code-btn{
+                    margin-left: px2rem(26);
+                    button{
+                        border-radius: px2rem(8);line-height: px2rem(90);height: px2rem(90);padding: 0 px2rem(10);
+                        background-color: #366931;color: #fff;font-size: px2rem(28)
+                    }
+                }
+            }
+            .next-about{
+                margin-top: px2rem(90);margin-bottom: px2rem(56);
+            }
         }
     }
+    h6{
+        font-size: px2rem(24);color: #666;text-align:center;font-weight:normal;
+        &:before,&:after{
+            content: '';display: inline-block;width: px2rem(168);height: 1px;background-color: #f1f1f1;
+            vertical-align: middle;
+        }
+        &:before{
+            margin-right: px2rem(10);
+        }
+        &.after{
+            margin-left: px2rem(10)
+        }
+    }
+}
+.address-wrapper{
+    
+}
+.no-balance,.no-coupon,.no-friends{
+    margin-top: px2rem(120);
+    img{
+        width:px2rem(250);height:px2rem(250);margin:0 auto;display:block;
+    }
+    p{
+        font-size:px2rem(30);color:#666;text-align:center;
+        // margin-top:px2rem(40);
+    }
+}
+.no-coupon {
+    padding: 0 4%;
+    .go-btn{
+        height: px2rem(88);line-height: px2rem(88);font-size: px2rem(28);
+        color: #fff;display: block;background-color: #366931;border-radius: px2rem(8);text-align: center;
+    }
+    .go-btn{
+        margin-top: px2rem(140);
+    }
+}
+.no-friends{
+    margin-top: px2rem(420);
 }

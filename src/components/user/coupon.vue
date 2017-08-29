@@ -60,6 +60,11 @@
                 </ul>
             </div>
         </div>
+        <div class="no-coupon">
+            <img src="/static/assets/images/no_state.png" alt="">
+            <p>暂无优惠券</p>
+            <router-link class="go-btn" to="/discount">去领券中心</router-link>
+        </div>
     </div>
 </template>
 

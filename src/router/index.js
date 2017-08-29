@@ -33,6 +33,9 @@ import repget from '@/components/user/repget'
 import ordercancel from '@/components/user/ordercancel'
 import discount from '@/components/user/discount'
 import friends from '@/components/user/friends'
+import invitesuc from '@/components/user/invitesuc'
+import address from '@/components/user/address'
+import modifypwd from '@/components/user/modifypwd'
 import Address from '@/components/address'
 import Oldpassword from '@/components/payment/oldPassword'
 
@@ -73,6 +76,9 @@ export default new Router({
     { path: '/ordercancel', name: 'ordercancel', component: ordercancel },//订单取消
     { path: '/discount', name: 'discount', component: discount },//领劵中心
     { path: '/friends', name: 'friends', component: friends },//好友列表
+    { path: '/invitesuc', name: 'invitesuc', component: invitesuc },//好友成功列表
+    { path: '/address', name: 'address', component: address },//地址列表
+    { path: '/modifypwd', name: 'modifypwd', component: modifypwd },//修改密码
     { path: '/address', name: 'Address', component: Address }, //添加地址和编辑地址（通过type来做判断）
     { path: '/oldPassword', name: 'Oldpassword', component: Oldpassword } //修改支付密码（旧密码）
   ]

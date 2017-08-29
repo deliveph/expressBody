@@ -19,6 +19,10 @@
                 </tbody>
             </table>
         </div>
+        <div class="no-friends">
+            <img src="/static/assets/images/no_friend.png" alt="">
+            <p>你还没有好友哦，快去邀请吧</p>
+        </div>
     </div>
 </template>
 <script>
