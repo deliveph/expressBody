@@ -283,11 +283,11 @@ textare {
   position: absolute
 }
 
-fl {
+.fl {
   float: left
 }
 
-fr {
+.fr {
   float: right
 }
 
@@ -311,4 +311,16 @@ fr {
 
 .pdlf30{
   padding:0 0.15rem;
+}
+
+
+/*  */
+.modal-open{
+  overflow: inherit !important;
+  position: inherit !important;
+}
+
+textarea{
+  border: 0;
+  resize:none;
 }

@@ -2,7 +2,6 @@
     <div id="home" class="home">
         <el-amap vid="amap" :plugin="plugin" class="amap-demo hide" :center="center">
         </el-amap>
-
         <div class="toolbar hide">
             <span v-if="loaded">
                 location: lng = {{ lng }} lat = {{ lat }}
@@ -65,7 +64,7 @@ import Vheader from '../base/public/header'
 import Banner from '../base/public/banner'
 import Layer from '../base/public/layer'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import AMap from 'vue-amap'
+import VueAMap from 'vue-amap'
 // import $wechat from 'weixin-js-sdk'
 // import { Divider, FlexboxItem, Flexbox } from 'vux'
 let map
@@ -74,7 +73,7 @@ export default {
         Vheader,
         Banner,
         Layer,
-        AMap
+        VueAMap
     },
     methods: {
         messageBox() {
@@ -99,7 +98,6 @@ export default {
                 o.getCurrentPosition((status, result) => {
                     console.log(status,result)
                     if (result && result.position) {
-                        
                         console.log(result.formattedAddress)
                         alert(result.formattedAddress)
                         // self.lng = result.position.lng;
@@ -121,7 +119,7 @@ export default {
         //     url:'/api/weixin-js-sdk-config',
         //     method:'get',
         //     withCredentials:true
-        // }).then(function(res){
+        // }).then(function(res){ 
         //     let msg = res.data.data
         //     console.log(that);
         //     console.log(msg);
