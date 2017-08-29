@@ -312,3 +312,15 @@ fr {
 .pdlf30{
   padding:0 0.15rem;
 }
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  color: #cacaca;
+}
+input:-moz-placeholder, textarea:-moz-placeholder {
+  color:#cacaca;
+}
+input::-moz-placeholder, textarea::-moz-placeholder {
+  color:#cacaca;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+  color:#cacaca;
+}
