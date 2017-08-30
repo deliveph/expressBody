@@ -25,7 +25,7 @@
 </div>
 </template>
 <script>
-    import Rater from 'vux'
+    import { Rater } from 'vux'
     export default{
         data() {
             return {

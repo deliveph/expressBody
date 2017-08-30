@@ -1,14 +1,95 @@
 @import '../css/px2rem.scss';
-.grade {
-    .grade_img {
-        width: px2rem(124);
-        height: px2rem(60);
-        background: url('/static/assets/images/banner.png') no-repeat;
-        background-size: px2rem(124) px2rem(60);
-        margin: 0 auto;
-        span {
-            font-size: px2rem(20);
-            color: #fff
-        }
+.grade_img {
+    width: px2rem(128);
+    height: px2rem(70);
+    margin: 0 auto;
+    &.gradeMax_img{
+        width: px2rem(304);
+        height: px2rem(164);
+    }
+    // 用户等级
+    &.icon_user_1{
+        background: url('/static/assets/images/user_level/icon_1_shaowei.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+    &.icon_user_2{
+        background: url('/static/assets/images/user_level/icon_2_zhongwei.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+    &.icon_user_3{
+        background: url('/static/assets/images/user_level/icon_3_shangwei.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+    &.icon_user_4{
+        background: url('/static/assets/images/user_level/icon_4_shaoxiao.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+    &.icon_user_5{
+        background: url('/static/assets/images/user_level/icon_5_zhongxiao.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+    &.icon_user_6{
+        background: url('/static/assets/images/user_level/icon_6_shangxiao.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+    &.icon_user_7{
+        background: url('/static/assets/images/user_level/icon_7_daxiao.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+    &.icon_user_8{
+        background: url('/static/assets/images/user_level/icon_8_shaojiang.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+    &.icon_user_9{
+        background: url('/static/assets/images/user_level/icon_9_zhongjiang.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+    &.icon_user_10{
+        background: url('/static/assets/images/user_level/icon_10_dajiang.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+
+    // 快递宝宝等级
+    &.icon_express_1{
+        background: url('/static/assets/images/platform_level/liebing_s1.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+    &.icon_express_2{
+        background: url('/static/assets/images/platform_level/shangdengbing_s2.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+    &.icon_express_3{
+        background: url('/static/assets/images/platform_level/xiashi_s3.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+    &.icon_express_4{
+        background: url('/static/assets/images/platform_level/zhongshi_s4.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+    &.icon_express_5{
+        background: url('/static/assets/images/platform_level/shangshi_s5.png') no-repeat;
+        background-size: px2rem(128) px2rem(70);
+    }
+
+    // 大
+    &.icon_expressMax_1{
+        background: url('/static/assets/images/platform_level/platform_max/liebing1.png') no-repeat;
+        background-size: px2rem(304) px2rem(164);
+    }
+    &.icon_expressMax_2{
+        background: url('/static/assets/images/platform_level/platform_max/shangdengbing2.png') no-repeat;
+        background-size: px2rem(304) px2rem(164);
+    }
+    &.icon_expressMax_3{
+        background: url('/static/assets/images/platform_level/platform_max/xiashi3.png') no-repeat;
+        background-size: px2rem(304) px2rem(164);
+    }
+    &.icon_expressMax_4{
+        background: url('/static/assets/images/platform_level/platform_max/zhongshi4.png') no-repeat;
+        background-size: px2rem(304) px2rem(164);
+    }
+    &.icon_expressMax_5{
+        background: url('/static/assets/images/platform_level/platform_max/shangshi5.png') no-repeat;
+        background-size: px2rem(304) px2rem(164);
     }
 }

@@ -1,7 +1,5 @@
 <template>
-    <div class="grade">
-        <div class="grade_img">
-        </div>
+    <div class="grade_img">
     </div>
 </template>
 
