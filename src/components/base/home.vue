@@ -173,8 +173,4 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../../static/assets/css/home.scss';
-
-.amap-demo {
-    height: 300px;
-}
 </style>

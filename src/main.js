@@ -11,7 +11,7 @@ import { ToastPlugin } from 'vux'
 
 Vue.config.productionTip = false
 Vue.prototype.$ajax = axios
-Vue.prototype.SDKRegister = wx
+Vue.prototype.wx = wx
 Vue.prototype.$ = $
 
 Vue.use(ToastPlugin)
