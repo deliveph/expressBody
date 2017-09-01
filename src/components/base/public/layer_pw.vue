@@ -1,22 +1,16 @@
 <template>
-    <!--手机号弹出层  -->
+    <!--密码弹出层  -->
     <div class="layer_warp hide">
         <div class="layer_table">
             <div class="layer_table_cell">
                 <div class="layer_box">
                     <div class="layer_title">
-                        <p>请输入您的手机号</p>
+                        <p>请输入您的密码</p>
                     </div>
                     <div class="layer_container">
-                        <div class="phone_register register_box">
-                            <div class="phone_number">
-                                <label></label>
-                                <input type="number" name="phone" value="" placeholder="请输入手机号码" />
-                                <button type="button">发送验证码</button>
-                            </div>
-                            <div class="phone_code">
-                                <label></label>
-                                <input type="number" name="code" value="" placeholder="请输入验证码" />
+                        <div class="password_register register_box">
+                            <div class="password_number">
+                                <input type="password" name="password" value=""/>
                             </div>
                         </div>
                     </div>
@@ -32,8 +26,6 @@
             </div>    
         </div>
     </div>
-
-    
 </template>
 
 <script>

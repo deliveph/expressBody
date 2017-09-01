@@ -7,7 +7,7 @@
                         <dt><router-link to="/person"><img src="/static/assets/images/icon_success.png" alt=""></router-link></dt>
                         <dd>
                             <p class="nom-info-name"><router-link to="/person">快递7817589</router-link></p>
-                            <router-link to="/person">
+                            <router-link to="/level">
                                 <grade class="m0 icon_express_1"></grade>
                             </router-link>
                         </dd>

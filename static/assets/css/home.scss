@@ -74,7 +74,8 @@
             width: px2rem(136);
             height: px2rem(136);
             border-radius: 50%;
-            vertical-align: middle;
+            vertical-align: top;
+            margin-top:px2rem(8);
         }
         .grade {
             width: 100%;
@@ -90,6 +91,9 @@
         color: #fff;
         margin-top: px2rem(60);
         height: px2rem(40);
+        &.notLogin{
+            margin-top:px2rem(20);
+        }
     }
     p {
         font-size: px2rem(20);

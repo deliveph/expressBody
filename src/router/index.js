@@ -1,48 +1,51 @@
-import Vue from 'vue' 
-import Router from 'vue-router' 
-import Home from '@/components/base/home' 
-import Detail from '@/components/base/detail' 
-import Recharge from '@/components/base/recharge' 
-import Collection from '@/components/base/collectionExpress' 
-import User from '@/components/user/index' 
-import explain from '@/components/user/explain' 
-import Person from '@/components/user/person' 
-import advise from '@/components/user/advise' 
-import league from '@/components/user/league' 
-import Changename from '@/components/user/changename' 
-import editaddr from '@/components/user/editaddr' 
-import balance from '@/components/user/balance' 
-import Inquire from '@/components/base/inquireExpress' 
-import Invite from '@/components/user/invite' 
-import payResult from '@/components/user/payResult' 
-import payset from '@/components/user/paysetting' 
-import findpaypwd from '@/components/user/findpaypwd' 
-import coupon from '@/components/user/coupon' 
-import Result from '@/components/base/inquireResult' 
-import Send from '@/components/base/sendExpress' 
-import order from '@/components/user/order' 
-import waitaccept from '@/components/user/waitaccept' 
-import accept from '@/components/user/accept' 
-import waitpay from '@/components/user/waitpay' 
-import finish from '@/components/user/finish' 
-import evaluate from '@/components/user/evaluate' 
-import evalresult from '@/components/user/evalresult' 
-import confirm from '@/components/user/confirm' 
-import orderdetail from '@/components/user/orderdetail' 
-import repget from '@/components/user/repget' 
-import ordercancel from '@/components/user/ordercancel' 
-import discount from '@/components/user/discount' 
-import friends from '@/components/user/friends' 
-import invitesuc from '@/components/user/invitesuc' 
-import address from '@/components/user/address' 
-import modifypwd from '@/components/user/modifypwd' 
-import Address from '@/components/address' 
-import Oldpassword from '@/components/payment/oldPassword' 
- 
-Vue.use(Router) 
- 
-export default new Router({ 
-  routes: [ 
+import Vue from 'vue'
+import Router from 'vue-router'
+import Home from '@/components/base/home'
+import Detail from '@/components/base/detail'
+import Recharge from '@/components/base/recharge'
+import Collection from '@/components/base/collectionExpress'
+import User from '@/components/user/index'
+import explain from '@/components/user/explain'
+import Person from '@/components/user/person'
+import advise from '@/components/user/advise'
+import league from '@/components/user/league'
+import Changename from '@/components/user/changename'
+import editaddr from '@/components/user/editaddr'
+import balance from '@/components/user/balance'
+import Inquire from '@/components/base/inquireExpress'
+import Invite from '@/components/user/invite'
+import payResult from '@/components/user/payResult'
+import payset from '@/components/user/paysetting'
+import findpaypwd from '@/components/user/findpaypwd'
+import coupon from '@/components/user/coupon'
+import Result from '@/components/base/inquireResult'
+import Send from '@/components/base/sendExpress'
+import order from '@/components/user/order'
+import waitaccept from '@/components/user/waitaccept'
+import accept from '@/components/user/accept'
+import waitpay from '@/components/user/waitpay'
+import finish from '@/components/user/finish'
+import evaluate from '@/components/user/evaluate'
+import evalresult from '@/components/user/evalresult'
+import confirm from '@/components/user/confirm'
+import orderdetail from '@/components/user/orderdetail'
+import repget from '@/components/user/repget'
+import ordercancel from '@/components/user/ordercancel'
+import discount from '@/components/user/discount'
+import friends from '@/components/user/friends'
+import invitesuc from '@/components/user/invitesuc'
+import address from '@/components/user/address'
+import modifypwd from '@/components/user/modifypwd'
+import Address from '@/components/address'
+import Oldpassword from '@/components/payment/oldPassword'
+import level from '@/components/user/level'
+import express from '@/components/base/express'
+import statistics from '@/components/user/statistics'
+
+Vue.use(Router)
+
+export default new Router({
+  routes: [
     { path: '/', name: 'Home', component: Home }, /*首页*/ 
     { path: '/detail', name: 'Detail', component: Detail }, //公共详情 
     { path: '/recharge', name: 'Recharge', component: Recharge }, //充值 
@@ -80,6 +83,9 @@ export default new Router({
     { path: '/address', name: 'address', component: address },//地址列表 
     { path: '/modifypwd', name: 'modifypwd', component: modifypwd },//修改密码 
     { path: '/address', name: 'Address', component: Address }, //添加地址和编辑地址（通过type来做判断） 
-    { path: '/oldPassword', name: 'Oldpassword', component: Oldpassword } //修改支付密码（旧密码） 
-  ] 
-}) 
+    { path: '/oldPassword', name: 'Oldpassword', component: Oldpassword }, //修改支付密码（旧密码） 
+    { path: '/level', name: 'level', component: level }, //修改支付密码（旧密码） 
+    { path: '/express/index', name: 'express', component: express }, //快递宝宝首页 
+    { path: '/statistics', name: 'statistics', component: statistics } //我的统计
+  ]
+})
