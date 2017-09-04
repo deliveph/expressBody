@@ -1,6 +1,6 @@
 <template>
     <!--手机号弹出层  -->
-    <div class="layer_warp hide">
+    <div class="layer_warp layer_phone">
         <div class="layer_table">
             <div class="layer_table_cell">
                 <div class="layer_box">
@@ -11,21 +11,21 @@
                         <div class="phone_register register_box">
                             <div class="phone_number">
                                 <label></label>
-                                <input type="number" name="phone" value="" placeholder="请输入手机号码" />
-                                <button type="button">发送验证码</button>
+                                <input type="number" name="phone" value="" placeholder="请输入手机号码" v-model="phone"/>
+                                <button type="button" >发送验证码</button>
                             </div>
                             <div class="phone_code">
                                 <label></label>
-                                <input type="number" name="code" value="" placeholder="请输入验证码" />
+                                <input type="number" name="code" value="" placeholder="请输入验证码" v-model="code"/>
                             </div>
                         </div>
                     </div>
                     <div class="layer_footer">
                         <div class="layer_footer_cancel">
-                            <button>取消</button>
+                            <button @click="cancel">取消</button>
                         </div>
                         <div class="layer_footer_confirm">
-                            <button>确定</button>
+                            <button @click="confirm">确定</button>
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,54 @@
 </template>
 
 <script>
+    import qs from 'qs'
     export default{
+        data(){
+            return{
+                phone:'',
+                code:''
+            }
+        },
+        created() {
+        },
+        methods: {
+            confirm() {
+                let that = this;
+                let data = qs.stringify({
+                    'phone':that.phone,
+                    'captcha':that.code,
+                })
+                this.$ajax({
+                    url:'/api/weixin/binding-role',
+                    method:'post',
+                    headers:{
+                        'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtZW5vcnkuY29tIiwic3ViIjoiKiIsImV4cCI6MTUwNDQ5NjgzNiwid2VpeGluX2F1dGhvcml6YXRpb25faWQiOiIxMDAxNyJ9.4NJ3cHK0sAlruaS9NjRIFj1Rf2IF4Z-hhmiUDjq4TLY'
+                    },
+                    data:data,
+                    responseType:'json',
+                    withCredentials:true
+                }).then(function(res){ 
+                    let msg = res.data.data
+                    if(msg.code == 0){
+                        if(msg.data == 'user'){
+                            this.$router.push({path: '/home'}); 
+                        }else if(msg.data == 'service'){
+                            console.log(that.LayerPw);
+                            that.$parent.layerPwhide = true;
+                            that.$parent.layerhide = false
+                        }
+                    }else{
+                        
+                    }
+                }).catch(function(err){
+                    // that.loadingState = "加载失败"
+                })
+            },
+            cancel(){
+                let that = this;
+                that.$parent.layerhide = false
+            }
+        }
     }
 </script>
 

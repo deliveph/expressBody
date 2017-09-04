@@ -1,6 +1,6 @@
 <template>
     <!--密码弹出层  -->
-    <div class="layer_warp hide">
+    <div class="layer_warp layer_pw">
         <div class="layer_table">
             <div class="layer_table_cell">
                 <div class="layer_box">
@@ -10,16 +10,16 @@
                     <div class="layer_container">
                         <div class="password_register register_box">
                             <div class="password_number">
-                                <input type="password" name="password" value=""/>
+                                <input type="password" name="password" value="" v-model="password"/>
                             </div>
                         </div>
                     </div>
                     <div class="layer_footer">
                         <div class="layer_footer_cancel">
-                            <button>取消</button>
+                            <button @click="cancel">取消</button>
                         </div>
                         <div class="layer_footer_confirm">
-                            <button>确定</button>
+                            <button @click="pwConfirm">确定</button>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,56 @@
 </template>
 
 <script>
+    import { Toast } from 'vux'
+    import qs from 'qs'
     export default{
+        data(){
+            return{
+                password:''
+            }
+        },
+        created() {
+            
+        },
+        components: {
+            Toast
+        },
+        methods:{
+            pwConfirm(){
+                let that = this;
+                if(that.password == ''){
+                    this.$vux.toast.text('请输入密码', 'middle',100);
+                    return false;
+                }
+                let data = qs.stringify({
+                    'password':that.password
+                })
+                this.$ajax({
+                    url:'/api/service/verify-password',
+                    method:'post',
+                    headers:{
+                        'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtZW5vcnkuY29tIiwic3ViIjoiKiIsImV4cCI6MTUwNDQ5NjgzNiwid2VpeGluX2F1dGhvcml6YXRpb25faWQiOiIxMDAxNyJ9.4NJ3cHK0sAlruaS9NjRIFj1Rf2IF4Z-hhmiUDjq4TLY'
+                    },
+                    data:data,
+                    responseType:'json',
+                    withCredentials:true
+                }).then(function(res){ 
+                    let msg = res.data.data
+                    if(msg.code == 0){
+                        this.$router.push({path: '/express'});
+                    }else{
+
+                    }
+                }).catch(function(err){
+                    // that.loadingState = "加载失败"
+                })
+            },
+            cancel(){
+                let that = this;
+                that.$parent.layerPwhide = false
+            }
+
+        }
     }
 </script>
 
