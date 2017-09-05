@@ -105,19 +105,13 @@
                 </li>
             </ul>
         </div>
-        <layer></layer>
-        <LayerPw></LayerPw>
     </div>
 </template>
 
 <script>
-import Layer from '../base/public/layer'
 import Grade from '../../components/grade'
-import LayerPw from '../base/public/layer_pw'
 export default {
     components: {
-        Layer,
-        LayerPw,
         Grade
     },
     methods: {

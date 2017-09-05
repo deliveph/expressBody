@@ -2,17 +2,48 @@
     <div class="wrapper">
         <div class="change-name">
             <div class="change-name-input">
-                <input type="text" placeholder="请输入姓名(不超过10个字)">
+                <input type="text" placeholder="请输入姓名(不超过10个字)"  v-model="name" maxlength="10">
             </div>
             <div class="change-name-save">
-                <button class="commit-btn" disabled>保存</button>
+                <button class="commit-btn" @click="save">保存</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    export default{}
+    import { Toast } from 'vux'
+    import qs from 'qs'
+    export default{
+        data(){
+            return{
+                name:''
+            }
+        },
+        methods: {
+            save(){
+                let that = this
+                 // if(that.phone == ''){
+                //     this.$vux.toast.text('请输入姓名', 'middle',100);
+                //     return false;
+                // }
+                let data = qs.stringify({
+                    'user_nickname':that.name,
+                })
+                this.http(that.configs.apiTop + "/user/update-profile-nickname", "post", data, function (res) {
+                    let msg = res.data
+                    if(msg.code == 0){
+                        this.$router.push({ path: '/person' })
+                    }else if(msg.code == 40004){
+                        // location.href = that.configs.accreditUrl
+                    }
+                })
+            }
+        },
+        created() {
+
+        }
+    }
 </script>
 <style lang="scss">
     @import '../../../static/assets/css/px2rem.scss';

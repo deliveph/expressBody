@@ -34,6 +34,13 @@ module.exports = {
         pathRewrite:{
           '^/api':'/'
         }
+      },
+      '/upload':{
+        target:'http://static.menory.top/',
+        changeOrigin:true,
+        pathRewrite:{
+          '^/upload':'/'
+        }
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

@@ -1,13 +1,5 @@
 <template>
     <div id="home" class="home">
-        <el-amap vid="amap" :plugin="plugin" class="amap-demo hide" :center="center">
-        </el-amap>
-        <div class="toolbar hide">
-            <span v-if="loaded">
-                location: lng = {{ lng }} lat = {{ lat }}
-            </span>
-            <span v-else>正在定位</span>
-        </div>
         <Vheader></Vheader>
         <div class="hg20"></div>
         <banner></banner>
@@ -65,19 +57,12 @@ import Vheader from '../base/public/header'
 import Banner from '../base/public/banner'
 import Layer from '../base/public/layer'
 import LayerPw from '../base/public/layer_pw'
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import VueAMap from 'vue-amap'
-import qs from 'qs'
-// import $wechat from 'weixin-js-sdk'
-// import { Divider, FlexboxItem, Flexbox } from 'vux'
-let map
 export default {
     components: {
         Vheader,
         Banner,
         Layer,
-        LayerPw,
-        VueAMap
+        LayerPw
     },
     methods: {
         messageBox() {
@@ -88,73 +73,12 @@ export default {
 
     },
     data(){
-        let self = this;
         return {
-          center: [121.59996, 31.197646],
-          lng: 0,
-          lat: 0,
-          loaded: false,
-          layerhide:false,
-          layerPwhide:true,
-          plugin: [{
-            pName: 'Geolocation',
-            events: {
-              init(o) {
-                // o 是高德地图定位插件实例
-                o.getCurrentPosition((status, result) => {
-                    console.log(status,result)
-                    if (result && result.position) {
-                        console.log(result.formattedAddress)
-                        // alert(result.formattedAddress)
-                        // self.lng = result.position.lng;
-                        // self.lat = result.position.lat;
-                        // self.center = [self.lng, self.lat];
-                        // self.loaded = true;
-                        // self.$nextTick();
-                    }
-                });
-              }
-            }
-          }]
+          layerhide:true,
+          layerPwhide:false
         };
     },
     created() {
-        let that = this;
-        let data = qs.stringify({
-            'url':location.href
-        })
-        this.$ajax({
-            url:'/api/weixin-js-sdk-config',
-            method:'post',
-            headers:{
-                'Access-Control-Allow-Credentials': true
-            },
-            data:data,
-            responseType:'json',
-            withCredentials:true
-        }).then(function(res){ 
-            let msg = res.data.data
-            that.wx.config({
-                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                appId: msg.app_id, // 必填，公众号的唯一标识 
-                timestamp: msg.timestamp,
-                nonceStr: msg.nonce_str,
-                signature: msg.signature,
-                jsApiList: [
-                    'getLocation',
-                    'openLocation',
-                    'onMenuShareAppMessage',
-                    'onMenuShareTimeline',
-                    'scanQRCode',
-                ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-            })
-            that.wx.ready(function(){
-            });
-            that.wx.error(function(res){      
-            });
-        }).catch(function(err){
-            // that.loadingState = "加载失败"
-        })
     }
 }
 </script>

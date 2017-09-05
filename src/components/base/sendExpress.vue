@@ -38,6 +38,9 @@
         <div class="delivery_time pdlf30  express_list">
             <popup-picker :title="title3" :data="list3" :columns="3" v-model="value3" show-name></popup-picker>
         </div>
+        <!-- <div class="delivery_time pdlf30  express_list">
+            <x-address :title="title2" v-model="value6" raw-value :list="addressData" value-text-align="left"></x-address>
+        </div> -->
         <div class="explain pdlf30">
             <label for="">备注说明：</label>
             <textarea name="explain" id="" cols="30" rows="10" placeholder="请输入30字符内的说明"></textarea>
@@ -47,6 +50,7 @@
             <span>我已阅读并同意</span>
             <router-link :to="{name:'Detail',query:{type:'agreement'}}">《快递宝宝协议》</router-link>
         </div>
+        
         <div class="submit">
             <div class="row">
                 <p class="predict_money">预计金额：<span><em>200</em>快递豆</span></p>
@@ -131,14 +135,14 @@ export default {
             }
         }
     },
-    computed: {
-
+    computed: {        
     },
     components: {
         PopupPicker,
         XNumber
     },
     created() {
+        // console.log(this.addressData)
     },
     methods: {
         onChange(val) {

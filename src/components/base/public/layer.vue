@@ -12,7 +12,7 @@
                             <div class="phone_number">
                                 <label></label>
                                 <input type="number" name="phone" value="" placeholder="请输入手机号码" v-model="phone"/>
-                                <button type="button" >发送验证码</button>
+                                <button type="button">发送验证码</button>
                             </div>
                             <div class="phone_code">
                                 <label></label>
@@ -22,6 +22,7 @@
                     </div>
                     <div class="layer_footer">
                         <div class="layer_footer_cancel">
+                            <router-link tag="li" to="/"></router-link>
                             <button @click="cancel">取消</button>
                         </div>
                         <div class="layer_footer_confirm">
@@ -37,6 +38,7 @@
 </template>
 
 <script>
+    import { Toast } from 'vux'
     import qs from 'qs'
     export default{
         data(){
@@ -45,44 +47,44 @@
                 code:''
             }
         },
+        components: {
+            Toast
+        },
         created() {
+
         },
         methods: {
             confirm() {
                 let that = this;
+                // if(that.phone == ''){
+                //     this.$vux.toast.text('请输入手机号码', 'middle',100);
+                //     return false;
+                // }else if(that.code == ''){
+                //     this.$vux.toast.text('请输入验证码', 'middle',100);
+                //     return false;
+                // }
                 let data = qs.stringify({
                     'phone':that.phone,
                     'captcha':that.code,
                 })
-                this.$ajax({
-                    url:'/api/weixin/binding-role',
-                    method:'post',
-                    headers:{
-                        'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtZW5vcnkuY29tIiwic3ViIjoiKiIsImV4cCI6MTUwNDQ5NjgzNiwid2VpeGluX2F1dGhvcml6YXRpb25faWQiOiIxMDAxNyJ9.4NJ3cHK0sAlruaS9NjRIFj1Rf2IF4Z-hhmiUDjq4TLY'
-                    },
-                    data:data,
-                    responseType:'json',
-                    withCredentials:true
-                }).then(function(res){ 
-                    let msg = res.data.data
+                this.http(that.configs.apiTop + "/weixin/binding-role", "post", data, function (res) {
+                    let msg = res.data
                     if(msg.code == 0){
                         if(msg.data == 'user'){
-                            this.$router.push({path: '/home'}); 
+                            this.$router.push({path: '/user'}); 
                         }else if(msg.data == 'service'){
-                            console.log(that.LayerPw);
                             that.$parent.layerPwhide = true;
                             that.$parent.layerhide = false
                         }
-                    }else{
-                        
+                    }else if(msg.code == 40004){
+                        location.href = that.configs.accreditUrl
                     }
-                }).catch(function(err){
-                    // that.loadingState = "加载失败"
                 })
             },
             cancel(){
-                let that = this;
+                let that = this
                 that.$parent.layerhide = false
+                location.href = that.configs.accreditUrl
             }
         }
     }
@@ -97,7 +99,7 @@
         top: 0;
         left: 0;
         background: rgba(0, 0, 0, 0.5);
-        z-index: 9999;
+        z-index: 10;
         .layer_table{
             width: 100%;
             height: 100%;

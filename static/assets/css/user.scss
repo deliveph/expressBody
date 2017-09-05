@@ -397,7 +397,7 @@
             li{
                 padding: px2rem(36) 0;
                 border-bottom: 1px solid #f2f3f4;
-                a{
+                a,.avatar_row{
                     display: flex;
                     span{
                         flex: 2;
@@ -429,7 +429,7 @@
                 }
                 &.pes-avatar{
                     padding: px2rem(26) 0;
-                    a{
+                    a,.avatar_row{
                         height: px2rem(100);
                         line-height: px2rem(100);
                         position: relative;
@@ -442,6 +442,7 @@
                         height: 100%;
                         border: 0;
                         opacity: 0;
+                        z-index: 99
                     }
                 }
                 p{
