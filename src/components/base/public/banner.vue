@@ -20,7 +20,9 @@ export default {
     data(){
         return {
             loadingState:"正在加载中，请稍后。。。",
-            slider: [],
+            slider: [{
+                'src':'/static/assets/images/banner.png'
+            }],
             swiperOption: {
                 notNextTick: true,
                 autoplay: 3000,
@@ -50,21 +52,21 @@ export default {
 
     },
     created() {
-        let that = this
-        let msg = qs.stringify({
-            'goods_id':178
-        })
-        this.$ajax({
-            url:'/api/Api/Index/index',
-            method:'post',
-            data:msg,
-            withCredentials:true
-        }).then(function(data){
-            that.slider = data.data.data.banner
-        }).catch(function(err){
-            that.loadingState = "加载失败"
-        })
-        console.log(i);
+        // let that = this
+        // let msg = qs.stringify({
+        //     'goods_id':178
+        // })
+        // this.$ajax({
+        //     url:'/api/Api/Index/index',
+        //     method:'post',
+        //     data:msg,
+        //     withCredentials:true
+        // }).then(function(data){
+        //     that.slider = data.data.data.banner
+        // }).catch(function(err){
+        //     that.loadingState = "加载失败"
+        // })
+        // console.log(i);
     }
 }
 </script>

@@ -51,40 +51,48 @@
             Toast
         },
         created() {
-
+            this.$weChat()
         },
         methods: {
             confirm() {
                 let that = this;
-                // if(that.phone == ''){
-                //     this.$vux.toast.text('请输入手机号码', 'middle',100);
-                //     return false;
-                // }else if(that.code == ''){
-                //     this.$vux.toast.text('请输入验证码', 'middle',100);
-                //     return false;
-                // }
+                if(that.phone == ''){
+                    this.$vux.toast.text('请输入手机号码', 'middle',100);
+                    return false;
+                }else if(that.code == ''){
+                    this.$vux.toast.text('请输入验证码', 'middle',100);
+                    return false;
+                }
                 let data = qs.stringify({
                     'phone':that.phone,
                     'captcha':that.code,
                 })
                 this.http(that.configs.apiTop + "/weixin/binding-role", "post", data, function (res) {
                     let msg = res.data
+                    let data = msg.data
+                    console.log(data)
+                    console.log(data.role_type)
                     if(msg.code == 0){
-                        if(msg.data == 'user'){
-                            this.$router.push({path: '/user'}); 
-                        }else if(msg.data == 'service'){
+                        if(data.role_type == 'user'){
+                            console.log(123)
+                            that.$router.push({path: '/user'}); 
+                        }else if(data.role_type == 'service'){
+                            console.log(12312);
                             that.$parent.layerPwhide = true;
                             that.$parent.layerhide = false
                         }
                     }else if(msg.code == 40004){
-                        location.href = that.configs.accreditUrl
+                        localStorage.clear("token")
+                        that.wx.closeWindow()
+                    }else{
+                        that.$vux.toast.text(msg.message, 'middle',100);
                     }
                 })
             },
             cancel(){
                 let that = this
                 that.$parent.layerhide = false
-                location.href = that.configs.accreditUrl
+                that.wx.closeWindow()
             }
         }
     }
@@ -141,6 +149,10 @@
             text-align: center;
             font-size:px2rem(34);
             color:#007aff;
+        }
+        .layer_footer button{
+            width: 100%;
+            height: px2rem(90);
         }
         .layer_footer_confirm,.layer_footer_cancel button,.layer_footer_confirm button{
             border-right:0

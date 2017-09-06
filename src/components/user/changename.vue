@@ -33,7 +33,7 @@
                 this.http(that.configs.apiTop + "/user/update-profile-nickname", "post", data, function (res) {
                     let msg = res.data
                     if(msg.code == 0){
-                        this.$router.push({ path: '/person' })
+                        that.$router.push({ path: '/person' })
                     }else if(msg.code == 40004){
                         // location.href = that.configs.accreditUrl
                     }

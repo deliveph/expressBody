@@ -88,6 +88,17 @@ export default {
                 let msg = res.data
                 if(msg.code == 0){
                     that.avatar = msg.data.uri
+                    let data = qs.stringify({
+                        'user_avatar':that.avatar
+                    })
+                    that.http(that.configs.apiTop + "/user/update-profile-avatar","post", data, function(res){
+                        let avatar = res.data
+                        if(avatar.code == 0){
+
+                        }else if(avatar.code == 40004){
+                            // location.href = that.configs.accreditUrl
+                        }
+                    })
                 }else if(msg.code == 40004){
                     // location.href = that.configs.accreditUrl
                 }
