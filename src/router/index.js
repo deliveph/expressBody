@@ -42,6 +42,7 @@ import level from '@/components/user/level'
 import service from '@/components/base/express'
 import statistics from '@/components/user/statistics'
 import login from '@/components/base/login'
+import suggest from '@/components/suggest/suggest'
 
 Vue.use(Router)
 
@@ -49,17 +50,26 @@ export default new Router({
   routes: [{
       path: '/',
       name: 'login',
-      component: login
+      component: login,
+      meta: {
+        title: '快递宝宝'
+      }
     }, /*首次进入未登录页面*/
     {
       path: '/detail',
       name: 'Detail',
-      component: Detail
+      component: Detail,
+      meta: {
+        title: '详情'
+      }
     }, //公共详情 
     {
       path: '/recharge',
       name: 'Recharge',
-      component: Recharge
+      component: Recharge,
+      meta: {
+        title: '充值'
+      }
     }, //充值 
     {
       path: '/collection',
@@ -255,6 +265,24 @@ export default new Router({
       path: '/user',
       name: 'user',
       component: User
-    } //
+    }, //
+    {
+      path:'/suggest',
+      name: 'suggest',
+      component: suggest,
+      meta: {
+        title: '城市选择'
+      }
+    }
   ]
 })
+
+// 全局配置
+// router.beforeEach((to, from, next) => {
+//   // Change doc title
+//   document.title = to.meta.title || 'Unknow title'
+//   document.querySelector('meta[name="keywords"]').setAttribute('content', 'keywords')
+//   document.querySelector('meta[name="description"]').setAttribute('content', 'description')
+// })
+
+

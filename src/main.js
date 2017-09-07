@@ -8,10 +8,13 @@ import wx from 'weixin-js-sdk'
 import VueAMap from 'vue-amap'
 import $ from 'jquery'
 import qs from 'qs'
+import store from '@/components/store/index'
 import {
   ToastPlugin
 } from 'vux'
 import configs from '../src/configs/index'
+import mint from 'mint-ui'
+import 'mint-ui/lib/style.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$ajax = axios
@@ -21,6 +24,8 @@ Vue.prototype.configs = configs
 
 Vue.use(ToastPlugin)
 Vue.use(VueAMap)
+Vue.use(require('vue-wechat-title'))
+Vue.use(mint)
 
 VueAMap.initAMapApiLoader({
   key: 'c37c24a2c3156bb0c62d8f0b72c0c556',
@@ -139,6 +144,7 @@ Vue.prototype.$weChat = function () {
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: {
     App

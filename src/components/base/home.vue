@@ -26,10 +26,14 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name:'Inquire'}">
+                    <!-- <router-link :to="{name:'Inquire'}">
                         <img src="/static/assets/images/btn_cha.png" />
                         <p>查询快递</p>
-                    </router-link>
+                    </router-link> -->
+                    <a href="https://m.kuaidi100.com/">
+                        <img src="/static/assets/images/btn_cha.png" />
+                        <p>查询快递</p>
+                    </a>
                 </li>
                 <li>
                     <router-link :to="{name:'Userindex'}">

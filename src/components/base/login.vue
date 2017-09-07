@@ -18,10 +18,13 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name:'Inquire'}">
+                    <a href="https://m.kuaidi100.com/">
                         <img src="/static/assets/images/btn_cha.png" />
-                        <p>查询快递</p>
-                    </router-link>
+                        <p>快递查询</p>
+                    </a>
+                    <!-- <router-link :to="">
+                        
+                    </router-link> -->
                 </li>
                 <li>
                     <router-link :to="{name:'user'}">
@@ -74,7 +77,7 @@ export default {
     },
     data(){
         return {
-          layerhide:true,
+          layerhide:false,
           layerPwhide:false
         };
     },

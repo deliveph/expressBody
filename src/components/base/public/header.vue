@@ -1,6 +1,9 @@
 <template>
     <div id="header" class="por">
-        <a class="orientation poa">深圳<i></i></a>
+        <router-link :to="{name:'suggest'}" class="orientation poa">
+            {{address.start || position.address || '深圳'}}
+            <i></i>
+        </router-link>
         <ul>
             <li class="user_message" v-if="userid != userid">
                 <div class="photo">
@@ -10,7 +13,11 @@
                     </div>
                 </div>
                 <h3 class="name">张余</h3>
-                <p><label for="">快递豆：</label><span>150</span><i class="icon_bean"></i></p>
+                <p>
+                    <label for="">快递豆：</label>
+                    <span>150</span>
+                    <i class="icon_bean"></i>
+                </p>
             </li>
             <li class="courier_message" v-else-if="express != express">
                 <h4 class="identify">您的快递宝宝</h4>
@@ -20,8 +27,13 @@
                         <grade class="icon_express_1"></grade>
                     </div>
                 </div>
-                <h3 class="name">张余<a class="icon_tel" href="tel:18681587662"></a></h3>
-                <p><label for="">工号：</label><span>1510</span></p>
+                <h3 class="name">张余
+                    <a class="icon_tel" href="tel:18681587662"></a>
+                </h3>
+                <p>
+                    <label for="">工号：</label>
+                    <span>1510</span>
+                </p>
             </li>
             <li class="not_login" v-else>
                 <div class="photo">
@@ -35,21 +47,31 @@
 
 <script>
 import Grade from '../../../components/grade'
+import {mapActions,mapState,mapGetters} from 'vuex'
 export default {
-    data(){
-        return{
-            token:'',
-            userid:'',
-            express:''
+    data() {
+        return {
+            token: '',
+            userid: '',
+            express: ''
         }
     },
-    components:{
+    components: {
         Grade
     },
+    computed: {
+        ...mapState([
+            'position',
+            'address'
+        ])
+    },
+    watch: {
+        position(oldVal,newVal) {}
+    }
 }
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../../static/assets/css/home.scss';
+@import '../../../../static/assets/css/home.scss';
 </style>
 
