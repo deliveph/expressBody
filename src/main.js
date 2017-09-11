@@ -9,9 +9,7 @@ import VueAMap from 'vue-amap'
 import $ from 'jquery'
 import qs from 'qs'
 import store from '@/components/store/index'
-import {
-  ToastPlugin
-} from 'vux'
+// import Vuex from 'vuex'
 import configs from '../src/configs/index'
 import mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
@@ -22,10 +20,22 @@ Vue.prototype.wx = wx
 Vue.prototype.$ = $
 Vue.prototype.configs = configs
 
-Vue.use(ToastPlugin)
+// Vue.use(Vuex)
 Vue.use(VueAMap)
 Vue.use(require('vue-wechat-title'))
 Vue.use(mint)
+
+import {
+  ToastPlugin,
+  AlertPlugin,
+  ConfirmPlugin,
+  LoadingPlugin
+} from 'vux'
+
+Vue.use(ToastPlugin)
+Vue.use(AlertPlugin)
+Vue.use(ConfirmPlugin)
+Vue.use(LoadingPlugin)
 
 VueAMap.initAMapApiLoader({
   key: 'c37c24a2c3156bb0c62d8f0b72c0c556',
@@ -110,12 +120,8 @@ Vue.prototype.$weChat = function () {
   this.$ajax({
     url: configs.apiTop + '/weixin/js-sdk-config',
     method: 'post',
-    headers: {
-      'Access-Control-Allow-Credentials': true
-    },
     data: data,
-    responseType: 'json',
-    withCredentials: true
+    responseType: 'json'
   }).then(function (res) {
     let msg = res.data.data
     that.wx.config({

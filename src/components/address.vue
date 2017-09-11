@@ -2,23 +2,22 @@
     <div id="address"> 
         <div class="address_box"> 
             <div class="name address_input"> 
-                <label for="">收件人</label> 
-                <input type="text" name="name" placeholder="请输入姓名" value=""> 
+                <label for="">{{nameLabel}}</label> 
+                <input type="text" name="name" placeholder="请输入姓名" v-bind:value="name" v-model="name"> 
             </div> 
             <div class="phone address_input"> 
                 <label for="">手机号</label> 
-                <input type="tel" name="phone" placeholder="请输入收货人手机号码" value=""> 
+                <input type="tel" name="phone" placeholder="请输入收货人手机号码" v-bind:value="phone" v-model="phone"> 
             </div> 
-            <div class="region address_input"> 
-                <label for="">所在地区</label> 
-                <input type="text" name="region" placeholder="请点击选择送货区域" value=""> 
+            <div class="region address_input">
+                <x-address :title="title2" v-model="value2" raw-value :list="addressData" value-text-align="left" placeholder="请点击选择送货区域" @on-shadow-change="onShadowChange"></x-address>
             </div> 
             <div class="detailed_address  address_input"> 
                 <label for="">详细地址</label> 
-                <input type="text" name="address" placeholder="请输入街道、小区等" value=""> 
+                <input type="text" name="address" placeholder="请输入街道、小区等" v-bind:value="address" v-model="address"> 
             </div> 
             <div class="default address_input"> 
-                <input type="checkbox"> 
+                <input type="checkbox" v-model="checked" checked="checked"> 
                 <span>设为默认地址</span> 
             </div> 
         </div> 
@@ -27,18 +26,184 @@
         </div> 
     </div> 
 </template> 
-<script> 
+<script>
+import { XAddress,ChinaAddressV3Data } from 'vux'
+import qs from 'qs'
 export default { 
    data(){ 
       return{ 
- 
+          name:'',
+          phone:'',
+          address:'',
+          checked:false,
+          types:'',
+          index:'',
+          id:'',
+          nameLabel:'寄件人',
+          title2: '所在地区',
+          value2: ["广东省", "深圳市", "南山区"],
+          addressData:ChinaAddressV3Data,
+          province:'',
+          city:'',
+          district:'',
+          is_default_shipper_address:''
       }  
-   }, 
+   },
+   components: {
+        ChinaAddressV3Data,
+        XAddress
+    },
    methods:{ 
-       addressFun(){ 
-           this.$router.push({path: '/address'}) 
-       } 
-   } 
+       addressFun(){
+          
+           let that = this;
+           if(that.checked == false){
+                that.is_default_shipper_address = 'N'
+            }else{
+                that.is_default_shipper_address = 'Y'
+            }
+            // console.log(that.id)
+            if(that.index == 0){
+                let data = qs.stringify({
+                    'province_region_id':that.province,
+                    'city_region_id':that.city,
+                    'district_region_id':that.district,
+                    'shipper_name':that.name,
+                    'shipper_phone':that.phone,
+                    'shipper_detail_address':that.address,
+                    'is_default_shipper_address':that.is_default_shipper_address,
+                })
+                if(that.id){
+                    this.http(that.configs.apiTop + "/address/edit-shipper-address/"+that.id, "post", data, function (res) {
+                            let msg = res.data
+                            if(msg.code == 0){
+                                console.log(1)
+                                this.$router.push({path: '/address',params:{type:0}}) 
+                            }else if(msg.code == 40004){
+                                // location.href = that.configs.accreditUrl
+                            }
+                        })
+                }else{
+                    this.http(that.configs.apiTop + "/address/add-shipper-address", "post", data, function (res) {
+                            let msg = res.data
+                            if(msg.code == 0){
+                                this.$router.push({path: '/address',params:{type:0}}) 
+                            }else if(msg.code == 40004){
+                                // location.href = that.configs.accreditUrl
+                            }
+                        })
+                }
+            }else{
+                let data = qs.stringify({
+                    'province_region_id':that.province,
+                    'city_region_id':that.city,
+                    'district_region_id':that.district,
+                    'consignee_name':that.name,
+                    'consignee_phone':that.phone,
+                    'consignee_detail_address':that.address,
+                    'is_default_consignee_address':that.is_default_shipper_address,
+                })
+                if(that.id){
+                    this.http(that.configs.apiTop + "/address/edit-consignee-address/"+that.id, "post", data, function (res) {
+                            let msg = res.data
+                            if(msg.code == 0){
+                                console.log(1)
+                                this.$router.push({path: '/address',params:{type:0}}) 
+                            }else if(msg.code == 40004){
+                                // location.href = that.configs.accreditUrl
+                            }
+                        })
+                }else{
+                    this.http(that.configs.apiTop + "/address/add-consignee-address", "post", data, function (res) {
+                            let msg = res.data
+                            if(msg.code == 0){
+                                this.$router.push({path: '/address',params:{type:0}}) 
+                            }else if(msg.code == 40004){
+                                // location.href = that.configs.accreditUrl
+                            }
+                        })
+                }
+            }
+           
+           
+       },
+        onShadowChange (ids, names) {
+            let that = this;
+            that.province = ids[0]
+            that.city = ids[1]
+            that.district = ids[2 ]
+            // console.log(ids[0],ids[1],ids[2])
+            // console.log(ids, names)
+        }   
+   },
+   created(){
+       let that = this
+    //    that.index = this.$route.params.type;
+       that.id = this.$route.params.id;
+       that.index = this.$route.query.type;
+       console.log(that.index,that.id)
+       if(that.index == 0){
+           that.nameLabel = '寄件人'
+           if(that.id){
+                this.http(that.configs.apiTop + "/address/shipper-address-detail/"+that.id, "get", '', function (res) {
+                    let msg = res.data
+                    if(msg.code == 0){
+                    let data = msg.data;
+                    that.name = data.shipper_name
+                    that.phone = data.shipper_phone
+                    that.value2 = [data.province_region_name,data.city_region_name,data.district_region_name]
+                    that.province = data.province_region_name
+                    that.city = data.city_region_name
+                    that.district = data.district_region_name
+                    that.address = data.shipper_detail_address
+                    if(data.is_default_shipper_address == 'Y'){
+                        that.checked = true
+                    }else{
+                            that.checked = false
+                    }
+                    console.log(that.name,that.phone,that.value2,that.checked)
+                    }else if(msg.code == 40004){
+                        // location.href = that.configs.accreditUrl
+                    }
+                })
+            }
+       }else{
+           that.nameLabel = '收件人'
+           if(that.id){
+                this.http(that.configs.apiTop + "/address/consignee-address-detail/"+that.id, "get", '', function (res) {
+                    let msg = res.data
+                    if(msg.code == 0){
+                    let data = msg.data;
+                    that.name = data.consignee_name
+                    that.phone = data.consignee_phone
+                    that.value2 = [data.province_region_name,data.city_region_name,data.district_region_name]
+                    that.province = data.province_region_name
+                    that.city = data.city_region_name
+                    that.district = data.district_region_name
+                    that.address = data.consignee_detail_address
+                    if(data.is_default_shipper_address == 'Y'){
+                        that.checked = true
+                    }else{
+                        that.checked = false
+                    }
+                    console.log(that.name,that.phone,that.value2,that.checked)
+                    }else if(msg.code == 40004){
+                        // location.href = that.configs.accreditUrl
+                    }
+                })
+            }
+       }
+       this.http(that.configs.apiTop + "/region/regions", "get", '', function (res) {
+            let msg = res.data
+            if(msg.code == 0){
+                localStorage.setItem('regions',JSON.stringify(msg.data.regions))
+                that.addressData = msg.data.regions
+            }else if(msg.code == 40004){
+                // location.href = that.configs.accreditUrl
+            }
+        })
+        
+   }
 } 
 </script> 
  
@@ -84,8 +249,19 @@ export default {
                 } 
  
             } 
-        } 
-         
+        }
+        .region > div{
+            width: 100%;
+        }
+        .weui-cell{
+            display: flex;
+            .weui-cell__hd{
+                width: px2rem(140); 
+            }
+            .vux-cell-primary{
+                flex:1;
+            }
+        }
     } 
     #address{ 
         .btn{ 

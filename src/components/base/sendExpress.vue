@@ -2,7 +2,7 @@
     <div id="sendExpress" class="send_warp">
         <div class="receiveSend_add">
             <ul>
-                <li class="send pdlf30">
+                <router-link :to="{path:'address/shipper'}" tag="li" class="send pdlf30">
                     <i class="icon_send"></i>
                     <div class="msg por">
                         <p>
@@ -12,8 +12,8 @@
                         <p class="add">广东省深圳市南山区</p>
                         <i class="poa"></i>
                     </div>
-                </li>
-                <li class="receive pdlf30">
+                </router-link>
+                <router-link :to="{path:'address/consignee'}" tag="li" class="receive pdlf30">
                     <i class="icon_receive"></i>
                     <div class="msg por">
                         <p>
@@ -23,7 +23,7 @@
                         <p class="add">广东省深圳市南山区</p>
                         <i class="poa"></i>
                     </div>
-                </li>
+                </router-link>
             </ul>
         </div>
         <div class="express_company pdlf30 express_list">

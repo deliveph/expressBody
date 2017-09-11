@@ -18,13 +18,16 @@ export default {
     let token = this.$route.query.token //url token
     this.$weChat()
     if (token == '' || token == null || token == undefined) {
-      token = localStorage.getItem("token")
+      let tokens = JSON.parse(localStorage.getItem("token"))
+      token = tokens.token
+      console.log(token)  
       if (token == '' || token == null || token == undefined) {
         that.wx.closeWindow()
         return
       }
       // 过期判断
     }else{
+      console.log(token)
       localStorage.setItem("token", JSON.stringify({
         'token': token,
         'time': that.configs.curTime

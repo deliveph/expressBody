@@ -4,26 +4,25 @@
             <li v-for="(item,k) in items" :key="k">
                 <div class="address-info">
                     <dl>
-                        <dt>{{item.shipper_name}}</dt>
-                        <dd>{{item.shipper_phone}}</dd>
+                        <dt>{{item.consignee_name}}</dt>
+                        <dd>{{item.consignee_phone}}</dd>
                     </dl>
-                    <p>{{item.shipper_full_address}}</p>
+                    <p>{{item.consignee_full_address}}</p>
                 </div>
                 <div class="address-tues">
-                    <div class="address-default" v-if="item.is_default_shipper_address == 'Y'">
+                    <div class="address-default" v-if="item.is_default_consignee_address == 'Y'">
                         <span>
                             <i></i>默认地址</span>
                     </div>
                     <ul class="address-add">
                         <li class="addr-edit">
                             <!-- type 0寄件 1收件人 -->
-                            <router-link :to="{path:'/editAddress/'+item.shipper_address_id,query:{type:0}}">
-                            <!-- <router-link  to="/editAddress/"+{{}}> -->
+                            <router-link :to="{path:'/editAddress/'+item.consignee_address_id,query:{type:1}}">
                                 <span>
                                     <i></i>编辑</span>
                             </router-link>
                         </li>
-                        <li class="addr-del" @click="ondelete(item.shipper_address_id)">
+                        <li class="addr-del" @click="ondelete(item.consignee_address_id)">
                             <span>
                                 <i></i>删除</span>
                         </li>
@@ -47,10 +46,10 @@ export default {
         return {
             items: [],
             id: '',
-            name: '',
-            phone: '',
-            address: '',
-            is_default_shipper_address: '',
+            name:'',
+            phone:'',
+            address:'',
+            is_default_shipper_address:'',
             show: false
         }
     },
@@ -72,7 +71,7 @@ export default {
 
                 },
                 onConfirm() {
-                    that.http(that.configs.apiTop + "/address/delete-shipper-address/" + id, "get", '', function(res) {
+                    that.http(that.configs.apiTop + "/address/delete-consignee-address/" + id, "get", '', function(res) {
                         let msg = res.data
                         if (msg.code == 0) {
                             location.reload();
@@ -86,28 +85,25 @@ export default {
         addNew() {
             let that = this
             let index = that.$parent.index
-            this.$router.push({ name: 'editAddress', params: { type: 'add', name: index } })
+            this.$router.push({ name: 'editAddress', params: { type: index} })
         }
     },
     created() {
         let that = this
         let index = that.$parent.index
-        if (index == 0) {
-            this.http(that.configs.apiTop + "/address/shipper-addresses", "get", '', function(res) {
+        if (index == 1) {
+            this.http(that.configs.apiTop + "/address/consignee-addresses", "get", '', function(res) {
                 let msg = res.data
-                let shipper_addresses = msg.data.shipper_addresses
-                console.log(msg)
+                let consignee_addresses = msg.data.consignee_addresses
+                console.log(consignee_addresses)
                 if (msg.code == 0) {
-                    that.items = shipper_addresses;
-                    that.id = shipper_addresses.id;
+                    that.items = consignee_addresses;
+                    that.id = consignee_addresses.id;
                 } else if (msg.code == 40004) {
                     // location.href = that.configs.accreditUrl
                 }
             })
-        } else {
-
         }
-
     }
 }
 </script>

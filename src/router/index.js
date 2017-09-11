@@ -227,7 +227,7 @@ export default new Router({
       component: invitesuc
     }, //好友成功列表 
     {
-      path: '/address',
+      path: '/address/:attribute',
       name: 'address',
       component: address
     }, //地址列表 
@@ -237,7 +237,7 @@ export default new Router({
       component: modifypwd
     }, //修改密码 
     {
-      path: '/editaddress',
+      path: '/editaddress/:id',
       name: 'editAddress',
       component: editAddress
     }, //添加地址和编辑地址（通过type来做判断） 
