@@ -6,7 +6,7 @@
             </div>
             <div class="inquire_main">
                 <div class="import">
-                    <input type="text" name="odd" value="" placeholder="请输入您要查询的快递单号" ref="odd"/>
+                    <input type="tel" name="odd" v-model="odd" placeholder="请输入您要查询的快递单号" />
                     <div class="richscan" @click="richscan">
                         <i></i>
                     </div>
@@ -63,7 +63,8 @@ import qs from 'qs'
 export default {
     data(){
         return{
-            odd:null,
+            odd:'',
+            // odd:'4858189652',
         }
     },
     components: {
@@ -71,24 +72,36 @@ export default {
     },
     methods: {
         see(){
-            let odd = this.$refs.odd.value;
+            let that = this
+            let reg = /^[1-9]\d*$/
+            let odd = that.odd
             if(odd == ''){
-                this.$vux.toast.text('请输入快递单号', 'middle',100);
+                that.$vux.toast.text('请输入快递单号', 'middle',100);
+                return false;
+            }else if(!reg.test(odd)){
+                that.$vux.toast.text('请输入正确的快递单号', 'middle',100);
                 return false;
             }
-            this.$router.push({path: '/result'})
+            that.$router.push({path: '/result',query:{code:odd}})
         },
         richscan(){
             let that = this;
+            // let msg = {"resultStr":"CODE_128,534052156639","errMsg":"scanQRCode:ok"}
             this.wx.scanQRCode({
-                needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
                 scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
                 success: function (res) {
-                    alert(res);
                     let result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-                    
+                    let str = result.split(',');
+                    let code = '';
+                    if(str.length > 1){
+                        code = str[1]
+                    }else{
+                        code = str[0]
+                    }
                 }
             });
+
         }
     },
     created(){
