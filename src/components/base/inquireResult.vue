@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { Toast } from 'vux'
 export default {
     data() {
         return {
@@ -33,7 +34,7 @@ export default {
         }
     },
     components: {
-
+        Toast
     },
     methods: {
 

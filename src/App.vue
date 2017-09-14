@@ -1,17 +1,58 @@
 <template>
   <div id="app">
     <router-view v-wechat-title="$route.meta.title"></router-view>
+    <!-- <div class="image"  draggable drop="handleImageDrop">
+          <img src="/static/assets/images/inquire_bg.png" align="left">
+      </div> -->
+    <!-- <draggable v-model="tags" :move="getdata" @update="datadragEnd" class="draggable">
+      <img src="/static/assets/images/inquire_bg.png" align="left" style="position: fixed;top: 50%;right: 0;width: 30px;height: 30px;">
+    </draggable> -->
+    <!-- <div id="box">
+      HTML位置
+      <br>x:{{val.x}} <br>y:{{val.y}}
+      <div v-drag="greet" id="drag" :style="style">
+      //注意这里要通过指令绑定函数将当前元素的位置数据传出来
+      </div>
+    </div> -->
   </div>
 </template>
 
 <script>
+// import vueDragDrop from 'vue-drag-and-drop'
+import draggable from 'vuedraggable'
 import qs from 'qs'
 export default {
   data() {
     return {
+      tags: ''
+      // val: '123',
+      // style: {
+      //     width: '100px',
+      //     height: '100px',
+      //     background: 'aqua',
+      //     position: 'absolute',
+      //     right: '30px',
+      //     top: 0
+      // }
     }
   },
+  components: {
+    draggable
+  },
   mounted: function() {
+  },
+  methods: {
+    // getdata(evt) {
+    //   console.log(evt)
+    // },
+    // datadragEnd(evt) {
+    //   console.log('拖动前的索引 :' + evt.oldIndex)
+    //   console.log('拖动后的索引 :' + evt.newIndex)
+    //   console.log(this.tags)
+    // }
+    // greet(val){
+    //   vm.val = val
+    // }
   },
   created() {
     let that = this
@@ -20,13 +61,13 @@ export default {
     if (token == '' || token == null || token == undefined) {
       let tokens = JSON.parse(localStorage.getItem("token"))
       token = tokens.token
-      console.log(token)  
+      console.log(token)
       if (token == '' || token == null || token == undefined) {
         that.wx.closeWindow()
         return
       }
       // 过期判断
-    }else{
+    } else {
       console.log(token)
       localStorage.setItem("token", JSON.stringify({
         'token': token,

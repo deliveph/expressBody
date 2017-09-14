@@ -2,12 +2,23 @@
     <div id="sendExpress" class="send_warp">
         <div class="receiveSend_add">
             <ul>
+                <router-link :to="{path:'address/shipper'}" tag="li" class="send pdlf30" v-for="(s,i) in default_shipper_address" :key="i">
+                    <i class="icon_send"></i>
+                    <div class="msg por">
+                        <p>
+                            <span class="name">{{s.shipper_name == ''?'暂无': s.shipper_name}}</span>
+                            <span class="tel">{{s.shipper_name == ''?'暂无': s.shipper_name}}</span>
+                        </p>
+                        <p class="add">广东省深圳市南山区</p>
+                        <i class="poa"></i>
+                    </div>
+                </router-link>
                 <router-link :to="{path:'address/shipper'}" tag="li" class="send pdlf30">
                     <i class="icon_send"></i>
                     <div class="msg por">
                         <p>
-                            <span class="name">彭老鬼</span>
-                            <span class="tel">18681587662</span>
+                            <span class="name">暂无</span>
+                            <span class="tel">暂无</span>
                         </p>
                         <p class="add">广东省深圳市南山区</p>
                         <i class="poa"></i>
@@ -46,7 +57,7 @@
             <textarea name="explain" id="" cols="30" rows="10" placeholder="请输入30字符内的说明"></textarea>
         </div>
         <div class="readAgreement">
-            <input type="checkbox">
+            <input type="checkbox" v-model="checkbox">
             <span>我已阅读并同意</span>
             <router-link :to="{name:'Detail',query:{type:'agreement'}}">《快递宝宝协议》</router-link>
         </div>
@@ -54,7 +65,7 @@
         <div class="submit">
             <div class="row">
                 <p class="predict_money">预计金额：<span><em>200</em>快递豆</span></p>
-                <p class="servicing_time ">服务时间：<span>08:00-21:00</span></p>
+                <p class="servicing_time ">服务时间：<span class="time_quantum">{{time_quantum}}</span></p>
             </div>
             <div class="btn">
                 <button @click="submitBtn">确定</button>
@@ -66,13 +77,18 @@
 <script>
 import { PopupPicker } from 'vux'
 import { XNumber } from 'vux'
+import { Toast } from 'vux'
 export default {
     data() {
         return {
+            checkbox:false,
+            default_shipper_address:[],
+            default_consignee_address:[],
+            time_quantum:'',
             title1: '快递公司',
             title2: '物品类型',
-            title3: '联动显示值',
-            list1: [['默认', '中通快递', '顺丰快递', '申通快递', '圆通快递', '韵达快递', 'EMS']],
+            title3: '取件时间',
+            list1: [['默认']],
             list2: [['生活用品', '数码产品', '文件', '服饰', '食品']],
             list3: [{
                 name: '今天',
@@ -123,7 +139,7 @@ export default {
                 value: 'time_quantum1213',
                 parent: 'dopodomani'
             }],
-            value1: ['申通快递'],
+            value1: ['默认'],
             value2: ['文件'],
             value3: ['广西001'],
             placeholder1: '请选择快递公司',
@@ -132,16 +148,48 @@ export default {
             estimated_title: '预估重量',
             format: function(value, name) {
                 return `${value[0]}:${value[1]}`
-            }
+            },
+            
         }
     },
     computed: {        
     },
     components: {
         PopupPicker,
-        XNumber
+        XNumber,
+        Toast
     },
     created() {
+        let that = this
+        this.http(that.configs.apiTop + "/page/user-ship", "get", '', function(res) {
+            let msg = res.data
+            if (msg.code == 0) {
+                let arr = msg.data
+                let logistics_companies = []
+                let logistics_goods_categories = []
+                let arr2 = []
+                let arr3 = []
+                // 快递公司
+                for (let i=0;i<arr.logistics_companies.length;i++){
+                    arr2 += arr.logistics_companies[i].logistics_company_name;
+                }
+                logistics_companies.push(arr2)
+                that.list1 = [logistics_companies]
+                // 物品类型
+                for (let j=0;j<arr.logistics_goods_categories.length;j++){
+                    arr3 += arr.logistics_goods_categories[j].logistics_goods_category_name;
+                }
+                logistics_goods_categories.push(arr3)
+                that.list2 = [logistics_goods_categories]
+                that.value2 = logistics_goods_categories
+
+                that.time_quantum = arr.service_time.start_time +'~'+ arr.service_time.end_time
+            } else if (msg.code == 40004) {
+                // location.href = that.configs.accreditUrl
+            } else {
+                that.$vux.toast.text(msg.message, 'middle', 100);
+            }
+        })
         // console.log(this.addressData)
     },
     methods: {

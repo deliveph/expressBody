@@ -63,12 +63,14 @@ import Vheader from '../base/public/header'
 import Banner from '../base/public/banner'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import VueAMap from 'vue-amap'
+import { Toast } from 'vux'
 let map
 export default {
     components: {
         Vheader,
         Banner,
-        VueAMap
+        VueAMap,
+        Toast
     },
     methods: {
         messageBox() {
@@ -79,12 +81,15 @@ export default {
 
     },
     data(){
-        let self = this;
+        let self = this
         return {
           center: [121.59996, 31.197646],
           lng: 0,
           lat: 0,
           loaded: false,
+          service:{},
+          user:{},
+          carousels:[],
           plugin: [{
             pName: 'Geolocation',
             events: {
@@ -102,6 +107,20 @@ export default {
         };
     },
     created() {
+        let that = this
+        this.http(that.configs.apiTop + "/page/user-home", "get", '', function(res) {
+            let msg = res.data
+            if (msg.code == 0) {
+                let data = msg.data
+                that.user = data.user
+                that.service = data.service
+                that.carousels = data.carousels
+            } else if (msg.code == 40004) {
+                // location.href = that.configs.accreditUrl
+            } else {
+                that.$vux.toast.text(msg.message, 'middle', 100);
+            }
+        })
     }
 }
 </script>

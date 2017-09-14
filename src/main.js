@@ -9,6 +9,8 @@ import VueAMap from 'vue-amap'
 import $ from 'jquery'
 import qs from 'qs'
 import store from '@/components/store/index'
+// import vueDragDrop from 'vue-drag-and-drop'
+import draggable from 'vuedraggable'
 // import Vuex from 'vuex'
 import configs from '../src/configs/index'
 import mint from 'mint-ui'
@@ -24,6 +26,8 @@ Vue.prototype.configs = configs
 Vue.use(VueAMap)
 Vue.use(require('vue-wechat-title'))
 Vue.use(mint)
+Vue.use(draggable)
+// Vue.use(vueDragDrop)
 
 import {
   ToastPlugin,
@@ -145,6 +149,43 @@ Vue.prototype.$weChat = function () {
     // that.loadingState = "加载失败"
   })
 }
+
+//自定义指令JS
+Vue.directive('drag',
+  {
+    bind: function (el, binding) {
+      //当前元素
+      let oDiv = el
+      //上下文
+      let self = this
+      console.log(self)
+      oDiv.onmousedown = function (e) {
+        //鼠标按下，计算当前元素距离可视区的距离
+        let disX = e.clientX - oDiv.offsetLeft
+        let disY = e.clientY - oDiv.offsetTop
+        console.log(disX, disY)
+        document.onmousemove = function (e) {
+          //通过事件委托，计算移动的距离
+          let l = e.clientX - disX
+          let t = e.clientY - disY
+          console.log(l, t)
+          //移动当前元素
+          oDiv.style.left = l + 'px'
+          oDiv.style.top = t + 'px'
+          //将此时的位置传出去
+          binding.value({
+            x: e.pageX,
+            y: e.pageY
+          })
+        }
+        document.onmouseup = function (e) {
+          document.onmousemove = null
+          document.onmouseup = null
+        }
+      }
+    }
+  }
+)
 
 /* eslint-disable no-new */
 new Vue({

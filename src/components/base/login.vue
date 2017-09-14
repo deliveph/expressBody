@@ -1,6 +1,19 @@
 <template>
     <div id="home" class="home">
-        <Vheader></Vheader>
+        <div id="header" class="por">
+            <router-link :to="{name:'suggest'}" class="orientation poa">
+                深圳
+                <i></i>
+            </router-link>
+            <ul>
+                <li class="not_login">
+                    <div class="photo">
+                        <img src="/static/assets/images/head_def.png" />
+                    </div>
+                    <h3 class="name notLogin">未登录</h3>
+                </li>
+            </ul>
+        </div>
         <div class="hg20"></div>
         <banner></banner>
         <div class="entrance_list">
@@ -24,7 +37,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name:'user'}">
+                    <router-link :to="{name:'Userindex'}">
                         <img src="/static/assets/images/btn_me.png" />
                         <p>个人中心</p>
                     </router-link>
@@ -74,7 +87,7 @@ export default {
     },
     data(){
         return {
-          layerhide:false,
+          layerhide:true,
           layerPwhide:false
         };
     },

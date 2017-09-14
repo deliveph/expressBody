@@ -2,8 +2,8 @@
     <swiper :options="swiperOption" ref="mySwiper" class="swiper-box">
         <!-- slides -->
         <swiper-slide class="swiper-item" v-for="(s,i) in slider" :key="i">
-            <a href="http://baidu.com">
-                <img class="recommand-swiper-img" :src="s.src" />
+            <a :href="s.carousel_href">
+                <img class="recommand-swiper-img" :src="s.carousel_url" />
             </a>
         </swiper-slide>
         <!--optional controls -->
@@ -21,7 +21,8 @@ export default {
         return {
             loadingState:"正在加载中，请稍后。。。",
             slider: [{
-                'src':'/static/assets/images/banner.png'
+                'carousel_url':'/static/assets/images/banner.png',
+                'carousel_href':'http://www.baidu.com/'
             }],
             swiperOption: {
                 notNextTick: true,
@@ -52,6 +53,8 @@ export default {
 
     },
     created() {
+        let that = this
+        that.slider = that.$parent.carousels        
         // let that = this
         // let msg = qs.stringify({
         //     'goods_id':178
