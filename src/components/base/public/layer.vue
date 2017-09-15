@@ -12,7 +12,10 @@
                             <div class="phone_number">
                                 <label></label>
                                 <input type="number" name="phone" value="" placeholder="请输入手机号码" v-model="phone"/>
-                                <button type="button">发送验证码</button>
+                                <button type="button" @click="sendCode" :disabled="!sendMsgDisabled">
+                                    <span v-show="sendMsgDisabled">获取验证码</span>
+                                    <span v-show="!sendMsgDisabled" class="count">{{count}} s</span>
+                                </button>
                             </div>
                             <div class="phone_code">
                                 <label></label>
@@ -40,11 +43,15 @@
 <script>
     import { Toast } from 'vux'
     import qs from 'qs'
+    const TIME_COUNT = 60
     export default{
         data(){
             return{
                 phone:'',
-                code:''
+                code:'',
+                sendMsgDisabled: true,
+                count: '',
+                timer: null,
             }
         },
         components: {
@@ -93,6 +100,39 @@
                 let that = this
                 that.$parent.layerhide = false
                 that.wx.closeWindow()
+            },
+            sendCode(){
+                let that = this
+                if(that.phone == ''){
+                    this.$vux.toast.text('请输入手机号码', 'middle',100);
+                    return false;
+                }
+                let data = qs.stringify({
+                    'phone':that.phone
+                })
+                this.http(that.configs.apiTop + "/captcha/sms-captcha", "post", data, function(res) {
+                    let msg = res.data
+                    if (msg.code == 0) {
+                        if (!that.timer) {
+                            that.count = TIME_COUNT;
+                            that.sendMsgDisabled = false;
+                            that.timer = setInterval(() => {
+                            if (that.count > 0 && this.count <= TIME_COUNT) {
+                                that.count--;
+                            } else {
+                                that.sendMsgDisabled = true;
+                                clearInterval(that.timer);
+                                that.timer = null;
+                            }
+                            }, 1000)
+                        }
+                    } else if (msg.code == 40004) {
+                        // location.href = that.configs.accreditUrl
+                    } else {
+                        that.$vux.toast.text(msg.message, 'middle', 100);
+                    }
+                })
+                
             }
         }
     }
