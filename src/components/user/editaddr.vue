@@ -2,12 +2,7 @@
     <div class="wrapper">
         <div class="edit-wrapper mt20 content">
             <div class="edit-item">
-                <x-address :title="title1" v-model="value1" raw-value :list="addressData" value-text-align="left" v-bind:class="{ 'edit-address':true}"  :value="getName(value1)"></x-address>
-                <!-- <div class="edit-des col-2">省市区</div>
-                                    <div class="edit-addr col-8 tr">
-                                        <span>请选择</span>
-                                        <i class="arrow-right"></i>
-                                    </div> -->
+                <x-address :title="title1" v-model="value1" raw-value :list="addressData" value-text-align="left" v-bind:class="{ 'edit-address':true}"  :value="getName(value1)" @on-shadow-change="onShadowChange"></x-address>
             </div>
             <div class="edit-item">
                 <div class="edit-des col-2">小区名称</div>
@@ -38,7 +33,10 @@ export default {
             addressData: ChinaAddressV3Data,
             showAddress: false,
             village_name:'',
-            element:''
+            element:'',
+            province:'',
+            city:'',
+            district:''
         }
     },
     components: {
@@ -60,7 +58,11 @@ export default {
                 return false;
             }
             let data = qs.stringify({
-                'user_address': province +  that.village_name + that.element,
+                'province_region_id':that.province,
+                'city_region_id':that.city,
+                'district_region_id':that.district,
+                'community_region_name':that.village_name,
+                'user_detail_address': that.element,
             })
             this.http(that.configs.apiTop + "/user/update-profile-address", "post", data, function(res) {
                 let msg = res.data
@@ -74,9 +76,24 @@ export default {
         getName (value) {
             return value2name(value, ChinaAddressV3Data)
         },
+        onShadowChange (ids, names) {
+            let that = this;
+            that.province = ids[0]
+            that.city = ids[1]
+            that.district = ids[2]
+        }  
     },
     created() {
-
+        let that = this
+        this.http(that.configs.apiTop + "/region/regions", "get", '', function (res) {
+            let msg = res.data
+            if(msg.code == 0){
+                localStorage.setItem('regions',JSON.stringify(msg.data.regions))
+                that.addressData = msg.data.regions
+            }else if(msg.code == 40004){
+                // location.href = that.configs.accreditUrl
+            }
+        })
     }
 
 }

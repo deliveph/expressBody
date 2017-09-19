@@ -3,20 +3,20 @@
         <tab :line-width=2 v-model="index">
             <tab-item class="vux-center" v-for="(item, index) in list" :key="index" @on-item-click="getItem(index)"><span>{{item.name}}({{item.num}})</span></tab-item>
         </tab>
-        <div class="tab-container" ref="tabcon">
+        <div class="tab-container" ref="tabcon" v-if="items != ''">
             <div class="coupon-list" v-if="index == 0">
                 <ul>
-                    <li>
+                    <li v-for="(item,i) in items" :key="i" >
                         <div class="coupon-l">
-                            <router-link to="">
+                            <router-link to="" href="javascript:;" @click.native="getTicket(item.coupon_id)">
                                 <i class="arrow-left"></i>
                                 <span>立即使用</span>
                             </router-link>
                         </div>
                         <div class="coupon-r">
                             <div class="coupon-info">
-                                <h6><span>100</span>快递豆通用劵</h6>
-                                <p>使用期限：2016.05.10-2016.02.01</p>
+                                <h6><span>{{item.coupon_amount}}</span>{{item.coupon_category_name}}</h6>
+                                <p>使用期限：{{item.coupon_send_time_f}}-{{item.coupon_expire_time_f}}</p>
                             </div>
                         </div>
                     </li>
@@ -24,17 +24,17 @@
             </div>
             <div class="coupon-list after" v-if="index == 1">
                 <ul>
-                    <li>
+                    <li v-for="(item,i) in items" :key="i">
                         <div class="coupon-l">
-                            <router-link to="">
+                            <router-link to="" href="javascript:;" @click.native="getTicket(item.coupon_id)">
                                 <i class="arrow-left"></i>
                                 <span>立即使用</span>
                             </router-link>
                         </div>
                         <div class="coupon-r">
                             <div class="coupon-info">
-                                <h6><span>100</span>快递豆通用劵</h6>
-                                <p>使用期限：2016.05.10-2016.02.01</p>
+                                <h6><span>{{item.coupon_amount}}</span>{{item.coupon_category_name}}</h6>
+                                <p>使用期限：{{item.coupon_send_time_f}}-{{item.coupon_expire_time_f}}</p>
                             </div>
                         </div>
                     </li>
@@ -42,17 +42,17 @@
             </div>
             <div class="coupon-list past" v-if="index ==2 ">
                 <ul>
-                    <li>
+                    <li v-for="(item,i) in items" :key="i">
                         <div class="coupon-l">
-                            <router-link to="">
+                            <router-link to="" href="javascript:;" @click.native="getTicket(item.coupon_id)">
                                 <i class="arrow-left"></i>
                                 <span>立即使用</span>
                             </router-link>
                         </div>
                         <div class="coupon-r">
                             <div class="coupon-info">
-                                <h6><span>100</span>快递豆通用劵</h6>
-                                <p>使用期限：2016.05.10-2016.02.01</p>
+                                <h6><span>{{item.coupon_amount}}</span>{{item.coupon_category_name}}</h6>
+                                <p>使用期限：{{item.coupon_send_time_f}}-{{item.coupon_expire_time_f}}</p>
                             </div>
                         </div>
                         <div class="past-icon"></div>
@@ -60,11 +60,11 @@
                 </ul>
             </div>
         </div>
-        <div class="no-coupon">
+        <div class="no-coupon" v-else>
             <img src="/static/assets/images/no_state.png" alt="">
             <p>暂无优惠券</p>
-            <router-link class="go-btn" to="/discount">去领券中心</router-link>
         </div>
+        <router-link class="discount go-btn " to="/discount">去领券中心</router-link>
     </div>
 </template>
 
@@ -74,11 +74,12 @@
         data() {
             return{
                 list: [
-                    { 'name': '立即使用', num: '3' },
-                    { 'name': '使用记录', num: '4' },
-                    { 'name': '已过期', num: '5' }
+                    { 'name': '立即使用', num: '0' },
+                    { 'name': '使用记录', num: '0' },
+                    { 'name': '已过期', num: '0' }
                 ],
-                index: 0
+                index: 0,
+                items:[]
             }
         },
         components: {
@@ -87,15 +88,58 @@
         },
         methods: {
             getItem(index){
-                var that = this;
+                let that = this
+                if(index == 0){
+                    this.http(that.configs.apiTop + "/coupon/unused-user-coupons", "get", '', function(res) {
+                        let msg = res.data
+                        if (msg.code == 0) {
+                            let data = msg.data
+                            that.items = data.coupons
+                            let len = data.coupons.length
+                            that.list[0].num = len
+                        } else if (msg.code == 40004) {
+                            // location.href = that.configs.accreditUrl
+                        } else {
+                            that.$vux.toast.text(msg.message, 'middle', 100);
+                        }
+                    })
+                }else if(index == 1){
+                    this.http(that.configs.apiTop + "/coupon/used-user-coupons", "get", '', function(res) {
+                        let msg = res.data
+                        if (msg.code == 0) {
+                            let data = msg.data
+                            that.items = data.coupons
+                            let len = data.coupons.length
+                            that.list[1].num = len
+                        } else if (msg.code == 40004) {
+                            // location.href = that.configs.accreditUrl
+                        } else {
+                            that.$vux.toast.text(msg.message, 'middle', 100);
+                        }
+                    })
+                }else if(index == 2){
+                    this.http(that.configs.apiTop + "/coupon/expire-user-coupons", "get", '', function(res) {
+                        let msg = res.data
+                        if (msg.code == 0) {
+                            let data = msg.data
+                            that.items = data.coupons
+                            let len = data.coupons.length
+                            that.list[2].num = len
+                        } else if (msg.code == 40004) {
+                            // location.href = that.configs.accreditUrl
+                        } else {
+                            that.$vux.toast.text(msg.message, 'middle', 100);
+                        }
+                    })
+                }
             }
         },
-        create() {
-            console.log(122)
-            console.log(this)
+        created() {
+            let that = this
+            let index = that.index
+            that.getItem(index)
         },
         mounted(){
-            console.log(121)
         }
     }
 </script>
@@ -123,5 +167,14 @@
     .vux-slider > .vux-swiper{
         overflow: auto !important;
         position: relative;
+    }
+    .discount.go-btn{
+        width: 90%;
+        margin: 0 auto;
+        height: px2rem(88);line-height: px2rem(88);font-size: px2rem(28);
+        color: #fff;display: block;background-color: #366931;border-radius: px2rem(8);text-align: center;
+    }
+    .discount.go-btn{
+        margin-top: px2rem(140);
     }
 </style>

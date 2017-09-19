@@ -1,7 +1,7 @@
 <template>
     <div id="home" class="home">
         <div id="header" class="por">
-            <router-link :to="{name:'suggest'}" class="orientation poa">
+            <router-link href="javascript:;" class="orientation poa">
                 深圳
                 <i></i>
             </router-link>

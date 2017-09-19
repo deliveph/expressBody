@@ -49,6 +49,7 @@
 import Grade from '../../../components/grade'
 import {mapActions,mapState,mapGetters} from 'vuex'
 export default {
+    props:['headerObject'],
     data() {
         return {
             token: '',
@@ -74,24 +75,27 @@ export default {
         ])
     },
     watch: {
-        position(oldVal,newVal) {}
+        position(oldVal,newVal) {},
+        headerObject(){
+            let that = this
+            let user = that.headerObject.user
+            let service = that.headerObject.service
+            that.userid =  user.user_id
+            that.service = service.service_id
+            that.user_avatar = user.user_avatar
+            that.user_nickname = user.user_nickname 
+            that.user_balance  = user.user_balance
+            that.user_level_logo = user.user_level.user_level_logo
+            if(service != ''){
+                that.service_avatar = service.service_avatar
+                that.service_nickname = service.service_nickname
+                that.service_tel = service.service_tel
+                that.service_level_logo = service.service_level.service_level_logo
+            }
+        }
     },
     created() {
         let that = this
-        let user = that.$parent.user
-        let service = that.$parent.service
-        that.userid =  user.user_id
-        that.service = service.service_id
-        that.user_avatar = user.user_avatar
-        that.user_nickname = user.user_nickname 
-        that.user_balance  = user.user_balance
-        that.user_level_logo = user.user_level.user_level_logo
-        if(service){
-            that.service_avatar = service.service_avatar
-            that.service_nickname = service.service_nickname
-            that.service_tel = service.service_tel
-            that.service_level_logo = service.service_level.service_level_logo
-        }
     },
     methods: {
         tel(msg) {

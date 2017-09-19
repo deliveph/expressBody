@@ -15,6 +15,7 @@ import draggable from 'vuedraggable'
 import configs from '../src/configs/index'
 import mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
+// import vueDrag from 'drag'
 
 Vue.config.productionTip = false
 Vue.prototype.$ajax = axios
@@ -27,6 +28,7 @@ Vue.use(VueAMap)
 Vue.use(require('vue-wechat-title'))
 Vue.use(mint)
 Vue.use(draggable)
+// Vue.use(vueDrag)
 // Vue.use(vueDragDrop)
 
 import {
@@ -140,10 +142,22 @@ Vue.prototype.$weChat = function () {
         'onMenuShareAppMessage',
         'onMenuShareTimeline',
         'scanQRCode',
-        'closeWindow'
+        'closeWindow',
+        'chooseWXPay',
+        'startRecord',
+        'uploadVoice',
+        'stopRecord',
+        'onVoicePlayEnd'
       ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     })
-    that.wx.ready(function () {})
+    that.wx.ready(function () {
+      that.wx.onVoicePlayEnd({
+        success: function (res) {
+          // stopWave()
+          alert(res + '123')
+        }
+      })
+    })
     that.wx.error(function (res) {})
   }).catch(function (err) {
     // that.loadingState = "加载失败"
@@ -151,41 +165,41 @@ Vue.prototype.$weChat = function () {
 }
 
 //自定义指令JS
-Vue.directive('drag',
-  {
-    bind: function (el, binding) {
-      //当前元素
-      let oDiv = el
-      //上下文
-      let self = this
-      console.log(self)
-      oDiv.onmousedown = function (e) {
-        //鼠标按下，计算当前元素距离可视区的距离
-        let disX = e.clientX - oDiv.offsetLeft
-        let disY = e.clientY - oDiv.offsetTop
-        console.log(disX, disY)
-        document.onmousemove = function (e) {
-          //通过事件委托，计算移动的距离
-          let l = e.clientX - disX
-          let t = e.clientY - disY
-          console.log(l, t)
-          //移动当前元素
-          oDiv.style.left = l + 'px'
-          oDiv.style.top = t + 'px'
-          //将此时的位置传出去
-          binding.value({
-            x: e.pageX,
-            y: e.pageY
-          })
-        }
-        document.onmouseup = function (e) {
-          document.onmousemove = null
-          document.onmouseup = null
-        }
-      }
-    }
-  }
-)
+// Vue.directive('drag',
+//   {
+//     bind: function (el, binding) {
+//       //当前元素
+//       let oDiv = el
+//       //上下文
+//       let self = this
+//       console.log(self)
+//       oDiv.onmousedown = function (e) {
+//         //鼠标按下，计算当前元素距离可视区的距离
+//         let disX = e.clientX - oDiv.offsetLeft
+//         let disY = e.clientY - oDiv.offsetTop
+//         console.log(disX, disY)
+//         document.onmousemove = function (e) {
+//           //通过事件委托，计算移动的距离
+//           let l = e.clientX - disX
+//           let t = e.clientY - disY
+//           console.log(l, t)
+//           //移动当前元素
+//           oDiv.style.left = l + 'px'
+//           oDiv.style.top = t + 'px'
+//           //将此时的位置传出去
+//           binding.value({
+//             x: e.pageX,
+//             y: e.pageY
+//           })
+//         }
+//         document.onmouseup = function (e) {
+//           document.onmousemove = null
+//           document.onmouseup = null
+//         }
+//       }
+//     }
+//   }
+// )
 
 /* eslint-disable no-new */
 new Vue({

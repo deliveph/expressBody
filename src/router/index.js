@@ -43,6 +43,7 @@ import service from '@/components/base/express'
 import statistics from '@/components/user/statistics'
 import login from '@/components/base/login'
 import suggest from '@/components/suggest/suggest'
+import session from '@/components/Im/session'
 
 Vue.use(Router)
 
@@ -234,10 +235,13 @@ export default new Router({
     {
       path: '/modifypwd',
       name: 'modifypwd',
-      component: modifypwd
+      component: modifypwd,
+      meta: {
+        title: '修改密码'
+      }
     }, //修改密码 
     {
-      path: '/editaddress/:id',
+      path: '/editaddress/:attribute',
       name: 'editAddress',
       component: editAddress
     }, //添加地址和编辑地址（通过type来做判断） 
@@ -259,7 +263,10 @@ export default new Router({
     {
       path: '/statistics',
       name: 'statistics',
-      component: statistics
+      component: statistics,
+      meta: {
+        title: '我的统计'
+      }
     }, //我的统计
     {
       path: '/user',
@@ -272,6 +279,14 @@ export default new Router({
       component: suggest,
       meta: {
         title: '城市选择'
+      }
+    },
+    {
+      path:'/session',
+      name:'session',
+      component: session,
+      meta:{
+        title:'聊天'
       }
     }
   ]

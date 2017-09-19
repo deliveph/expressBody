@@ -50,8 +50,8 @@
                 phone:'',
                 code:'',
                 sendMsgDisabled: true,
-                count: '',
-                timer: null,
+                count:0,
+                timer: null
             }
         },
         components: {
@@ -77,14 +77,10 @@
                 this.http(that.configs.apiTop + "/weixin/binding-role", "post", data, function (res) {
                     let msg = res.data
                     let data = msg.data
-                    console.log(data)
-                    console.log(data.role_type)
                     if(msg.code == 0){
                         if(data.role_type == 'user'){
-                            console.log(123)
-                            that.$router.push({path: '/user'}); 
+                            that.$router.push({path: '/user',query: {is_perfect: "0"}}); 
                         }else if(data.role_type == 'service'){
-                            console.log(12312);
                             that.$parent.layerPwhide = true;
                             that.$parent.layerhide = false
                         }
@@ -114,16 +110,16 @@
                     let msg = res.data
                     if (msg.code == 0) {
                         if (!that.timer) {
-                            that.count = TIME_COUNT;
-                            that.sendMsgDisabled = false;
+                            that.count = TIME_COUNT
+                            that.sendMsgDisabled = false
                             that.timer = setInterval(() => {
-                            if (that.count > 0 && this.count <= TIME_COUNT) {
-                                that.count--;
-                            } else {
-                                that.sendMsgDisabled = true;
-                                clearInterval(that.timer);
-                                that.timer = null;
-                            }
+                                if (that.count > 0 && that.count <= TIME_COUNT) {
+                                    that.count--;
+                                } else {
+                                    that.sendMsgDisabled = true
+                                    clearInterval(that.timer)
+                                    that.timer = null
+                                }
                             }, 1000)
                         }
                     } else if (msg.code == 40004) {

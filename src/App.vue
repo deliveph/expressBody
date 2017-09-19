@@ -1,19 +1,22 @@
 <template>
   <div id="app">
     <router-view v-wechat-title="$route.meta.title"></router-view>
-    <!-- <div class="image"  draggable drop="handleImageDrop">
-          <img src="/static/assets/images/inquire_bg.png" align="left">
-      </div> -->
-    <!-- <draggable v-model="tags" :move="getdata" @update="datadragEnd" class="draggable">
-      <img src="/static/assets/images/inquire_bg.png" align="left" style="position: fixed;top: 50%;right: 0;width: 30px;height: 30px;">
-    </draggable> -->
-    <!-- <div id="box">
-      HTML位置
-      <br>x:{{val.x}} <br>y:{{val.y}}
-      <div v-drag="greet" id="drag" :style="style">
-      //注意这里要通过指令绑定函数将当前元素的位置数据传出来
-      </div>
+    <!-- <div id="test" v-drag>
+      <img src="/static/assets/images/inquire_bg.png" align="left" style="">
     </div> -->
+    <!-- <div class="image"  draggable drop="handleImageDrop">
+              <img src="/static/assets/images/inquire_bg.png" align="left">
+          </div> -->
+    <!-- <draggable v-model="tags" :move="getdata" @update="datadragEnd" class="draggable">
+          <img src="/static/assets/images/inquire_bg.png" align="left" style="position: fixed;top: 50%;right: 0;width: 30px;height: 30px;">
+        </draggable> -->
+    <!-- <div id="box">
+          HTML位置
+          <br>x:{{val.x}} <br>y:{{val.y}}
+          <div v-drag="greet" id="drag" :style="style">
+          //注意这里要通过指令绑定函数将当前元素的位置数据传出来
+          </div>
+        </div> -->
   </div>
 </template>
 
@@ -25,15 +28,6 @@ export default {
   data() {
     return {
       tags: ''
-      // val: '123',
-      // style: {
-      //     width: '100px',
-      //     height: '100px',
-      //     background: 'aqua',
-      //     position: 'absolute',
-      //     right: '30px',
-      //     top: 0
-      // }
     }
   },
   components: {
@@ -120,5 +114,24 @@ export default {
 <style>
 #app {
   font-family: 'Avenir', 'Microsoft YaHei', Arial, sans-serif;
+}
+
+#test {
+  position: relative;
+  top: 50px;
+  right: 0;
+  width: 0.75rem;
+  height: 0.75rem;
+  background: #fff;
+  box-shadow: 1px 2px 3px #ccc;
+  border-radius: 2px;
+}
+
+#test img {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  width: 0.75rem;
+  height: 0.75rem;
 }
 </style>

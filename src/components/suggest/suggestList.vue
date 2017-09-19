@@ -37,7 +37,7 @@ export default {
   methods: {
     choose_address(msg){
       self.address.start = msg
-      self.$router.push({path:'/'})
+      self.$router.push({path:'/user'})
     }
     // choose_city:(i,j) => {
     //   var index = {

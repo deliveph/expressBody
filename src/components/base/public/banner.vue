@@ -17,6 +17,7 @@ import {swiper,swiperSlide} from 'vue-awesome-swiper'
 import qs from 'qs'
 let i = 1
 export default {
+    props:['bannerObject'],
     data(){
         return {
             loadingState:"正在加载中，请稍后。。。",
@@ -49,12 +50,17 @@ export default {
             return this.$refs.mySwiper.swiper
         }
     },
+    watch:{
+        bannerObject(){
+            this.slider = this.bannerObject
+        }
+    },
     mounted(){
 
     },
     created() {
         let that = this
-        that.slider = that.$parent.carousels        
+        // that.slider = that.$parent.carousels        
         // let that = this
         // let msg = qs.stringify({
         //     'goods_id':178

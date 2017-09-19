@@ -8,13 +8,17 @@
             </span>
             <span v-else>正在定位</span>
         </div>
-        <Vheader></Vheader>
+        <Vheader :header-object="dataobject"></Vheader>
         <div class="hg20"></div>
-        <banner></banner>
+        <banner :banner-object="carousels"></banner>
         <div class="entrance_list">
             <ul>
                 <li>
-                    <router-link :to="{name:'Collection'}">
+                    <!-- <router-link :to="{name:'Collection'}">
+                        <img src="/static/assets/images/btn_shou@2x.png" />
+                        <p>代收快递</p>
+                    </router-link> -->
+                    <router-link :to="{name:'session'}">
                         <img src="/static/assets/images/btn_shou@2x.png" />
                         <p>代收快递</p>
                     </router-link>
@@ -55,6 +59,30 @@
                 </li>
             </ul>
         </div>
+        <!--完善资料弹出层  -->
+        <div class="layer_warp layer_phone" v-if="is_perfect">
+            <div class="layer_table">
+                <div class="layer_table_cell">
+                    <div class="layer_box">
+                        <div class="layer_container">
+                            <div class="message_box">
+                                <p>为了方便您的使用</p>
+                                <p>请完善您的资料</p>
+                            </div>
+                        </div>
+                        <div class="layer_footer">
+                            <div class="layer_footer_cancel">
+                                <router-link tag="li" to="/"></router-link>
+                                <button @click="cancel">取消</button>
+                            </div>
+                            <div class="layer_footer_confirm">
+                                <button @click="confirm">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
     </div>
 </template>
 
@@ -75,10 +103,19 @@ export default {
     methods: {
         messageBox() {
 
+        },
+        confirm() {
+            let that = this;
+            that.$router.push({path: '/person'}); 
+        },
+        cancel(){
+            let that = this
+            that.$parent.layerhide = false
+            that.wx.closeWindow()
         }
     },
     computed: {
-
+        
     },
     data(){
         let self = this
@@ -87,9 +124,11 @@ export default {
           lng: 0,
           lat: 0,
           loaded: false,
-          service:{},
-          user:{},
+          service:[],
+          user:[],
           carousels:[],
+          dataobject:[],
+          is_perfect:false,
           plugin: [{
             pName: 'Geolocation',
             events: {
@@ -108,12 +147,21 @@ export default {
     },
     created() {
         let that = this
+        let is_perfect = this.$route.query.is_perfect
+        this.$weChat()
+        if( is_perfect == 0 ){
+            that.is_perfect = false
+        }else{
+            that.is_perfect = false
+        }
         this.http(that.configs.apiTop + "/page/user-home", "get", '', function(res) {
             let msg = res.data
             if (msg.code == 0) {
                 let data = msg.data
-                that.user = data.user
-                that.service = data.service
+                that.dataobject = data
+                // that.user = data.user
+                // console.log(that.user)
+                // that.service = data.service
                 that.carousels = data.carousels
             } else if (msg.code == 40004) {
                 // location.href = that.configs.accreditUrl
@@ -126,5 +174,74 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../static/assets/css/home.scss';
+    @import '../../../static/assets/css/px2rem.scss';
+    @import '../../../static/assets/css/home.scss';
+    
+    .layer_warp{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 10;
+        .layer_table{
+            width: 100%;
+            height: 100%;
+            display: table;
+            text-align: center;
+        }
+        .layer_table_cell{
+            display: table-cell;
+            vertical-align: middle;
+        }
+        .layer_box{
+            width:px2rem(600);
+            // height: px2rem(460);
+            background-color: #fff;
+            display: inline-block;
+            border-radius:px2rem(10);
+        }
+        .layer_title{
+            font-size:px2rem(30);
+            color:#fff;
+            height:px2rem(88);
+            line-height:px2rem(88);
+            background-color:#366931;
+            border-top-left-radius: px2rem(10);
+            border-top-right-radius: px2rem(10);
+        }
+        .layer_container{
+            
+        }
+        .layer_footer{
+            height:px2rem(90);
+            border-top:1px solid #e0e0e0;
+            display:flex;
+            line-height:px2rem(90);
+        }
+        .layer_footer_cancel,.layer_footer_confirm,.layer_footer_cancel button,.layer_footer_confirm button{
+            flex:1;
+            border-right:1px solid #e0e0e0;
+            text-align: center;
+            font-size:px2rem(34);
+            color:#007aff;
+        }
+        .layer_footer button{
+            width: 100%;
+            height: px2rem(90);
+        }
+        .layer_footer_confirm,.layer_footer_cancel button,.layer_footer_confirm button{
+            border-right:0
+        }
+    }
+
+    .message_box{
+        padding:px2rem(40) px2rem(66) px2rem(36);
+        p{
+            font-size:px2rem(34);
+            color:#333;
+            line-height: px2rem(50);
+        }
+    }
 </style>
