@@ -14,14 +14,14 @@
         <div class="entrance_list">
             <ul>
                 <li>
-                    <!-- <router-link :to="{name:'Collection'}">
-                        <img src="/static/assets/images/btn_shou@2x.png" />
-                        <p>代收快递</p>
-                    </router-link> -->
-                    <router-link :to="{name:'session'}">
+                    <router-link :to="{name:'Collection'}">
                         <img src="/static/assets/images/btn_shou@2x.png" />
                         <p>代收快递</p>
                     </router-link>
+                    <!-- <router-link :to="{name:'session'}">
+                        <img src="/static/assets/images/btn_shou@2x.png" />
+                        <p>代收快递</p>
+                    </router-link> -->
                 </li>
                 <li>
                     <router-link :to="{name:'Send'}">

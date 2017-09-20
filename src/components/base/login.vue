@@ -1,10 +1,10 @@
 <template>
     <div id="home" class="home">
         <div id="header" class="por">
-            <router-link href="javascript:;" class="orientation poa">
+            <!-- <router-link href="javascript:;" class="orientation poa">
                 深圳
                 <i></i>
-            </router-link>
+            </router-link> -->
             <ul>
                 <li class="not_login">
                     <div class="photo">

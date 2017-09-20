@@ -4,7 +4,7 @@
             <label for="" class="title">选择充值金额</label>
             <div class="rechargeNumber_list">
                 <ul>
-                    <li v-for="(item,k) in items" :key="k" >
+                    <li v-for="(item,k) in items" :key="k" @click="recharge_combos(item.recharge_combo_id)" :class="{active: id == item.recharge_combo_id}" v-model="id">
                         <p>充值{{item.fee}}</p>
                         <span v-if="item.give_fee > 0">送{{item.give_fee}}</span>
                     </li>
@@ -12,12 +12,12 @@
             </div>
             <div class="input_money">
                 <label>充值金额</label>
-                <input type="number" placeholder="请输入充值金额" value="">
+                <input type="number" placeholder="请输入充值金额" v-model="money" @blur = "done()">
             </div>
             <div class="hint">
                 温馨提示：1元 = 10快递豆
             </div>
-            <div class="btn" :click="pay()">
+            <div class="btn" @click="pay()">
                 <button>确定充值</button>
             </div>
         </div>
@@ -27,10 +27,13 @@
 
 <script>
 import { Toast } from 'vux'
+import qs from 'qs'
 export default {
     data() {
         return {
-            items: []
+            items: [],
+            id:'',
+            money:''
         }
     },
     components: {
@@ -53,14 +56,68 @@ export default {
         })
     },
     methods:{
+        recharge_combos(id){
+            this.id = id
+        },
+        done(){
+            this.id = ''
+        },
         pay(){
-            this.wx.chooseWXPay({
-                timestamp: 1414723227,
-                nonceStr: 'noncestr',
-                package: 'addition=action_id%3dgaby1234%26limit_pay%3d&bank_type=WX&body=innertest&fee_type=1&input_charset=GBK&notify_url=http%3A%2F%2F120.204.206.246%2Fcgi-bin%2Fmmsupport-bin%2Fnotifypay&out_trade_no=1414723227818375338&partner=1900000109&spbill_create_ip=127.0.0.1&total_fee=1&sign=432B647FE95C7BF73BCD177CEECBEF8D',
-                signType: 'SHA1', //
-                paySign: 'bd5b1933cda6e9548862944836a9b52e8c9a2b69'
-            });
+            let that = this
+            let recharge_combo_id = that.id
+            let fee = that.money
+            console.log(that.id,that.money)
+            if(that.id == '' && that.money == ''){
+                that.$vux.toast.text('请选择或输入充值金额', 'middle', 100)
+                return
+            }
+            if( this.id != '' || that.money == ''){
+                this.http(that.configs.apiTop + "/order/get-weixin-pay-params-by-combo?recharge_combo_id="+recharge_combo_id, "get", '' , function(res) {
+                    let msg = res.data
+                    let data = msg.data
+                    if (msg.code == 0) {
+                       that.wx.chooseWXPay({
+                            timestamp: data.timestamp,
+                            nonceStr: data.nonce_str,
+                            package: data.package,
+                            signType: data.sign_type,
+                            paySign: data.sign,
+                            success: function (res) {
+                                alert(res)
+                                // 支付成功后的回调函数
+                            }
+                        });
+                    } else if (msg.code == 40004) {
+                        localStorage.clear("token")
+                        that.wx.closeWindow()
+                    } else {
+                        that.$vux.toast.text(msg.message, 'middle', 100)
+                    }
+                })
+            }else if(this.money != ''){
+                this.http(that.configs.apiTop + "/order/get-weixin-pay-params-by-fee?fee="+fee, "get", '', function(res) {
+                    let msg = res.data
+                    let data = msg.data
+                    if (msg.code == 0) {
+                        that.wx.chooseWXPay({
+                            timestamp: data.timestamp,
+                            nonceStr: data.nonce_str,
+                            package: data.package,
+                            signType: data.sign_type,
+                            paySign: data.sign,
+                            success: function (res) {
+                                alert(res)
+                                // 支付成功后的回调函数
+                            }
+                        });
+                    } else if (msg.code == 40004) {
+                        localStorage.clear("token")
+                        that.wx.closeWindow()
+                    } else {
+                        that.$vux.toast.text(msg.message, 'middle', 100);
+                    }
+                })
+            }
         }
     }
 }
