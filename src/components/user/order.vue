@@ -30,7 +30,7 @@
 
         <div class="order-list">
             <ul>
-                <li class="send">
+                <li class="send" v-for="(item,i) in items" :key="i">
                     <router-link to="/orderdetail">
                         <i class="icon_send"></i>
                         <div class="odd">
