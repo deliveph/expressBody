@@ -86,7 +86,7 @@ export default {
         addNew() {
             let that = this
             let index = that.$parent.index
-            this.$router.push({ name: 'editAddress', params: { type: 'add', name: index } })
+            this.$router.push({ name: 'editAddress', query: { type: index } })
         }
     },
     created() {

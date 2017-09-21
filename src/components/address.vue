@@ -55,7 +55,6 @@ export default {
     },
    methods:{ 
        addressFun(){
-          
            let that = this;
            if(that.checked == false){
                 that.is_default_shipper_address = 'N'
@@ -78,7 +77,7 @@ export default {
                             let msg = res.data
                             if(msg.code == 0){
                                 console.log(1)
-                                this.$router.push({path: '/address',params:{type:0}}) 
+                                that.$router.push({path: '/address/shipper',params:{type:0}}) 
                             }else if(msg.code == 40004){
                                 // location.href = that.configs.accreditUrl
                             }
@@ -87,7 +86,7 @@ export default {
                     this.http(that.configs.apiTop + "/address/add-shipper-address", "post", data, function (res) {
                             let msg = res.data
                             if(msg.code == 0){
-                                this.$router.push({path: '/address',params:{type:0}}) 
+                                that.$router.push({path: '/address/shipper',params:{type:0}}) 
                             }else if(msg.code == 40004){
                                 // location.href = that.configs.accreditUrl
                             }
@@ -108,7 +107,7 @@ export default {
                             let msg = res.data
                             if(msg.code == 0){
                                 console.log(1)
-                                this.$router.push({path: '/address',params:{type:0}}) 
+                                this.$router.push({path: '/address/consignee',params:{type:0}}) 
                             }else if(msg.code == 40004){
                                 // location.href = that.configs.accreditUrl
                             }
@@ -117,7 +116,7 @@ export default {
                     this.http(that.configs.apiTop + "/address/add-consignee-address", "post", data, function (res) {
                             let msg = res.data
                             if(msg.code == 0){
-                                this.$router.push({path: '/address',params:{type:0}}) 
+                                this.$router.push({path: '/address/consignee',params:{type:0}}) 
                             }else if(msg.code == 40004){
                                 // location.href = that.configs.accreditUrl
                             }
@@ -139,7 +138,8 @@ export default {
    created(){
        let that = this
     //    that.index = this.$route.params.type;
-       that.id = this.$route.params.id;
+       let id = this.$route.params.id;
+       that.id = id;
        that.index = this.$route.query.type;
        console.log(that.index,that.id)
        if(that.index == 0){

@@ -14,7 +14,7 @@
                 <li></li>
                 <li></li>
             </ul>-->
-            <rater class="appraise-start" margin="14" v-model="dstar" active-color="#fc6" font-size="38" slot="value"></rater>
+            <rater class="appraise-start" v-model="dstar" active-color="#fc6"  slot="value" font-size=30 margin=3></rater>
             <span v-model="dstar">{{dstar}}</span>
             <input type="hidden" v-model="dstar" value="dstar">
         </div>
