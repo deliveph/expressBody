@@ -27,7 +27,7 @@
             </ul>
         </div>
         <div class="express_company pdlf30 express_list">
-            <popup-picker :title="title1" :data="list1" v-model="value1" :columns="1" :display-format="format"></popup-picker>
+            <popup-picker :title="title1" :data="list1" v-model="value1" :columns="1" :display-format="format" ></popup-picker>
         </div>
         <div class="express_stdmode pdlf30 express_list">
             <popup-picker :title="title2" :data="list2" v-model="value2":placeholder="placeholder2" :columns="1" :display-format="format"></popup-picker>
@@ -43,7 +43,7 @@
         </div> -->
         <div class="explain pdlf30">
             <label for="">备注说明：</label>
-            <textarea name="explain" id="" cols="30" rows="10" placeholder="请输入30字符内的说明"></textarea>
+            <textarea name="explain" id="" cols="30" rows="10" placeholder="请输入30字符内的说明" v-model="remark" maxlength="30"></textarea>
         </div>
         <div class="readAgreement">
             <input type="checkbox" v-model="checkbox">
@@ -66,13 +66,15 @@
 import { PopupPicker } from 'vux'
 import { XNumber } from 'vux'
 import { Toast } from 'vux'
+import qs from 'qs'
 export default {
     data() {
         return {
-            checkbox:false,
+            checkbox:true,
             default_shipper_address:{},
             default_consignee_address:{},
             time_quantum:'',
+            remark:'',
             title1: '快递公司',
             title2: '物品类型',
             title3: '取件时间',
@@ -140,7 +142,7 @@ export default {
             value3: ['一小时内'],
             placeholder1: '请选择快递公司',
             placeholder2: '请选择物品类型',
-            roundValue: 0,
+            roundValue: 1,
             estimated_title: '预估重量',
             format: function(value, name) {
                 if(name){
@@ -237,16 +239,52 @@ export default {
             }else if(that.default_consignee_address.consignee_address_id == ''){
                 that.$vux.toast.text('请选择寄件地址', 'middle', 100)
                 return false
+            }else if(!that.checkbox){
+                that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
+                return false
+            }else if(that.remark == ''){
+                that.$vux.toast.text('请输入30字符内的说明','middle',100)
+                return false
+            }else if(that.remark.lenght == 30){
+                that.$vux.toast.text('请输入30字符内的说明','middle',100)
+                return false
             }
-            // this.$router.push({path: '/detail'})
+            console.log(that.format.name,that.format.value)
+            let data = qs.stringify({
+                'shipper_address_id': that.default_shipper_address.shipper_address_id,
+                'consignee_address_id':that.default_consignee_address.consignee_address_id,
+                'logistics_company_id':'10000',
+                'logistics_goods_category_id':'1',
+                'estimate_weight':that.roundValue,
+                'take_start_time':'2017-09-22 16:00:00',
+                'take_end_time':'2017-09-22 17:00:00',
+                'remark':that.remark
+            })
+            this.http(that.configs.apiTop + "/order/submit-ship-order", "post", data, function(res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                   that.$vux.toast.text(msg.message, 'middle', 100);
+                   setTimeout(function(){ 
+                       that.$router.push({path: '/order'}) 
+                   }, 200);
+                } else if (msg.code == 40004) {
+                } else {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                }
+            })
         }
         // timePeriod(){
         //     let 
         // }
-
     }
 }
 </script>
+
+<style lang="less" scoped>
+    .weui-cell{
+        padding:0
+    }
+</style>
 
 <style lang="scss" scoped>
 @import '../../../static/assets/css/px2rem.scss';

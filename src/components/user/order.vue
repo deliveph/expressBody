@@ -34,7 +34,7 @@
                         <div v-for="(ship,s) in ships" :key="s">
                             <div v-if="item.express_order_number == ship.ship_order_number">
                                 <li class="send">
-                                    <router-link to="/orderdetail">
+                                    <router-link :to="{path:'orderdetail',query:{ship_order_number:ship.ship_order_number}}">
                                         <i class="icon_send"></i>
                                         <div class="odd">
                                             <p class="order_number">订单号：
@@ -62,7 +62,7 @@
                                     </router-link>
                                     <div class="order-option">
                                         <span class="order-btn" v-if="ship.ship_order_status_id == -1">删除订单</span>
-                                        <span class="order-btn" v-else-if="ship.ship_order_status_id == 1 || ship.ship_order_status_id == 2">取消订单</span>
+                                        <span class="order-btn" v-else-if="ship.ship_order_status_id == 1 || ship.ship_order_status_id == 2" @click="cancel(ship.ship_order_number)">取消订单</span>
                                         <span class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 3">去支付</span>
                                         <span class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 4">去评价</span>
                                         <span class="order-btn" v-else-if="ship.ship_order_status_id == 5">删除订单</span>
@@ -91,7 +91,7 @@
                                     </router-link>
                                     <div class="order-option "  >
                                         <span class="order-btn" v-if="collection.collection_order_status_id == -1">删除订单</span>
-                                        <span class="order-btn" v-else-if="collection.collection_order_status_id == 1 || collection.collection_order_status_id == 2">取消订单</span>
+                                        <span class="order-btn" v-else-if="collection.collection_order_status_id == 1 || collection.collection_order_status_id == 2" @click="cancel(items.ship_order_number)">取消订单</span>
                                         <span class="order-btn" v-else-if="collection.collection_order_status_id == 3">修改收货时间</span>
                                         <span class="order-btn bd-finish" v-else-if="collection.collection_order_status_id == 4">去支付</span>
                                         <span class="order-btn bd-finish" v-else-if="collection.collection_order_status_id == 5">去评价</span>
@@ -121,7 +121,34 @@
             }
         },
         methods:{
+            cancel(ship_order_number){
+                let that = this
+                this.$vux.confirm.show({
+                    title: '取消订单',
+                     content: '确定要取消此订单???',
+                    // 组件除show外的属性
+                    onCancel () {
+                        
+                    },
+                    onConfirm () {
+                        if(ship_order_number){
+                            that.http(that.configs.apiTop+"/order/cancel-ship-order/"+ship_order_number, "post", '', function(res){
+                                let msg = res.data
+                                if(msg.code == 0){
+                                    that.$vux.toast.text(msg.message, 'middle',100)
+                                    setTimeout(function(){ 
+                                        that.$router.push({path: '/'}) 
+                                    }, 200);
+                                }else if(msg.code == 40004){
 
+                                }else {
+                                    that.$vux.toast.text(msg.message, 'middle', 100);
+                                }
+                            })
+                        }
+                    }
+                })
+            }
         },
         created() {
             let that = this
