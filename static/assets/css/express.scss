@@ -1,100 +1,141 @@
-.forthwith_box{
+.forthwith_box {
     padding-bottom: px2rem(150);
-    h3{
+    h3 {
         font-size: px2rem(30);
         color: #333;
-        padding:px2rem(40) 0 px2rem(20) px2rem(30);
+        padding: px2rem(40) 0 px2rem(20) px2rem(30);
     }
-    .forthwith_msg{
-        background-color:#fff;
-        .forthwith_li{
+    .forthwith_msg {
+        background-color: #fff;
+        .forthwith_li {
             height: px2rem(90);
             line-height: px2rem(90);
             border-bottom: 1px solid #f2f3f4;
             display: flex;
-            label{
+            label {
                 font-size: px2rem(28);
                 color: #666;
                 min-width: px2rem(170);
-                padding-left:px2rem(30);
+                padding-left: px2rem(30);
                 text-align: left;
             }
-            input{
+            input {
                 flex: 1;
                 font-size: px2rem(28);
                 color: #999;
                 height: px2rem(70);
                 line-height: px2rem(70);
-                padding:px2rem(10);
-                border:0;
+                padding: px2rem(10);
+                border: 0;
             }
         }
     }
-    .ex_msg{
-        .ex_li{
-        }
-        .ex_time{
-            margin-top:0;
-            border-top:0;
+    .ex_msg {
+        .ex_li {}
+        .ex_time {
+            margin-top: 0;
+            border-top: 0;
         }
     }
-    .addressee_msg{
-        .default{
+    .addressee_msg {
+        .default {
             height: px2rem(70);
             line-height: px2rem(70);
-            padding-left:px2rem(30);
-            input{
-                
+            padding-left: px2rem(30);
+            input {
                 margin-right: px2rem(20);
             }
-            span{
+            span {
                 font-size: px2rem(24);
                 color: #333;
             }
         }
     }
-    .expect_time{
-        margin-top:px2rem(40);
+    .expect_time {
+        margin-top: px2rem(40);
         height: px2rem(90);
         line-height: px2rem(90);
         border-top: 1px solid #f2f3f4;
         display: flex;
         // flex-direction:column;
         justify-content: space-between;
-        background-color:#fff; 
-        label{
+        background-color: #fff;
+        padding: 0 px2rem(30);
+        label {
             font-size: px2rem(28);
             color: #666;
             min-width: px2rem(170);
-            padding-left:px2rem(30);
+            padding-left: px2rem(30);
             text-align: left;
-            flex: 0;
+            // flex: 0;
         }
-        select{
+        select {
             flex: 1;
             font-size: px2rem(28);
             color: #999;
-            border:0;
+            border: 0;
             text-align: right
         }
+        .weui-cell {
+            border: 0;
+        }
+        .vux-cell-box:before {
+            border: 0;
+        }
+        .vux-popup-picker-value {
+            color: #333;
+            &::before {
+                width: px2rem(40);
+                height: px2rem(40);
+                background: url('/static/assets/images/more_list.png') no-repeat center;
+                background-size: px2rem(40);
+                display: inline-block;
+                right: px2rem(0);
+                top: px2rem(28);
+                margin-right: 0;
+            }
+        }
+        .weui-cell__ft {
+            width: px2rem(40);
+            height: px2rem(40);
+            background: url('/static/assets/images/more_list.png') no-repeat center;
+            background-size: px2rem(40);
+            display: inline-block;
+            right: px2rem(0);
+            top: px2rem(28);
+            margin-right: 0;
+        }
+        .vux-number-selector {
+            width: px2rem(60);
+            height: px2rem(60);
+            border: 0;
+            border-radius: px2rem(10);
+        }
+        .vux-number-input {
+            width: px2rem(88);
+            height: px2rem(58);
+            border: 1px solid #bfbfbf;
+            margin: 0 px2rem(18);
+            border-radius: px2rem(10);
+        }
     }
-    .readAgreement{
-        margin:px2rem(60) 0;
-        padding-left:px2rem(30);
-        input{
+    .readAgreement {
+        margin: px2rem(60) 0;
+        padding-left: px2rem(30);
+        input {
             margin-right: px2rem(10);
         }
-        span{
+        span {
             font-size: px2rem(24);
             color: #333;
         }
-        a{
+        a {
             font-size: px2rem(24);
             color: #356931;
-            margin-left:px2rem(12);
+            margin-left: px2rem(12);
         }
     }
-    .submit{
+    .submit {
         position: fixed;
         bottom: 0;
         width: 100%;
@@ -102,20 +143,19 @@
         line-height: px2rem(150);
         display: flex;
         background-color: #fff;
-        border-top:1px solid #e5e5e5; 
-           
-        p{
-            flex:1;
+        border-top: 1px solid #e5e5e5;
+        p {
+            flex: 1;
             font-size: px2rem(28);
             color: #999;
             text-align: center;
         }
-        .btn{
-            flex:1;
+        .btn {
+            flex: 1;
             text-align: center;
             width: px2rem(240);
-            margin:0 auto;
-            button{
+            margin: 0 auto;
+            button {
                 font-size: px2rem(28);
                 color: #fff;
                 width: px2rem(240);
@@ -129,194 +169,190 @@
     }
 }
 
-.send_warp{
-    .receiveSend_add{
-        background-color:#fff; 
-        margin-top:px2rem(20);
-        ul{
-            
-        }
-        li{
-            padding:px2rem(24) px2rem(30) px2rem(40);
-            border-bottom:1px solid #f2f3f4;
-            display: flex;;
-            &:last-child{
+.send_warp {
+    .receiveSend_add {
+        background-color: #fff;
+        margin-top: px2rem(20);
+        ul {}
+        li {
+            padding: px2rem(24) px2rem(30) px2rem(40);
+            border-bottom: 1px solid #f2f3f4;
+            display: flex;
+            ;
+            &:last-child {
                 border-bottom: 0;
             }
-            i{
+            i {
                 width: px2rem(52);
                 height: px2rem(52);
                 display: inline-block;
                 margin-right: px2rem(30);
-                &.icon_send{
+                &.icon_send {
                     background: url('/static/assets/images/icon_ji.png') no-repeat center;
-                    background-size:px2rem(52);
+                    background-size: px2rem(52);
                 }
-                &.icon_receive{
+                &.icon_receive {
                     background: url('/static/assets/images/icon_shou.png') no-repeat center;
-                    background-size:px2rem(52);
+                    background-size: px2rem(52);
                 }
             }
-            .msg{
-                margin-top:px2rem(6);
+            .msg {
+                margin-top: px2rem(6);
                 flex: 1;
-                p{
+                p {
                     font-size: px2rem(30);
                     color: #333;
                     margin-bottom: px2rem(40);
                     line-height: px2rem(40);
-                    &.add{
+                    &.add {
                         margin-bottom: 0;
                     }
-                    span{
-                        &.name{
+                    span {
+                        &.name {
                             margin-right: px2rem(30);
                         }
                     }
                 }
-                i{
+                i {
                     width: px2rem(40);
                     height: px2rem(40);
                     background: url('/static/assets/images/more_list.png') no-repeat center;
-                    background-size:px2rem(40); 
+                    background-size: px2rem(40);
                     display: inline-block;
                     right: px2rem(0);
-                    top:px2rem(28);
+                    top: px2rem(28);
                     margin-right: 0;
                 }
             }
         }
-    } 
-
-    .express_list{
+    }
+    .express_list {
         font-size: px2rem(30);
         color: #666;
-        border:0;
-        background-color:#fff;
+        border: 0;
+        background-color: #fff;
         height: px2rem(90);
         line-height: px2rem(90);
-        margin-top:px2rem(20);
-        .weui-cell{
-            border:0;
+        margin-top: px2rem(20);
+        .weui-cell {
+            border: 0;
         }
-        .vux-cell-box:before{
-            border:0;
+        .vux-cell-box:before {
+            border: 0;
         }
-        .vux-popup-picker-value{
+        .vux-popup-picker-value {
             color: #333;
-            &::before{
+            &::before {
                 width: px2rem(40);
                 height: px2rem(40);
                 background: url('/static/assets/images/more_list.png') no-repeat center;
-                background-size:px2rem(40); 
+                background-size: px2rem(40);
                 display: inline-block;
                 right: px2rem(0);
-                top:px2rem(28);
+                top: px2rem(28);
                 margin-right: 0;
             }
         }
-        .weui-cell__ft{
+        .weui-cell__ft {
             width: px2rem(40);
             height: px2rem(40);
             background: url('/static/assets/images/more_list.png') no-repeat center;
-            background-size:px2rem(40); 
+            background-size: px2rem(40);
             display: inline-block;
             right: px2rem(0);
-            top:px2rem(28);
+            top: px2rem(28);
             margin-right: 0;
         }
-        .vux-number-selector{
-            width:px2rem(60);
+        .vux-number-selector {
+            width: px2rem(60);
             height: px2rem(60);
-            border:0;
+            border: 0;
             border-radius: px2rem(10);
         }
-        .vux-number-input{
+        .vux-number-input {
             width: px2rem(88);
             height: px2rem(58);
-            border:1px solid #bfbfbf;
-            margin:0 px2rem(18);
+            border: 1px solid #bfbfbf;
+            margin: 0 px2rem(18);
             border-radius: px2rem(10);
         }
     }
-
-    .explain{
+    .explain {
         font-size: px2rem(30);
         color: #666;
         height: px2rem(160);
         background-color: #fff;
-        margin-top:px2rem(20);
+        margin-top: px2rem(20);
         display: flex;
-        label{
-            margin-top:px2rem(32);
+        label {
+            margin-top: px2rem(32);
             vertical-align: top;
             flex: 1;
         }
-        textarea{
+        textarea {
             width: 74%;
             height: px2rem(116);
-            padding:px2rem(10);
-            margin-top:px2rem(22);
+            padding: px2rem(10);
+            margin-top: px2rem(22);
             font-size: px2rem(28);
             color: #999;
         }
     }
-
-    .readAgreement{
-        margin:px2rem(60) 0;
-        padding-left:px2rem(30);
-        input{
+    .readAgreement {
+        margin: px2rem(60) 0;
+        padding-left: px2rem(30);
+        input {
             margin-right: px2rem(10);
         }
-        span{
+        span {
             font-size: px2rem(24);
             color: #333;
         }
-        a{
+        a {
             font-size: px2rem(24);
             color: #356931;
-            margin-left:px2rem(12);
+            margin-left: px2rem(12);
         }
     }
-    .submit{
+    .submit {
         position: fixed;
         bottom: 0;
         width: 100%;
         height: px2rem(150);
         display: flex;
         background-color: #fff;
-        border-top:1px solid #e5e5e5; 
-        .row{
-            flex:1;
+        border-top: 1px solid #e5e5e5;
+        .row {
+            flex: 1;
             padding-left: px2rem(30);
-            p{
+            p {
                 font-size: px2rem(30);
                 color: #333;
-                &.predict_money{
-                    margin-top:px2rem(30);
-                    span{
+                &.predict_money {
+                    margin-top: px2rem(30);
+                    span {
                         font-size: px2rem(24);
-                        color: #fd2073; 
+                        color: #fd2073;
                     }
-                    em{
+                    em {
                         margin-right: px2rem(14);
                         font-size: px2rem(40);
                         color: #fd2073;
                     }
                 }
-                &.servicing_time{
-                    margin-top:px2rem(20);
+                &.servicing_time {
+                    margin-top: px2rem(20);
                     font-size: px2rem(30);
                     color: #999;
                 }
             }
         }
-        .btn{
-            flex:1;
+        .btn {
+            flex: 1;
             text-align: center;
             width: px2rem(240);
-            margin:0 auto;
-            button{
+            margin: 0 auto;
+            button {
                 font-size: px2rem(28);
                 color: #fff;
                 width: px2rem(240);
@@ -324,9 +360,9 @@
                 line-height: px2rem(90);
                 text-align: center;
                 border-radius: px2rem(10);
-                background-color: rgba(54,105,49,0.4);
-                margin-top:px2rem(34);
-                &.active{
+                background-color: rgba(54, 105, 49, 0.4);
+                margin-top: px2rem(34);
+                &.active {
                     background-color: #356931;
                 }
             }

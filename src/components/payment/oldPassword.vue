@@ -23,12 +23,12 @@
 
 <script>
 import $ from 'jquery'
-
 export default {
     mounted: function() {
         $(".ipt-real-nick").on("input", function() {
             //console.log($(this).val());
             var $input = $(".ipt-fake-box input");
+            console.log($input)
             if (!$(this).val()) {//无值光标顶置
                 $('.ipt-active-nick').css('left', $input.eq(0).offset().left - parseInt($('.ipt-box-nick').parent().css('padding-left')) + 'px');
             }

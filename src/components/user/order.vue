@@ -34,7 +34,7 @@
                         <div v-for="(ship,s) in ships" :key="s">
                             <div v-if="item.express_order_number == ship.ship_order_number">
                                 <li class="send">
-                                    <router-link :to="{path:'orderdetail',query:{ship_order_number:ship.ship_order_number}}">
+                                    <router-link :to="{path:'repget',query:{ship_order_number:ship.ship_order_number,status:'service'}}">
                                         <i class="icon_send"></i>
                                         <div class="odd">
                                             <p class="order_number">订单号：
@@ -75,7 +75,7 @@
                         <div v-for="(collection,c) in collections" :key="c">
                             <div v-if="item.express_order_number == collection.collection_order_number">
                                 <li class="put" >
-                                    <router-link :to="{name:'Detail',query:{type:'free'}}">
+                                    <router-link :to="{path:'orderdetail',query:{ship_order_number:ship.ship_order_number,status:'service'}}">
                                         <i class="icon_put"></i>
                                         <div class="odd">
                                             <p class="order_number">订单号：<span>{{collection.collection_order_number}}</span></p>

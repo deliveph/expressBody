@@ -28,19 +28,31 @@
                     <img src="/static/assets/images/succeed.png" alt="">
                 </div>
                 <p>感谢您的评价，我们会再接再励！</p>
-                <div class="go-eval">
+                <div class="go-eval" @click="confirmShare">
                     <button class="commit-btn">分享</button>
                 </div>
             </div>
         </div>
+
+        <shareshade v-show="share" @click.native="share = !share"></shareshade>
     </div>
 </template>
 <script>
+    import Shareshade from '../base/public/shareShade'
     export default{
         data() {
             return{
                 type: 2,
-                status: 0
+                status: 0,
+                share: false
+            }
+        },
+        components:{
+           Shareshade
+        },
+        methods:{
+            confirmShare(){
+                this.share = true
             }
         }
     }
