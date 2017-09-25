@@ -81,8 +81,9 @@
                         if(data.role_type == 'user'){
                             that.$router.push({path: '/user',query: {is_perfect: "0"}}); 
                         }else if(data.role_type == 'service'){
-                            that.$parent.layerPwhide = true;
-                            that.$parent.layerhide = false
+                            that.$router.push({path: '/service'}); 
+                            // that.$parent.layerPwhide = true;
+                            // that.$parent.layerhide = false
                         }
                     }else if(msg.code == 40004){
                         localStorage.clear("token")

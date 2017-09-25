@@ -29,7 +29,7 @@
                 <div class="pay-item">
                     <div class="pay-des col-5">可用优惠券：</div>
                     <div class="pay-much col-5 t-r">
-                        <router-link to="" class="ft-red">{{user_coupon.coupon_amount}}快递豆<i class="arrow-right"></i></router-link>
+                        <router-link :to="{path:'/coupon'}" class="ft-red"><span  v-if="user_coupon !=''">{{user_coupon.coupon_amount}}快递豆</span><i class="arrow-right"></i></router-link>
                     </div>
                 </div>
             </li>
@@ -50,7 +50,7 @@
                     </div>
                     <div class="layer_container">
                         <div class="pw_input ipt-box-nick">
-                            <input type="tel" maxlength="6" class="ipt-real-nick" value=""/>
+                            <input type="tel" maxlength="6" class="ipt-real-nick" value="" v-model="password"/>
                             <div class="ipts-box-nick">
                                 <div class="ipt-fake-box">
                                     <input type="password" maxlength="1">
@@ -78,6 +78,7 @@
 <script>
     import $ from 'jquery'
     import  { Toast } from 'vux'
+    import  qs from 'qs'
     export default{
         data(){
             return{
@@ -86,38 +87,59 @@
                 ship_order:[],
                 user_coupon:[],
                 layerSetting:false,
-                password:'',
-                pwFunction:''
+                password:'123456',
+                pwFunction:'',
+                type:''
             }
         },
         components:{
-            Toast
+            Toast,
+            qs
         },
         created(){
             let that = this
             that.ship_order_number = this.$route.query.ship_order_number
-            this.http(that.configs.apiTop + "/page/affirm-ship-order/"+that.ship_order_number, "get", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    let data = msg.data
-                    that.items = msg.data 
-                    that.ship_order =  data.ship_order
-                    that.user_coupon = data.user_coupon            
-                } else if (msg.code == 40004) {
-                    // location.href = that.configs.accreditUrl
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
+            that.type = this.$route.query.type
+            if(that.type == 'ship'){
+                this.http(that.configs.apiTop + "/page/affirm-ship-order/"+that.ship_order_number, "get", '', function(res) {
+                    let msg = res.data
+                    if (msg.code == 0) {
+                        let data = msg.data
+                        that.items = msg.data 
+                        that.ship_order =  data.ship_order
+                        that.user_coupon = data.user_coupon            
+                    } else if (msg.code == 40004) {
+                        // location.href = that.configs.accreditUrl
+                    } else {
+                        that.$vux.toast.text(msg.message, 'middle', 100);
+                    }
+                })
+            }else{
+                this.http(that.configs.apiTop + "/page/affirm-collection-order/"+that.ship_order_number, "get", '', function(res) {
+                    let msg = res.data
+                    if (msg.code == 0) {
+                        let data = msg.data
+                        that.items = msg.data 
+                        that.ship_order =  data.ship_order
+                        that.user_coupon = data.user_coupon            
+                    } else if (msg.code == 40004) {
+                        // location.href = that.configs.accreditUrl
+                    } else {
+                        that.$vux.toast.text(msg.message, 'middle', 100);
+                    }
+                })
+            }
+            
         },
         methods:{
             confirmPay(){
                 let that = this
                 if(that.items.is_setting_pay_password == false){
-                    that.router.push({ name: 'Oldpassword'})
+                    that.$router.push({ name: 'setpaypw'})
                 }else {
                     that.layerSetting = true
                     that.pwFunction()
+                    
                 }
             },
             cancelSetting(){
@@ -129,19 +151,44 @@
                     that.$vux.toast.text('请输入6位数的密码', 'middle', 100);
                     return false;
                 }
-                this.http(that.configs.apiTop + "/order/pay-ship-order/"+that.ship_order_number+"?coupon_id="+that.user_coupon.coupon_id, "get", '', function(res) {
-                    let msg = res.data
-                    if (msg.code == 0) {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                        setTimeout(function(){ 
-                            that.$router.push({path: '/user'}) 
-                        }, 200); 
-                    } else if (msg.code == 40004) {
-                        // location.href = that.configs.accreditUrl
-                    } else {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                    }
+                let user_coupon_id = 0;
+                if(that.user_coupon.coupon_id){
+                    user_coupon_id = user_coupon.coupon_id
+                }
+                let data = qs.stringify({
+                    'user_coupon_id':user_coupon_id,
+                    'user_pay_password':that.password
                 })
+                if(that.type == 'ship'){
+                    this.http(that.configs.apiTop + "/order/pay-ship-order/"+that.ship_order_number, "post",  data, function(res) {
+                        let msg = res.data
+                        if (msg.code == 0) {
+                            that.$vux.toast.text(msg.message, 'middle', 100);
+                            setTimeout(function(){ 
+                                that.$router.push({path: '/user'}) 
+                            }, 200); 
+                        } else if (msg.code == 40004) {
+                            // location.href = that.configs.accreditUrl
+                        } else {
+                            that.$vux.toast.text(msg.message, 'middle', 100);
+                        }
+                    })
+                }else{
+                    this.http(that.configs.apiTop + "/collection-order/pay/"+that.ship_order_number, "post",  data, function(res) {
+                        let msg = res.data
+                        if (msg.code == 0) {
+                            that.$vux.toast.text(msg.message, 'middle', 100);
+                            setTimeout(function(){ 
+                                that.$router.push({path: '/user'}) 
+                            }, 200); 
+                        } else if (msg.code == 40004) {
+                            // location.href = that.configs.accreditUrl
+                        } else {
+                            that.$vux.toast.text(msg.message, 'middle', 100);
+                        }
+                    })
+                }
+                
             }
         },
         mounted: function() {

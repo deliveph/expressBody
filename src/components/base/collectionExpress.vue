@@ -9,7 +9,7 @@
                 <div class="ex_msg forthwith_msg">
                     <div class="ex_odd ex_li forthwith_li">
                         <label for="">快递单号：</label>
-                        <input type="text" name="odd" placeholder="请输入快递单号" value="" v-model="realCode">
+                        <input type="number" name="odd" placeholder="请输入快递单号" value="" v-model="realCode">
                     </div>
                     <div class="ex_phone ex_li forthwith_li">
                         <label for="">快递员电话：</label>
@@ -231,7 +231,7 @@ export default {
             realName:'',
             realPhone:'',
             realAddress:'',
-            defaultFalse:'',
+            defaultFalse:false,
             // 预约收件
             reservationCode:'',
             reservationExpressPhone:'',
@@ -239,7 +239,7 @@ export default {
             reservationName:'',
             reservationPhone:'1',
             reservationAddress:'',
-            defaultFalse1:'',
+            defaultFalse1:false,
 
             // 
             items:[],
@@ -275,16 +275,22 @@ export default {
                 that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
                 return false
             }
+            
+            if(that.realLogisticFee == ''){
+                that.realLogisticFee = 0
+            }
+
             let data = qs.stringify({
                 'logistics_code': that.realCode,
                 'courier_phone': that.realExpressPhone,
+                'collection_logistics_fee':that.realLogisticFee,
                 'delivery_start_time':'2017-09-22 16:00:00',
                 'delivery_end_time':'2017-09-22 17:00:00',
                 'consignee_name':that.realName,
                 'consignee_phone':that.realPhone,
                 'consignee_address':that.realAddress
             })
-            this.http(that.configs.apiTop + "/order/submit-ship-order", "post", data, function(res) {
+            this.http(that.configs.apiTop + "/order/submit-consignee-order", "post", data, function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
                    that.$vux.toast.text(msg.message, 'middle', 100);
@@ -296,12 +302,22 @@ export default {
                     that.$vux.toast.text(msg.message, 'middle', 100);
                 }
             })
-            this.$router.push({ path: '/detail' })
         },
         defaultMsg(){
             let that = this
+            let stage = that.stage
             if(that.defaultFalse){
-
+                if(stage.current_service != ''){
+                    that.defaultFalse = true
+                    that.realName = stage.current_service.service_nickname
+                    that.realPhone = stage.current_service.service_phone
+                    that.realAddress = stage.stage_full_address
+                }
+            }else{
+                that.defaultFalse = false
+                that.realName = ''
+                that.realPhone = ''
+                that.realAddress = ''
             }
         },
         defaultMsg1(){
@@ -321,6 +337,13 @@ export default {
             if (msg.code == 0) {
                 that.items = msg.data
                 that.stage = msg.data.stage
+                let stage = msg.data.stage
+                if(that.stage.current_service != ''){
+                    that.defaultFalse = true
+                    that.realName = stage.current_service.service_nickname
+                    that.realPhone = stage.current_service.service_phone
+                    that.realAddress = stage.stage_full_address
+                }
                 that.servicing_time = msg.data.servicing_time
             } else if (msg.code == 40004) {
             } else {

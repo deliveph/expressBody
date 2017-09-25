@@ -1,29 +1,71 @@
 <template>
-    <div class="oldPassword">
-        <h3>请输入旧密码</h3>
-        <div class="pw_input ipt-box-nick">
-            <input type="tel" maxlength="6" class="ipt-real-nick"/>
-            <div class="ipts-box-nick">
-                <div class="ipt-fake-box">
-                    <input type="password" maxlength="1">
-                    <input type="password" maxlength="1">
-                    <input type="password" maxlength="1">
-                    <input type="password" maxlength="1">
-                    <input type="password" maxlength="1">
-                    <input type="password" maxlength="1">
+    <div id="settingPassword" >
+        <div class="oldPassword" v-if="setting">
+            <h3>为保障您的账户安全，请设置6位支付密码</h3>
+            <div class="pw_input ipt-box-nick">
+                <input type="tel" maxlength="6" class="ipt-real-nick" v-model="passwordlen"/>
+                <div class="ipts-box-nick">
+                    <div class="ipt-fake-box">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                    </div>
                 </div>
             </div>
+            <div class="btn">
+                <!-- 输入完6位密码才会高亮 active-->
+                <button type="button" :class="className" @click="settingPassword">下一步</button>
+            </div>
         </div>
-        <div class="btn">
-            <!-- 输入完6位密码才会高亮 active-->
-            <button type="button" class="btn_next " @click="settingPassword">下一步</button>
+        <!-- 确认支付密码 -->
+        <div class="oldPassword" v-if="affirmPW">
+            <h3>请确认支付密码</h3>
+            <div class="pw_input ipt-box-nick">
+                <input type="tel" maxlength="6" class="ipt-real-nick" v-model="affirmpwlen"/>
+                <div class="ipts-box-nick">
+                    <div class="ipt-fake-box">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                    </div>
+                 </div>
+            </div>
+            <div class="btn">
+                <!-- 输入完6位密码才会高亮 active-->
+                <button type="button" :class="className" @click="affirmPassword">下一步</button>
+            </div>
         </div>
     </div>
+
+    
 </template>
 
 <script>
 import $ from 'jquery'
+import  { Toast } from 'vux'
+import  qs from 'qs'
 export default {
+    data(){
+        return{
+            passwordlen:'',
+            affirmpwlen:'',
+            setting:true,
+            affirmPW:false,
+            className:{
+                btn_next:true,
+                active:true
+            }
+        }
+    },
+    components:{
+        Toast
+    },
     mounted: function() {
         $(".ipt-real-nick").on("input", function() {
             //console.log($(this).val());
@@ -60,7 +102,40 @@ export default {
     },
     methods: {
         settingPassword(){
-            this.$router.push({path:'/'})
+            let that = this;
+            if(that.passwordlen.length < 6){
+                that.$vux.toast.text('请输入6位支付密码', 'middle', 100);
+                 return false;
+            }
+            that.setting = false
+            that.affirmPW = true
+        },
+        affirmPassword(){
+            let that = this
+            if(that.passwordlen.length < 6){
+                that.$vux.toast.text('请输入6位支付密码', 'middle', 100);
+                return false;
+            }else if(that.affirmpwlen != that.passwordlen){
+                that.$vux.toast.text('两次支付密码不一致', 'middle', 100);
+                 return false;
+            }
+            let data = qs.stringify({
+                'password':that.passwordlen,
+                'confirm_password':that.affirmpwlen
+            })
+            this.http(that.configs.apiTop + "/user-pay-password/setting", "post", data, function(res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                    setTimeout(function(){ 
+                        that.$router.push({path: '/payset'}) 
+                    }, 200); 
+                } else if (msg.code == 40004) {
+                    // location.href = that.configs.accreditUrl
+                } else {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                }
+            })
         }
     }
 }

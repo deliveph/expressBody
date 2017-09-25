@@ -83,15 +83,15 @@
         <!-- 用户操作按纽 --> 
         <button class="disable-btn" v-if="items.ship_order_status_id == 1 && status == 'user' || items.ship_order_status_id == 2 && status == 'user'" @click="cancel(items.ship_order_number)">取消</button>
         <button v-if="items.ship_order_status_id == 1 && status == 'user' || items.ship_order_status_id == 2 && status == 'user'" @click="editerorder(items.ship_order_number)">编辑</button>
-        <button v-else-if="items.ship_order_status_id == 3 && status == 'user'">去支付</button>
-        <button v-else-if="items.ship_order_status_id == 4 && status == 'user'">去评价</button>
+        <button v-else-if="items.ship_order_status_id == 3 && status == 'user'" @click="pay(items.ship_order_number)">去支付</button>
+        <button v-else-if="items.ship_order_status_id == 4 && status == 'user'" @click="evaluate(items.ship_order_number)">去评价</button>
         <button v-else-if="items.ship_order_status_id == 5 && status == 'user'" @click="editerorder()">继续下单</button>
         <!-- 客服操作按纽 --> 
         <button class="" v-if="items.ship_order_status_id == 1 && status == 'service'" @click="receiveOrder(items.ship_order_number)">接单</button>
-        <button v-if="items.ship_order_status_id == 2 && status == 'service'" @click="affirmShip()">
-            确定
+        <button v-if="items.ship_order_status_id == 2 && status == 'service'" @click="affirmShip(items.ship_order_number)">
+            确定收货
         </button>
-        <button v-if="items.ship_order_status_id == 2 && status == 'service'" @click="writelayer()">
+        <button v-if="items.ship_order_status_id == 4 && status == 'service'" @click="writelayer(items.ship_order_number)">
             填写/修改快递单号
         </button>
     </div>
@@ -170,9 +170,9 @@
             editerorder(order_number){
                 let that = this
                 if(!order_number){
-                    this.$router.push({ name: 'send', query: { ship_order_number: order_number }})
+                    this.$router.push({ name: 'Send', query: { ship_order_number: order_number }})
                 }else{
-                    this.$router.push({ name: 'send'})
+                    this.$router.push({ name: 'Send'})
                 }
                 
             },
@@ -205,6 +205,14 @@
                     }
                 })
             },
+            // 用户支付订单
+            pay(ship_order_number){
+                this.$router.push({path:'/confirm',query:{ship_order_number:ship_order_number,type:'ship'}})
+            },
+            // 去评价
+            evaluate(ship_order_number){
+                this.$router.push({path:'/evaluate',query:{ship_order_number:ship_order_number,type:'ship'}})
+            },
             // 客服接受寄件订单
             receiveOrder(ship_order_number){
                 let that = this
@@ -213,7 +221,7 @@
                     if(msg.code == 0){
                         that.$vux.toast.text(msg.message, 'middle',100)
                         setTimeout(function(){ 
-                            that.$router.push({path: '/service'}) 
+                            that.$router.push({path: '/serviceOrder'}) 
                         }, 200);
                     }else if(msg.code == 40004){
 
@@ -223,14 +231,15 @@
                 })
             },
             // 客服确定寄件
-            affirmShip(){
+            affirmShip(ship_order_number){
                 let that = this
-                his.http(that.configs.apiTop+"/order/affirm-ship-order/"+ship_order_number, "post", '', function(res){
+                console.log(1230)
+                this.http(that.configs.apiTop+"/order/affirm-ship-order/"+ship_order_number, "post", '', function(res){
                     let msg = res.data
                     if(msg.code == 0){
                         that.$vux.toast.text(msg.message, 'middle',100)
                         setTimeout(function(){ 
-                            that.$router.push({path: '/service'}) 
+                            that.$router.push({path: '/serviceOrder'}) 
                         }, 200);
                     }else if(msg.code == 40004){
 
@@ -240,7 +249,7 @@
                 })
             },
             // 客服填写/修改快递单号
-            writeCode(){
+            writeCode(ship_order_number){
                 let that = this
                 his.http(that.configs.apiTop+"/order/receive-ship-order/"+ship_order_number, "post", '', function(res){
                     let msg = res.data

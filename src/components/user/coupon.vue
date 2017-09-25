@@ -8,7 +8,7 @@
                 <ul>
                     <li v-for="(item,i) in items" :key="i" >
                         <div class="coupon-l">
-                            <router-link to="" href="javascript:;" @click.native="getTicket(item.coupon_id)">
+                            <router-link to="" href="javascript:;" @click.native="getTicket(item.coupon_id,item.coupon_category_id)">
                                 <i class="arrow-left"></i>
                                 <span>立即使用</span>
                             </router-link>
@@ -26,7 +26,7 @@
                 <ul>
                     <li v-for="(item,i) in items" :key="i">
                         <div class="coupon-l">
-                            <router-link to="" href="javascript:;" @click.native="getTicket(item.coupon_id)">
+                            <router-link to="" href="javascript:;" @click.native="getTicket(item.coupon_id,item.coupon_category_id)">
                                 <i class="arrow-left"></i>
                                 <span>立即使用</span>
                             </router-link>
@@ -44,7 +44,7 @@
                 <ul>
                     <li v-for="(item,i) in items" :key="i">
                         <div class="coupon-l">
-                            <router-link to="" href="javascript:;" @click.native="getTicket(item.coupon_id)">
+                            <router-link to="" href="javascript:;" @click.native="getTicket(item.coupon_id,item.coupon_category_id)">
                                 <i class="arrow-left"></i>
                                 <span>立即使用</span>
                             </router-link>
@@ -69,7 +69,8 @@
 </template>
 
 <script>
-    import { Tab, TabItem } from 'vux'
+    import { Tab, TabItem, Toast } from 'vux'
+    import qs from 'qs'
     export default{
         data() {
             return{
@@ -84,7 +85,8 @@
         },
         components: {
             Tab,
-            TabItem
+            TabItem,
+            Toast
         },
         methods: {
             getItem(index){
@@ -132,6 +134,26 @@
                         }
                     })
                 }
+            },
+            getTicket(coupon_id,coupon_category_id){
+                let that = this;
+                if(coupon_category_id){
+                    
+                }
+                let data = qs.stringify({
+                    'coupon_id': coupon_id
+                })
+                this.http(that.configs.apiTop + "/coupon/get-coupon", "post", data, function(res) {
+                    let msg = res.data
+                    if (msg.code == 0) {
+                        that.$vux.toast.text(msg.message, 'middle', 100);
+                    } else if (msg.code == 40004) {
+                        // location.href = that.configs.accreditUrl
+                    } else {
+                        that.$vux.toast.text(msg.message, 'middle', 100);
+                    }
+                })
+                
             }
         },
         created() {

@@ -25,7 +25,7 @@
                 <li>
                     <router-link to="/balance">
                         <div class="actions-num">
-                            <em>125</em><i class="balace"></i>
+                            <em>0</em><i class="balace"></i>
                         </div>
                         <span class="dis t-c">我的金额(豆)</span>
                     </router-link>
@@ -33,7 +33,7 @@
                 <li>
                     <router-link to="/coupon">
                         <div class="actions-num">
-                            <em>125</em><i class="coupon"></i>
+                            <em>0</em><i class="coupon"></i>
                         </div>
                         <span class="dis t-c">我的优惠券(张)</span>
                     </router-link>
@@ -41,7 +41,7 @@
                 <li>
                     <router-link to="/friends">
                         <div class="actions-num">
-                            <em>125</em><i class="friend"></i>
+                            <em>0</em><i class="friend"></i>
                         </div>
                         <span class="dis t-c">我的好友(个)</span>
                     </router-link>
@@ -57,25 +57,25 @@
                 </div>
                 <ul class="order-list">
                     <li>
-                        <router-link to="/waitaccept">
+                        <router-link :to="{path:'waitaccept',query:{express_order_status:'wait_order'}}">
                             <i class="oicon1"></i>
                             <em>待接单</em>
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="/accept">
+                        <router-link :to="{path:'accept',query:{express_order_status:'have_order'}}">
                             <i class="oicon2"></i>
                             <em>已接单</em>
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="/waitpay">
+                        <router-link :to="{path:'waitpay',query:{express_order_status:'unpaid'}}">
                             <i class="oicon3"></i>
                             <em>待支付</em>
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="/finish">
+                        <router-link :to="{path:'finish',query:{express_order_status:'wait_comment'}}">
                             <i class="oicon4"></i>
                             <em>待评价</em>
                         </router-link>
@@ -97,7 +97,7 @@
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="/address">
+                        <router-link to="/address/shipper">
                             <span><i class="icon3"></i>地址列表</span>
                             <em><i class="arrow-right"></i></em>
                         </router-link>

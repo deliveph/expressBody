@@ -45,6 +45,7 @@ import login from '@/components/base/login'
 import suggest from '@/components/suggest/suggest'
 import session from '@/components/Im/session'
 import serviceOrder from '@/components/service/order'
+import setpaypw from '@/components/payment/settingpaypw'
 
 Vue.use(Router)
 
@@ -298,7 +299,13 @@ export default new Router({
             meta: {
                 title: '全部订单'
             }
-        }
+        },
+        //设置支付密码
+        {
+            path: '/setpaypw',
+            name: 'setpaypw',
+            component: setpaypw
+        },
     ]
 })
 

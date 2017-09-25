@@ -90,13 +90,6 @@ Vue.prototype.token = function () {
 }
 
 Vue.prototype.http = function (url, method, data, callback) {
-  // // let token = this.token()
-  // let localToken = localStorage.getItem("token")
-  // if (localToken == '' || localToken == null || localToken == undefined) {
-  //   location.href = configs.accreditUrl
-  //   return
-  // }
-  // console.log(token)
   this.$ajax({
     url: url,
     method: method,

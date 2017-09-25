@@ -32,7 +32,7 @@
         <div class="entrance_list">
             <ul>
                 <li>
-                    <router-link :to="{name:'Collection'}">
+                    <router-link :to="{name:'serviceOrder'}">
                         <img src="/static/assets/images/btn_me_-indent.png" />
                         <p>我的订单</p>
                     </router-link>
@@ -50,7 +50,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name:'user'}">
+                    <router-link :to="{name:'Person'}">
                         <img src="/static/assets/images/btn_me.png" />
                         <p>我的资料</p>
                     </router-link>
@@ -105,14 +105,18 @@
                 </li>
             </ul>
         </div>
+
+        <LayerPw v-if="layerPwhide"></LayerPw>
     </div>
 </template>
 
 <script>
 import Grade from '../../components/grade'
+import LayerPw from '../base/public/layer_pw'
 export default {
     components: {
-        Grade
+        Grade,
+        LayerPw
     },
     methods: {
         messageBox() {
@@ -124,10 +128,12 @@ export default {
     },
     data() {
         return {
-
+            layerPwhide:true
         }
     },
     created() {
+        let that = this
+        let data = this.$route.query.password
     }
 }
 </script>

@@ -16,48 +16,88 @@
 </template>
 <script>
     import { Rater } from 'vux'
+    import  { Toast } from 'vux'
+    import  qs from 'qs'
     export default{
         data() {
             return {
                 dstar: 0,
                 ship_order_number:'',
-                items:[]
+                items:[],
+                type:''
             }
         },
         methods: {
             saveRes() {
                 let that = this
                 let number = that.dstar.toFixed(1)
-                this.http(that.configs.apiTop + "/order/comment-ship-order/"+that.ship_order_number+"?service_score="+number, "get", '', function(res) {
+                let data = qs.stringify({
+                    'service_score':number
+                })
+                if(that.type == 'ship'){
+                    this.http(that.configs.apiTop + "/order/comment-ship-order/"+that.ship_order_number, "post", data, function(res) {
+                        let msg = res.data
+                        if (msg.code == 0) {
+                            that.$vux.toast.text(msg.message, 'middle', 100);
+                            setTimeout(function(){ 
+                                that.$router.push({path:'/evalresult'})
+                            }, 200);
+                        } else if (msg.code == 40004) {
+                            // location.href = that.configs.accreditUrl
+                        } else {
+                            that.$vux.toast.text(msg.message, 'middle', 100);
+                        }
+                    })
+                }else{
+                    this.http(that.configs.apiTop + "/collection-order/comment/"+that.ship_order_number, "post", data, function(res) {
+                        let msg = res.data
+                        if (msg.code == 0) {
+                            that.$vux.toast.text(msg.message, 'middle', 100);
+                            setTimeout(function(){ 
+                                that.$router.push({path:'/evalresult'})
+                            }, 200);
+                        } else if (msg.code == 40004) {
+                            // location.href = that.configs.accreditUrl
+                        } else {
+                            that.$vux.toast.text(msg.message, 'middle', 100);
+                        }
+                    }) 
+                }
+            }
+        },
+        components: {
+            Rater,
+            Toast
+        },
+        created(){
+            let that = this
+            that.ship_order_number = this.$route.query.ship_order_number
+            that.type = this.$route.query.type
+            if(that.type == 'ship'){
+                this.http(that.configs.apiTop + "/page/comment-ship-order/"+that.ship_order_number, "get", '', function(res) {
                     let msg = res.data
                     if (msg.code == 0) {
-                        that.items = msg.date.service
-                        that.$router.push({path:'/evalresult'});
+                        let data = msg.data
+                        that.items = data.service
                     } else if (msg.code == 40004) {
                         // location.href = that.configs.accreditUrl
                     } else {
                         that.$vux.toast.text(msg.message, 'middle', 100);
                     }
                 })
-                
+            }else{
+                this.http(that.configs.apiTop + "/page/comment-collection-order/"+that.ship_order_number, "get", '', function(res) {
+                    let msg = res.data
+                    if (msg.code == 0) {
+                        let data = msg.data
+                        that.items = data.service
+                    } else if (msg.code == 40004) {
+                        // location.href = that.configs.accreditUrl
+                    } else {
+                        that.$vux.toast.text(msg.message, 'middle', 100);
+                    }
+                })
             }
-        },
-        components: {
-            Rater
-        },
-        created(){
-            let that = this
-            that.ship_order_number = this.$route.query.ship_order_number
-            this.http(that.configs.apiTop + "/page/comment-ship-order/"+that.ship_order_number, "get", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    that.items = msg.date.service
-                } else if (msg.code == 40004) {
-                    // location.href = that.configs.accreditUrl
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
         }
     }
 </script>

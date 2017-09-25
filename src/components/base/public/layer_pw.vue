@@ -53,17 +53,15 @@ export default {
             let data = qs.stringify({
                 'password': that.password
             })
-            this.http(apiTop + "/service/verify-password", "post", data, function(res) {
+            this.http(that.configs.apiTop + "/service/verify-password", "post", data, function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
-                    if (msg.data == 'user') {
-                        this.$router.push({ path: '/user' });
-                    } else if (msg.data == 'service') {
-                        that.$parent.layerPwhide = true;
-                        that.$parent.layerhide = false
-                    }
+                    that.$parent.layerPwhide = false
+                    that.$vux.toast.text(msg.message, 'middle', 100);
                 } else if (msg.code == 40004) {
                     location.href = that.configs.accreditUrl
+                } else{
+                    that.$vux.toast.text(msg.message, 'middle', 100);1
                 }
             })
         },

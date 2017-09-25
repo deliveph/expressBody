@@ -855,9 +855,10 @@
                 }
             }
             p {
-                margin-top: px2rem(26);
+                margin-top: 0.05rem;
                 font-size: px2rem(24);
                 color: #fff;
+                line-height: 0.17rem;
             }
         }
         .past-icon {
@@ -888,6 +889,7 @@
 .order-list {
     ul {
         padding: 0 4%;
+        padding-bottom:px2rem(30);
         li {
             margin-top: px2rem(20);
             background: #fff;
@@ -957,7 +959,7 @@
                         color: #fd2073;
                         position: absolute;
                         top: px2rem(10);
-                        right: 0;
+                        right: px2rem(-20);
                     }
                 }
                 .express_number {
@@ -1140,6 +1142,8 @@
             a {
                 font-size: px2rem(28);
                 vertical-align: middle;
+                width:100%;
+                display: inline-block;
                 i {
                     border-color: #ccc;
                 }
