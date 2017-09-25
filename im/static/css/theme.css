@@ -1,0 +1,1488 @@
+/* 设置皮肤样式 */
+
+
+/* 封面背景及主题背景，可以设置图片 */
+
+
+/* 导航及tab相关颜色 */
+
+
+/* 输入框颜色 */
+
+
+/* 基础按钮颜色 */
+
+
+/* 设置颜色变量 */
+
+
+/* 顶部导航高度 */
+
+
+/* 消息变量 */
+
+
+/*
+* 基础
+*/
+
+
+/* 样式初始化 */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  line-height: 1.5;
+  font-size: 16px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+  text-align: center;
+}
+
+textarea,
+input {
+  outline: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+textarea{
+    resize:none
+}
+
+a {
+  display: inline-block;
+  line-height: inherit;
+  color: inherit;
+  outline: 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a img {
+  border: 0;
+}
+
+a:link,
+a:visited,
+a:active,
+a:hover {
+  color: inherit;
+}
+
+li {
+  list-style: none;
+}
+
+ ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+ ::-webkit-scrollbar-track-piece {
+  background-color: #ebeef3;
+  -webkit-border-radius: 4px;
+}
+
+ ::-webkit-scrollbar-thumb:vertical {
+  height: 32px;
+  background-color: #d8dce4;
+  -webkit-border-radius: 4px;
+}
+
+ ::-webkit-scrollbar-thumb:horizontal {
+  width: 32px;
+  background-color: #d8dce4;
+  -webkit-border-radius: 4px;
+}
+
+
+/*
+    * 布局
+    */
+
+
+/* 手机全屏占比 */
+
+html,
+body,
+.g-window {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-size: 1rem;
+  color: #333;
+}
+
+
+/* 外面嵌套g-window 为了覆盖weui默认样式 */
+
+
+/*顶部布局*/
+
+.g-window .g-header {
+  /* 移动端用fixed定位会有bug */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5;
+}
+
+.g-window .g-header .router-link {
+  height: 3.6rem;
+  line-height: 3.6rem;
+  color: #333;
+  background-color: #fff;
+}
+
+.g-window .g-header .router-link-active {
+  color: #0091e4;
+  background-color: #e5f4ff;
+}
+
+.g-window .g-header.vux-tab {
+  height: 3.6rem;
+}
+
+.g-window .g-header.vux-tab a {
+  line-height: 3.6rem;
+}
+
+
+/* 水平垂直居中布局 */
+
+.g-window .g-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  height: auto;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+
+/* 继承布局 */
+
+.g-window .g-inherit {
+  position: inherit;
+  display: inherit;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+/* flex布局-中央布局 */
+
+.g-window .g-flex-c {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: row wrap;
+  -moz-box-orient: horizontal;
+  -moz-box-direction: normal;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+
+/* 重置WEUI样式 */
+
+.g-window .weui-mask_transparent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+  background-color: #000;
+  opacity: 0.3;
+}
+
+.g-window .weui-cells {
+  margin-top: 0;
+  font-size: inherit;
+  background-color: transparent;
+}
+
+.g-window .weui-cell {
+  font-size: 1.08rem;
+  padding: 0.5rem 0.7rem;
+}
+
+.g-window .weui-cell .vux-label-desc {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.g-window .weui-cell:before {
+  /*left: 0;*/
+}
+
+
+/* 按钮组 */
+
+.g-window .weui-btn {
+  font-size: 1rem;
+}
+
+.g-window .weui-btn:after {
+  border: none;
+}
+
+.g-window .weui-btn_default {
+  color: #0091e4;
+}
+
+.g-window .weui-btn_transparent {
+  color: #fff;
+  background-color: inherit;
+}
+
+.g-window .weui-btn_primary,
+.g-window .weui-btn_warn {
+  width: 90%;
+}
+
+.g-window .weui-btn_primary {
+  background-color: #0091e4;
+}
+
+.g-window .weui-btn_warn {
+  background-color: #f04d64;
+}
+
+
+/* 输入框组 */
+
+.g-window .weui-input {
+  font-size: 1.08rem;
+}
+
+
+/* switch 元件 */
+
+.g-window .weui-switch:checked,
+.g-window .weui-switch-cp__input:checked~.weui-switch-cp__box {
+  background-color: inherit;
+  border-color: inherit;
+}
+
+
+/* 导航元件 */
+
+.g-window .vux-tab .vux-tab-item {
+  font-size: inherit;
+}
+
+.g-window .vux-tab .vux-tab-item>a {
+  display: inline-block;
+  width: inherit;
+  height: inherit;
+}
+
+.g-window .vux-tab .vux-tab-item.vux-tab-selected {
+  color: inherit;
+}
+
+.g-window .vux-button-group {}
+
+.g-window .vux-button-group>a.vux-button-group-current,
+.g-window .vux-button-group>a.hover,
+.g-window .vux-button-group>a:active {
+  background-color: inherit;
+}
+
+.g-window .vux-header .vux-header-title,
+.g-window .vux-header h1 {
+  margin: 0 20%;
+  color: inherit;
+}
+
+.g-window .vux-header .vux-header-left,
+.g-window .vux-header .vux-header-right {
+  color: inherit;
+}
+
+.g-window .vux-header .vux-header-left a,
+.g-window .vux-header .vux-header-left button,
+.g-window .vux-header .vux-header-right a,
+.g-window .vux-header .vux-header-right button {
+  color: inherit;
+}
+
+.g-window .weui-cell__ft {
+  font-size: 0.96rem;
+  color: inherit;
+}
+
+.g-window .weui-search-bar {
+  background-color: transparent;
+}
+
+.g-window .weui-icon-search {
+  line-height: 2rem;
+}
+
+.g-window .weui-icon-warn {
+  font-size: inherit;
+}
+
+.g-window .weui-search-bar__box .weui-search-bar__input,
+.g-window .weui-search-bar__box .weui-icon-search {
+  line-height: 2rem;
+  font-size: 1.08rem;
+}
+
+.g-window .vux-label-desc {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.g-window .vux-datetime.weui-cell {
+  padding: 0;
+}
+
+.g-window .left-arrow {}
+
+.g-window .left-arrow:before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #ccc;
+  border-width: 1px 0 0 1px;
+  -webkit-transform: rotate(315deg);
+  -moz-transform: rotate(315deg);
+  transform: rotate(315deg);
+  top: 8px;
+  left: 7px;
+}
+
+
+/*
+     * 模块
+     */
+
+
+/* 外面嵌套g-window 为了覆盖weui默认样式 */
+
+.g-window .m-main,
+.g-window .m-album,
+.g-window .m-article,
+.g-window .m-room {
+  position: absolute;
+  /* padding-top: 3.6rem; */
+  display: block;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* 控制元素在移动设备上是否使用滚动回弹效果 */
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+/* 封面皮肤 */
+
+.g-window .m-album {
+  background: #0091e4;
+}
+
+
+/* 主背景皮肤 */
+
+.g-window .m-main {
+  background: #f9fcff;
+}
+
+.g-window .m-article {
+  background: #f9fcff;
+}
+
+
+/* 登录注册页面 */
+
+.g-window .m-login .cells {
+  position: relative;
+  margin: 10px auto;
+}
+
+.g-window .m-login .cells .cell {
+  position: relative;
+  width: 100%;
+  border-bottom: 1px solid #ddf;
+  line-height: 2rem;
+}
+
+.g-window .m-login .cells .logo {
+  display: block;
+  margin: 1rem auto;
+  width: 50%;
+  height: auto;
+}
+
+.g-window .m-login .cells .ipt {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0.6rem 0 0.6rem 2.4rem;
+  font-size: 0.9rem;
+  color: #fff;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+}
+
+.g-window .m-login .cells .ipt::-webkit-input-placeholder {
+  color: #d9d9d9;
+}
+
+.g-window .m-login .cells .ipt:-moz-placeholder {
+  color: #d9d9d9;
+}
+
+.g-window .m-login .cells .ipt::-moz-placeholder {
+  color: #d9d9d9;
+}
+
+.g-window .m-login .cells .ipt:-ms-input-placeholder {
+  color: #d9d9d9;
+}
+
+.g-window .m-login .cells .ipt::placeholder {
+  color: #d9d9d9;
+}
+
+.g-window .m-login .cells .icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url(http://yx-web.nos.netease.com/webdoc/h5/im/icons.png);
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+
+.g-window .m-login .cells .icon-account {
+  background-position: 0 -112px;
+  position: absolute;
+  left: 0.4rem;
+  top: 0.6rem;
+}
+
+.g-window .m-login .cells .icon-pwd {
+  background-position: 0 -133px;
+  position: absolute;
+  left: 0.4rem;
+  top: 0.6rem;
+}
+
+.g-window .m-login .cells .btn {
+  margin: 0.6rem 0;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  line-height: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.4rem;
+  background: #fff;
+  color: #0091e4;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.g-window .m-login .cells .btn-regist {
+  background: transparent;
+  color: #fff;
+  /*border: 1px solid #d9d9d9;*/
+}
+
+.g-window .m-login .cells .error {
+  float: right;
+  clear: both;
+  color: #ed0e0e;
+}
+
+.g-window .m-login .u-card .weui-cells {
+  background-color: inherit;
+}
+
+
+/* 按钮tab切换 */
+
+.g-window .m-tab {
+  color: #0091e4;
+  background-color: #e5f4ff;
+}
+
+.g-window .m-tab .vux-header-left .left-arrow {}
+
+.g-window .m-tab .vux-header-left .left-arrow::before {
+  border-color: #0091e4;
+}
+
+.g-window .m-tab-top .u-tab-top {
+  color: #333;
+  border: 1px solid #0091e4;
+  /* 选中状态 */
+}
+
+.g-window .m-tab-top .u-tab-top.vux-button-group-current {
+  color: #fff;
+  background-color: #0091e4;
+}
+
+.g-window .m-article {
+  top: 0;
+}
+
+
+/* 直播页面 */
+
+.g-window .m-room {
+  padding-top: 0;
+}
+
+
+/* 用于左右留白布局 */
+
+.g-window .m-cards {
+  position: relative;
+  display: block;
+  width: 90%;
+  height: auto;
+  margin: 1rem auto;
+  z-index: 1;
+}
+
+.g-window .m-list {
+  position: absolute;
+  display: block;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  top: 0;
+  bottom: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+
+/* 二级页面的tab */
+
+.g-window .m-tab {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 10px 0;
+  width: 100%;
+  height: 3.6rem;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.g-window .m-tab .vux-header-left,
+.g-window .m-tab .vux-header-right {
+  top: 20px;
+}
+
+.g-window .m-tab .m-tab-top {
+  position: relative;
+  padding: 0;
+}
+
+.g-window .m-tab .m-tab-top.vux-button-group {
+  margin: 4px auto;
+}
+
+.g-window .m-tab .m-tab-right {
+  position: absolute;
+  right: 0;
+  top: 0.1rem;
+  font-size: 0.8rem;
+  text-align: right;
+  width: 4rem;
+}
+
+
+/* 会话列表 */
+
+.g-window .m-article-main,
+.g-window .m-chat-main {
+  position: relative;
+  display: block;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+/* 名片页面 */
+
+.g-window .m-robot .u-logo {
+  position: relative;
+  margin: 1rem auto;
+  text-align: center;
+}
+
+.g-window .m-robot .u-logo .logo {
+  display: inline-block;
+  margin: 1rem 0;
+  width: 40%;
+  height: auto;
+}
+
+.g-window .m-robot .u-logo h3 {
+  margin: 1rem 0;
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+.g-window .m-robot .u-desc {
+  position: relative;
+  margin: 1rem auto;
+  width: 80%;
+  text-align: left;
+  color: #999;
+}
+
+
+/* 聊天页面 */
+
+.g-window .m-chat-main {
+  /* 聊天页面有输入框 */
+  padding: 0 0 4rem 0;
+}
+
+
+/* 聊天历史记录没有输入框 */
+
+.g-window .m-chat-main .m-chat-list {
+  position: relative;
+  display: block;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 1rem 2%;
+  width: 100%;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.g-window .m-chat-main.m-chat-history {
+  padding-bottom: 0;
+}
+
+.g-window .m-chat-editor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4rem;
+  background-color: #e5f4ff;
+}
+
+
+/* 聊天按钮组件 */
+
+.g-window .m-chat-editor-main {
+  position: relative;
+  display: block;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.g-window .m-chat-editor-main .u-editor-input {
+  position: relative;
+  display: inline-block;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.2rem;
+  padding-right: 10rem;
+  width: 100%;
+  height: 4rem;
+}
+
+.g-window .m-chat-editor-main .u-editor-input textarea {
+  position: relative;
+  display: inline-block;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0.2rem;
+  font-size: 1rem;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+}
+
+.g-window .m-chat-editor-main .u-editor-icons {
+  position: absolute;
+  display: inline-block;
+  right: 0;
+  top: 0;
+  width: 10rem;
+  height: 4rem;
+}
+
+.g-window .m-chat-editor-main .u-editor-icons .u-editor-icon {
+  position: relative;
+  display: inline-block;
+  top: 1.2rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-left: 0.2rem;
+  vertical-align: middle;
+}
+
+.g-window .m-chat-editor-main .u-editor-icons .u-editor-icon input[type="file"] {
+  position: absolute;
+  display: inline-block;
+  left: 0;
+  top: 0;
+  width: inherit;
+  height: inherit;
+  opacity: 0;
+  font-size: 1rem;
+}
+
+.g-window .m-chat-editor-main .u-editor-send {
+  position: relative;
+  display: inline-block;
+  top: 1.2rem;
+  margin-left: 0.2rem;
+  width: 2.6rem;
+  height: 1.6rem;
+  line-height: 1.6rem;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.2rem;
+  font-size: 0.9rem;
+  color: #fff;
+  background-color: #0091e4;
+  text-align: center;
+}
+
+
+/* 聊天室入口页面 */
+
+.g-window .m-room-entry {
+  text-align: center;
+}
+
+.g-window .m-room-entry .u-box {
+  position: relative;
+  display: inline-block;
+  margin: 0.5rem 0;
+  width: 50%;
+  min-height: 4rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.g-window .m-room-entry .u-box .album,
+.g-window .m-room-entry .u-box .desc {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  width: 90%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  line-height: 1.6;
+  border: 1px solid #ccc;
+}
+
+.g-window .m-room-entry .u-box .album {
+  position: relative;
+  height: 6.4rem;
+  font-size: 0.9rem;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.g-window .m-room-entry .u-box .album .pic {
+  position: absolute;
+  width: auto;
+  height: inherit;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.g-window .m-room-entry .u-box .album .status {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1.6rem;
+  line-height: 1.6rem;
+  text-align: left;
+  color: #333;
+  background-color: #fff;
+  opacity: 0.8;
+}
+
+.g-window .m-room-entry .u-box .album .status strong {
+  margin-left: 0.4rem;
+}
+
+.g-window .m-room-entry .u-box .album .status em {
+  margin-right: 0.4rem;
+  float: right;
+  color: inherit;
+}
+
+.g-window .m-room-entry .u-box .desc {
+  margin-top: -1px;
+  text-align: left;
+  text-indent: 0.5rem;
+  line-height: 1.6rem;
+  min-height: 1.6rem;
+  color: #999;
+  background-color: #fff;
+}
+
+
+/* 聊天室内页 */
+
+.g-window .m-room-album {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 12rem;
+  background-color: #000;
+  z-index: 2;
+}
+
+.g-window .m-room-album .img-wraper {
+  width: 50%;
+  margin-left: 50%;
+  height: inherit;
+}
+
+.g-window .m-room-album .room-img {
+  position: relative;
+  display: block;
+  height: inherit;
+  width: auto;
+  -webkit-transform: translate(-50%, 0);
+  -moz-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+}
+
+
+/* 聊天室相关页面 */
+
+.g-window .m-room-tabs {
+  position: absolute;
+  top: 12rem;
+  left: 0;
+  height: 3rem;
+  width: 100%;
+  z-index: 3;
+}
+
+.g-window .m-room-tabs .u-tab {
+  position: relative;
+  display: inline-block;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 33.333%;
+  height: inherit;
+  line-height: 3rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.g-window .m-room-tabs .u-tab.active {
+  color: #0091e4;
+  border-bottom: #0091e4 0.4rem solid;
+}
+
+.g-window .m-room-container {
+  position: absolute;
+  display: block;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  padding-top: 15rem;
+  width: 100%;
+  height: 100%;
+}
+
+.g-window .room-cnt {
+  position: relative;
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+
+/*
+    * 元件
+    */
+
+
+/* 外面嵌套g-window 为了覆盖weui默认样式 */
+
+
+/* 白底输入框 */
+
+.g-window .u-ipt-default {
+  color: #999;
+}
+
+.g-window .u-ipt-default input::-webkit-input-placeholder {
+  color: #e0e0e0;
+}
+
+.g-window .u-ipt-default input:-moz-placeholder {
+  color: #e0e0e0;
+}
+
+.g-window .u-ipt-default input::-moz-placeholder {
+  color: #e0e0e0;
+}
+
+.g-window .u-ipt-default input:-ms-input-placeholder {
+  color: #e0e0e0;
+}
+
+.g-window .u-ipt-default input::placeholder {
+  color: #e0e0e0;
+}
+
+
+/* 透明底输入框 */
+
+.g-window .u-ipt-transparent {
+  color: #fff;
+  background-color: transparent;
+}
+
+.g-window .u-ipt-transparent input::-webkit-input-placeholder {
+  color: #fff;
+  opacity: 0.5;
+}
+
+.g-window .u-ipt-transparent input:-moz-placeholder {
+  color: #fff;
+  opacity: 0.5;
+}
+
+.g-window .u-ipt-transparent input::-moz-placeholder {
+  color: #fff;
+  opacity: 0.5;
+}
+
+.g-window .u-ipt-transparent input:-ms-input-placeholder {
+  color: #fff;
+  opacity: 0.5;
+}
+
+.g-window .u-ipt-transparent input::placeholder {
+  color: #fff;
+  opacity: 0.5;
+}
+
+
+/* 双选切换控件 */
+
+.g-window .u-switch .weui-switch:checked,
+.g-window .u-switch .weui-switch-cp__input:checked~.weui-switch-cp__box {
+  background-color: #0091e4;
+  border-color: #0091e4;
+}
+
+.g-window .u-card {
+  margin: 1rem 0;
+}
+
+.g-window .u-card .weui-cells {
+  background-color: #fff;
+}
+
+.g-window .u-card .icon {
+  display: inline-block;
+  margin-right: 0.8rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+.g-window .u-search {
+  margin: 0;
+  margin-bottom: 2rem;
+  height: 2rem;
+}
+
+.g-window .u-search .weui-cells:after,
+.g-window .u-search .weui-cells:before {
+  border-color: #f0f0f0;
+}
+
+
+/* 列表 */
+
+.g-window .u-list {
+  width: 100%;
+}
+
+.g-window .u-list-item {
+  min-height: 2rem;
+  vertical-align: middle;
+}
+
+.g-window .u-list-item .icon {
+  display: inline-block;
+  margin-right: 0.6rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+
+/* 会话删除tag */
+
+.g-window .u-tag-del {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 24%;
+  height: 100%;
+  text-align: center;
+  color: #fff;
+  background-color: #ed0e0e;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+  -webkit-transform: translate3d(100%, 0, 0);
+  -moz-transform: translate3d(100%, 0, 0);
+  transform: translate3d(100%, 0, 0);
+}
+
+.g-window .u-tag-del::after {
+  position: relative;
+  content: "删除";
+  font-size: 16px;
+  font-size: 1rem;
+  top: 32%;
+  margin-top: -8px;
+  margin-top: -0.5rem;
+}
+
+.g-window .u-tag-del.active {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+
+/* 未读数标签 */
+
+.g-window .u-unread {
+  display: inline-block;
+  position: absolute;
+  left: 2rem;
+  top: 0.4rem;
+  padding: 2px;
+  min-width: 1rem;
+  min-height: 1rem;
+  line-height: 1rem;
+  font-size: 12px;
+  background-color: #f00;
+  color: #fff;
+  text-align: center;
+  border-radius: 0.8rem;
+}
+
+
+/* 消息记录 */
+
+.g-window .u-msg {
+  position: relative;
+  padding: 0.2rem 0;
+}
+
+
+/* 用户头像 */
+
+.g-window .u-msg .msg-head {
+  position: relative;
+  display: inline-block;
+  top: 0.1rem;
+  margin: 0;
+  margin-right: 0.6rem;
+  margin-left: 0.6rem;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: top;
+}
+
+.g-window .u-msg .msg-head img {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  width: inherit;
+  height: inherit;
+}
+
+.g-window .u-msg .msg-user {
+  font-style: italic;
+  color: #999;
+}
+
+.g-window .u-msg .msg-user em {
+  font-weight: normal;
+  margin-right: 1rem;
+}
+
+.g-window .u-msg .msg-text {
+  position: relative;
+  display: inline-block;
+  max-width: 54%;
+  min-height: 1.2rem;
+  word-break: break-word;
+  height: auto;
+  line-height: 1.2rem;
+  font-size: 0.9rem;
+  border: none;
+}
+
+.g-window .u-msg .msg-text img {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  vertical-align: bottom;
+}
+
+.g-window .u-msg .msg-text img.emoji-small {
+  width: 1.4rem;
+  height: 1.4rem;
+  vertical-align: bottom;
+}
+
+.g-window .u-msg .msg-text img.emoji-big {
+  width: 3rem;
+  height: 3rem;
+  vertical-align: middle;
+}
+
+.g-window .u-msg .msg-text img.emoji-big {
+  width: 4.8rem;
+  height: 4.8rem;
+  vertical-align: middle;
+}
+
+.g-window .u-msg .msg-text embed,
+.g-window .u-msg .msg-text video {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  max-height: 8rem;
+  vertical-align: bottom;
+  background-color: #000;
+  text-align: center;
+  color: #fff;
+}
+
+.g-window .u-msg .msg-text .button {
+  margin: 0.1rem 0;
+  padding: 0.1rem 0.2rem;
+  border: 1px solid #fff;
+  border-radius: 0.2rem;
+  background-color: #e5f4ff;
+  color: #666;
+}
+
+.g-window .u-msg .msg-text::before,
+.g-window .u-msg .msg-text::after {
+  content: ' ';
+  position: absolute;
+  top: 12.8px;
+  top: 0.8rem;
+  border-top: 6.4px solid transparent;
+  border-top: 0.4rem solid transparent;
+  border-bottom: 6.4px solid transparent;
+  border-bottom: 0.4rem solid transparent;
+  width: 0;
+  height: 0;
+}
+
+.g-window .u-msg .msg-text.notify {
+  max-width: 100%;
+}
+
+.g-window .u-msg .msg-failed {
+  position: relative;
+  float: right;
+  margin-right: 0.2rem;
+  vertical-align: top;
+  font-size: 0.92rem;
+  line-height: 2.0rem;
+}
+
+.g-window .u-msg .msg-link {
+  display: block;
+  position: absolute;
+  bottom: -2rem;
+  right: 0;
+  min-width: 4rem;
+  min-height: 1.2rem;
+  word-break: normal;
+  height: auto;
+  line-height: 1.2rem;
+  font-size: 1.0rem;
+  border: none;
+}
+
+.g-window .u-msg .msg-link a {
+  color: #0091e4;
+  text-decoration: underline;
+  float: right;
+}
+
+.g-window .u-msg .notify {
+  color: #f50;
+  font-size: 0.8rem;
+}
+
+.g-window .u-msg.session-chat {
+  padding: 0.6rem 0;
+  clear: both;
+}
+
+.g-window .u-msg.session-chat .msg-text {
+  padding: 0.4rem;
+  margin-bottom: 0.8rem;
+  border-radius: 0.4rem;
+}
+
+.g-window .u-msg.session-chat .msg-robot {
+  min-width: 3rem;
+  margin-bottom: 3rem;
+}
+
+.g-window .u-msg.session-chat.item-you .msg-head,
+.g-window .u-msg.session-chat.item-you .msg-text {
+  float: left;
+}
+
+.g-window .u-msg.session-chat.item-you .msg-text {
+  background-color: #5cacde;
+  color: #fff;
+}
+
+.g-window .u-msg.session-chat.item-you .msg-text::before {
+  right: 99%;
+  border-right: 6.4px solid #5cacde;
+  border-right: 0.4rem solid #5cacde;
+}
+
+.g-window .u-msg.session-chat.item-you .msg-text::after {
+  background: none;
+}
+
+.g-window .u-msg.session-chat.item-me .msg-head,
+.g-window .u-msg.session-chat.item-me .msg-text {
+  float: right;
+}
+
+.g-window .u-msg.session-chat.item-me .msg-text {
+  color: #666;
+  background-color: #e5f4ff;
+}
+
+.g-window .u-msg.session-chat.item-me .msg-text::before {
+  background: none;
+}
+
+.g-window .u-msg.session-chat.item-me .msg-text::after {
+  left: 99%;
+  border-left: 6.4px solid #e5f4ff;
+  border-left: 0.4rem solid #e5f4ff;
+}
+
+.g-window .u-msg.item-time {
+  font-size: 0.8rem;
+  text-align: center;
+  color: #ccc;
+}
+
+.g-window .u-msg.item-tip {
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.g-window .u-msg.item-tip .tip {
+  margin: 0 auto;
+  width: 10rem;
+  padding: 0.1rem;
+  background-color: #e0e0e0;
+  border-radius: 0.4rem;
+}
+
+.g-window .u-error {
+  color: #ed0e0e;
+}
+
+.g-window .u-icon {
+  display: inline-block;
+  width: inherit;
+  height: inherit;
+}
+
+.g-window .u-icon.icon-file {
+  background-position: -7.6rem -7rem;
+}
+
+.g-window .u-icon {
+  background-size: 20rem;
+  background-image: url(http://yx-web.nos.netease.com/webdoc/h5/im/icons.png);
+}
+
+.g-window .u-icon-img {
+  position: relative;
+  width: inherit;
+  height: inherit;
+}
+
+.g-window .u-icon-img img {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+/* 进入切页动画，可根据开发这需要自由开发 */
+
+.forward-enter-active,
+.forward-leave-active {
+  position: absolute;
+  left: 0;
+  top: 0;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+  z-index: 0;
+}
+
+.forward-leave {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.forward-leave-to {
+  -webkit-transform: translate3d(-100%, 0, 0);
+  -moz-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
+}
+
+.forward-enter {
+  -webkit-transform: translate3d(100%, 0, 0);
+  -moz-transform: translate3d(100%, 0, 0);
+  transform: translate3d(100%, 0, 0);
+}
+
+.forward-enter-to {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+
+/* 离开切页动画，可根据开发这需要自由开发 */
+
+.backward-enter-active,
+.backward-leave-active {
+  position: absolute;
+  left: 0;
+  top: 0;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+  z-index: 0;
+}
+
+.backward-leave {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.backward-leave-to {
+  -webkit-transform: translate3d(100%, 0, 0);
+  -moz-transform: translate3d(100%, 0, 0);
+  transform: translate3d(100%, 0, 0);
+}
+
+.backward-enter {
+  -webkit-transform: translate3d(-100%, 0, 0);
+  -moz-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
+}
+
+.backward-enter-to {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
