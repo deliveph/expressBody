@@ -9,6 +9,8 @@ import VueAMap from 'vue-amap'
 import $ from 'jquery'
 import qs from 'qs'
 import store from '@/components/store/index'
+// 同步单页路由与数据中心
+// import stores from './stores'
 // import vueDragDrop from 'vue-drag-and-drop'
 import draggable from 'vuedraggable'
 // import Vuex from 'vuex'
@@ -30,7 +32,15 @@ Vue.use(mint)
 Vue.use(draggable)
 // Vue.use(vueDrag)
 // Vue.use(vueDragDrop)
+// 添加手势触摸事件，使用方法如 v-touch:swipeleft
+import VueTouch from './plugins/touchEvent'
+Vue.use(VueTouch)
 
+import VueRecyclerviewNew from 'vue-recyclerview'
+Vue.use(VueRecyclerviewNew)
+
+// 同步单页路由与数据中心
+// import store from './store'
 import {
   ToastPlugin,
   AlertPlugin,
@@ -86,7 +96,7 @@ Vue.prototype.token = function () {
       configs.token = dataObj.token
     }
   }
-  return configs.token
+  return configs.tokenconfigs.token
 }
 
 Vue.prototype.http = function (url, method, data, callback) {

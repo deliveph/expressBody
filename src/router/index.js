@@ -43,9 +43,12 @@ import service from '@/components/base/express'
 import statistics from '@/components/user/statistics'
 import login from '@/components/base/login'
 import suggest from '@/components/suggest/suggest'
-import session from '@/components/Im/session'
+// import session from '@/components/Im/session'
 import serviceOrder from '@/components/service/order'
 import setpaypw from '@/components/payment/settingpaypw'
+import chathistory from '@/pages/ChatHistory'
+import session from '@/pages/Session'
+import chat from '@/pages/Chat'
 
 Vue.use(Router)
 
@@ -283,14 +286,14 @@ export default new Router({
                 title: '城市选择'
             }
         },
-        {
-            path: '/session',
-            name: 'session',
-            component: session,
-            meta: {
-                title: '聊天'
-            }
-        },
+        // {
+        //     path: '/session',
+        //     name: 'session',
+        //     component: session,
+        //     meta: {
+        //         title: '聊天'
+        //     }
+        // },
         //客服全部订单
         {
             path: '/serviceOrder',
@@ -306,6 +309,39 @@ export default new Router({
             name: 'setpaypw',
             component: setpaypw
         },
+        // 最近消息列表（会话）
+        {
+            path: '/session',
+            name: 'session',
+            component: session,
+            meta:{
+                title: '消息'
+            }
+            // component (resolve) {
+            //     require(['../pages/Session'], resolve)
+            // }
+        },
+        // 聊天记录
+        {
+            path: '/chat/:sessionId',
+            name: 'chat',
+            component: chat
+            // component (resolve) {
+            //     require(['../pages/Chat'], resolve)
+            // }
+        },
+        // 聊天历史记录
+        {
+            path: '/chathistory/:sessionId',
+            name: 'chathistory',
+            component: chathistory,
+            meta:{
+                title: '历史记录'
+            }
+            // component (resolve) {
+            //     require(['../pages/ChatHistory'], resolve)
+            // }
+        }
     ]
 })
 
