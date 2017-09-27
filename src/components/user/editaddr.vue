@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="edit-item">
-                <div class="edit-des col-2">小区名称</div>
+                <div class="edit-des col-2">联系地址</div>
                 <div class="edit-addr col-8 t-l">
                     <textarea placeholder="请输入单元、房号等详细内容" v-model="element"></textarea>
                 </div>
@@ -99,11 +99,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>
-<style lang="scss" scoped>
+<style lang="scss">
 .edit-item {
     .edit-address {
         width: 100%;
-        display: black;
+        display: block;
         .vux-cell-box:before {
             content: " ";
             border: 0;
@@ -130,4 +130,5 @@ export default {
         }
     }
 }
+
 </style>
