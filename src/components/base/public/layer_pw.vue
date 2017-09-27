@@ -38,7 +38,7 @@ export default {
         }
     },
     created() {
-
+        this.$weChat()
     },
     components: {
         Toast
@@ -58,6 +58,8 @@ export default {
                 if (msg.code == 0) {
                     that.$parent.layerPwhide = false
                     that.$vux.toast.text(msg.message, 'middle', 100);
+                    
+                    that.$emit('listenEvent',"this message form child")
                 } else if (msg.code == 40004) {
                     location.href = that.configs.accreditUrl
                 } else{
@@ -68,6 +70,8 @@ export default {
         cancel() {
             let that = this;
             that.$parent.layerPwhide = false
+            localStorage.clear("token")
+            that.wx.closeWindow()
         }
 
     }

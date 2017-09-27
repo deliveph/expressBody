@@ -20,6 +20,10 @@
                 name:''
             }
         },
+         components:{ 
+            Toast, 
+            qs 
+        },
         methods: {
             save(){
                 let that = this
@@ -27,21 +31,54 @@
                 //     this.$vux.toast.text('请输入姓名', 'middle',100);
                 //     return false;
                 // }
-                let data = qs.stringify({
-                    'user_nickname':that.name,
-                })
-                this.http(that.configs.apiTop + "/user/update-profile-nickname", "post", data, function (res) {
-                    let msg = res.data
-                    if(msg.code == 0){
-                        that.$router.push({ path: '/person' })
-                    }else if(msg.code == 40004){
-                        // location.href = that.configs.accreditUrl
-                    }
-                })
+                if(that.name == ''){ 
+                    this.$vux.toast.text('请输入姓名', 'middle',100); 
+                    return false; 
+                } 
+                 
+ 
+                if(this.$route.query.type == 'service' ){ 
+                    let data = qs.stringify({ 
+                        'user_nickname':that.name, 
+                    }) 
+ 
+                    this.http(that.configs.apiTop + "/service/update-profile-nickname", "post", data, function (res) { 
+                        let msg = res.data 
+                        if(msg.code == 0){ 
+                            that.$vux.toast.text(msg.message, 'middle', 100); 
+                            setTimeout(() =>{ 
+                                that.$router.push({path:'/person',query: {type: 'service'}}); 
+                            },1000) 
+                        }else if(msg.code == 40004){ 
+                            localStorage.clear("token")
+                            that.wx.closeWindow()
+                        }else{ 
+                            that.$vux.toast.text(msg.message, 'middle', 100); 
+                        } 
+                    }) 
+                }else{
+                    let data = qs.stringify({
+                        'user_nickname':that.name,
+                    })
+                    this.http(that.configs.apiTop + "/user/update-profile-nickname", "post", data, function (res) {
+                        let msg = res.data
+                        if(msg.code == 0){
+                            that.$vux.toast.text(msg.message, 'middle', 100); 
+                            setTimeout(() =>{ 
+                                that.$router.push({path:'/person',query: {type: 'service'}}); 
+                            },1000) 
+                        }else if(msg.code == 40004){
+                            localStorage.clear("token")
+                            that.wx.closeWindow()
+                            // location.href = that.configs.accreditUrl
+                        }
+                    })
+                }
+                
             }
         },
         created() {
-
+            this.$weChat()
         }
     }
 </script>

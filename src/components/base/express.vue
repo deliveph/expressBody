@@ -4,7 +4,7 @@
             <ul>
                 <li class="courier_message">
                     <div class="photo">
-                        <img src="/static/assets/images/head_def.png" />
+                        <img :src="result.service.service_avatar == 'undefined' ? '/static/assets/images/head_def.png' : result.service.service_avatar" /> 
                         <div class="grade">
                             <grade class="icon_express_1"></grade>
                         </div>
@@ -15,15 +15,15 @@
         <div class="statistics">
             <ul>
                 <li>
-                    <P class="number">8</p>
+                    <P class="number">{{ result.today_receive_order_number == undefined ? '0' : result.today_receive_order_number }}</p> 
                     <p>今日接单(个)</p>
                 </li>
                 <li>
-                    <P class="number">6</p>
+                    <P class="number">{{ result.today_finish_order_number == undefined ? '0' : result.today_finish_order_number }}</p> 
                     <p>今日已完成(个)</p>
                 </li>
                 <li>
-                    <p class="number">8</p>
+                    <p class="number">{{ result.today_result == undefined ? '0' : result.today_result }}</p> 
                     <p>今日赚取(元)</p>
                 </li>
             </ul>
@@ -50,7 +50,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name:'Person'}">
+                    <router-link :to="{name:'Person',query:{type:'service'}}"> 
                         <img src="/static/assets/images/btn_me.png" />
                         <p>我的资料</p>
                     </router-link>
@@ -107,6 +107,7 @@
         </div>
 
         <LayerPw v-if="layerPwhide"></LayerPw>
+        <LayerPw v-if="layerPwhide" v-bind:Info="result" v-on:listenEvent="getInfo"></LayerPw>
     </div>
 </template>
 
@@ -128,13 +129,28 @@ export default {
     },
     data() {
         return {
-            layerPwhide:true
+            layerPwhide:true,
+            data: {}, 
+            result: {} 
         }
     },
     created() {
         let that = this
         let data = this.$route.query.password
-    }
+    },
+    methods: { 
+        getInfo(result) { 
+            let that = this 
+            this.http(that.configs.apiTop + "/page/service-home", "get",  '', function(res) { 
+                // console.log(res) 
+                let msg = res.data 
+                if (msg.code == 0) { 
+                    // console.log(msg) 
+                    that.result = msg.data; 
+                } 
+            }) 
+        } 
+    } 
 }
 </script>
 

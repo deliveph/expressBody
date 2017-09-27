@@ -14,7 +14,7 @@
                         </div>
                     </li>
                     <li>
-                        <router-link to="/name">
+                        <router-link :to="{path:'/name',query: {type:type}}"> 
                             <span>真实姓名</span>
                             <em>
                                 <span>{{name}}</span>
@@ -40,7 +40,7 @@
                         <p>{{address}}</p>
                     </li>
                     <!--快递宝宝端-->
-                    <li>
+                    <li v-if="serve"> 
                         <router-link to="">
                             <span>我的评分</span>
                             <em>
@@ -48,7 +48,7 @@
                             </em>
                         </router-link>
                     </li>
-                    <li>
+                   <li v-if="serve"> 
                         <router-link to="/modifypwd">
                             <span>修改密码</span>
                             <em>
@@ -72,7 +72,10 @@ export default {
             avatar: '/static/assets/images/icon_success.png',
             name: '',
             phone: '',
-            address: ''
+            address: '', 
+            score: '', 
+            serve: false, 
+            type:'' 
         }
     },
     methods: {
@@ -107,18 +110,38 @@ export default {
     },
     created() {
         let that = this
-        this.http(that.configs.apiTop+"/user/profile", "get", '', function(res) {
-            let msg = res.data
-            let data = msg.data
-            if (msg.code == 0) {
-                that.avatar = data.user_avatar
-                that.name = data.user_nickname
-                that.phone = data.user_phone
-                that.address = data.user_address
-            } else if (msg.code == 40004) {
-                // location.href = that.configs.accreditUrl
-            }
-        })
+        this.type = this.$route.query.type
+        if(this.type == 'user'){
+            this.http(that.configs.apiTop+"/user/profile", "get", '', function(res) {
+                let msg = res.data
+                let data = msg.data
+                if (msg.code == 0) {
+                    that.avatar = data.user_avatar
+                    that.name = data.user_nickname
+                    that.phone = data.user_phone
+                    that.address = data.user_address
+                } else if (msg.code == 40004) {
+                    // location.href = that.configs.accreditUrl
+                }
+            })
+        }else if(this.type == 'service'){
+            that.serve = true 
+            this.http(that.configs.apiTop + "/service/profile", "get", '', function(res) { 
+                let msg = res.data 
+                let data = msg.data 
+                if (msg.code == 0) { 
+                    console.log(data) 
+                    that.avatar = data.service_avatar 
+                    that.name = data.service_nickname 
+                    that.phone = data.service_phone 
+                    that.address = data.service_full_address 
+                    that.score = data.service_score 
+                } else if (msg.code == 40004) { 
+                    // location.href = that.configs.accreditUrl 
+                } 
+            })
+        }
+        
     }
 }
 </script>
