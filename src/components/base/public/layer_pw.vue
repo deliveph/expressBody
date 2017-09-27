@@ -32,6 +32,7 @@
 import { Toast } from 'vux'
 import qs from 'qs'
 export default {
+    // props: ["Info"],
     data() {
         return {
             password: ''
@@ -58,6 +59,10 @@ export default {
                 if (msg.code == 0) {
                     that.$parent.layerPwhide = false
                     that.$vux.toast.text(msg.message, 'middle', 100);
+
+                    that.$emit('listenEvent',"this message form child")
+                    
+
                 } else if (msg.code == 40004) {
                     location.href = that.configs.accreditUrl
                 } else{
