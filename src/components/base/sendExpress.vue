@@ -65,7 +65,7 @@
 <script>
 import { PopupPicker } from 'vux'
 import { XNumber } from 'vux'
-import { Toast } from 'vux'
+import { Toast, Confirm } from 'vux'
 import qs from 'qs'
 export default {
     data() {
@@ -264,25 +264,44 @@ export default {
                 let msg = res.data
                 if (msg.code == 0) {
                    that.$vux.toast.text(msg.message, 'middle', 100);
+                   
                    setTimeout(function(){ 
                        that.$router.push({path: '/order'}) 
                    }, 200);
                 } else if (msg.code == 40004) {
                 } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
+                    // that.$vux.toast.text(msg.message, 'middle', 100);
+                    that.showPlugin(msg.message)
+                }
+            })
+        },
+        showPlugin (content) {
+            let that = this
+            this.$vux.confirm.show({
+                title: '提示',
+                content: content,
+                onShow () {
+                console.log('plugin show')
+                },
+                onHide () {
+                console.log('plugin hide')
+                },
+                onCancel () {
+                console.log('plugin cancel')
+                },
+                onConfirm () {
+                console.log('plugin confirm')
+                that.$router.push({path: '/open'}) 
                 }
             })
         }
-        // timePeriod(){
-        //     let 
-        // }
     }
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
     .weui-cell{
-        padding:0
+        padding:0 !important
     }
 </style>
 

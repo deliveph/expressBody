@@ -49,6 +49,7 @@ import setpaypw from '@/components/payment/settingpaypw'
 import chathistory from '@/pages/ChatHistory'
 import session from '@/pages/Session'
 import chat from '@/pages/Chat'
+import Open from '@/components/base/open'
 
 Vue.use(Router)
 
@@ -81,7 +82,15 @@ export default new Router({
             path: '/collection',
             name: 'Collection',
             component: Collection
-        }, //代收 
+        }, //代收
+        {
+            path: '/open',
+            name: 'open',
+            component: Open,
+            meta: {
+                title: '申请开通'
+            }
+        }, //申请开通
         {
             path: '/Userindex',
             name: 'Userindex',

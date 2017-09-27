@@ -4,9 +4,12 @@
             <div class="nom-info">
                 
                     <dl class="nom-info-box col-9">
-                        <dt><router-link to="/person"><img src="/static/assets/images/icon_success.png" alt=""></router-link></dt>
+                        <dt><router-link to="/person"><img :src="data.user_avatar == undefined ? '/static/assets/images/head_def.png': data.user_avatar" alt=""></router-link></dt>
                         <dd>
-                            <p class="nom-info-name"><router-link to="/person">快递7817589</router-link></p>
+                            <p class="nom-info-name">
+                                <router-link to="" href="javascript:;" v-if="data.user_nickname == undefined">未登录</router-link>
+                                <router-link to="/person" v-else>{{ data.user_nickname }}</router-link>
+                            </p>
                             <router-link to="/level">
                                 <grade class="m0 icon_express_1"></grade>
                             </router-link>
@@ -84,8 +87,8 @@
             </div>
             <div class="cen-item">
                 <ul class="some-item">
-                    <li>
-                        <router-link to="/Invite">
+                    <li @click="share = !share">
+                        <router-link to="" href="javascript:;">
                             <span><i class="icon1"></i>邀请好友</span>
                             <em><i class="arrow-right"></i></em>
                         </router-link>
@@ -121,13 +124,32 @@
                 </ul>
             </div>
         </div>
+        <shareshade v-show="share" @click.native="share = !share"></shareshade>
     </div>
 </template>
 <script>
     import Grade from '../../components/grade'
+    import Shareshade from '../base/public/shareShade'
     export default{
         components:{
-            Grade
+            Grade,
+            Shareshade
+        },
+        data() {
+            return {
+                data: {},
+                share: false
+            }
+        },
+        created() {
+            let that = this
+            this.http(that.configs.apiTop + "/page/user-personal-center", "get", '', function (res) {
+                let msg = res.data
+                if(msg.code == 0){
+                    // that.$router.push({ path: '/person' })
+                    that.data = msg.data.user
+                }
+            })
         }
     }
 </script>
