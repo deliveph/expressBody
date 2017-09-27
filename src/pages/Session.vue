@@ -19,11 +19,11 @@
               {{session.updateTimeShow}}
             </span>
             <span v-show="session.unread > 0" class="u-unread">{{session.unread}}</span>
-            <span
+            <!-- <span
               class="u-tag-del"
               :class="{active: delSessionId===session.id}"
               @click="deleteSession"
-              ></span>
+              ></span> -->
           </cell>
         </group>
       </div>
@@ -150,17 +150,65 @@
       }
     },
     created(){
-      console.log(123)
+      console.log(124124)
       console.log(this)
     }
   }
 </script>
 
 <style src="../../static/css/theme.css"></style>
-<style  lang="scss">
+<style  lang="scss" >
+  @import '../../static/assets/css/px2rem.scss';
   .p-session {
     .vux-cell-primary {
       max-width: 70%;
     }
+  }
+
+  .u-list .weui-cells:before{
+    content:"";
+    border-top:0;
+  }
+  #app .g-window .u-list-item{ 
+    min-height:auto;
+    font-size:px2rem(34);
+    padding:px2rem(18)  px2rem(20);
+    // border-bottom:1px solid #d9d9d9
+  }
+  .g-window .weui-cell{
+  }
+  .weui-cell__hd{}
+  #app  .g-window .u-list-item .icon{
+    width:px2rem(100);
+    height:px2rem(100);
+    margin-right:px2rem(40);
+  }
+  .vux-label{
+    font-size:px2rem(34);
+    color:#333
+  }
+  .p-session .vux-cell-primary{}
+  #app .g-window .weui-cell .vux-label-desc{
+    font-size:px2rem(28);
+    color:#666;
+  }
+  #app .g-window .weui-cell__ft{
+    font-size:px2rem(24);
+    color:#999
+  }
+  #app .g-window .u-unread{
+    display: inline-block;
+    position: absolute;
+    left:px2rem(100);
+    top:px2rem(10);
+    padding: px2rem(10);
+    min-width: px2rem(30);
+    min-height: px2rem(30);
+    line-height: px2rem(30);
+    font-size: px2rem(16);
+    background-color: #f00;
+    color: #fff;
+    text-align: center;
+    border-radius: 0.8rem;
   }
 </style>

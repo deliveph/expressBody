@@ -85,7 +85,7 @@
                 ship_order_number:'',
                 items:[],
                 ship_order:[],
-                user_coupon:[],
+                user_coupon:{},
                 layerSetting:false,
                 password:'123456',
                 pwFunction:'',
@@ -107,7 +107,8 @@
                         let data = msg.data
                         that.items = msg.data 
                         that.ship_order =  data.ship_order
-                        that.user_coupon = data.user_coupon            
+                        that.user_coupon = data.user_coupon
+                        console.log(that.user_coupon,"****")            
                     } else if (msg.code == 40004) {
                         // location.href = that.configs.accreditUrl
                     } else {
@@ -153,7 +154,7 @@
                 }
                 let user_coupon_id = 0;
                 if(that.user_coupon.coupon_id){
-                    user_coupon_id = user_coupon.coupon_id
+                    user_coupon_id = that.user_coupon.user_coupon_id
                 }
                 let data = qs.stringify({
                     'user_coupon_id':user_coupon_id,

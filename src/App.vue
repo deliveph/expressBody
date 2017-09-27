@@ -13,7 +13,7 @@
     <!-- <div id="box">
           HTML位置
           <br>x:{{val.x}} <br>y:{{val.y}}
-          <div v-drag="greet" id="drag" :style="stylwqe">
+          <div v-drag="greet" id="drag" :style="style">
           //注意这里要通过指令绑定函数将当前元素的位置数据传出来
           </div>
         </div> -->
@@ -95,11 +95,10 @@ export default {
   },
   // 所有页面更新都会触发此函数
   updated() {
-    console.log(this.$store.dispatch,"12412")
     // 提交sdk连接请求
     this.$store.dispatch('connect')
     this.$store.dispatch('updateRefreshState')
-    
+    console.log(this.$store)
   },
   mounted: function() {
     
@@ -131,6 +130,7 @@ export default {
     if (token == '' || token == null || token == undefined) {
       let tokens = JSON.parse(localStorage.getItem("token"))
       token = tokens.token
+      console.log(token)
       if (token == '' || token == null || token == undefined) {
         that.wx.closeWindow()
         return
