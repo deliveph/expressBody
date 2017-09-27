@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
-        <div class="invite-wrapper">
-            <h4><span>已邀请<i class="ft-red">3</i>人</span><span class="ml60">已获得<i class="ft-red">15</i>快递豆</span></h4>
+        <div class="invite-wrapper" v-if="data.invite_users.length != 0">
+            <h4><span>已邀请<i class="ft-red">{{ data.user_total_invite }}</i>人</span><span class="ml60">已获得<i class="ft-red">{{ data.user_total_invite_reward }}</i>快递豆</span></h4>
             <table class="invite-table">
                 <thead>
                     <tr>
@@ -11,21 +11,39 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>135*********</td>
-                        <td>2018-04-10</td>
-                        <td>5元</td>
+                    <tr v-for="item in data.invite_users">
+                        <td>{{ item.to_user_phone }}</td>
+                        <td>{{ item.from_user_create_time }}</td>
+                        <td>{{ item.from_user_reward }}元</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="no-friends">
+        <div class="no-friends" v-else>
             <img src="/static/assets/images/no_friend.png" alt="">
             <p>你还没有好友哦，快去邀请吧</p>
         </div>
     </div>
 </template>
 <script>
-    export default{}
+    export default{
+        data() {
+            return {
+                page: 1,
+                data: {}
+            }
+        },
+        created() {
+            let that = this
+            this.http(that.configs.apiTop + "/user/invite-users?page=" + this.page, "get", '', function (res) {
+                let msg = res.data
+                if(msg.code == 0){
+                    // that.$router.push({ path: '/person' })
+                    that.data = msg.data
+                    console.log(that.data)
+                }
+            })
+        }
+    }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>
