@@ -146,7 +146,7 @@ export default {
                     that.avatar = data.user_avatar
                     that.name = data.user_nickname
                     that.phone = data.user_phone
-                    that.address = data.user_address
+                    that.address = data.user_full_address
                 } else if (msg.code == 40004) {
                     // location.href = that.configs.accreditUrl
                 }

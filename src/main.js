@@ -100,6 +100,7 @@ Vue.prototype.token = function () {
 }
 
 Vue.prototype.http = function (url, method, data, callback) {
+  let that = this
   this.$ajax({
     url: url,
     method: method,
@@ -107,14 +108,21 @@ Vue.prototype.http = function (url, method, data, callback) {
       'Authorization': configs.tokenId
     },
     data: data,
-    responseType: 'json'
+    responseType: 'json',
+    beforeSend: function () {
+      that.$vux.loading.show({
+        text: 'Loading'
+      })
+    }
     // withCredentials: true
   }).then(res => {
     let data = res.data
+    let that = this
     if (data.code === 40004) {
       // location.href = configs.accreditUrl
       return
     }
+    that.$vux.loading.hide()
     callback(res)
   }).catch(function (err) {
     // that.loadingState = "加载失败"

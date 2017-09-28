@@ -30,7 +30,8 @@
                     </div>
                 </div>
                 <h3 class="name">{{service_nickname}}
-                    <a class="icon_tel" v-on:click="tel(service_tell)"></a>
+                    <!-- @click="tel(service_tell)" -->
+                    <a class="icon_tel" @click="tel(service_tel)"></a>
                 </h3>
                 <p>
                     <label for="">工号：</label>
@@ -83,6 +84,7 @@ export default {
             let that = this
             let user = that.headerObject.user
             let service = that.headerObject.service
+            console.log(service)
             let service1 = JSON.stringify(service)
             that.userid =  user.user_id
             that.user_avatar = user.user_avatar
@@ -94,7 +96,8 @@ export default {
                 that.service_id = service.service_id
                 that.service_avatar = service.service_avatar
                 that.service_nickname = service.service_nickname
-                that.service_tel = service.service_tel
+                that.service_tel = service.service_phone
+                console.log(that.service_tel)
                 let service_level = service.service_level
                 that.service_level_logo = service_level.service_level_logo
             }
@@ -105,6 +108,7 @@ export default {
     },
     methods: {
         tel(msg) {
+            console.log(msg)
             window.location.href="tel:"+msg
         }
     }

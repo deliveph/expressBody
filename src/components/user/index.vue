@@ -4,11 +4,11 @@
             <div class="nom-info">
                 
                     <dl class="nom-info-box col-9">
-                        <dt><router-link to="/person"><img :src="data.user_avatar == undefined ? '/static/assets/images/head_def.png': data.user_avatar" alt=""></router-link></dt>
+                        <dt><router-link :to="{path:'/person',query:{type:'user'}}"><img :src="data.user_avatar == undefined ? '/static/assets/images/head_def.png': data.user_avatar" alt=""></router-link></dt>
                         <dd>
                             <p class="nom-info-name">
                                 <router-link to="" href="javascript:;" v-if="data.user_nickname == undefined">未登录</router-link>
-                                <router-link to="/person" v-else>{{ data.user_nickname }}</router-link>
+                                <router-link :to="{path:'/person',query:{type:'user'}}" v-else>{{ data.user_nickname }}</router-link>
                             </p>
                             <router-link to="/level">
                                 <grade class="m0 icon_express_1"></grade>
@@ -16,7 +16,7 @@
                         </dd>
                     </dl>
                     <div class="col-1 nom-arrow">
-                    <router-link to="/person">
+                    <router-link :to="{path:'/person',query:{type:'user'}}">
                         <span></span>
                         </router-link>
                     </div>

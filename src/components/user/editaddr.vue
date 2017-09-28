@@ -67,7 +67,7 @@ export default {
             this.http(that.configs.apiTop + "/user/update-profile-address", "post", data, function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
-                    that.$router.push({ path: '/person' })
+                    that.$router.push({ path: '/person',query:{type:'user'} })
                 } else if (msg.code == 40004) {
                     // location.href = that.configs.accreditUrl
                 }
