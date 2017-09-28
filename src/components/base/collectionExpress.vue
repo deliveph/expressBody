@@ -306,7 +306,7 @@ export default {
         defaultMsg(){
             let that = this
             let stage = that.stage
-            if(that.defaultFalse){
+            if(!that.defaultFalse){
                 if(stage.current_service != ''){
                     that.defaultFalse = true
                     that.realName = stage.current_service.service_nickname
@@ -339,10 +339,10 @@ export default {
                 that.stage = msg.data.stage
                 let stage = msg.data.stage
                 if(that.stage.current_service != ''){
-                    that.defaultFalse = true
-                    that.realName = stage.current_service.service_nickname
-                    that.realPhone = stage.current_service.service_phone
-                    that.realAddress = stage.stage_full_address
+                    // that.defaultFalse = true
+                    // that.realName = stage.current_service.service_nickname
+                    // that.realPhone = stage.current_service.service_phone
+                    // that.realAddress = stage.stage_full_address
                 }
                 that.servicing_time = msg.data.servicing_time
             } else if (msg.code == 40004) {

@@ -38,9 +38,7 @@
             this.http(that.configs.apiTop + "/user/invite-users?page=" + this.page, "get", '', function (res) {
                 let msg = res.data
                 if(msg.code == 0){
-                    // that.$router.push({ path: '/person' })
                     that.data = msg.data
-                    console.log(that.data)
                 }
             })
         }

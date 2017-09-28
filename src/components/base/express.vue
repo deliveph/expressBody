@@ -4,7 +4,7 @@
             <ul>
                 <li class="courier_message">
                     <div class="photo">
-                        <img :src="result.service.service_avatar == 'undefined' ? '/static/assets/images/head_def.png' : result.service.service_avatar" /> 
+                        <img :src="service.service_avatar == 'undefined' ? '/static/assets/images/head_def.png' : service.service_avatar" /> 
                         <div class="grade">
                             <grade class="icon_express_1"></grade>
                         </div>
@@ -131,7 +131,8 @@ export default {
         return {
             layerPwhide:true,
             data: {}, 
-            result: {} 
+            result: {},
+            service:{}
         }
     },
     created() {
@@ -146,7 +147,8 @@ export default {
                 let msg = res.data 
                 if (msg.code == 0) { 
                     // console.log(msg) 
-                    that.result = msg.data; 
+                    that.result = msg.data;
+                    that.service = msg.data.service
                 } 
             }) 
         } 

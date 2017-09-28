@@ -242,14 +242,10 @@ export default {
             }else if(!that.checkbox){
                 that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
                 return false
-            }else if(that.remark == ''){
-                that.$vux.toast.text('请输入30字符内的说明','middle',100)
-                return false
             }else if(that.remark.lenght == 30){
                 that.$vux.toast.text('请输入30字符内的说明','middle',100)
                 return false
             }
-            console.log(that.format.name,that.format.value)
             let data = qs.stringify({
                 'shipper_address_id': that.default_shipper_address.shipper_address_id,
                 'consignee_address_id':that.default_consignee_address.consignee_address_id,

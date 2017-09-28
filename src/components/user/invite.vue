@@ -123,12 +123,13 @@
         created() {
             this.fromUserId = this.$route.query.from_user_id
             // console.log(this.fromUserId)
+            document.getElementsByTagName("body")[0].setAttribute("style","background-color:white")
         }
     }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>
 <style>
-    body{
+    /* body{
         background-color:#fff;
-    }
+    } */
 </style>

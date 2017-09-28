@@ -12,13 +12,22 @@
     </div>
 </template>
 <script>
-    export default{}
+    export default{
+        data(){
+            return{
+
+            }
+        },
+        created(){
+            document.getElementsByTagName("body")[0].setAttribute("style","background-color:white")
+        }
+    }
 </script>
 <style lang="scss">
 @import '../../../static/assets/css/px2rem.scss';
-body{
-    background:#fff;
-}
+// body{
+//     background:#fff;
+// }
 .code-wrapper{
     background:url(/static/assets/images/haibao_bg.png) no-repeat;background-size:cover;
     position:relative;height:px2rem(1056);width:100%;

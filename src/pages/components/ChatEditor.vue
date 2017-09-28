@@ -495,6 +495,7 @@ export default {
           vertical-align: middle;
       }
       .layer_box{
+        &.layer_record{
           width:px2rem(262);
           height: px2rem(192);
           background-color:rgba(0,0,0,0.3);
@@ -524,6 +525,7 @@ export default {
               color:#fff;
               margin-top:px2rem(40)
           }
+        }
       }
   }
 </style>
