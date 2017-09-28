@@ -97,7 +97,7 @@
                     return
                 }
 
-                this.http(that.configs.apiTop + "/user/accept-invite/:"+ this.fromUserId, "post",  data, function(res) {
+                this.http(that.configs.apiTop + "/user/accept-invite/"+ this.fromUserId, "post",  data, function(res) {
                     let msg = res.data
                     if (msg.code == 0) {
                         that.$vux.toast.text(msg.message, 'middle', 100);

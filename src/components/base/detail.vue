@@ -1,10 +1,13 @@
 <template>
     <div class="detail" id="detail">
         <div class="detail_box">
+        <!--
             <img src="/static/assets/images/banner.png" />
             <div class="content">
                 <p>我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝</p>
             </div>
+            -->
+            {{ data.readme_content }}
         </div>
         <div class="footer_btn">
             <div v-if="status == 'ad'">
@@ -25,7 +28,8 @@
         data(){
             return{
                 share: false,
-                status: 'free'
+                status: 'free',
+                data : {}
             }
         },
         components:{
@@ -39,6 +43,19 @@
         created(){
             let types = this.$route.query.type;
             this.status = types;
+            let that = this
+            // console.log(types)
+            if(types == 'user'){
+                let readmeId = this.$route.query.id;
+                // console.log(readmeId)
+                this.http(that.configs.apiTop + "/page/readme-detail/"+readmeId, "get",  '', function(res) {
+                    let msg = res.data
+                    if (msg.code == 0) {
+                        that.data = msg.data;
+                        document.title = msg.data.readme_title
+                    }
+                })
+            }
         }
     }    
 </script>
