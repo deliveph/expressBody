@@ -32,6 +32,7 @@
 import { Toast } from 'vux'
 import qs from 'qs'
 export default {
+    // props: ["Info"],
     data() {
         return {
             password: ''

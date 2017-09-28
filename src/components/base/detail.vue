@@ -1,10 +1,7 @@
 <template>
     <div class="detail" id="detail">
         <div class="detail_box">
-            <img src="/static/assets/images/banner.png" />
-            <div class="content">
-                <p>我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝我是共享快递宝宝</p>
-            </div>
+            {{ data.readme_content }}
         </div>
         <div class="footer_btn">
             <div v-if="status == 'ad'">

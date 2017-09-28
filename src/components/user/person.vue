@@ -48,7 +48,7 @@
                         <router-link to="">
                             <span>我的评分</span>
                             <em>
-                                <span>4.8</span>
+                                <span>{{ score }}</span>
                             </em>
                         </router-link>
                     </li>

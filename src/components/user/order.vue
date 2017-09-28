@@ -63,7 +63,7 @@
                                     <div class="order-option">
                                         <span class="order-btn" v-if="ship.ship_order_status_id == -1">删除订单</span>
                                         <span class="order-btn" v-else-if="ship.ship_order_status_id == 1 || ship.ship_order_status_id == 2" @click="cancel(ship.ship_order_number)">取消订单</span>
-                                        <span class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 3">去支付</span>
+                                        <router-link class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 3" tag="span" :to="{}">去支付</router-link>
                                         <span class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 4">去评价</span>
                                         <span class="order-btn" v-else-if="ship.ship_order_status_id == 5">删除订单</span>
                                     </div>
