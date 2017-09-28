@@ -39,7 +39,7 @@
  
                 if(this.$route.query.type == 'service' ){ 
                     let data = qs.stringify({ 
-                        'user_nickname':that.name, 
+                        'service_nickname':that.name
                     }) 
  
                     this.http(that.configs.apiTop + "/service/update-profile-nickname", "post", data, function (res) { 
@@ -58,7 +58,7 @@
                     }) 
                 }else{
                     let data = qs.stringify({
-                        'user_nickname':that.name,
+                        'user_nickname':that.name
                     })
                     this.http(that.configs.apiTop + "/user/update-profile-nickname", "post", data, function (res) {
                         let msg = res.data

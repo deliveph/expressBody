@@ -3,30 +3,12 @@
         <div class="cen-list">
             <div class="cen-item">
                 <ul class="some-item">
-                    <li>
-                        <router-link to="/">
-                            <span>关于我们</span>
-                            <em><i class="arrow-right"></i></em>
-                        </router-link>
-                    </li>
-                    <li>
-                        <router-link to="">
-                            <span></i>关于优惠劵</span>
-                            <em><i class="arrow-right"></i></em>
-                        </router-link>
-                    </li>
-                    <li>
-                        <router-link to="">
-                            <span>如何支付</span>
-                            <em><i class="arrow-right"></i></em>
-                        </router-link>
-                    </li>
-                    <li>
-                        <router-link to="">
-                            <span>我们的服务</span>
-                            <em><i class="arrow-right"></i></em>
-                        </router-link>
-                    </li>
+                     <li v-for="item in data.readme"> 
+                        <router-link :to="{path:'/detail',query: {type: 'user',id: item.readme_id}}"> 
+                            <span>{{ item.readme_title }}</span> 
+                            <em><i class="arrow-right"></i></em> 
+                        </router-link> 
+                    </li> 
                 </ul>
             </div>
         </div>
@@ -34,6 +16,25 @@
 </template>
 
 <script>
-    export default{}
+    export default{
+        data() { 
+            return { 
+                data: {} 
+            } 
+        }, 
+        created() { 
+            let that = this 
+            this.http(that.configs.apiTop + '/page/readme', "get", '', function (res) { 
+                let msg = res.data 
+                if(msg.code == 0){ 
+                    that.data = msg.data 
+                }else if(msg.code == 40004){ 
+                    that.$vux.toast.text(msg.message, 'middle', 100); 
+                }else{ 
+                    that.$vux.toast.text(msg.message, 'middle', 100); 
+                } 
+            }) 
+        } 
+    }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>

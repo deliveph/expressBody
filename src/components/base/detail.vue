@@ -25,7 +25,8 @@
         data(){
             return{
                 share: false,
-                status: 'free'
+                status: 'free', 
+                data : {} 
             }
         },
         components:{
@@ -37,8 +38,20 @@
             }
         },
         created(){
+            let that = this 
             let types = this.$route.query.type;
             this.status = types;
+            if(types == 'user'){ 
+                let readmeId = this.$route.query.id; 
+                // console.log(readmeId) 
+                this.http(that.configs.apiTop + "/page/readme-detail/"+readmeId, "get",  '', function(res) { 
+                    let msg = res.data 
+                    if (msg.code == 0) { 
+                        that.data = msg.data; 
+                        document.title = msg.data.readme_title 
+                    } 
+                }) 
+            }
         }
     }    
 </script>

@@ -4,23 +4,37 @@
             <ul>
                 <router-link :to="{path:'address/shipper'}" tag="li" class="send pdlf30">
                     <i class="icon_send"></i>
-                    <div class="msg por">
+                    <div class="msg por" v-if="default_shipper_address != ''">
                         <p>
                             <span class="name">{{default_shipper_address.shipper_name == ''?'暂无': default_shipper_address.shipper_name}}</span>
                             <span class="tel">{{default_shipper_address.shipper_phone == ''?'暂无': default_shipper_address.shipper_phone}}</span>
                         </p>
                         <p class="add">{{default_shipper_address.shipper_full_address == ''?'暂无': default_shipper_address.shipper_full_address}}</p>
+                        
+                    </div>
+                    <div class="msg por" v-else>
+                        <div class="nomsg">
+                            <i class="icon_site"></i>
+                            <p>添加新地址</p>
+                        </div>
                         <i class="poa"></i>
                     </div>
                 </router-link>
                 <router-link :to="{path:'address/consignee'}" tag="li" class="receive pdlf30">
                     <i class="icon_receive"></i>
-                    <div class="msg por">
+                    <div class="msg por" v-if="default_consignee_address != ''">
                         <p>
                             <span class="name">{{default_consignee_address.consignee_name == ''?'暂无': default_consignee_address.consignee_name}}</span>
                             <span class="tel">{{default_consignee_address.consignee_phone == ''?'暂无': default_consignee_address.consignee_phone}}</span>
                         </p>
                         <p class="add">{{default_consignee_address.consignee_full_address == ''?'暂无': default_consignee_address.consignee_full_address}}</p>
+                        <i class="poa"></i>
+                    </div>
+                    <div class="msg por" v-else>
+                        <div class="nomsg">
+                            <i class="icon_site"></i>
+                            <p>添加新地址</p>
+                        </div>
                         <i class="poa"></i>
                     </div>
                 </router-link>
@@ -48,7 +62,7 @@
         <div class="readAgreement">
             <input type="checkbox" v-model="checkbox">
             <span>我已阅读并同意</span>
-            <router-link :to="{name:'Detail',query:{type:'agreement'}}">《快递宝宝协议》</router-link>
+            <router-link :to="{name:'Detail',query:{type:'agreement'}}">《共享快递哥》</router-link>
         </div>
         <div class="submit">
             <div class="row">
@@ -71,8 +85,8 @@ export default {
     data() {
         return {
             checkbox:true,
-            default_shipper_address:{},
-            default_consignee_address:{},
+            default_shipper_address:[],
+            default_consignee_address:[],
             time_quantum:'',
             remark:'',
             title1: '快递公司',

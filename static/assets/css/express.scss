@@ -224,6 +224,24 @@
                     top: px2rem(28);
                     margin-right: 0;
                 }
+                .nomsg{
+                    text-align: center;
+                    padding-top:px2rem(20);
+                    .icon_site{
+                        width: px2rem(37);
+                        height: px2rem(38);
+                        background: url('/static/assets/images/site.png') no-repeat center;
+                        background-size:px2rem(37) px2rem(38);
+                        margin-right: px2rem(20);
+                        vertical-align: sub
+                    }
+                    p{
+                        font-size:px2rem(36);
+                        color: #caacca;
+                        display: inline-block;
+                        // margin-bottom: 0
+                    }
+                }                
             }
         }
     }
