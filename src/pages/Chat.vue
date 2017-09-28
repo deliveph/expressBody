@@ -242,6 +242,7 @@ export default {
     background-color: #cacaca;
     max-width:px2rem(300);
     height:px2rem(42);
+    line-height:px2rem(42);
     padding:0 px2rem(20);
     border-radius:px2rem(6);
     margin: 0 auto;

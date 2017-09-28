@@ -41,10 +41,10 @@
     </div>
 
     <!-- 手指上划，取消发送 -->
-    <div class="layer_warp layer_record"  v-if="click_record">
+    <div class="layer_warp"  v-if="click_record">
         <div class="layer_table">
             <div class="layer_table_cell">
-                <div class="layer_box">
+                <div class="layer_box layer_record">
                     <div class="img">
                         <img src="/static/assets/images/voice/microphone.png" class="microphone"/>
                         <img src="/static/assets/images/voice/speak4.png" class="volume"/>
@@ -55,10 +55,10 @@
         </div>
     </div>
     <!-- 松开手指，取消发送 -->
-    <div class="layer_warp layer_record" v-if="loosen_record">
+    <div class="layer_warp" v-if="loosen_record">
         <div class="layer_table">
             <div class="layer_table_cell">
-                <div class="layer_box">
+                <div class="layer_box layer_record">
                     <div class="img">
                         <img src="/static/assets/images/voice/abolish.png" class="arrows"/>
                     </div>
@@ -498,7 +498,7 @@ export default {
         &.layer_record{
           width:px2rem(262);
           height: px2rem(192);
-          background-color:rgba(0,0,0,0.3);
+          background-color:rgba(0,0,0,0.6);
           display: inline-block;
           border-radius:px2rem(10);
           padding:px2rem(34);

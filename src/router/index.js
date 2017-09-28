@@ -272,7 +272,10 @@ export default new Router({
         {
             path: '/service',
             name: 'service',
-            component: service
+            component: service,
+            meta: {
+                title: '个人中心'
+            }
         }, //快递宝宝首页 
         {
             path: '/statistics',

@@ -22,7 +22,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="coupon-list after" v-if="index == 1">
+            <div class="coupon-list after" v-if="index == 2">
                 <ul>
                     <li v-for="(item,i) in items" :key="i">
                         <div class="coupon-l">
@@ -40,7 +40,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="coupon-list past" v-if="index ==2 ">
+            <div class="coupon-list past" v-if="index == 1 ">
                 <ul>
                     <li v-for="(item,i) in items" :key="i">
                         <div class="coupon-l">

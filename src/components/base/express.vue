@@ -11,6 +11,9 @@
                     </div>
                 </li>
             </ul>
+            <router-link class="service_message poa" :to="{path: '/session'}">
+                <i></i>
+            </router-link>
         </div>
         <div class="statistics">
             <ul>
@@ -58,55 +61,66 @@
             </ul>
         </div>
         <div class="hg20"></div>
-        <div class="order_list">
+        <div class="order_list" v-if="items != ''">
             <ul>
-                <li class="send">
-                    <router-link :to="{name:'Detail',query:{type:'free'}}">
-                        <i class="icon_send"></i>
-                        <div class="odd">
-                            <p class="order_number">订单号：
-                                <span>4332502938508025</span>
-                            </p>
-                            <div class="site">
-                                <div class="starting">
-                                    <h4>深圳</h4>
-                                    <p>战锤</p>
-                                </div>
-                                <div class="center">
-
-                                </div>
-                                <div class="receipt">
-                                    <h4>新疆</h4>
-                                    <p>战犯</p>
-                                </div>
+                <div v-for="(item,i) in items" :key="i">
+                    <div v-if="item.express_order_type == 'ship'">
+                        <div v-for="(ship,s) in ships" :key="s">
+                            <div v-if="item.express_order_number == ship.ship_order_number">
+                                <li class="send">
+                                    <router-link :to="{path:'orderdetail',query:{ship_order_number:ship.ship_order_number,status:'service'}}">
+                                        <i class="icon_send"></i>
+                                        <div class="odd">
+                                            <p class="order_number">订单号：
+                                                <span>{{ship.ship_order_number}}</span>
+                                            </p>
+                                            <div class="site">
+                                                <div class="starting">
+                                                    <h4>{{ship.shipper_address_city_region_name}}</h4>
+                                                    <p>{{ship.shipper_name}}</p>
+                                                </div>
+                                                <div class="center">
+                                                </div>
+                                                <div class="receipt">
+                                                    <h4>{{ship.consignee_address_city_region_name}}</h4>
+                                                    <p>{{ship.consignee_name}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="time">
+                                            <p>{{ship.ship_order_create_time}}</p>
+                                        </div>
+                                    </router-link>
+                                </li>
                             </div>
                         </div>
-                        <div class="time">
-                            <p>2017-08-06 14:59:52</p>
+                    </div>
+                    <div v-if="item.express_order_type == 'collection'">
+                        <div v-for="(collection,c) in collections" :key="c">
+                            <div v-if="item.express_order_number == collection.collection_order_number">
+                                <li class="put" >
+                                    <router-link :to="{path:'repget',query:{ship_order_number:collection.collection_order_number,status:'service'}}">
+                                        <i class="icon_put"></i>
+                                        <div class="odd">
+                                            <p class="order_number">订单号：<span>{{collection.collection_order_number}}</span></p>
+                                            <p class="express_number">快递单号：<span>{{collection.logistics_code}}</span></p>
+                                            
+                                        </div>
+                                        <div class="time">
+                                            <p>{{collection.collection_order_create_time}}</p>
+                                        </div>
+                                    </router-link>
+                                </li>
+                            </div>
                         </div>
-                    </router-link>
-                </li>
-                <li class="put">
-                    <router-link :to="{name:'Detail',query:{type:'free'}}">
-                        <i class="icon_put"></i>
-                        <div class="odd">
-                            <p class="order_number">订单号：
-                                <span>30945683409590345</span>
-                            </p>
-                            <p class="express_number">快递单号：
-                                <span>30945683409590345</span>
-                            </p>
-                        </div>
-                        <div class="time">
-                            <p>2017-08-06 14:59:52</p>
-                        </div>
-                    </router-link>
-
-                </li>
+                    </div>
+                </div>
             </ul>
         </div>
-
-        <LayerPw v-if="layerPwhide"></LayerPw>
+        <div class="no-order" v-else>
+            <div class="no-img"></div>
+            <p>暂无订单</p>
+        </div>        
         <LayerPw v-if="layerPwhide" v-bind:Info="result" v-on:listenEvent="getInfo"></LayerPw>
     </div>
 </template>
@@ -130,28 +144,64 @@ export default {
     data() {
         return {
             layerPwhide:true,
+            is_verification:0,
             data: {}, 
             result: {},
-            service:{}
+            service:{},
+            items:[],
+            ships:[],
+            collections:[]
         }
     },
     created() {
         let that = this
         let data = this.$route.query.password
+        this.is_verification = this.$route.query.is_verification
+        if(that.is_verification == '1'){
+            that.layerPwhide = false
+            this.http(that.configs.apiTop + "/page/service-home", "get",  '', function(res) { 
+                let msg = res.data 
+                if (msg.code == 0) { 
+                    that.result = msg.data;
+                    that.service = msg.data.service
+                } 
+            }) 
+            that.orderlist()
+        }else{
+            that.layerPwhide = true
+        }
     },
     methods: { 
         getInfo(result) { 
+            console.log(result)
             let that = this 
             this.http(that.configs.apiTop + "/page/service-home", "get",  '', function(res) { 
                 // console.log(res) 
                 let msg = res.data 
                 if (msg.code == 0) { 
                     // console.log(msg) 
+                    that.$router.push({path:'/service',query:{'is_verification':'1'}})
                     that.result = msg.data;
                     that.service = msg.data.service
                 } 
             }) 
-        } 
+        },
+        orderlist(){
+            let that = this
+            this.http(that.configs.apiTop + "/order/orders", "get", '', function(res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                    let data = msg.data
+                    that.items = data.items
+                    that.ships = data.ships
+                    that.collections = data.collections                    
+                } else if (msg.code == 40004) {
+                    // location.href = that.configs.accreditUrl
+                } else {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                }
+            })
+        }
     } 
 }
 </script>
@@ -159,7 +209,22 @@ export default {
 <style lang="scss" scoped>
 @import '../../../static/assets/css/px2rem.scss';
 @import '../../../static/assets/css/home.scss';
-
+.no-order {
+    margin-top: px2rem(102);
+    .no-img {
+        background: url('/static/assets/images/no_indent.png') no-repeat;
+        background-size: cover;
+        width: px2rem(250);
+        height: px2rem(250);
+        margin: 0 auto;
+    }
+    p {
+        text-align: center;
+        font-size: px2rem(28);
+        color: #999;
+        margin-top: px2rem(40);
+    }
+}
 .amap-demo {
     height: 300px;
 }
@@ -185,6 +250,15 @@ export default {
                 }
             }
         }
+    }
+    .service_message{
+        top:px2rem(16);
+        right:px2rem(30);
+        width:px2rem(44);
+        height:px2rem(44);
+        background:url('/static/assets/images/btn_person_news.png') no-repeat center;
+        background-size:px2rem(44);
+        i{}
     }
 }
 

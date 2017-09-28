@@ -3,7 +3,7 @@
         <div class="cen-list">
             <div class="cen-item">
                 <ul class="some-item">
-                     <li v-for="item in data.readme"> 
+                     <li v-for="item in data"> 
                         <router-link :to="{path:'/detail',query: {type: 'user',id: item.readme_id}}"> 
                             <span>{{ item.readme_title }}</span> 
                             <em><i class="arrow-right"></i></em> 
@@ -27,7 +27,7 @@
             this.http(that.configs.apiTop + '/page/readme', "get", '', function (res) { 
                 let msg = res.data 
                 if(msg.code == 0){ 
-                    that.data = msg.data 
+                    that.data = msg.data.readme 
                 }else if(msg.code == 40004){ 
                     that.$vux.toast.text(msg.message, 'middle', 100); 
                 }else{ 

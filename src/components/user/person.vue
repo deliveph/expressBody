@@ -73,7 +73,7 @@ import qs from 'qs'
 export default {
     data() {
         return {
-            avatar: '/static/assets/images/icon_success.png',
+            avatar: '/static/assets/images/head_def.png',
             name: '',
             phone: '',
             address: '', 

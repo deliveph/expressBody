@@ -205,11 +205,10 @@ export default {
         }
 
         .statistics_list{
-            margin-top:px2rem(20);
-            background-color:#fff;
-            padding-left:px2rem(30);
             ul{
-
+                margin-top:px2rem(20);
+                background-color:#fff;
+                padding-left:px2rem(30);
             }
             li{
                 border-bottom: 1px solid #e3e5e9;
@@ -251,4 +250,9 @@ export default {
             text-align: center; // margin-top:px2rem(40); 
         } 
     } 
+</style>
+<style>
+    .weui-cell_access .weui-cell__ft:after{
+        content:initial;
+    }
 </style>

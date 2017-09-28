@@ -54,16 +54,16 @@ export function initNimSDK ({ state, commit, dispatch }, loginInfo) {
           break;
         // 被踢, 请提示错误后跳转到登录页面
         case 'kicked':
-          let map = {
-            PC: '电脑版',
-            Web: '网页版',
-            Android: '手机版',
-            iOS: '手机版',
-            WindowsPhone: '手机版'
-          }
-          let str = error.from
-          let errorMsg = `你的帐号于${util.formatDate(new Date())}被${(map[str]||'其他端')}踢出下线，请确定帐号信息安全!`
-          pageUtil.turnPage(errorMsg, 'login')
+          // let map = {
+          //   PC: '电脑版',
+          //   Web: '网页版',
+          //   Android: '手机版',
+          //   iOS: '手机版',
+          //   WindowsPhone: '手机版'
+          // }
+          // let str = error.from
+          // let errorMsg = `你的帐号于${util.formatDate(new Date())}被${(map[str]||'其他端')}踢出下线，请确定帐号信息安全!`
+          // pageUtil.turnPage(errorMsg, 'login')
           break
         default:
           break

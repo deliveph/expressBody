@@ -7,7 +7,7 @@
             <div class="advise-info" v-if=" index == 0 ">
                 <div class="advise-info-box">
                     <div class="advise-item">
-                        <p>请选择你要反馈的意见类型(必填)11</p>
+                        <p>请选择你要反馈的意见类型(必填)</p>
                         <ul class="choice">
                             <li>产品功能</li>
                             <li>页面展示</li>
@@ -45,7 +45,7 @@
             <div class="advise-info" v-else>
                 <div class="advise-info-box">
                     <div class="advise-item">
-                        <p>请选择你要反馈的意见类型(必填)112222223</p>
+                        <p>请选择你要反馈的意见类型(必填)</p>
                         <ul class="choice">
                             <li>产品功能</li>
                             <li>页面展示</li>

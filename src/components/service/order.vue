@@ -135,7 +135,7 @@
                 ships:[],
                 collections:[],
                 layer:false,
-                orderCode:'2017092272384982440',
+                orderCode:'',
                 express_order_status:''
             }
         },
