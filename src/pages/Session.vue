@@ -3,31 +3,36 @@
     <!-- 切页动画设置 -->
     <transition :name="transitionName">
         <div class="g-inherit m-main p-session">
-        <group class="u-list">
-          <cell
-            v-for="(session, index) in sessionlist"
-            class="u-list-item"
-            :title="session.name"
-            :inline-desc="session.lastMsgShow"
-            :key="session.id"
-            :sessionId="session.id"
-            v-touch:swipeleft="showDelBtn"
-            v-touch:swiperight="hideDelBtn"
-            @click.native="enterChat(session)" >
-            <img class="icon" slot="icon" width="24" :src="session.avatar">
-            <span>
-              {{session.updateTimeShow}}
-            </span>
-            <span v-show="session.unread > 0" class="u-unread">{{session.unread}}</span>
-            <!-- <span
-              class="u-tag-del"
-              :class="{active: delSessionId===session.id}"
-              @click="deleteSession"
-              ></span> -->
-          </cell>
-        </group>
-      </div>
-    </transition>
+          <group class="u-list" v-if="sessionlist != ''">
+            <cell
+              v-for="(session, index) in sessionlist"
+              class="u-list-item"
+              :title="session.name"
+              :inline-desc="session.lastMsgShow"
+              :key="session.id"
+              :sessionId="session.id"
+              v-touch:swipeleft="showDelBtn"
+              v-touch:swiperight="hideDelBtn"
+              @click.native="enterChat(session)" >
+              <img class="icon" slot="icon" width="24" :src="session.avatar">
+              <span>
+                {{session.updateTimeShow}}
+              </span>
+              <span v-show="session.unread > 0" class="u-unread">{{session.unread}}</span>
+              <!-- <span
+                class="u-tag-del"
+                :class="{active: delSessionId===session.id}"
+                @click="deleteSession"
+                ></span> -->
+            </cell>
+          </group>
+          <div class="no-session" v-else>
+            <div class="no-img"></div>
+            <p>暂无消息</p>
+            <router-link :to="{path:'/service',query:{'is_verification':1}}" tag="button">返回首页</router-link>
+        </div>
+        </div>
+      </transition>
     <fullscreen-img></fullscreen-img>
     <loading></loading>
   </div>
@@ -73,7 +78,7 @@
         return `${this.$store.state.userUID}`
       },
       sessionlist () {
-        console.log(this.$store.state.sessionlist)
+        console.log(this.$store.state.sessionlist,"&^&*^&")
         let sessionlist = this.$store.state.sessionlist.filter(item => {
           console.log(item)
           item.name = ''
@@ -150,7 +155,7 @@
       }
     },
     created(){
-      console.log(124124)
+      console.log(12412)
       console.log(this)
     }
   }
@@ -210,5 +215,34 @@
     color: #fff;
     text-align: center;
     border-radius: 0.8rem;
+  }
+
+  .no-session {
+      margin-top: px2rem(102);
+      text-align:center;
+      .no-img {
+          background: url('/static/assets/images/no_indent.png') no-repeat;
+          background-size: cover;
+          width: px2rem(250);
+          height: px2rem(250);
+          margin: 0 auto;
+      }
+      p {
+          text-align: center;
+          font-size: px2rem(28);
+          color: #999;
+          margin-top: px2rem(40);
+      }
+      button{
+        width:70%;
+        height:px2rem(70);
+        line-height:px2rem(70);
+        background-color:#366931;
+        border-radius: px2rem(10);
+        margin:0 auto;
+        margin-top:px2rem(90);
+        font-size: px2rem(30);
+        color: #fff;
+      }
   }
 </style>

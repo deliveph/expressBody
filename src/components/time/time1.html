@@ -1,201 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
 </head>
+
 <body>
-    <script>
-        var util = {
-            appointmentNo: "",
-            businessTimeFlg: !0,
-            beginTM: 0,
-            lastEndTM: 0,
-            daylist: {},
-            timelist: {},
-            businessDate: {},
-            serviceDate: "",
-            serviceTM: 0,
-            formatDateTime: function(e, t){
-                var r = function(e){
-                    return e += '', e.replace(/^(\d)$/,'0$1')
-                },
-                n = {
-                    yyyy: e.getFullYear(),
-                    yy: e.getFullYear().toString().substring(2),
-                    M: e.getMonth() + 1,
-                    MM: r(e.getMonth() + 1),
-                    d: r(e.getDate()),
-                    dd: r(e.getDate()),
-                    hh: r(e.getHours()),
-                    mm: r(e.getMinutes()),
-                    ss: r(e.getSeconds()),
-                    SSS: r(e.getMilliseconds())
-                }
-                return t || (t = "yyyy-MM-dd hh:mm:ss"), t.replace(/([a-z])(\1)*/gi, function (e) {
-                    return n[e]
-                })
-            },
-            contentBussinessTime: function(msg){
-                console.log(msg)
-                if(!msg){
-                    var present = util.formatDateTime(new Date, "yyyy-MM-dd hh:mm:ss"),
-                        r = present.substring(11, 16).replace(":", "");
-                        dt = present.substring(0,10);
-                        console.log(r,dt)
-                        msg = '{"obj":[{"data":"今天","beginTM":"0800","lastBeginTM":"0800","endTM":"2000","lastEndTM":"2000"},{"data":"明天","beginTM":"0800","lastBeginTM":"0800","endTM":"2000","lastEndTM":"2000"},{"data":"后天","beginTM":"0800","lastBeginTM":"0800","endTM":"2000","lastEndTM":"2000"}],"serviceDate":"' + present + '","serviceTM":" ' + r + '"}', msg = JSON.parse(msg)
-                }
-                util.lastEndTM = msg.obj[0].lastEndTM, util.beginTM = msg.obj[0].beginTM, util.serviceDate = msg.serviceDate, util.serviceTM = parseInt(msg.serviceTM);
-                var s = parseInt(msg.serviceTM);
-                    p.length = 0;
-                for (var u = 0; u < msg.obj.length; u++) {
-                    // o.params.businessMap.put(a.obj[u].data, a.obj[u]);
-                    var c = msg.obj[u].lastEndTM;
-                    console.log(c)
-                    if ("2359" != c && "" != c && c > msg.obj[u].beginTM)
-                        if (c.indexOf(":") != -1 && (c = c.replace(":", "")), c = parseInt(c) - 100, "今天" == msg.obj[u].data)
-                            if (s < c) p.push(msg.obj[u].data);
-                            else {
-                                // var l = JSON.parse(t.page.getStorage("orderFormInfo"));
-                                // if (l.receivingAddress && l.sendingAddress) {
-                                //     var m = e(".userBoxTip");
-                                //     m.length || d(l.sendingAddress)
-                                // }
-                            }
-                    else p.push(msg.obj[u].data);
-                    else p.push(msg.obj[u].data)
-                }
-                util.businessDate = msg, util.daylist = p
-            },
-            _queryTime: function (e, i) {
-                var a = util.serviceTM,
-                    n = new Array,
-                    r = util.businessDate;
-                if ("" != p[e] && r.obj && 0 != r.obj.length) {
-                    for (var s = 0; s < r.obj.length; s++)
-                        if (p[e] == r.obj[s].data) {
-                            "今天" == p[e] && g.beginTM <= a && n.push("一小时内");
-                            for (var d = 0; d < m.length; d++) {
-                                var u = m[d].substring(0, m[d].indexOf("~")),
-                                    c = m[d].substring(m[d].indexOf("~") + 1),
-                                    u = g.resTime(u),
-                                    c = g.resTime(c),
-                                    l = r.obj[s].beginTM;
-                                l.indexOf(":") != -1 && (l = l.replace(":", "")), l = parseInt(l);
-                                var f = r.obj[s].lastEndTM;
-                                if ("2359" != f && "" != f && f > r.obj[s].beginTM) {
-                                    if (c <= 0) continue;
-                                    if (f.indexOf(":") != -1 && (f = f.replace(":", "")), f = parseInt(f) - 100, u >= l && c <= f) {
-                                        if ("今天" == p[e] && u - a < 30) continue;
-                                        n.push(m[d])
-                                    }
-                                } else if (u >= l) {
-                                    if ("今天" == p[e] && u - a < 30) continue;
-                                    n.push(m[d])
-                                }
-                            }
-                        }
-                    var y = ''
-                    if (y.hasOwnProperty("pickupDate")) {
-                        if ("init" == i) {
-                            var v = '',
-                                T = v.substring(0, v.indexOf("__")),
-                                D = v.substring(v.indexOf("__") + 2);
-                            T != p[0] ? g.sessionPickupDate(n) : D != n[0] && util.sessionPickupDate(n)
-                        }
-                    } else util.sessionPickupDate(n);
-                    return n
-                }
-            },
-            sessionPickupDate: function (t) {
-                "今天" == p[0] && "" == p[0], o.formInfo.pickupDate = p[0] + "__" + t[0], o.formFromTo.pickupDate = p[0] + "__" + t[0];
-                var i = p[0] + t[0];
-                "今天" == p[0] && (i = t[0]), e(".form-from-to .pickup-date").find("p.right").text(i), o.formInfo.save()
-            },
-            sysDatebusinessDay: function () {
-                var e = g.serviceTM;
-                p.length = 0, e < 2359 && p.push("今天"), p.push("明天"), p.push("后天"), g.daylist = p
-            },
-            sysDatebusinessTime: function (e) {
-                var t = g.serviceTM,
-                    i = new Array;
-                if ("" != p[e]) {
-                    "今天" == p[e] && i.push("一小时内");
-                    for (var a = 0; a < m.length; a++) {
-                        var n = m[a].substring(0, m[a].indexOf("~")),
-                            r = m[a].substring(m[a].indexOf("~") + 1),
-                            n = g.resTime(n),
-                            r = g.resTime(r);
-                        r <= 0 || "今天" == p[e] && n - t < 30 || i.push(m[a])
-                    }
-                    return i
-                }
-            },
-            resTime: function (e) {
-                return e = parseInt(e.replace(":", ""))
-            }
+  <script>
+    var util = {
+      appointmentNo: "",
+      businessTimeFlg: !0,
+      beginTM: 0,
+      lastEndTM: 0,
+      daylist: {},
+      timelist: {},
+      businessDate: {},
+      serviceDate: "",
+      serviceTM: 0,
+      formatDateTime: function (e, t) {
+        var r = function (e) {
+            return e += '', e.replace(/^(\d)$/, '0$1')
+          },
+          n = {
+            yyyy: e.getFullYear(),
+            yy: e.getFullYear().toString().substring(2),
+            M: e.getMonth() + 1,
+            MM: r(e.getMonth() + 1),
+            d: r(e.getDate()),
+            dd: r(e.getDate()),
+            hh: r(e.getHours()),
+            mm: r(e.getMinutes()),
+            ss: r(e.getSeconds()),
+            SSS: r(e.getMilliseconds())
+          }
+        return t || (t = "yyyy-MM-dd hh:mm:ss"), t.replace(/([a-z])(\1)*/gi, function (e) {
+          return n[e]
+        })
+      },
+      contentBussinessTime: function (msg) {
+        console.log(msg)
+        if (!msg) {
+          var present = util.formatDateTime(new Date, "yyyy-MM-dd hh:mm:ss"),
+            r = present.substring(11, 16).replace(":", "");
+          dt = present.substring(0, 10);
+          console.log(r, dt)
+          msg =
+            '{"obj":[{"data":"今天","beginTM":"0800","lastBeginTM":"0800","endTM":"2000","lastEndTM":"2000"},{"data":"明天","beginTM":"0800","lastBeginTM":"0800","endTM":"2000","lastEndTM":"2000"},{"data":"后天","beginTM":"0800","lastBeginTM":"0800","endTM":"2000","lastEndTM":"2000"}],"serviceDate":"' +
+            present + '","serviceTM":" ' + r + '"}', msg = JSON.parse(msg)
         }
-        var begin = '08:00';
-        var end = '21:00';
-        var benginTm1 = begin.substring(0, 2);
-        var benginTm = begin.replace(":","");
-        var endTm1 = end.substring(0, 2);
-        var endTm = end.replace(":","");
-        var len = (parseInt(endTm1) - parseInt(benginTm1))
-        var itemList = new Array
-        var timeList = new Array
-        var formatTm = new Array
-        var timeList1 = new Array
-        var timeList2 = new Array
-        for(i= 0;i<=len;i++){
-            var itemTm = parseInt(benginTm1) + parseInt(i)
-            if(itemTm >= 10){
-            }else{
-                itemTm = '0' + itemTm
-            }
-            var itemTm1 = itemTm + ':00';
-            var itemTm2 = itemTm + '00';
-            itemList.push(itemTm1)
-            formatTm.push(itemTm)
-
+        util.lastEndTM = msg.obj[0].lastEndTM, util.beginTM = msg.obj[0].beginTM, util.serviceDate = msg.serviceDate,
+          util.serviceTM = parseInt(msg.serviceTM);
+        var s = parseInt(msg.serviceTM);
+        p.length = 0;
+        for (var u = 0; u < msg.obj.length; u++) {
+          // o.params.businessMap.put(a.obj[u].data, a.obj[u]);
+          var c = msg.obj[u].lastEndTM;
+          console.log(c)
+          if ("2359" != c && "" != c && c > msg.obj[u].beginTM)
+            if (c.indexOf(":") != -1 && (c = c.replace(":", "")), c = parseInt(c) - 100, "今天" == msg.obj[u].data)
+              if (s < c) p.push(msg.obj[u].data);
+              else {
+                // var l = JSON.parse(t.page.getStorage("orderFormInfo"));
+                // if (l.receivingAddress && l.sendingAddress) {
+                //     var m = e(".userBoxTip");
+                //     m.length || d(l.sendingAddress)
+                // }
+              }
+          else p.push(msg.obj[u].data);
+          else p.push(msg.obj[u].data)
         }
-        var newDate = util.formatDateTime(new Date, "yyyy-MM-dd hh:mm:ss")
-        var formatNewDate = newDate.substring(11,13).replace(":","");
-        for (s = 0; s< formatTm.length;s++){
-            if(parseInt(formatNewDate) <= parseInt(formatTm[s])){
-                var itemTm3 = formatTm[s] + ':00'
-                timeList1.push(itemTm3)
+        util.businessDate = msg, util.daylist = p
+      },
+      _queryTime: function (e, i) {
+        var a = util.serviceTM,
+          n = new Array,
+          r = util.businessDate;
+        if ("" != p[e] && r.obj && 0 != r.obj.length) {
+          for (var s = 0; s < r.obj.length; s++)
+            if (p[e] == r.obj[s].data) {
+              "今天" == p[e] && g.beginTM <= a && n.push("一小时内");
+              for (var d = 0; d < m.length; d++) {
+                var u = m[d].substring(0, m[d].indexOf("~")),
+                  c = m[d].substring(m[d].indexOf("~") + 1),
+                  u = g.resTime(u),
+                  c = g.resTime(c),
+                  l = r.obj[s].beginTM;
+                l.indexOf(":") != -1 && (l = l.replace(":", "")), l = parseInt(l);
+                var f = r.obj[s].lastEndTM;
+                if ("2359" != f && "" != f && f > r.obj[s].beginTM) {
+                  if (c <= 0) continue;
+                  if (f.indexOf(":") != -1 && (f = f.replace(":", "")), f = parseInt(f) - 100, u >= l && c <= f) {
+                    if ("今天" == p[e] && u - a < 30) continue;
+                    n.push(m[d])
+                  }
+                } else if (u >= l) {
+                  if ("今天" == p[e] && u - a < 30) continue;
+                  n.push(m[d])
+                }
+              }
             }
-        }
-        console.log(itemList)
-        console.log(timeList1.length)
-        for(j = 0; j < itemList.length;j++){
-            var itemList1 = '';
-            var num = itemList.length - j;
-            if(num == 1){
-
-            }else{
-                itemList1 = itemList[j] +"~"+ itemList[j+1] 
+          var y = ''
+          if (y.hasOwnProperty("pickupDate")) {
+            if ("init" == i) {
+              var v = '',
+                T = v.substring(0, v.indexOf("__")),
+                D = v.substring(v.indexOf("__") + 2);
+              T != p[0] ? g.sessionPickupDate(n) : D != n[0] && util.sessionPickupDate(n)
             }
-            timeList.push(itemList1)
+          } else util.sessionPickupDate(n);
+          return n
         }
-
-        for(m = 0; m < timeList1.length;m++){
-            var itemList2 = '';
-            var num = timeList1.length - m;
-            if(num == 1){
-                itemList2 = ''
-            }else{
-                itemList2 = timeList1[m] +"~"+ timeList1[m+1] 
-            }
-            timeList2.push(itemList2)
+      },
+      sessionPickupDate: function (t) {
+        "今天" == p[0] && "" == p[0], o.formInfo.pickupDate = p[0] + "__" + t[0], o.formFromTo.pickupDate = p[0] +
+          "__" + t[0];
+        var i = p[0] + t[0];
+        "今天" == p[0] && (i = t[0]), e(".form-from-to .pickup-date").find("p.right").text(i), o.formInfo.save()
+      },
+      sysDatebusinessDay: function () {
+        var e = g.serviceTM;
+        p.length = 0, e < 2359 && p.push("今天"), p.push("明天"), p.push("后天"), g.daylist = p
+      },
+      sysDatebusinessTime: function (e) {
+        var t = g.serviceTM,
+          i = new Array;
+        if ("" != p[e]) {
+          "今天" == p[e] && i.push("一小时内");
+          for (var a = 0; a < m.length; a++) {
+            var n = m[a].substring(0, m[a].indexOf("~")),
+              r = m[a].substring(m[a].indexOf("~") + 1),
+              n = g.resTime(n),
+              r = g.resTime(r);
+            r <= 0 || "今天" == p[e] && n - t < 30 || i.push(m[a])
+          }
+          return i
         }
-        console.log(timeList)
-        console.log(timeList2)
+      },
+      resTime: function (e) {
+        return e = parseInt(e.replace(":", ""))
+      }
+    }
+    var begin = '08:00';
+    var end = '21:00';
+    var benginTm1 = begin.substring(0, 2);
+    var benginTm = begin.replace(":", "");
+    var endTm1 = end.substring(0, 2);
+    var endTm = end.replace(":", "");
+    var len = (parseInt(endTm1) - parseInt(benginTm1))
+    var itemList = new Array
+    var timeList = new Array
+    var formatTm = new Array
+    var timeList1 = new Array
+    var timeList2 = new Array
+    for (i = 0; i <= len; i++) {
+      var itemTm = parseInt(benginTm1) + parseInt(i)
+      if (itemTm >= 10) {} else {
+        itemTm = '0' + itemTm
+      }
+      var itemTm1 = itemTm + ':00';
+      var itemTm2 = itemTm + '00';
+      itemList.push(itemTm1)
+      formatTm.push(itemTm)
+    }
+    var newDate = util.formatDateTime(new Date, "yyyy-MM-dd hh:mm:ss")
+    var formatNewDate = newDate.substring(11, 13).replace(":", "");
+    for (s = 0; s < formatTm.length; s++) {
+      if (parseInt(formatNewDate) <= parseInt(formatTm[s])) {
+        var itemTm3 = formatTm[s] + ':00'
+        timeList1.push(itemTm3)
+      }
+    }
+    console.log(itemList)
+    console.log(timeList1.length)
+    for (j = 0; j < itemList.length; j++) {
+      var itemList1 = '';
+      var num = itemList.length - j;
+      if (num == 1) {
 
-        
+      } else {
+        itemList1 = itemList[j] + "~" + itemList[j + 1]
+      }
+      timeList.push(itemList1)
+    }
+
+    for (m = 0; m < timeList1.length; m++) {
+      var itemList2 = '';
+      var num = timeList1.length - m;
+      if (num == 1) {
+        itemList2 = ''
+      } else {
+        itemList2 = timeList1[m] + "~" + timeList1[m + 1]
+      }
+      timeList2.push(itemList2)
+    }
+    console.log(timeList)
+    console.log(timeList2)
+    
+    function GetDateStr(AddDayCount) {
+      var dd = new Date();
+      dd.setDate(dd.getDate() + AddDayCount); //获取AddDayCount天后的日期 
+      var y = dd.getFullYear();
+      var m = dd.getMonth() + 1; //获取当前月份的日期 
+      var d = dd.getDate();
+      return y + "-" + m + "-" + d;
+    }
+    console.log(GetDateStr(0),GetDateStr(1),GetDateStr(2))
 
 
 
@@ -205,22 +217,31 @@
 
 
 
-        var m = new Array,p = new Array;
-        m.push("05:00~06:00"), m.push("06:00~07:00"), m.push("07:00~08:00"), m.push("08:00~09:00"), m.push("09:00~10:00"), m.push("10:00~11:00"), m.push("11:00~12:00"), m.push("12:00~13:00"), m.push("13:00~14:00"), m.push("14:00~15:00"), m.push("15:00~16:00"), m.push("16:00~17:00"), m.push("17:00~18:00"), m.push("18:00~19:00"), m.push("19:00~20:00"), m.push("20:00~21:00"), m.push("21:00~22:00"), m.push("22:00~23:00"), m.push("23:00~00:00");
-        console.log(m)
-        // function For
-        // console.log(FormatdateTime(new Data, "yyyy-MM-dd hh:mm:ss"))
 
-        
 
-        
-        var h = util.formatDateTime(new Date, "yyyy-MM-dd hh:mm:ss")
-        console.log(h)
 
-        var c = util.contentBussinessTime()
-        console.log(c)
+    var m = new Array,
+      p = new Array;
+    m.push("05:00~06:00"), m.push("06:00~07:00"), m.push("07:00~08:00"), m.push("08:00~09:00"), m.push("09:00~10:00"),
+      m.push("10:00~11:00"), m.push("11:00~12:00"), m.push("12:00~13:00"), m.push("13:00~14:00"), m.push("14:00~15:00"),
+      m.push("15:00~16:00"), m.push("16:00~17:00"), m.push("17:00~18:00"), m.push("18:00~19:00"), m.push("19:00~20:00"),
+      m.push("20:00~21:00"), m.push("21:00~22:00"), m.push("22:00~23:00"), m.push("23:00~00:00");
+    console.log(m)
+    // function For
+    // console.log(FormatdateTime(new Data, "yyyy-MM-dd hh:mm:ss"))
 
-        var xx = util._queryTime(new Date, "yyyy-MM-dd hh:mm:ss")
-    </script>
+
+
+
+    var h = util.formatDateTime(new Date, "yyyy-MM-dd hh:mm:ss")
+    console.log(h)
+
+    var c = util.contentBussinessTime()
+    console.log(c)
+
+    var xx = util._queryTime(new Date, "yyyy-MM-dd hh:mm:ss")
+
+  </script>
 </body>
+
 </html>

@@ -14,14 +14,14 @@ function connectNim ({state, commit, dispatch}, obj) {
   console.log({force})
   // 操作为内容页刷新页面，此时无nim实例
   if (!state.nim || force) {
-    // let loginInfo = {
-    //   uid: cookie.readCookie('uid'),
-    //   sdktoken: cookie.readCookie('sdktoken'),
-    // }
     let loginInfo = {
-      uid: 'deliveph',
-      sdktoken: 'e10adc3949ba59abbe56e057f20f883e'
+      uid: cookie.readCookie('uid'),
+      sdktoken: cookie.readCookie('sdktoken')
     }
+    // let loginInfo = {
+    //   uid: 'deliveph',
+    //   sdktoken: 'e10adc3949ba59abbe56e057f20f883e'
+    // }
     console.log(loginInfo)
     if (!loginInfo.uid) {
       // 无cookie，直接跳转登录页

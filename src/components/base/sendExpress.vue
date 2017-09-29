@@ -10,7 +10,7 @@
                             <span class="tel">{{default_shipper_address.shipper_phone == ''?'暂无': default_shipper_address.shipper_phone}}</span>
                         </p>
                         <p class="add">{{default_shipper_address.shipper_full_address == ''?'暂无': default_shipper_address.shipper_full_address}}</p>
-                        
+                        <i class="poa"></i>
                     </div>
                     <div class="msg por" v-else>
                         <div class="nomsg">
@@ -41,20 +41,17 @@
             </ul>
         </div>
         <div class="express_company pdlf30 express_list">
-            <popup-picker :title="title1" :data="list1" v-model="value1" :columns="1" :display-format="format" ></popup-picker>
+            <popup-picker :title="title1" :data="list1" v-model="value1" :columns="1" ref="picker3" :display-format="format"></popup-picker>
         </div>
         <div class="express_stdmode pdlf30 express_list">
-            <popup-picker :title="title2" :data="list2" v-model="value2":placeholder="placeholder2" :columns="1" :display-format="format"></popup-picker>
+            <popup-picker :title="title2" :data="list2" v-model="value2" :placeholder="placeholder2" :columns="1" :display-format="format"></popup-picker>
         </div>
         <div class="estimated_weight pdlf30 express_list">
             <x-number :title="estimated_title" v-model="roundValue" button-style="round" :max="5" :min="0" ></x-number>
         </div>
         <div class="delivery_time pdlf30  express_list">
-            <popup-picker :title="title3" :data="list3" :columns="3" v-model="value3" :display-format="format"></popup-picker>
+            <popup-picker :title="title3" :data="list3" :columns="3" v-model="value3" :display-format="format" ></popup-picker>
         </div>
-        <!-- <div class="delivery_time pdlf30  express_list">
-            <x-address :title="title2" v-model="value6" raw-value :list="addressData" value-text-align="left"></x-address>
-        </div> -->
         <div class="explain pdlf30">
             <label for="">备注说明：</label>
             <textarea name="explain" id="" cols="30" rows="10" placeholder="请输入30字符内的说明" v-model="remark" maxlength="30"></textarea>
@@ -66,8 +63,8 @@
         </div>
         <div class="submit">
             <div class="row">
-                <p class="predict_money">预计金额：<span><em>200</em>快递豆</span></p>
-                <p class="servicing_time ">服务时间：<span class="time_quantum">{{time_quantum}}</span></p>
+                <p class="predict_money">预计金额：<span><em>0</em>快递豆</span></p>
+                <p class="servicing_time ">服务时间：<span class="time_quantum">{{time_quantum == '' ? '00:00~00:00':time_quantum}}</span></p>
             </div>
             <div class="btn">
                 <button @click="submitBtn">确定</button>
@@ -165,10 +162,22 @@ export default {
                     return `${value}`
                 }
             },
-            
+            //时间
+            begin:'08:00',
+            end:'21:00',
+            benginTm1:'',
+            benginTm:'',
+            endTm1:'',
+            endTm:'',
+            len:'',
+            itemList:new Array,
+            timeList:new Array,
+            formatTm:new Array,
+            timeList1:new Array,
+            timeList2:new Array
         }
     },
-    computed: {        
+    computed: {      
     },
     components: {
         PopupPicker,
@@ -209,7 +218,6 @@ export default {
                     // arr2 += arr.logistics_companies[i].logistics_company_name; 
                 }
                 that.list1 = logistics_companies
-                console.log(that.list1)
                 // 物品类型
                 for (let j=0;j<arr.logistics_goods_categories.length;j++){
                     arr3.name = arr.logistics_goods_categories[j].logistics_goods_category_name
@@ -219,7 +227,6 @@ export default {
                     // that.value2 = logistics_goods_categories[j].logistics_goods_category_name
                 }
                 that.list2 = logistics_goods_categories
-                console.log(that.list2,'14124')
                 that.time_quantum = arr.service_time.start_time +'~'+ arr.service_time.end_time
             } else if (msg.code == 40004) {
                 // location.href = that.configs.accreditUrl
@@ -229,10 +236,92 @@ export default {
         })
 
         //时间段
-
-
+        that.formattedTimeInit()
     },
     methods: {
+        // 计算时间段
+        // 时间格式化
+        formatDateTime: function (e, t) {
+            var r = function (e) {
+                return e += '', e.replace(/^(\d)$/, '0$1')
+            },
+            n = {
+                yyyy: e.getFullYear(),
+                yy: e.getFullYear().toString().substring(2),
+                M: e.getMonth() + 1,
+                MM: r(e.getMonth() + 1),
+                d: r(e.getDate()),
+                dd: r(e.getDate()),
+                hh: r(e.getHours()),
+                mm: r(e.getMinutes()),
+                ss: r(e.getSeconds()),
+                SSS: r(e.getMilliseconds())
+            }
+            return t || (t = "yyyy-MM-dd hh:mm:ss"), t.replace(/([a-z])(\1)*/gi, function (e) {
+            return n[e]
+            })
+        },
+        // 格式化今天明天后天
+        getDateStr(AddDayCount){
+            let  dd = new Date();
+            dd.setDate(dd.getDate() + AddDayCount); //获取AddDayCount天后的日期 
+            let  y = dd.getFullYear();
+            let  m = dd.getMonth() + 1; //获取当前月份的日期 
+            let  d = dd.getDate();
+            return y + "-" + m + "-" + d;
+        },
+        //格式时间段()
+        formattedTimeInit(){
+            let that = this
+            that.benginTm1 = that.begin.substring(0, 2);
+            that.benginTm = that.begin.replace(":", "");
+            that.endTm1 = that.end.substring(0, 2);
+            that.endTm = that.end.replace(":", "");
+            that.len = (parseInt(that.endTm1) - parseInt(that.benginTm1))
+            for (let i = 0; i <= that.len; i++) {
+                let itemTm = parseInt(that.benginTm1) + parseInt(i)
+                if (itemTm >= 10) {} else {
+                    itemTm = '0' + itemTm
+                }
+                let itemTm1 = itemTm + ':00';
+                let itemTm2 = itemTm + '00';
+                that.itemList.push(itemTm1)
+                that.formatTm.push(itemTm)
+            }
+            let newDate = that.formatDateTime(new Date, "yyyy-MM-dd hh:mm:ss")
+            let formatNewDate = newDate.substring(11, 13).replace(":", "");
+            for (let s = 0; s < that.formatTm.length; s++) {
+                if (parseInt(formatNewDate) <= parseInt(that.formatTm[s])) {
+                    let itemTm3 = that.formatTm[s] + ':00'
+                    that.timeList1.push(itemTm3)
+                }
+            }
+            console.log(that.itemList)
+            console.log(that.timeList1.length)
+            for (let j = 0; j < that.itemList.length; j++) {
+                let itemList1 = '';
+                var num = that.itemList.length - j;
+                if (num == 1) {
+
+                } else {
+                    itemList1 = that.itemList[j] + "~" + that.itemList[j + 1]
+                }
+                that.timeList.push(itemList1)
+            }
+
+            for (let m = 0; m < that.timeList1.length; m++) {
+                let itemList2 = '';
+                let num = that.timeList1.length - m;
+                if (num == 1) {
+                    itemList2 = ''
+                } else {
+                    itemList2 = that.timeList1[m] + "~" + that.timeList1[m + 1]
+                }
+                that.timeList2.push(itemList2)
+            }
+            console.log(that.timeList)
+            console.log(that.timeList2)
+        },
         onChange(val) {
             console.log('val change', val)
         },
@@ -260,11 +349,30 @@ export default {
                 that.$vux.toast.text('请输入30字符内的说明','middle',100)
                 return false
             }
+
+            // 快递公司
+            let logistics_company_id = ''
+            for(let c in that.list1 ){
+                if(that.value1 == that.list1[c].name){
+                    logistics_company_id = that.list1[c].value
+                }
+            }
+            // 物品类型
+            let logistics_goods_category_id = ''
+            for(let t in that.list2 ){
+                if(that.value2 == that.list2[t].name){
+                    logistics_goods_category_id = that.list2[t].value
+                }
+            }
+
+            console.log(that.value3)
+
+            return
             let data = qs.stringify({
                 'shipper_address_id': that.default_shipper_address.shipper_address_id,
                 'consignee_address_id':that.default_consignee_address.consignee_address_id,
-                'logistics_company_id':'10000',
-                'logistics_goods_category_id':'1',
+                'logistics_company_id':logistics_company_id ,
+                'logistics_goods_category_id':logistics_goods_category_id,
                 'estimate_weight':that.roundValue,
                 'take_start_time':'2017-09-22 16:00:00',
                 'take_end_time':'2017-09-22 17:00:00',

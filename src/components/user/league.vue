@@ -36,7 +36,7 @@
         data() {
             return {
                 title: '您的地址：',
-                value: ['', '', ''],
+                value: ["广东省", "深圳市", "南山区"],
                 addressData: ChinaAddressV3Data,
                 showAddress: false,
                 province:'',

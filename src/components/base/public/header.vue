@@ -20,24 +20,27 @@
                 </p>
                 
             </li>
-           
             <li class="courier_message" v-if="express">
                 <h4 class="identify">您的快递宝宝</h4>
-                <div class="photo">
-                    <img :src="service_avatar" />
-                    <div class="grade">
-                        <grade class="icon_express_1" :src="service_level_logo"></grade>
+                <router-link  :to="{path:'/chat/'+service_id }" >
+                    <div class="photo">
+                        <img :src="service_avatar" />
+                        <div class="grade">
+                            <grade class="icon_express_1" :src="service_level_logo"></grade>
+                        </div>
                     </div>
-                </div>
-                <h3 class="name">{{service_nickname}}
-                    <!-- @click="tel(service_tell)" -->
-                    <a class="icon_tel" @click="tel(service_tel)"></a>
-                </h3>
+                
+                    <h3 class="name">{{service_nickname}}
+                        <!-- @click="tel(service_tell)" -->
+                        <a class="icon_tel" @click="tel(service_tel)"></a>
+                    </h3>
+                </router-link>
                 <p>
                     <label for="">工号：</label>
                     <span>{{service_id}}</span>
                 </p>
             </li>
+            
             <!-- <li class="not_login" v-else>
                 <div class="photo">
                     <img src="/static/assets/images/head_def.png" />

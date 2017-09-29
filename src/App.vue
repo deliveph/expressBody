@@ -26,7 +26,7 @@ import draggable from 'vuedraggable'
 import qs from 'qs'
 
 import Vue from 'vue'
-import { Group, Cell, XHeader, XInput, XButton, XSwitch, Datetime, ViewBox, Search, ButtonTab, ButtonTabItem, Divider, AlertPlugin, ConfirmPlugin } from 'vux'
+import { Group, Cell, XHeader, XInput, XButton, XSwitch, Datetime, ViewBox, Search, ButtonTab, ButtonTabItem, Divider, AlertPlugin, ConfirmPlugin, Toast } from 'vux'
 import Loading from './pages/components/Loading'
 import FullscreenImg from './pages/components/FullscreenImg'
 
@@ -46,6 +46,7 @@ Vue.component('XSwitch', XSwitch)
 Vue.use(AlertPlugin)
 Vue.use(ConfirmPlugin)
 
+import config from './configs'
 import cookie from './utils/cookie'
 import pageUtil from './utils/page'
 
@@ -54,7 +55,9 @@ export default {
   data() {
     return {
       tags: '',
-      transitionName: 'forward'
+      transitionName: 'forward',
+      net_ease_accid:'',
+      net_ease_token:''
     }
   },
   components: {
@@ -95,9 +98,15 @@ export default {
   },
   // 所有页面更新都会触发此函数
   updated() {
+    let that = this
     // 提交sdk连接请求
+    if(that.net_ease_token != ''){
+      console.log(123,"#$$$")
+      console.log(this.$store)
+      
+    }
     this.$store.dispatch('connect')
-    this.$store.dispatch('updateRefreshState')
+    this.$store.dispatch('updateRefreshState') 
   },
   mounted: function() {
   },
@@ -108,18 +117,26 @@ export default {
     }
   },
   methods: {
-    // getdata(evt) {
-    //   console.log(evt)
-    // },
-    // datadragEnd(evt) {
-    //   console.log('拖动前的索引 :' + evt.oldIndex)
-    //   console.log('拖动后的索引 :' + evt.newIndex)
-    //   console.log(this.tags)
-    // }
-    // greet(val){
-    //   vm.val = val
-    // }
-    
+    getImConfig(){
+      let that = this
+      this.http(that.configs.apiTop + "/new-ease/get-im-config", "get", '', function(res) { 
+          let msg = res.data
+          let data = msg.data
+          if (msg.code == 0) { 
+            console.log(config)
+              that.config.test.appkey = data.net_ease_app_key
+              cookie.setCookie('uid', data.net_ease_accid)
+              cookie.setCookie('sdktoken', data.net_ease_token)
+              
+              console.log(that.net_ease_accid)
+              console.log(that.net_ease_token)
+          } else if (msg.code == 40004) { 
+              location.href = that.configs.accreditUrl 
+          } else{ 
+              that.$vux.toast.text(msg.message, 'middle', 100); 
+          } 
+      }) 
+    }
   },
   created() {
     let that = this
@@ -140,6 +157,28 @@ export default {
       }))
     }
     that.configs.tokenId = token
+    console.log(123)
+    this.http(that.configs.apiTop + "/new-ease/get-im-config", "get", '', function(res) { 
+        let msg = res.data
+        let data = msg.data
+        
+        if (msg.code == 0) { 
+            console.log(config)
+            config.appkey = data.net_ease_app_key
+            cookie.setCookie('uid', data.net_ease_accid)
+            cookie.setCookie('sdktoken', data.net_ease_token)
+            that.net_ease_accid = data.net_ease_accid
+            that.net_ease_token = data.net_ease_token
+            console.log(config.test.appkey)
+            console.log(that.net_ease_accid)
+            console.log(that.net_ease_token)
+        } else if (msg.code == 40004) { 
+            location.href = that.configs.accreditUrl 
+        } else{ 
+            that.$vux.toast.text(msg.message, 'middle', 100); 
+        } 
+    }) 
+    // that.getImConfig()
   }
 }
 </script>
