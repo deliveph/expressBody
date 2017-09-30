@@ -4,7 +4,7 @@
             <ul>
                 <router-link :to="{path:'address/shipper'}" tag="li" class="send pdlf30">
                     <i class="icon_send"></i>
-                    <div class="msg por" v-if="default_shipper_address != ''">
+                    <div class="msg por" v-if="default_shipper_address.length > 0">
                         <p>
                             <span class="name">{{default_shipper_address.shipper_name == ''?'暂无': default_shipper_address.shipper_name}}</span>
                             <span class="tel">{{default_shipper_address.shipper_phone == ''?'暂无': default_shipper_address.shipper_phone}}</span>
@@ -12,7 +12,7 @@
                         <p class="add">{{default_shipper_address.shipper_full_address == ''?'暂无': default_shipper_address.shipper_full_address}}</p>
                         <i class="poa"></i>
                     </div>
-                    <div class="msg por" v-else>
+                    <div class="msg por" v-else> 
                         <div class="nomsg">
                             <i class="icon_site"></i>
                             <p>添加新地址</p>
@@ -22,7 +22,7 @@
                 </router-link>
                 <router-link :to="{path:'address/consignee'}" tag="li" class="receive pdlf30">
                     <i class="icon_receive"></i>
-                    <div class="msg por" v-if="default_consignee_address != ''">
+                    <div class="msg por" v-if="default_consignee_address.length > 0">
                         <p>
                             <span class="name">{{default_consignee_address.consignee_name == ''?'暂无': default_consignee_address.consignee_name}}</span>
                             <span class="tel">{{default_consignee_address.consignee_phone == ''?'暂无': default_consignee_address.consignee_phone}}</span>
@@ -47,7 +47,7 @@
             <popup-picker :title="title2" :data="list2" v-model="value2" :placeholder="placeholder2" :columns="1" :display-format="format"></popup-picker>
         </div>
         <div class="estimated_weight pdlf30 express_list">
-            <x-number :title="estimated_title" v-model="roundValue" button-style="round" :max="5" :min="0" ></x-number>
+            <x-number :title="estimated_title" v-model="roundValue" button-style="round" :max="100" :min="0" ></x-number>
         </div>
         <div class="delivery_time pdlf30  express_list">
             <popup-picker :title="title3" :data="list3" :columns="3" v-model="value3" :display-format="format" ></popup-picker>
@@ -63,7 +63,7 @@
         </div>
         <div class="submit">
             <div class="row">
-                <p class="predict_money">预计金额：<span><em>0</em>快递豆</span></p>
+                <p class="predict_money">预计金额：<span><em>{{estimateLogisticsFee}}</em>快递豆</span></p>
                 <p class="servicing_time ">服务时间：<span class="time_quantum">{{time_quantum == '' ? '00:00~00:00':time_quantum}}</span></p>
             </div>
             <div class="btn">
@@ -153,7 +153,7 @@ export default {
             value3: ['一小时内'],
             placeholder1: '请选择快递公司',
             placeholder2: '请选择物品类型',
-            roundValue: 1,
+            roundValue: 0,
             estimated_title: '预估重量',
             format: function(value, name) {
                 if(name){
@@ -174,7 +174,8 @@ export default {
             timeList:new Array,
             formatTm:new Array,
             timeList1:new Array,
-            timeList2:new Array
+            timeList2:new Array,
+            estimateLogisticsFee: 0
         }
     },
     computed: {      
@@ -223,6 +224,7 @@ export default {
                     arr3.name = arr.logistics_goods_categories[j].logistics_goods_category_name
                     arr3.value = String(arr.logistics_goods_categories[j].logistics_goods_category_id)
                     arr3.parent = 0 
+                    // console.log(arr3.name)
                     logistics_goods_categories.push(arr3)
                     // that.value2 = logistics_goods_categories[j].logistics_goods_category_name
                 }
@@ -410,6 +412,21 @@ export default {
                 onConfirm () {
                 console.log('plugin confirm')
                 that.$router.push({path: '/open'}) 
+                }
+            })
+        }
+    },
+    watch: {
+        roundValue: function () {
+            let that = this
+            this.http(that.configs.apiTop + "/ship-order/get-estimate-logistics-fee", "get", '', function (res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                    let arr = msg.data
+                    that.estimateLogisticsFee = arr.estimate_logistics_fee
+                } else {
+                    console.log(2132)
+                    that.$vux.toast.text(msg.message, 'middle', 100);
                 }
             })
         }
