@@ -92,13 +92,47 @@ import Banner from '../base/public/banner'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import VueAMap from 'vue-amap'
 import { Toast } from 'vux'
+import qs  from 'qs'
 let map
 export default {
+    data(){
+        let self = this
+        return {
+          center: [121.59996, 31.197646],
+          lng: 0,
+          lat: 0,
+          loaded: false,
+          service:[],
+          user:[],
+          carousels:[],
+          dataobject:[],
+          result:[],
+          is_perfect:false,
+          plugin: [{
+            pName: 'Geolocation',
+            events: {
+              init(o) {
+                // o 是高德地图定位插件实例
+                o.getCurrentPosition((status, result) => {
+                    this.result = result
+                    // alert(JSON.stringify(result))
+                    // console.log(status,result)
+                    if (result && result.position) {
+                        this.reportUserLocation()
+                        // console.log(result.formattedAddress)
+                    }
+                });
+              }
+            }
+          }]
+        };
+    },
     components: {
         Vheader,
         Banner,
         VueAMap,
-        Toast
+        Toast,
+        qs
     },
     methods: {
         messageBox() {
@@ -112,39 +146,34 @@ export default {
             let that = this
             that.$parent.layerhide = false
             that.wx.closeWindow()
+        },
+        reportUserLocation(){
+            let that = this
+            let data = qs.stringify({
+                'province_region_name':that.result.addressComponent.province,
+                'city_region_name':that.result.addressComponent.city,
+                'district_region_name':that.result.addressComponent.district,
+                'community_region_name':that.result.addressComponent.township,
+                'full_address':that.result.formattedAddress,
+                'latitude':that.result.position.lng,
+                'longitude':that.result.province.lat
+            })
+            this.http(that.configs.apiTop + "/user/report-user-location", "post", data, function(res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                } else if (msg.code == 40004) {
+                    // location.href = that.configs.accreditUrl
+                } else {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                }
+            })
         }
     },
     computed: {
         
     },
-    data(){
-        let self = this
-        return {
-          center: [121.59996, 31.197646],
-          lng: 0,
-          lat: 0,
-          loaded: false,
-          service:[],
-          user:[],
-          carousels:[],
-          dataobject:[],
-          is_perfect:false,
-          plugin: [{
-            pName: 'Geolocation',
-            events: {
-              init(o) {
-                // o 是高德地图定位插件实例
-                o.getCurrentPosition((status, result) => {
-                    console.log(status,result)
-                    if (result && result.position) {
-                        console.log(result.formattedAddress)
-                    }
-                });
-              }
-            }
-          }]
-        };
-    },
+    
     created() {
         let that = this
         let is_perfect = this.$route.query.is_perfect

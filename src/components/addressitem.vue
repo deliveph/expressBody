@@ -3,11 +3,13 @@
         <ul class="address-list" v-if="items.length != 0">
             <li v-for="(item,k) in items" :key="k">
                 <div class="address-info">
-                    <dl>
-                        <dt>{{item.shipper_name}}</dt>
-                        <dd>{{item.shipper_phone}}</dd>
-                    </dl>
-                    <p>{{item.shipper_full_address}}</p>
+                    <router-link :to="{name:'Send',params:{'shipper_name':item.shipper_name,'shipper_phone':item.shipper_phone,'shipper_full_address':item.shipper_full_address}}">
+                        <dl>
+                            <dt>{{item.shipper_name}}</dt>
+                            <dd>{{item.shipper_phone}}</dd>
+                        </dl>
+                        <p>{{item.shipper_full_address}}</p>
+                    </router-link>
                 </div>
                 <div class="address-tues">
                     <div class="address-default" v-if="item.is_default_shipper_address == 'Y'">
@@ -18,7 +20,6 @@
                         <li class="addr-edit">
                             <!-- type 0寄件 1收件人 -->
                             <router-link :to="{path:'/editAddress/'+item.shipper_address_id,query:{type:0}}">
-                            <!-- <router-link  to="/editAddress/"+{{}}> -->
                                 <span>
                                     <i></i>编辑</span>
                             </router-link>
@@ -75,7 +76,16 @@ export default {
                     that.http(that.configs.apiTop + "/address/delete-shipper-address/" + id, "get", '', function(res) {
                         let msg = res.data
                         if (msg.code == 0) {
-                            location.reload();
+                            this.http(that.configs.apiTop + "/address/shipper-addresses", "get", '', function(res) {
+                                let msg = res.data
+                                let shipper_addresses = msg.data.shipper_addresses
+                                if (msg.code == 0) {
+                                    that.items = shipper_addresses;
+                                    that.id = shipper_addresses.id;
+                                } else if (msg.code == 40004) {
+                                    
+                                }
+                            })
                         } else if (msg.code == 40004) {
                             location.href = that.configs.accreditUrl
                         }
@@ -104,10 +114,7 @@ export default {
                     // location.href = that.configs.accreditUrl
                 }
             })
-        } else {
-
         }
-
     }
 }
 </script>

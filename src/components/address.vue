@@ -41,7 +41,7 @@ export default {
           id:'',
           nameLabel:'寄件人',
           title2: '所在地区',
-          value2: ["广东省", "深圳市", "南山区"],
+          value2: ['','',''],
           addressData:ChinaAddressV3Data,
           province:'',
           city:'',
@@ -63,6 +63,7 @@ export default {
             }
             // console.log(that.id)
             if(that.index == 0){
+                console.log(4234)
                 let data = qs.stringify({
                     'province_region_id':that.province,
                     'city_region_id':that.city,
@@ -86,7 +87,7 @@ export default {
                     this.http(that.configs.apiTop + "/address/add-shipper-address", "post", data, function (res) {
                             let msg = res.data
                             if(msg.code == 0){
-                                that.$router.push({path: '/address/shipper',params:{type:0}}) 
+                                that.$router.push({path:'/address/shipper',params:{type:0}}) 
                             }else if(msg.code == 40004){
                                 // location.href = that.configs.accreditUrl
                             }
@@ -106,8 +107,7 @@ export default {
                     this.http(that.configs.apiTop + "/address/edit-consignee-address/"+that.id, "post", data, function (res) {
                             let msg = res.data
                             if(msg.code == 0){
-                                console.log(1)
-                                this.$router.push({path: '/address/consignee',params:{type:0}}) 
+                                that.$router.push({path: '/address/consignee',params:{type:1}}) 
                             }else if(msg.code == 40004){
                                 // location.href = that.configs.accreditUrl
                             }
@@ -116,7 +116,7 @@ export default {
                     this.http(that.configs.apiTop + "/address/add-consignee-address", "post", data, function (res) {
                             let msg = res.data
                             if(msg.code == 0){
-                                this.$router.push({path: '/address/consignee',params:{type:0}}) 
+                                that.$router.push({path: '/address/consignee',params:{type:1}}) 
                             }else if(msg.code == 40004){
                                 // location.href = that.configs.accreditUrl
                             }
@@ -131,8 +131,6 @@ export default {
             that.province = ids[0]
             that.city = ids[1]
             that.district = ids[2 ]
-            // console.log(ids[0],ids[1],ids[2])
-            // console.log(ids, names)
         }   
    },
    created(){
@@ -207,7 +205,7 @@ export default {
 } 
 </script> 
  
-<style lang="scss" scoped> 
+<style lang="scss"> 
     @import '../../static/assets/css/px2rem.scss'; 
     .address_box{ 
         background-color: #fff; 
@@ -280,5 +278,5 @@ export default {
                 background-color:#366931; 
             } 
         } 
-    } 
-</style> 
+    }
+</style>

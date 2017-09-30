@@ -3,11 +3,13 @@
         <ul class="address-list" v-if="items.length != 0">
             <li v-for="(item,k) in items" :key="k">
                 <div class="address-info">
-                    <dl>
-                        <dt>{{item.consignee_name}}</dt>
-                        <dd>{{item.consignee_phone}}</dd>
-                    </dl>
-                    <p>{{item.consignee_full_address}}</p>
+                    <router-link :to="{name:'Send',params:{'consignee_name':item.consignee_name,'consignee_phone':item.consignee_phone,'consignee_full_address':item.consignee_full_address}}">
+                        <dl>
+                            <dt>{{item.consignee_name}}</dt>
+                            <dd>{{item.consignee_phone}}</dd>
+                        </dl>
+                        <p>{{item.consignee_full_address}}</p>
+                    </router-link>
                 </div>
                 <div class="address-tues">
                     <div class="address-default" v-if="item.is_default_consignee_address == 'Y'">
@@ -74,7 +76,16 @@ export default {
                     that.http(that.configs.apiTop + "/address/delete-consignee-address/" + id, "get", '', function(res) {
                         let msg = res.data
                         if (msg.code == 0) {
-                            location.reload();
+                            that.http(that.configs.apiTop + "/address/consignee-addresses", "get", '', function(res) {
+                                let msg = res.data
+                                let consignee_addresses = msg.data.consignee_addresses
+                                if (msg.code == 0) {
+                                    that.items = consignee_addresses;
+                                    that.id = consignee_addresses.id;
+                                } else if (msg.code == 40004) {
+                                    // location.href = that.configs.accreditUrl
+                                }
+                            })
                         } else if (msg.code == 40004) {
                             location.href = that.configs.accreditUrl
                         }
@@ -85,7 +96,7 @@ export default {
         addNew() {
             let that = this
             let index = that.$parent.index
-            this.$router.push({ name: 'editAddress', query: { type: index} })
+            this.$router.push({ name: 'editAddress', query: { type: index},params:{} })
         }
     },
     created() {

@@ -24,7 +24,7 @@ function updateSessionAccount (sessions) {
 
 // onSessions只在初始化完成后回调
 export function onSessions (sessions) {
-  console.log(sessions)
+  console.log(sessions, 'sessions')
   console.log(this)
   updateSessionAccount(sessions)
   store.commit('updateSessions', sessions)

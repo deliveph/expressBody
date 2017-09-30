@@ -50,7 +50,7 @@ export function initNimSDK ({ state, commit, dispatch }, loginInfo) {
       switch (error.code) {
         // 账号或者密码错误, 请跳转到登录页面并提示错误
         case 302:
-          pageUtil.turnPage('帐号或密码错误', 'login')
+          // pageUtil.turnPage('帐号或密码错误', 'login')
           break;
         // 被踢, 请提示错误后跳转到登录页面
         case 'kicked':

@@ -69,31 +69,29 @@ export default {
   computed: {
     sessionId () {
       let sessionId = this.$route.params.sessionId
-      console.log(sessionId)
+      console.log(sessionId, 'OOO')
       return sessionId
     },
     sessionName () {
       let sessionId = this.sessionId
       let user = null
-      // if (/^p2p-/.test(sessionId)) {
-      //   user = sessionId.replace(/^p2p-/, '')
-      //   if (user === this.$store.state.userUID) {
-      //     return '我的手机'
-      //   } else if (this.isRobot) {
-      //     return this.robotInfos[user].nick
-      //   } else {
-      //     let userInfo = this.userInfos[user] || {}
-      //     return util.getFriendAlias(userInfo)
-      //   }
-      // } else if (/^team-/.test(sessionId)) {
-      //   return '群'
-      // }
-      let userInfo = this.userInfos[user] || {}
+      if (/^p2p-/.test(sessionId)) {
+        user = sessionId.replace(/^p2p-/, '')
+        if (user === this.$store.state.userUID) {
+          return '我的手机'
+        } else if (this.isRobot) {
+          return this.robotInfos[user].nick
+        } else {
+          let userInfo = this.userInfos[user] || {}
           return util.getFriendAlias(userInfo)
+        }
+      } else if (/^team-/.test(sessionId)) {
+        return '群'
+      }
     },
     scene () {
       console.log(132)
-      console.log(util.parseSession(this.sessionId).scene)
+      console.log(util.parseSession(this.sessionId))
       return util.parseSession(this.sessionId).scene
     },
     to () {

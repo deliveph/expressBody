@@ -28,7 +28,7 @@
                 <li>
                     <router-link to="/balance">
                         <div class="actions-num">
-                            <em>0</em><i class="balace"></i>
+                            <em>{{data.user_balance}}</em><i class="balace"></i>
                         </div>
                         <span class="dis t-c">我的金额(豆)</span>
                     </router-link>
@@ -36,7 +36,7 @@
                 <li>
                     <router-link to="/coupon">
                         <div class="actions-num">
-                            <em>0</em><i class="coupon"></i>
+                            <em>{{items.user_coupon_number}}</em><i class="coupon"></i>
                         </div>
                         <span class="dis t-c">我的优惠券(张)</span>
                     </router-link>
@@ -44,7 +44,7 @@
                 <li>
                     <router-link to="/friends">
                         <div class="actions-num">
-                            <em>0</em><i class="friend"></i>
+                            <em>{{data.user_total_invite}}</em><i class="friend"></i>
                         </div>
                         <span class="dis t-c">我的好友(个)</span>
                     </router-link>
@@ -116,7 +116,7 @@
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="explain">
+                        <router-link to="/explain">
                             <span><i class="icon5"></i>服务与说明</span>
                             <em><i class="arrow-right"></i></em>
                         </router-link>
@@ -137,6 +137,7 @@
         },
         data() {
             return {
+                items:[],
                 data: {},
                 share: false
             }
@@ -148,8 +149,9 @@
                 let msg = res.data
                 if(msg.code == 0){
                     // that.$router.push({ path: '/person' })
+                    that.items = msg.data
                     that.data = msg.data.user
-                }
+                }   
             })
         }
     }

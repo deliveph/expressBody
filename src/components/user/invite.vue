@@ -70,7 +70,7 @@
                     that.$vux.toast.text('请填写验证码', 'middle', 100);
                     return
                 }
-                this.http(that.configs.apiTop + "/captcha/accept-invite-sms-captcha", "post",  data, function(res) {
+                this.http(that.configs.apiTop + "/user/accept-invite/"+that.fromUserId, "post",  data, function(res) {
                     let msg = res.data
                     if (msg.code == 0) {
                         that.$vux.toast.text(msg.message, 'middle', 100);
@@ -85,9 +85,9 @@
             getCode() {
                 let reg = /^1[34578]\d{9}$/
                 let that =  this
-                let data = {
+                let data = qs.stringify({
                     'phone': this.phone
-                }
+                })
                 if(this.phone == ''){
                     that.$vux.toast.text('请填写手机号码', 'middle', 100);
                     return
@@ -96,8 +96,7 @@
                     that.$vux.toast.text('请填写正确的手机号码', 'middle', 100);
                     return
                 }
-
-                this.http(that.configs.apiTop + "/user/accept-invite/"+ this.fromUserId, "post",  data, function(res) {
+                this.http(that.configs.apiTop + "/captcha/accept-invite-sms-captcha", "post",  data, function(res) {
                     let msg = res.data
                     if (msg.code == 0) {
                         that.$vux.toast.text(msg.message, 'middle', 100);

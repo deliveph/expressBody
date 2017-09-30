@@ -187,6 +187,24 @@ export default {
     },
     created() {
         let that = this
+        let shipper_name = that.$route.params.shipper_name
+        let shipper_phone = that.$route.params.shipper_phone
+        let shipper_full_address = that.$route.params.shipper_full_address
+        let consignee_name = that.$route.params.consignee_name
+        let consignee_phone = that.$route.params.consignee_phone
+        let consignee_full_address = that.$route.params.consignee_full_address
+        console.log(that.$route.params,"^*^*$^%$^%$")
+        let shipper = {
+            'shipper_name':shipper_name,
+            'shipper_phone':shipper_phone,
+            'shipper_full_address':shipper_full_address
+        }
+        let consignee = {
+            'consignee_name':consignee_name,
+            'consignee_phone':consignee_phone,
+            'consignee_full_address':consignee_full_address
+        }
+        
         this.http(that.configs.apiTop + "/page/user-ship", "get", '', function(res) {
             let msg = res.data
             if (msg.code == 0) {
@@ -208,8 +226,17 @@ export default {
                     value:'',
                     parent:''
                 }
-                that.default_consignee_address = arr.default_consignee_address
-                that.default_shipper_address = arr.default_shipper_address
+                console.log(that.default_consignee_address)
+                console.log(that.default_shipper_address)
+                if(that.default_consignee_address == ''){
+                    that.default_consignee_address = arr.default_consignee_address
+                }
+                if(that.default_shipper_address == ''){
+                    that.default_shipper_address = arr.default_shipper_address
+                }\
+
+                
+                
                 // 快递公司
                 for (let i=0;i<arr.logistics_companies.length;i++){
                     arr2.name = arr.logistics_companies[i].logistics_company_name 
@@ -237,6 +264,7 @@ export default {
             }
         })
 
+        
         //时间段
         that.formattedTimeInit()
     },
@@ -298,8 +326,6 @@ export default {
                     that.timeList1.push(itemTm3)
                 }
             }
-            console.log(that.itemList)
-            console.log(that.timeList1.length)
             for (let j = 0; j < that.itemList.length; j++) {
                 let itemList1 = '';
                 var num = that.itemList.length - j;
@@ -321,20 +347,14 @@ export default {
                 }
                 that.timeList2.push(itemList2)
             }
-            console.log(that.timeList)
-            console.log(that.timeList2)
         },
         onChange(val) {
-            console.log('val change', val)
         },
         onShow() {
-            console.log('on show')
         },
         onHide(type) {
-            console.log('on hide', type)
         },
         change(val) {
-            console.log('change', val)
         },
         submitBtn(){
             let that = this;
@@ -366,10 +386,6 @@ export default {
                     logistics_goods_category_id = that.list2[t].value
                 }
             }
-
-            console.log(that.value3)
-
-            return
             let data = qs.stringify({
                 'shipper_address_id': that.default_shipper_address.shipper_address_id,
                 'consignee_address_id':that.default_consignee_address.consignee_address_id,
@@ -436,7 +452,7 @@ export default {
 
 <style lang="less">
     .weui-cell{
-        padding:0 !important
+        padding:0
     }
 </style>
 

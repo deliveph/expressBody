@@ -137,23 +137,13 @@
             },
             getTicket(coupon_id,coupon_category_id){
                 let that = this;
-                if(coupon_category_id){
-                    
+                if(coupon_category_id == 1){
+                    this.$router.push({name:'user'})
+                }else if(coupon_category_id == 2){
+                    this.$router.push({name:'collection'})
+                }else if(coupon_category_id == 3){
+                    this.$router.push({name:'send'})
                 }
-                let data = qs.stringify({
-                    'coupon_id': coupon_id
-                })
-                this.http(that.configs.apiTop + "/coupon/get-coupon", "post", data, function(res) {
-                    let msg = res.data
-                    if (msg.code == 0) {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                    } else if (msg.code == 40004) {
-                        // location.href = that.configs.accreditUrl
-                    } else {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                    }
-                })
-                
             }
         },
         created() {

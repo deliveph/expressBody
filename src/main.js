@@ -54,7 +54,7 @@ Vue.use(ConfirmPlugin)
 Vue.use(LoadingPlugin)
 
 VueAMap.initAMapApiLoader({
-  key: 'c37c24a2c3156bb0c62d8f0b72c0c556',
+  key: 'a66fb55fb72dde7e1fecaa303a1e5489',
   plugin: ['AMap.Geolocation']
 })
 
