@@ -157,11 +157,11 @@ export default {
       }))
     }
     that.configs.tokenId = token
-    console.log(123)
+    console.log('App.vue.created')
     this.http(that.configs.apiTop + "/new-ease/get-im-config", "get", '', function(res) { 
         let msg = res.data
         let data = msg.data
-        
+        console.log('App.vue.created msg.code: ' + msg.code)
         if (msg.code == 0) { 
             console.log(config)
             config.appkey = data.net_ease_app_key
