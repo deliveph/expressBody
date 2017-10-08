@@ -4,7 +4,7 @@
             <ul>
                 <router-link :to="{path:'address/shipper'}" tag="li" class="send pdlf30">
                     <i class="icon_send"></i>
-                    <div class="msg por" v-if="default_shipper_address.length > 0">
+                    <div class="msg por" v-if="JSON.stringify(default_shipper_address) != '{}'">
                         <p>
                             <span class="name">{{default_shipper_address.shipper_name == ''?'暂无': default_shipper_address.shipper_name}}</span>
                             <span class="tel">{{default_shipper_address.shipper_phone == ''?'暂无': default_shipper_address.shipper_phone}}</span>
@@ -22,7 +22,7 @@
                 </router-link>
                 <router-link :to="{path:'address/consignee'}" tag="li" class="receive pdlf30">
                     <i class="icon_receive"></i>
-                    <div class="msg por" v-if="default_consignee_address.length > 0">
+                    <div class="msg por" v-if="JSON.stringify(default_consignee_address) != '{}'">
                         <p>
                             <span class="name">{{default_consignee_address.consignee_name == ''?'暂无': default_consignee_address.consignee_name}}</span>
                             <span class="tel">{{default_consignee_address.consignee_phone == ''?'暂无': default_consignee_address.consignee_phone}}</span>
@@ -41,7 +41,7 @@
             </ul>
         </div>
         <div class="express_company pdlf30 express_list">
-            <popup-picker :title="title1" :data="list1" v-model="value1" :columns="1" ref="picker3" :display-format="format"></popup-picker>
+            <popup-picker :title="title1" :data="list1" v-model="value1" :columns="1" ref="picker3" :display-format="format" @on-change="onChangeOfLogisticsCompanies"></popup-picker>
         </div>
         <div class="express_stdmode pdlf30 express_list">
             <popup-picker :title="title2" :data="list2" v-model="value2" :placeholder="placeholder2" :columns="1" :display-format="format" @on-change="onChangeOfLogisticsGoodsCategories"></popup-picker>
@@ -87,8 +87,8 @@ export default {
     data() {
         return {
             checkbox: true,
-            default_shipper_address: [],
-            default_consignee_address: [],
+            default_shipper_address: {},
+            default_consignee_address: {},
             time_quantum: '',
             remark: '',
             title1: '快递公司',
@@ -178,6 +178,7 @@ export default {
             timeList2: new Array,
             estimateLogisticsFee: 0,
             logisticsGoodsCategoryId: 0,
+            logisticsCompanyId: 0,
         }
     },
     computed: {
@@ -188,7 +189,6 @@ export default {
         Toast
     },
     created() {
-        console.log('###')
         let that = this
         let shipper_name = that.$route.params.shipper_name
         let shipper_phone = that.$route.params.shipper_phone
@@ -228,25 +228,30 @@ export default {
                     value: '',
                     parent: ''
                 }
-                if (that.default_consignee_address == '') {
+                if (JSON.stringify(that.default_consignee_address) == '{}') {
+                    console.log(arr.default_consignee_address, "444")
                     that.default_consignee_address = arr.default_consignee_address
                 }
-                if (that.default_shipper_address == '') {
+                if (JSON.stringify(that.default_shipper_address) == '{}') {
                     that.default_shipper_address = arr.default_shipper_address
                 }
                 // 快递公司
                 for (let i = 0; i < arr.logistics_companies.length; i++) {
-                    arr2.name = arr.logistics_companies[i].logistics_company_name
-                    arr2.value = String(arr.logistics_companies[i].logistics_company_id)
-                    arr2.parent = 0
-                    logistics_companies.push(arr2)
+                    // arr2.name = arr.logistics_companies[i].logistics_company_name
+                    // arr2.value = String(arr.logistics_companies[i].logistics_company_id)
+                    // arr2.parent = 0
+                    logistics_companies.push({
+                        name: arr.logistics_companies[i].logistics_company_name,
+                        value: String(arr.logistics_companies[i].logistics_company_id),
+                        parent: 0,
+                    })
                     // arr2 += arr.logistics_companies[i].logistics_company_name; 
                 }
                 that.list1 = logistics_companies
                 // 物品类型
                 for (let j = 0; j < arr.logistics_goods_categories.length; j++) {
                     if (j == 0) {
-                        that.value2 = arr.logistics_goods_categories[j].logistics_goods_category_name 
+                        that.value2[0] = arr.logistics_goods_categories[j].logistics_goods_category_name 
                         that.logisticsGoodsCategoryId = String(arr.logistics_goods_categories[j].logistics_goods_category_id) 
                     }
                     //arr3.name = arr.logistics_goods_categories[j].logistics_goods_category_name
@@ -263,7 +268,6 @@ export default {
                 that.list2 = logistics_goods_categories
                 that.time_quantum = arr.service_time.start_time + '~' + arr.service_time.end_time
             } else if (msg.code == 40004) {
-                console.log(40004)
                 location.href = that.configs.accreditUrl
             } else {
                 that.$vux.toast.text(msg.message, 'middle', 100);
@@ -380,14 +384,13 @@ export default {
                 that.$vux.toast.text('请选择物品类型', 'middle', 100)
                 return false
             }
-
             // 快递公司
-            let logistics_company_id = ''
-            for (let c in that.list1) {
-                if (that.value1 == that.list1[c].name) {
-                    logistics_company_id = that.list1[c].value
-                }
-            }
+            // let logistics_company_id = ''
+            // for (let c in that.list1) {
+            //     if (that.value1 == that.list1[c].name) {
+            //         logistics_company_id = that.list1[c].value
+            //     }
+            // }
             // 物品类型
             //let logistics_goods_category_id = ''
             //for (let t in that.list2) {
@@ -398,8 +401,8 @@ export default {
             let data = qs.stringify({
                 'shipper_address_id': that.default_shipper_address.shipper_address_id,
                 'consignee_address_id': that.default_consignee_address.consignee_address_id,
-                'logistics_company_id': logistics_company_id,
-                'logistics_goods_category_id': logistics_goods_category_id,
+                'logistics_company_id': that.logisticsCompanyId,
+                'logistics_goods_category_id': that.logisticsGoodsCategoryId,
                 'estimate_weight': that.roundValue,
                 'take_start_time': '2017-09-22 16:00:00',
                 'take_end_time': '2017-09-22 17:00:00',
@@ -415,8 +418,11 @@ export default {
                     }, 200);
                 } else if (msg.code == 40004) {
                 } else {
-                    // that.$vux.toast.text(msg.message, 'middle', 100);
-                    that.showPlugin(msg.message)
+                    if (msg.code == 40014) {
+                        that.showPlugin(msg.message)
+                    } else {
+                        that.$vux.toast.text(msg.message, 'middle', 100);
+                    }
                 }
             })
         },
@@ -442,7 +448,7 @@ export default {
         },
         getEstimateLogisticsFee() {
             let that = this
-            this.http(that.configs.apiTop + "/ship-order/get-estimate-logistics-fee?logistics_goods_category_id=" + this.logisticsGoodsCategoryId + "&estimate_weight=" + this.roundValue, "get", '', function(res) {
+            this.http(that.configs.apiTop + "/ship-order/get-estimate-logistics-fee?logistics_company_id=" + this.logisticsCompanyId + "&estimate_weight=" + this.roundValue + "&consignee_address_id=" + that.default_consignee_address.consignee_address_id, "get", '', function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
                     let arr = msg.data
@@ -452,15 +458,20 @@ export default {
                 }
             })
         },
-        onChangeOfLogisticsGoodsCategories(logisticsGoodsCategoryId) {
-            this.logisticsGoodsCategoryId = logisticsGoodsCategoryId
+        onChangeOfLogisticsGoodsCategories(values) {
+            console.log(values[0])
+            this.logisticsGoodsCategoryId = values[0]
+        },
+        onChangeOfLogisticsCompanies(values) {
+            console.log(values[0])
+            this.logisticsCompanyId = values[0]
         }
     },
     watch: {
         roundValue: function () {
             this.getEstimateLogisticsFee();
         },
-        logisticsGoodsCategoryId: function () {
+        logisticsCompanyId: function () {
             this.getEstimateLogisticsFee()
         }
     }

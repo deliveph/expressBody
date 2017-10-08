@@ -118,7 +118,9 @@ Vue.prototype.http = function (url, method, data, callback) {
   }).then(res => {
     let data = res.data
     let that = this
+    console.log(data, url)
     if (data.code === 40004) {
+      console.log(40004)
       // location.href = configs.accreditUrl
       return
     }
@@ -171,64 +173,58 @@ Vue.prototype.$weChat = function () {
         }
       })
 
-      that.http(that.configs.apiTop + "/weixin/share-config", "get",  '', function(res) {
-          let msg = res.data
-          if (msg.code == 0) {
-            
-              let data = msg.data;
-              
-              /*分享到朋友圈*/
-              that.wx.onMenuShareTimeline({
-                  title: data.title, // 分享标题
-                  link: data.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                  imgUrl: data.image_url, // 分享图标
-                  success: function () { 
-                      // 用户确认分享后执行的回调函数
-                  },
-                  cancel: function () { 
-                      // 用户取消分享后执行的回调函数
-                  }
-              });
+      that.http(that.configs.apiTop + "/weixin/share-config", "get", '', function (res) {
+        let msg = res.data
+        if (msg.code == 0) {
+          let data = msg.data;
+          /*分享到朋友圈*/
+          that.wx.onMenuShareTimeline({
+            title: data.title, // 分享标题
+            link: data.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: data.image_url, // 分享图标
+            success: function () {
+              // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+              // 用户取消分享后执行的回调函数
+            }
+          });
 
-              /*分享到朋友*/
-              that.wx.onMenuShareAppMessage({
-                  title: data.title, // 分享标题
-                  desc: data.description, // 分享描述
-                  link: data.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                  imgUrl: data.image_url, // 分享图标
-                  type: '', // 分享类型,music、video或link，不填默认为link
-                  dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-                  success: function () { 
-                      // 用户确认分享后执行的回调函数
-                  },
-                  cancel: function () { 
-                      // 用户取消分享后执行的回调函数
-                  }
-              });
+          /*分享到朋友*/
+          that.wx.onMenuShareAppMessage({
+            title: data.title, // 分享标题
+            desc: data.description, // 分享描述
+            link: data.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: data.image_url, // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+              // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+              // 用户取消分享后执行的回调函数
+            }
+          });
 
-              /*分享到qq*/
-              that.wx.onMenuShareQQ({
-                  title: data.title, // 分享标题
-                  desc: data.description, // 分享描述
-                  link: data.link, // 分享链接
-                  imgUrl: data.image_url, // 分享图标
-                  success: function () { 
-                    // 用户确认分享后执行的回调函数
-                  },
-                  cancel: function () { 
-                    // 用户取消分享后执行的回调函数
-                  }
-              });
-            
-
-          } else {
-              console.log(msg)
-          }
+          /*分享到qq*/
+          that.wx.onMenuShareQQ({
+            title: data.title, // 分享标题
+            desc: data.description, // 分享描述
+            link: data.link, // 分享链接
+            imgUrl: data.image_url, // 分享图标
+            success: function () {
+              // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+              // 用户取消分享后执行的回调函数
+            }
+          })
+        } else {
+          console.log(msg)
+        }
       })
-
-
     })
-    that.wx.error(function (res) {})
+    that.wx.error(function (res) { })
   }).catch(function (err) {
     // that.loadingState = "加载失败"
   })

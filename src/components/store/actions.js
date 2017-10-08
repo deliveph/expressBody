@@ -13,7 +13,7 @@ import {initNimSDK} from './action/initNimSDK'
 import {deleteSession, setCurrSession, resetCurrSession} from './action/session'
 import {sendMsg, sendFileMsg, sendMsgReceipt, sendRobotMsg, revocateMsg, getHistoryMsgs, resetNoMoreHistoryMsgs, continueRobotMsg} from './action/msgs'
 
-console.log(123)
+// console.log(123)
 function connectNim ({state, commit, dispatch}, obj) {
   let {force} = Object.assign({}, obj)
   console.log({force})
@@ -27,7 +27,7 @@ function connectNim ({state, commit, dispatch}, obj) {
     //   uid: 'deliveph',
     //   sdktoken: 'e10adc3949ba59abbe56e057f20f883e'
     // }
-    console.log(loginInfo,"$%%$#$@%@#%")
+    // console.log(loginInfo,"$%%$#$@%@#%")
     if (!loginInfo.uid) {
       // 无cookie，直接跳转登录页
       pageUtil.turnPage('无历史登录记录，请重新登录', 'login')
@@ -272,7 +272,7 @@ export default {
 
   // 连接sdk请求，false表示强制重连
   connect (store, obj) {
-    console.log(123)
+    // console.log(123)
     let {type} = Object.assign({}, obj)
     // type 可为 nim chatroom
     type = type || 'nim'

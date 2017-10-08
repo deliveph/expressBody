@@ -143,7 +143,7 @@
             }
         },
         created() {
-            console.log(123)
+            // console.log(123)
             let that = this
             this.http(that.configs.apiTop + "/page/user-personal-center", "get", '', function (res) {
                 let msg = res.data
