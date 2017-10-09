@@ -83,7 +83,7 @@ export default {
                             signType: data.sign_type,
                             paySign: data.sign,
                             success: function (res) {
-                                alert(res)
+                                that.$router.push({path:'/payresult',query:{status:'success'}})
                                 // 支付成功后的回调函数
                             }
                         });
@@ -106,7 +106,7 @@ export default {
                             signType: data.sign_type,
                             paySign: data.sign,
                             success: function (res) {
-                                alert(res)
+                               that.$router.push({path:'/payresult',query:{status:'success'}})
                                 // 支付成功后的回调函数
                             }
                         });

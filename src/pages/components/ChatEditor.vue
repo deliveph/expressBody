@@ -270,8 +270,8 @@ export default {
     },
     sendFileMsg () {
       let ipt = this.$refs.fileToSent
-      this.classObject.video = ''
-      this.classObject.txt = 'hide'
+      this.classObject.video = 'hide'
+      this.classObject.txt = ''
       if (ipt.value) {
         if (this.type === 'session') {
           this.$store.dispatch('sendFileMsg', {

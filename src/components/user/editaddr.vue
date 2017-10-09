@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="edit-wrapper mt20 content">
             <div class="edit-item">
-                <x-address :title="title1" v-model="value1" raw-value :list="addressData" value-text-align="left" v-bind:class="{ 'edit-address':true}"  :value="getName(value1)" @on-shadow-change="onShadowChange"></x-address>
+                <x-address :title="title1" v-model="value1"  :list="addressData" value-text-align="left" v-bind:class="{ 'edit-address':true}"  :value="getName(value1)" @on-shadow-change="onShadowChange"></x-address>
             </div>
             <div class="edit-item">
                 <div class="edit-des col-2">小区名称</div>
@@ -29,7 +29,7 @@ export default {
     data() {
         return {
             title1: '省市区',
-            value1: ['天津市', '市辖区', '河东区'],
+            value1: ['北京市', '市辖区', '东城区'],
             addressData: ChinaAddressV3Data,
             showAddress: false,
             village_name:'',
@@ -124,6 +124,7 @@ export default {
             width: 80%;
             vertical-align: middle;
             height: 0.2rem;
+            line-height: 0.2rem;
             border: 0;
             font-size: 0.14rem;
             color: #333;

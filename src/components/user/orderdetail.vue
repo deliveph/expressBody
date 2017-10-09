@@ -4,7 +4,7 @@
         <div class="order-box">
             <div class="order-list-item">
                 <p>下单时间：<span class="ft-red">{{items.ship_order_create_time_f}}</span></p>
-                <p class="nickname" v-if="status == 'service'"><img src="/static/assets/images/head_def.png" /><span>{{items.user_nickname}}</span></p>
+                <p class="nickname" v-if="status == 'service'"><img :src="items.user_avatar" /><span>{{items.user_nickname}}</span></p>
             </div>
         </div>
         <div class="order-box">
@@ -56,24 +56,59 @@
         </div>
         <div class="order-box">
             <!--待评价-->
-            <div class="order-list-item" v-if="items">
-                <p>快递单号：<span class="ft-blue">顺丰快递 25555554564464644</span></p>
+            <div class="order-list-item"  v-if="items.ship_order_status_id >= 3 && status == 'user' || items.ship_order_status_id >= 3 && status == 'service'">
+                <p>快递单号：<span class="ft-blue">{{items.logistics_company_name}}<router-link :to="{path:'/result',query:{code:items.logistics_code}}">{{items.logistics_code}}</router-link></span></p>
             </div>
-            <div class="order-list-item" v-if="items.ship_order_status_id == 1 && status == 'user' || items.ship_order_status_id == 2 && status == 'user'">
+            <div class="order-list-item" v-if="items.ship_order_status_id >= 1 && status == 'user' || items.ship_order_status_id >= 2 && status == 'user'">
                 <p>预计费用：<span class="ft-red">{{items.order_fee}}快递豆</span></p>
             </div>
-            <div class="order-list-item" v-if="items.ship_order_status_id == 1 && status == 'service' || items.ship_order_status_id == 2 && status == 'service'">
+            <div class="order-list-item" v-if="items.ship_order_status_id >= 1 && status == 'service' || items.ship_order_status_id >= 2 && status == 'service'">
                 <p>预计费用：<span class="ft-red">￥ {{items.order_fee}}</span></p>
             </div>
             <!--已完成-->
-            <div class="order-list-item">
+            <div class="order-list-item" v-if="items.ship_order_status_id >= 5 && status == 'user' || items.ship_order_status_id >= 5 && status == 'service'">
                 <p>评价结果：
-                    <ul class="start-icon">
+                    <ul class="start-icon" v-if="items.service_score == '0.00'">
+                        <li class=""></li>
+                        <li class=""></li>
+                        <li class=""></li>
+                        <li class=""></li>
+                        <li></li>
+                    </ul>
+                    <ul class="start-icon" v-else-if="items.service_score == '1.00'">
+                        <li class="sel"></li>
+                        <li class=""></li>
+                        <li class=""></li>
+                        <li class=""></li>
+                        <li></li>
+                    </ul>
+                    <ul class="start-icon" v-else-if="items.service_score == '2.00'">
+                        <li class="sel"></li>
+                        <li class="sel"></li>
+                        <li class=""></li>
+                        <li class=""></li>
+                        <li></li>
+                    </ul>
+                    <ul class="start-icon" v-else-if="items.service_score == '3.00'">
+                        <li class="sel"></li>
+                        <li class="sel"></li>
+                        <li class="sel"></li>
+                        <li class=""></li>
+                        <li></li>
+                    </ul>
+                    <ul class="start-icon" v-else-if="items.service_score == '4.00'">
                         <li class="sel"></li>
                         <li class="sel"></li>
                         <li class="sel"></li>
                         <li class="sel"></li>
                         <li></li>
+                    </ul>
+                    <ul class="start-icon" v-else-if="items.service_score == '5.00'">
+                        <li class="sel"></li>
+                        <li class="sel"></li>
+                        <li class="sel"></li>
+                        <li class="sel"></li>
+                        <li class="sel"></li>
                     </ul>
                 </p>
             </div>
@@ -81,7 +116,7 @@
     </div>
     <div class="order-group">
         <!-- 用户操作按纽 --> 
-        <button class="disable-btn" v-if="items.ship_order_status_id == 1 && status == 'user' || items.ship_order_status_id == 2 && status == 'user'" @click="cancel(items.ship_order_number)">取消</button>
+        <button class="disable-btn" v-if="(items.ship_order_status_id == 1 && status == 'user') || (items.ship_order_status_id == 2 && status == 'user')" @click="cancel(items.ship_order_number)">取消</button>
         <button v-if="items.ship_order_status_id == 1 && status == 'user' || items.ship_order_status_id == 2 && status == 'user'" @click="editerorder(items.ship_order_number)">编辑</button>
         <button v-else-if="items.ship_order_status_id == 3 && status == 'user'" @click="pay(items.ship_order_number)">去支付</button>
         <button v-else-if="items.ship_order_status_id == 4 && status == 'user'" @click="evaluate(items.ship_order_number)">去评价</button>
@@ -91,7 +126,7 @@
         <button v-if="items.ship_order_status_id == 2 && status == 'service'" @click="affirmShip(items.ship_order_number)">
             确定收货
         </button>
-        <button v-if="items.ship_order_status_id == 4 && status == 'service'" @click="writelayer(items.ship_order_number)">
+        <button  v-if="(items.ship_order_status_id == 4 && status == 'service') || (items.ship_order_status_id == 5  && status == 'service')" @click="writelayer(items.ship_order_number)">
             填写/修改快递单号
         </button>
     </div>
@@ -106,9 +141,7 @@
                     <div class="layer_container">
                         <div class="phone_register register_box">
                             <div class="phone_number">
-                                <label></label>
-                                <input type="number" name="company" value="" placeholder="请选择快递公司" v-model="company"/>
-                                <i></i>
+                                 <popup-picker :title="title1" :data="list1" :columns="1" v-model="value1" :display-format="format" :placeholder="placeholder1" @on-change="onChangeOfLogisticsCompanies"></popup-picker>
                             </div>
                             <div class="phone_code">
                                 <label></label>
@@ -134,8 +167,8 @@
 </template>
 
 <script>
-    import { Toast } from 'vux'
-    import { Confirm } from 'vux'
+    import { Toast, Confirm, PopupPicker } from 'vux'
+    import qs  from 'qs'
     export default{
         data(){
             return{
@@ -145,10 +178,27 @@
                 writelayerStorey:false,
                 company:'',
                 code:'',
+                title1: '',
+                list1: [{
+                    name: '默认',
+                    value: '0',
+                    parent: 0
+                }],
+                value1:['默认'],
+                placeholder1: '请选择快递公司',
+                format: function(value, name) {
+                    if (name) {
+                        return `${name}`
+                    } else {
+                        return `${value}`
+                    }
+                }
             }
         },
         components:{
-            Toast
+            Toast,
+            Confirm,
+            PopupPicker
         },
         created(){
             let that = this
@@ -249,26 +299,26 @@
                 })
             },
             // 客服填写/修改快递单号
-            writeCode(ship_order_number){
+            writelayer(ship_order_number){
                 let that = this
-                his.http(that.configs.apiTop+"/order/receive-ship-order/"+ship_order_number, "post", '', function(res){
-                    let msg = res.data
-                    if(msg.code == 0){
-                        that.$vux.toast.text(msg.message, 'middle',100)
-                        setTimeout(function(){ 
-                            that.$router.push({path: '/service'}) 
-                        }, 200);
-                    }else if(msg.code == 40004){
+                that.writelayerStorey = true
+                that.logisticsCompaniesList()
+                // this.http(that.configs.apiTop+"/order/receive-ship-order/"+ship_order_number, "post", '', function(res){
+                //     let msg = res.data
+                //     if(msg.code == 0){
+                //         that.$vux.toast.text(msg.message, 'middle',100)
+                //         setTimeout(function(){ 
+                //             that.$router.push({path: '/service'}) 
+                //         }, 200);
+                //     }else if(msg.code == 40004){
 
-                    }else {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                    }
-                })
+                //     }else {
+                //         that.$vux.toast.text(msg.message, 'middle', 100);
+                //     }
+                // })
             },
-
             writeConfirm() {
                 let that = this;
-                that.writelayerStorey = true
                 if(that.company == ''){
                     this.$vux.toast.text('请选择快递公司', 'middle',100);
                     return false;
@@ -277,14 +327,18 @@
                     return false;
                 }
                 let data = qs.stringify({
-                    'company':that.company,
-                    'code':that.code,
+                    'logistics_company_id':that.company,
+                    'logistics_code':that.code,
                 })
-                this.http(that.configs.apiTop + "/weixin/binding-role", "post", data, function (res) {
+                this.http(that.configs.apiTop + "/ship-order/fill-in-logistics-code/"+that.items.ship_order_number, "post", data, function (res) {
                     let msg = res.data
                     let data = msg.data
                     if(msg.code == 0){
-                        
+                        that.$vux.toast.text(msg.message, 'middle',100)
+                        that.writelayerStorey = false
+                        setTimeout(function(){ 
+                            that.$router.push({path: '/orderdetail'}) 
+                        }, 200);
                     }else if(msg.code == 40004){
                     }else{
                         that.$vux.toast.text(msg.message, 'middle',100);
@@ -295,7 +349,163 @@
                 let that = this
                 that.writelayerStorey = false
             },
+            //快递公司列表 
+            logisticsCompaniesList(){
+                let that = this
+                let logistics_companies = [{
+                    name: '默认',
+                    value: '0',
+                    parent: 0
+                }]
+                this.http(that.configs.apiTop + "/logistics/logistics-companies", "get", '', function (res) {
+                    let msg = res.data
+                    let data = msg.data
+                    if(msg.code == 0){
+                        // 快递公司
+                        for (let i = 0; i < data.length; i++) {
+                            logistics_companies.push({
+                                name: data[i].logistics_company_name,
+                                value: String(data[i].logistics_company_id),
+                                parent: 0,
+                            })
+                        }
+                        that.list1 = logistics_companies
+                    }else if(msg.code == 40004){
+                    }else{
+                        that.$vux.toast.text(msg.message, 'middle',100);
+                    }
+                })
+            },
+            //取物流公司id 
+            onChangeOfLogisticsCompanies(values) {
+                console.log(values[0])
+                this.company = values[0]
+            }
         }
     }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>
+<style lang="scss">
+    @import '../../../static/assets/css/px2rem.scss';
+    .layer_warp{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 10;
+        .layer_table{
+            width: 100%;
+            height: 100%;
+            display: table;
+            text-align: center;
+        }
+        .layer_table_cell{
+            display: table-cell;
+            vertical-align: middle;
+        }
+        .layer_box{
+            width:px2rem(600);
+            // height: px2rem(460);
+            background-color: #fff;
+            display: inline-block;
+            border-radius:px2rem(10);
+        }
+        .layer_title{
+            font-size:px2rem(30);
+            color:#fff;
+            height:px2rem(88);
+            line-height:px2rem(88);
+            background-color:#366931;
+            border-top-left-radius: px2rem(10);
+            border-top-right-radius: px2rem(10);
+        }
+        .layer_container{
+            
+        }
+        .layer_footer{
+            height:px2rem(90);
+            border-top:1px solid #e0e0e0;
+            display:flex;
+            line-height:px2rem(90);
+        }
+        .layer_footer_cancel,.layer_footer_confirm,.layer_footer_cancel button,.layer_footer_confirm button{
+            flex:1;
+            border-right:1px solid #e0e0e0;
+            text-align: center;
+            font-size:px2rem(34);
+            color:#007aff;
+        }
+        .layer_footer button{
+            width: 100%;
+            height: px2rem(90);
+        }
+        .layer_footer_confirm,.layer_footer_cancel button,.layer_footer_confirm button{
+            border-right:0
+        }
+    }
+
+    .layer_writeOrder{
+        .register_box{
+            padding:px2rem(40) px2rem(66) px2rem(76);
+            input{
+                font-size:px2rem(24);
+                color:#cacaca;
+                width:100%;
+                height:px2rem(50);
+                line-height:px2rem(50);
+                padding:px2rem(10);
+                border:1px solid #dddddd;
+                border-radius:px2rem(10);
+            }
+            button{
+                width:px2rem(142);
+                height:px2rem(70);
+                font-size:px2rem(24);
+                color:#fff;
+                line-height:px2rem(70);
+                border-radius:px2rem(10);
+                margin-left:px2rem(20);
+                border:0;
+                background-color: #afc3ad;
+                &.action{
+                    background-color: #366931;
+                }
+
+            }
+            .phone_number{
+                display:flex;
+                margin-bottom:px2rem(30);
+                height:px2rem(50);
+                line-height:px2rem(50);
+                padding:px2rem(10);
+                border:1px solid #dddddd;
+                border-radius:px2rem(10);
+                input{
+                    flex:0;
+                    width:px2rem(270);
+                }
+                button{
+                }
+            }
+            .phone_code{
+                input{
+                    width:95%
+                }
+            }
+        }
+        .vux-cell-box{
+            width:100%;
+            &:before{
+                border-top:0
+            }
+            .weui-cell{
+                padding:0
+            }
+            .vux-popup-picker-select{
+                text-align: left !important;
+            }
+        }   
+    }
+</style>

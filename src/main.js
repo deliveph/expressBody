@@ -48,6 +48,8 @@ import {
   LoadingPlugin
 } from 'vux'
 
+import { Toast, Loading} from 'vux'
+
 Vue.use(ToastPlugin)
 Vue.use(AlertPlugin)
 Vue.use(ConfirmPlugin)
@@ -61,11 +63,8 @@ VueAMap.initAMapApiLoader({
 Vue.prototype.token = function () {
   configs.token = this.$route.query.token //url token
   configs.localToken = localStorage.getItem("token") //本地 token
-  console.log(configs, configs.localToken)
   if (configs.localToken == '' || configs.localToken == null || configs.localToken == undefined) { //
-    console.log(1)
     if (configs.token == '' || configs.token == null || configs.token == undefined) { //url
-      console.log('token为空')
       // location.href = configs.accreditUrl
     } else {
       localStorage.setItem("token", JSON.stringify({
@@ -75,14 +74,9 @@ Vue.prototype.token = function () {
     }
   } else {
     let dataObj = JSON.parse(configs.localToken)
-    console.log(dataObj)
-    console.log(dataObj.time)
-    console.log(configs.curTime)
     if (parseInt(configs.curTime) - parseInt(dataObj.time) >= 7200000) {
-      console.log('token过期')
       localStorage.clear("token")
       if (configs.token == '') { //url
-        console.log('token为空')
         // location.href = configs.accreditUrl
       } else {
         localStorage.setItem("token", JSON.stringify({
@@ -92,7 +86,6 @@ Vue.prototype.token = function () {
       }
       // location.href = configs.accreditUrl
     } else {
-      console.log('token成功')
       configs.token = dataObj.token
     }
   }
@@ -118,10 +111,11 @@ Vue.prototype.http = function (url, method, data, callback) {
   }).then(res => {
     let data = res.data
     let that = this
-    console.log(data, url)
     if (data.code === 40004) {
-      console.log(40004)
-      // location.href = configs.accreditUrl
+      that.$vux.toast.text('token失效', 'middle', 100)
+      setTimeout(function(){ 
+        that.wx.closeWindow()
+      }, 200)
       return
     }
     that.$vux.loading.hide()

@@ -55,12 +55,17 @@
 
 <style lang="scss" scoped>
     @import '../../../static/assets/css/px2rem.scss';
-
     .detail{
 
     }
     .detail_box{
         padding-bottom:px2rem(90);
+        font-size:px2rem(28);
+        color:#333;
+        text-align: left;
+        // text-indent:2em;
+        line-height:px2rem(38);
+        padding:0 px2rem(30);
         img{
             width:100%
         }

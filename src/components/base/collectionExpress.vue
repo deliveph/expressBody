@@ -366,9 +366,12 @@ export default {
 
 }
 </style>
-<style lang="less" scoped>
+<style lang="less">
     .forthwith_box{
         .expect_time{
+            .weui-cell{
+                display:flex
+            }
             .vux-cell-box{
                 width:100%;
             }

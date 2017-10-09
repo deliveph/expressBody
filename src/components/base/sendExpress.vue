@@ -535,3 +535,11 @@ export default {
     border-radius: px2rem(10);
 }
 </style>
+<style lang="scss">
+    .send_warp{
+        .weui-cell{
+            padding:0
+        }
+    }
+    
+</style>

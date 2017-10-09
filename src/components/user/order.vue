@@ -61,11 +61,11 @@
                                         </div>
                                     </router-link>
                                     <div class="order-option">
-                                        <span class="order-btn" v-if="ship.ship_order_status_id == -1">删除订单</span>
+                                        <span class="order-btn" v-if="ship.ship_order_status_id == -1" @click="deleteShipCode(ship.ship_order_number)">删除订单</span>
                                         <span class="order-btn" v-else-if="ship.ship_order_status_id == 1 || ship.ship_order_status_id == 2" @click="cancel(ship.ship_order_number)">取消订单</span>
                                         <router-link class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 3" tag="span" :to="{}">去支付</router-link>
                                         <span class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 4">去评价</span>
-                                        <span class="order-btn" v-else-if="ship.ship_order_status_id == 5">删除订单</span>
+                                        <span class="order-btn" v-else-if="ship.ship_order_status_id == 5" @click="deleteShipCode(ship.ship_order_number)">删除订单</span>
                                     </div>
                                 </li>
                             </div>
@@ -90,12 +90,12 @@
                                         </div>
                                     </router-link>
                                     <div class="order-option "  >
-                                        <span class="order-btn" v-if="collection.collection_order_status_id == -1">删除订单</span>
+                                        <span class="order-btn" v-if="collection.collection_order_status_id == -1" @click="deleteCollectionCode(collection.collection_order_number)">删除订单</span>
                                         <span class="order-btn" v-else-if="collection.collection_order_status_id == 1 || collection.collection_order_status_id == 2" @click="cancel(collection.collection_order_number)">取消订单</span>
                                         <span class="order-btn" v-else-if="collection.collection_order_status_id == 3">修改收货时间</span>
                                         <span class="order-btn bd-finish" v-else-if="collection.collection_order_status_id == 4">去支付</span>
                                         <span class="order-btn bd-finish" v-else-if="collection.collection_order_status_id == 5">去评价</span>
-                                        <span class="order-btn" v-else-if="collection.collection_order_status_id == 6">删除订单</span>
+                                        <span class="order-btn" v-else-if="collection.collection_order_status_id == 6" @click="deleteCollectionCode(collection.collection_order_number)">删除订单</span>
                                     </div>
                                 </li>
                             </div>
@@ -148,6 +148,62 @@
                         }
                     }
                 })
+            },
+            deleteShipCode(ship_order_number){
+                let that = this
+                this.$vux.confirm.show({
+                    title: '删除订单',
+                     content: '确定要删除此订单???',
+                    // 组件除show外的属性
+                    onCancel () {
+                        
+                    },
+                    onConfirm () {
+                        if(ship_order_number){
+                            that.http(that.configs.apiTop+"/ship-order/user-ignore/"+ship_order_number, "post", '', function(res){
+                                let msg = res.data
+                                if(msg.code == 0){
+                                    that.$vux.toast.text(msg.message, 'middle',100)
+                                    setTimeout(function(){ 
+                                        that.$router.push({path: '/user'}) 
+                                    }, 200);
+                                }else if(msg.code == 40004){
+
+                                }else {
+                                    that.$vux.toast.text(msg.message, 'middle', 100);
+                                }
+                            })
+                        }
+                    }
+                })
+            },
+            deleteCollectionCode(collection_order_number){
+                let that = this
+                this.$vux.confirm.show({
+                    title: '删除订单',
+                     content: '确定要删除此订单???',
+                    // 组件除show外的属性
+                    onCancel () {
+                        
+                    },
+                    onConfirm () {
+                        if(collection_order_number){
+                            that.http(that.configs.apiTop+"/collection-order/user-ignore/"+collection_order_number, "post", '', function(res){
+                                let msg = res.data
+                                if(msg.code == 0){
+                                    that.$vux.toast.text(msg.message, 'middle',100)
+                                    setTimeout(function(){ 
+                                        that.$router.push({path: '/user'}) 
+                                    }, 200);
+                                }else if(msg.code == 40004){
+
+                                }else {
+                                    that.$vux.toast.text(msg.message, 'middle', 100);
+                                }
+                            })
+                        }
+                    }
+                })
             }
         },
         created() {
@@ -169,3 +225,4 @@
     }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>
+

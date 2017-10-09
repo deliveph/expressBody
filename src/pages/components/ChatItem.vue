@@ -20,6 +20,7 @@
       <a class="msg-head" v-if="msg.avatar" :href="msg.link">
         <img :src="msg.avatar">
       </a>
+      
       <p class="msg-user" v-else-if="msg.type!=='notification'"><em>{{msg.showTime}}</em>{{msg.from}}</p>
 
       <span v-if="msg.type==='text'" class="msg-text" v-html="msg.showText"></span>
@@ -139,12 +140,14 @@
     },
     beforeMount () {
       let item = Object.assign({}, this.rawMsg)
+      console.log(this.myInfo,"&(*&%#(*@&%(")
       // 标记用户，区分聊天室、普通消息
       if (this.type === 'session') {
         if (item.flow === 'in') {
           if (item.type === 'robot' && item.content && item.content.msgOut) {
             // 机器人下行消息
             let robotAccid = item.content.robotAccid
+            console.log(robotAccid)
             item.avatar = this.robotInfos[robotAccid].avatar
             item.isRobot = true
             item.link = `#/namecard/${robotAccid}`
@@ -375,6 +378,8 @@
           }
         }
       }
+    },
+    created(){
     }
   }
 </script>

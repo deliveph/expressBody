@@ -9,6 +9,7 @@ import util from '../../../utils'
 export function formatUserInfo (obj) {
   const nim = store.state.nim
   let gender = ''
+  console.log(obj,"}}}}")
   switch (obj.gender) {
     case 'male':
       gender = '男'
@@ -68,6 +69,7 @@ export function onMyInfo (obj) {
 }
 
 export function onUserInfo (users) {
+  console.log(users, "^^^^")
   if (!Array.isArray(users)) {
     users = [users]
   }

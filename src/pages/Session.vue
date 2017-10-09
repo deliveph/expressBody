@@ -155,7 +155,7 @@
       }
     },
     created(){
-      console.log(12412)
+      console.log(25235)
       console.log(this)
     }
   }

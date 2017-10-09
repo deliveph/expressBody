@@ -152,7 +152,7 @@ export default new Router({
             component: Invite
         }, //邀请好友 
         {
-            path: '/result',
+            path: '/payresult',
             name: 'payResult',
             component: payResult
         }, //充值结果（成功/失败） 
