@@ -100,10 +100,7 @@ export default {
   updated() {
     let that = this
     // 提交sdk连接请求
-    if(that.net_ease_token != ''){
-      console.log(123,"#$$$")
-      console.log(this.$store)
-      
+    if(that.net_ease_token != ''){      
     }
     this.$store.dispatch('connect')
     this.$store.dispatch('updateRefreshState') 
@@ -123,13 +120,9 @@ export default {
           let msg = res.data
           let data = msg.data
           if (msg.code == 0) { 
-            console.log(config)
               that.config.test.appkey = data.net_ease_app_key
               cookie.setCookie('uid', data.net_ease_accid)
               cookie.setCookie('sdktoken', data.net_ease_token)
-              
-              console.log(that.net_ease_accid)
-              console.log(that.net_ease_token)
           } else if (msg.code == 40004) { 
               location.href = that.configs.accreditUrl 
           } else{ 
@@ -163,15 +156,11 @@ export default {
         let data = msg.data
         
         if (msg.code == 0) { 
-            console.log(config)
             config.appkey = data.net_ease_app_key
             cookie.setCookie('uid', data.net_ease_accid)
             cookie.setCookie('sdktoken', data.net_ease_token)
             that.net_ease_accid = data.net_ease_accid
             that.net_ease_token = data.net_ease_token
-            console.log(config.test.appkey)
-            console.log(that.net_ease_accid)
-            console.log(that.net_ease_token)
         } else if (msg.code == 40004) { 
             location.href = that.configs.accreditUrl 
         } else{ 

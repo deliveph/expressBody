@@ -155,6 +155,20 @@
     var formatTm = new Array
     var timeList1 = new Array
     var timeList2 = new Array
+    var timeList3 = new Array
+    let items = [{
+                name: '今天',
+                value: '0',
+                parent: 0
+            }, {
+                name: '明天',
+                value: '1',
+                parent: 0
+            }, {
+                name: '后天',
+                value: '2',
+                parent: 0
+            }]
     for (i = 0; i <= len; i++) {
       var itemTm = parseInt(benginTm1) + parseInt(i)
       if (itemTm >= 10) {} else {
@@ -174,7 +188,6 @@
       }
     }
     console.log(itemList)
-    console.log(timeList1.length)
     for (j = 0; j < itemList.length; j++) {
       var itemList1 = '';
       var num = itemList.length - j;
@@ -183,7 +196,17 @@
       } else {
         itemList1 = itemList[j] + "~" + itemList[j + 1]
       }
-      timeList.push(itemList1)
+      items.push({
+        name:itemList1,  
+        value:itemList1,
+        parent:1
+      })
+      items.push({
+        name:itemList1,  
+        value:itemList1,
+        parent:2
+      })
+      // timeList.push(itemList1)
     }
 
     for (m = 0; m < timeList1.length; m++) {
@@ -194,10 +217,15 @@
       } else {
         itemList2 = timeList1[m] + "~" + timeList1[m + 1]
       }
-      timeList2.push(itemList2)
+      items.push({
+        name:itemList2,  
+        value:itemList2,
+        parent:0
+      })
     }
     console.log(timeList)
     console.log(timeList2)
+    console.log(timeList3)
     
     function GetDateStr(AddDayCount) {
       var dd = new Date();
@@ -209,6 +237,13 @@
     }
     console.log(GetDateStr(0),GetDateStr(1),GetDateStr(2))
 
+
+    
+    // items.push(timeList)
+    // items.push(timeList2)
+    // items.push(timeList3)
+    console.log(items)
+    
 
 
 

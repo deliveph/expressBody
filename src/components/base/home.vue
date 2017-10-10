@@ -114,12 +114,9 @@ export default {
               init(o) {
                 // o 是高德地图定位插件实例
                 o.getCurrentPosition((status, result) => {
-                    this.result = result
-                    // alert(JSON.stringify(result))
-                    // console.log(status,result)
+                    self.result = result
                     if (result && result.position) {
-                        this.reportUserLocation()
-                        // console.log(result.formattedAddress)
+                        self.reportUserLocation()
                     }
                 });
               }
@@ -163,7 +160,6 @@ export default {
                 if (msg.code == 0) {
                     that.$vux.toast.text(msg.message, 'middle', 100);
                 } else if (msg.code == 40004) {
-                    // location.href = that.configs.accreditUrl
                 } else {
                     that.$vux.toast.text(msg.message, 'middle', 100);
                 }
@@ -179,7 +175,7 @@ export default {
         let is_perfect = this.$route.query.is_perfect
         this.$weChat()
         if( is_perfect == 0 ){
-            that.is_perfect = false
+            that.is_perfect = true
         }else{
             that.is_perfect = false
         }

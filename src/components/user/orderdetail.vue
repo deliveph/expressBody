@@ -303,19 +303,6 @@
                 let that = this
                 that.writelayerStorey = true
                 that.logisticsCompaniesList()
-                // this.http(that.configs.apiTop+"/order/receive-ship-order/"+ship_order_number, "post", '', function(res){
-                //     let msg = res.data
-                //     if(msg.code == 0){
-                //         that.$vux.toast.text(msg.message, 'middle',100)
-                //         setTimeout(function(){ 
-                //             that.$router.push({path: '/service'}) 
-                //         }, 200);
-                //     }else if(msg.code == 40004){
-
-                //     }else {
-                //         that.$vux.toast.text(msg.message, 'middle', 100);
-                //     }
-                // })
             },
             writeConfirm() {
                 let that = this;

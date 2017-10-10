@@ -58,7 +58,7 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style>
 .suggest-header {
     position: relative;
     z-index: 10;
@@ -73,6 +73,7 @@ export default {
 
 .suggest-header .city-wrapper {
     padding: 13px 0;
+    width:500px;
 }
 
 .suggest-header .city-wrapper .city-content {

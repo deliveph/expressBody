@@ -100,6 +100,7 @@ export default {
         margin-top:px2rem(20);
         padding-left:px2rem(30);
         background-color:#fff;
+        padding-bottom:px2rem(80);
         h3{
             font-size:px2rem(30);
             color:#333;

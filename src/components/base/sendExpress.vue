@@ -72,7 +72,7 @@
                 </p>
             </div>
             <div class="btn">
-                <button @click="submitBtn">确定</button>
+                <button @click="submitBtn" class="active">确定</button>
             </div>
         </div>
     </div>
@@ -179,6 +179,7 @@ export default {
             estimateLogisticsFee: 0,
             logisticsGoodsCategoryId: 0,
             logisticsCompanyId: 0,
+            items:[]
         }
     },
     computed: {
@@ -222,14 +223,12 @@ export default {
                     value: '',
                     parent: ''
                 }
-                // let arr2 = {}
                 let arr3 = {
                     name: '',
                     value: '',
                     parent: ''
                 }
                 if (JSON.stringify(that.default_consignee_address) == '{}') {
-                    console.log(arr.default_consignee_address, "444")
                     that.default_consignee_address = arr.default_consignee_address
                 }
                 if (JSON.stringify(that.default_shipper_address) == '{}') {
@@ -237,15 +236,11 @@ export default {
                 }
                 // 快递公司
                 for (let i = 0; i < arr.logistics_companies.length; i++) {
-                    // arr2.name = arr.logistics_companies[i].logistics_company_name
-                    // arr2.value = String(arr.logistics_companies[i].logistics_company_id)
-                    // arr2.parent = 0
                     logistics_companies.push({
                         name: arr.logistics_companies[i].logistics_company_name,
                         value: String(arr.logistics_companies[i].logistics_company_id),
                         parent: 0,
                     })
-                    // arr2 += arr.logistics_companies[i].logistics_company_name; 
                 }
                 that.list1 = logistics_companies
                 // 物品类型
@@ -254,16 +249,11 @@ export default {
                         that.value2[0] = arr.logistics_goods_categories[j].logistics_goods_category_name 
                         that.logisticsGoodsCategoryId = String(arr.logistics_goods_categories[j].logistics_goods_category_id) 
                     }
-                    //arr3.name = arr.logistics_goods_categories[j].logistics_goods_category_name
-                    //arr3.value = String(arr.logistics_goods_categories[j].logistics_goods_category_id)
-                    //arr3.parent = 0
-                    //console.log(arr3)
                     logistics_goods_categories.push({
                         name: arr.logistics_goods_categories[j].logistics_goods_category_name,
                         value: String(arr.logistics_goods_categories[j].logistics_goods_category_id),
                         parent: 0
                     })
-                    // that.value2 = logistics_goods_categories[j].logistics_goods_category_name
                 }
                 that.list2 = logistics_goods_categories
                 that.time_quantum = arr.service_time.start_time + '~' + arr.service_time.end_time
@@ -273,8 +263,6 @@ export default {
                 that.$vux.toast.text(msg.message, 'middle', 100);
             }
         })
-
-
         //时间段
         that.formattedTimeInit()
     },
@@ -313,6 +301,19 @@ export default {
         //格式时间段()
         formattedTimeInit() {
             let that = this
+            that.items = [{
+                name: '今天',
+                value: '1',
+                parent: 0
+            }, {
+                name: '明天',
+                value: '2',
+                parent: 0
+            }, {
+                name: '后天',
+                value: '3',
+                parent: 0
+            }]
             that.benginTm1 = that.begin.substring(0, 2);
             that.benginTm = that.begin.replace(":", "");
             that.endTm1 = that.end.substring(0, 2);
@@ -344,9 +345,17 @@ export default {
                 } else {
                     itemList1 = that.itemList[j] + "~" + that.itemList[j + 1]
                 }
-                that.timeList.push(itemList1)
+                that.items.push({
+                    name:itemList1,  
+                    value:itemList1,
+                    parent:'2'
+                })
+                that.items.push({
+                    name:itemList1,  
+                    value:itemList1,
+                    parent:'3'
+                })
             }
-
             for (let m = 0; m < that.timeList1.length; m++) {
                 let itemList2 = '';
                 let num = that.timeList1.length - m;
@@ -355,8 +364,13 @@ export default {
                 } else {
                     itemList2 = that.timeList1[m] + "~" + that.timeList1[m + 1]
                 }
-                that.timeList2.push(itemList2)
+                that.items.push({
+                    name:itemList2,  
+                    value:itemList2,
+                    parent:'1'
+                })
             }
+            that.list3 = that.items
         },
         onChange(val) {
         },
@@ -412,7 +426,6 @@ export default {
                 let msg = res.data
                 if (msg.code == 0) {
                     that.$vux.toast.text(msg.message, 'middle', 100);
-
                     setTimeout(function() {
                         that.$router.push({ path: '/order' })
                     }, 200);
@@ -432,16 +445,12 @@ export default {
                 title: '提示',
                 content: content,
                 onShow() {
-                    console.log('plugin show')
                 },
                 onHide() {
-                    console.log('plugin hide')
                 },
                 onCancel() {
-                    console.log('plugin cancel')
                 },
                 onConfirm() {
-                    console.log('plugin confirm')
                     that.$router.push({ path: '/open' })
                 }
             })
@@ -459,11 +468,9 @@ export default {
             })
         },
         onChangeOfLogisticsGoodsCategories(values) {
-            console.log(values[0])
             this.logisticsGoodsCategoryId = values[0]
         },
         onChangeOfLogisticsCompanies(values) {
-            console.log(values[0])
             this.logisticsCompanyId = values[0]
         }
     },

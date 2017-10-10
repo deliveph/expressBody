@@ -5,7 +5,7 @@
         </div>
         <div class="footer_btn">
             <div v-if="status == 'ad'">
-                <button>立即体验</button>
+                <button @click="experience">立即体验</button>
             </div>
             <div v-else-if="status == 'free'">
                 <button @click="rechargeBtn">充值</button>
@@ -32,6 +32,9 @@
         methods: {
             rechargeBtn(){
                 this.$router.push({path: '/recharge'})
+            },
+            experience(){
+                this.$router.push({path:'/user'})
             }
         },
         created(){

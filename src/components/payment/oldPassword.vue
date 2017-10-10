@@ -1,34 +1,89 @@
 <template>
-    <div class="oldPassword">
-        <h3>请输入旧密码</h3>
-        <div class="pw_input ipt-box-nick">
-            <input type="tel" maxlength="6" class="ipt-real-nick"/>
-            <div class="ipts-box-nick">
-                <div class="ipt-fake-box">
-                    <input type="password" maxlength="1">
-                    <input type="password" maxlength="1">
-                    <input type="password" maxlength="1">
-                    <input type="password" maxlength="1">
-                    <input type="password" maxlength="1">
-                    <input type="password" maxlength="1">
+    <div class="modification_warp">
+        <div class="oldPassword" v-if="old">
+            <h3>请输入旧的支付密码</h3>
+            <div class="pw_input ipt-box-nick">
+                <input type="tel" maxlength="6" class="ipt-real-nick" v-model="old_password"/>
+                <div class="ipts-box-nick">
+                    <div class="ipt-fake-box">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                    </div>
                 </div>
             </div>
+            <div class="btn">
+                <!-- 输入完6位密码才会高亮 active-->
+                <button type="button" class="btn_next active" @click="oldNext">下一步</button>
+            </div>
         </div>
-        <div class="btn">
-            <!-- 输入完6位密码才会高亮 active-->
-            <button type="button" class="btn_next " @click="settingPassword">下一步</button>
+        <div class="oldPassword newPassword" v-else-if="newPayPaw">
+            <h3>请输入新的支付密码</h3>
+            <div class="pw_input ipt-box-nick">
+                <input type="tel" maxlength="6" class="ipt-real-nick" v-model="new_password"/>
+                <div class="ipts-box-nick">
+                    <div class="ipt-fake-box">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                    </div>
+                </div>
+            </div>
+            <div class="btn">
+                <!-- 输入完6位密码才会高亮 active-->
+                <button type="button" class="btn_next active" @click="newNext">下一步</button>
+            </div>
+        </div>
+        <div class="oldPassword succeedPassword" v-else="succeedPayPaw" >
+            <h3>请确认支付密码</h3>
+            <div class="pw_input ipt-box-nick">
+                <input type="tel" maxlength="6" class="ipt-real-nick" v-model="confirm_password"/>
+                <div class="ipts-box-nick">
+                    <div class="ipt-fake-box">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                        <input type="password" maxlength="1">
+                    </div>
+                </div>
+            </div>
+            <div class="btn">
+                <!-- 输入完6位密码才会高亮 active-->
+                <button type="button" class="btn_next active" @click="succeed">完成</button>
+            </div>
         </div>
     </div>
 </template>
-
 <script>
 import $ from 'jquery'
+import qs from 'qs'
+import { Toast } from 'vux'
 export default {
+    data() {
+        return {
+            old:true,
+            newPayPaw:false,
+            succeedPayPaw:false,
+            old_password:'',
+            new_password:'',
+            confirm_password:''
+        }
+    },
+    components: {
+        Toast
+    },
     mounted: function() {
         $(".ipt-real-nick").on("input", function() {
             //console.log($(this).val());
             var $input = $(".ipt-fake-box input");
-            console.log($input)
             if (!$(this).val()) {//无值光标顶置
                 $('.ipt-active-nick').css('left', $input.eq(0).offset().left - parseInt($('.ipt-box-nick').parent().css('padding-left')) + 'px');
             }
@@ -59,8 +114,57 @@ export default {
         })
     },
     methods: {
-        settingPassword(){
-            this.$router.push({path:'/'})
+        oldNext(){
+            let that = this
+            if(that.old_password == ''){
+                that.$vux.toast.text('请输入旧的支付密码','middle',100)
+                return
+            }
+            this.old = false
+            this.newPayPaw = true
+            this.succeedPayPaw = false
+            
+        },
+        newNext(){
+            let that = this
+            if(that.new_password == ''){
+                that.$vux.toast.text('请输入新的支付密码','middle',100)
+                return
+            }
+            this.old = false
+            this.newPayPaw = false
+            this.succeedPayPaw = true
+        },
+        succeed(){
+            let that = this
+            if(that.confirm_password == ''){
+                that.$vux.toast.text('请确认支付密码','middle',100)
+                return
+            }else if(that.new_password != that.confirm_password){
+                that.$vux.toast.text('请确认两次支付密码一致','middle',100)
+                return
+            }
+            let data = qs.stringify({
+                'old_password':that.old_password,
+                'new_password':that.new_password,
+                'confirm_password':that.confirm_password
+            })
+            this.http(that.configs.apiTop+"/user-pay-password/update", "post", data, function(res) { 
+                let msg = res.data 
+                if (msg.code == 0) { 
+                    that.$vux.toast.text(msg.message,'middle',100);
+                    setTimeout(function(){ 
+                        that.$router.push({path: '/payset'}) 
+                    }, 200);
+                } else if (msg.code == 40004) { 
+                    // location.href = that.configs.accreditUrl 
+                }else{
+                    that.$vux.toast.text(msg.message,'middle',100);
+                    setTimeout(function(){ 
+                        that.$router.push({path: '/oldPassword'}) 
+                    }, 200);
+                }
+            }) 
         }
     }
 }

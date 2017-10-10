@@ -370,7 +370,8 @@ export default {
     .forthwith_box{
         .expect_time{
             .weui-cell{
-                display:flex
+                display:flex;
+                padding:0;
             }
             .vux-cell-box{
                 width:100%;

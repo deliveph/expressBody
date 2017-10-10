@@ -4,7 +4,7 @@
             <div class="cen-item">
                 <ul class="some-item">
                     <li>
-                        <router-link to="">
+                        <router-link to="/oldPassword">
                             <span><i class="icon6"></i>修改支付密码</span>
                             <em><i class="arrow-right"></i></em>
                         </router-link>

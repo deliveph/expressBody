@@ -111,7 +111,7 @@ Vue.prototype.http = function (url, method, data, callback) {
   }).then(res => {
     let data = res.data
     let that = this
-    if (data.code === 40004) {
+    if (data.code == 40004) {
       that.$vux.toast.text('token失效', 'middle', 100)
       setTimeout(function(){ 
         that.wx.closeWindow()

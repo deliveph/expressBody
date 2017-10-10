@@ -298,14 +298,6 @@ export default new Router({
                 title: '城市选择'
             }
         },
-        // {
-        //     path: '/session',
-        //     name: 'session',
-        //     component: session,
-        //     meta: {
-        //         title: '聊天'
-        //     }
-        // },
         //客服全部订单
         {
             path: '/serviceOrder',
@@ -329,18 +321,12 @@ export default new Router({
             meta:{
                 title: '消息'
             }
-            // component (resolve) {
-            //     require(['../pages/Session'], resolve)
-            // }
         },
         // 聊天记录
         {
             path: '/chat/:sessionId',
             name: 'chat',
             component: chat
-            // component (resolve) {
-            //     require(['../pages/Chat'], resolve)
-            // }
         },
         // 聊天历史记录
         {
@@ -350,9 +336,6 @@ export default new Router({
             meta:{
                 title: '历史记录'
             }
-            // component (resolve) {
-            //     require(['../pages/ChatHistory'], resolve)
-            // }
         }
     ]
 })

@@ -201,12 +201,13 @@
         input{
             font-size:px2rem(24);
             color:#cacaca;
-            width:100%;
+            width:95%;
             height:px2rem(50);
             line-height:px2rem(50);
             padding:px2rem(10);
             border:1px solid #dddddd;
             border-radius:px2rem(10);
+            -webkit-appearance: none;
         }
         button{
             width:px2rem(142);

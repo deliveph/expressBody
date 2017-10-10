@@ -40,7 +40,7 @@
     </div>
 
     <!--设置支付弹出层  -->
-    <div class="layer_warp layer_setting" v-if="layerSetting">
+    <div class="layer_warp layer_setting" v-bind:class="{hide:!layerSetting}">
         <div class="layer_table">
             <div class="layer_table_cell">
                 <div class="layer_box">
@@ -50,7 +50,7 @@
                     </div>
                     <div class="layer_container">
                         <div class="pw_input ipt-box-nick">
-                            <input type="tel" maxlength="6" class="ipt-real-nick" value="" v-model="password" v-on:oninput="ipts($event)"/>
+                            <input type="tel" maxlength="6" class="ipt-real-nick" value="" v-model="password"/>
                             <div class="ipts-box-nick" >
                                 <div class="ipt-fake-box">
                                     <input type="password" maxlength="1">
@@ -79,47 +79,6 @@
     import $ from 'jquery'
     import  { Toast } from 'vux'
     import  qs from 'qs'
-
-    // const input = function(){
-    //     console.log(123)
-    //     $(".ipt-real-nick").on("input", function() {
-    //         //console.log($(this).val());
-            
-    //     })
-
-    //     console.log(this)
-    //         var $input = $(".ipt-fake-box input");
-    //         console.log($input)
-    //         if (!$(this).val()) {
-    //             //无值光标顶置
-    //             console.log(1230)
-    //             $('.ipt-active-nick').css('left', $input.eq(0).offset().left - parseInt($('.ipt-box-nick').parent().css('padding-left')) + 'px');
-    //         }
-    //         if (/^[0-9]*$/g.test($(this).val())) {//有值只能是数字
-    //             //console.log($(this).val());
-    //             var pwd = $(this).val().trim();
-    //             for (var i = 0, len = pwd.length; i < len; i++) {
-    //                 $input.eq(i).val(pwd[i]);
-    //                 if ($input.eq(i).next().length) {//模拟光标，先将图片容器定位，控制left值而已
-    //                     $('.ipt-active-nick').css('left', $input.eq(i + 1).offset().left - parseInt($('.ipt-box-nick').parent().css('padding-left')) + 'px');
-    //                 }
-    //             }
-    //             $input.each(function() {//将有值的当前input后的所有input清空
-    //                 var index = $(this).index();
-    //                 if (index >= len) {
-    //                     $(this).val("");
-    //                 }
-    //             });
-    //             if (len == 6) {
-    //                 //执行其他操作
-    //                 console.log('输入完整，执行操作');
-    //             }
-    //         } else {//清除val中的非数字，返回纯number的value
-    //             var arr = $(this).val().match(/\d/g);
-    //             $(this).val($(this).val().slice(0, $(this).val().lastIndexOf(arr[arr.length - 1]) + 1));
-    //             //console.log($(this).val());
-    //         }
-    // }
     export default{
         data(){
             return{
@@ -128,7 +87,7 @@
                 ship_order:[],
                 user_coupon:{},
                 layerSetting:false,
-                password:'123456',
+                password:'',
                 type:''
             }
         },
@@ -147,8 +106,7 @@
                         let data = msg.data
                         that.items = msg.data 
                         that.ship_order =  data.ship_order
-                        that.user_coupon = data.user_coupon
-                        console.log(that.user_coupon,"****")            
+                        that.user_coupon = data.user_coupon     
                     } else if (msg.code == 40004) {
                         // location.href = that.configs.accreditUrl
                     } else {
@@ -179,10 +137,6 @@
                     that.$router.push({ name: 'setpaypw'})
                 }else {
                     that.layerSetting = true
-                    // that.pwFunction()
-                    // input()
-                    // console.log(123)
-                    that.ipts()  
                 }
             },
             cancelSetting(){
@@ -208,12 +162,16 @@
                         if (msg.code == 0) {
                             that.$vux.toast.text(msg.message, 'middle', 100);
                             setTimeout(function(){ 
-                                that.$router.push({path: '/user'}) 
+                                // ship_order_number 订单号 condition 寄件或收件
+                                that.$router.push({path: '/evalresult',query:{type:1,status:1,ship_order_number:that.ship_order_number,condition:that.type}}) 
                             }, 200); 
                         } else if (msg.code == 40004) {
                             // location.href = that.configs.accreditUrl
                         } else {
                             that.$vux.toast.text(msg.message, 'middle', 100);
+                            setTimeout(function(){ 
+                                that.$router.push({path: '/evalresult',query:{type:1,status:0}}) 
+                            }, 200); 
                         }
                     })
                 }else{
@@ -222,35 +180,31 @@
                         if (msg.code == 0) {
                             that.$vux.toast.text(msg.message, 'middle', 100);
                             setTimeout(function(){ 
-                                that.$router.push({path: '/user'}) 
+                                that.$router.push({path: '/evalresult',query:{type:1,status:1,ship_order_number:that.ship_order_number,condition:that.type}}) 
                             }, 200); 
                         } else if (msg.code == 40004) {
                             // location.href = that.configs.accreditUrl
                         } else {
                             that.$vux.toast.text(msg.message, 'middle', 100);
+                            setTimeout(function(){ 
+                                that.$router.push({path: '/evalresult',query:{type:1,status:0}}) 
+                            }, 200); 
                         }
                     })
                 }
                 
-            },
-            ipts(event){
-                // console.log(event.currentTarget);
-                // console.log(event.target);
-                console.log(event)
-                let that = event.target
-                console.log($(that),"%$#%@$%")
-                // $(".ipt-real-nick").on("input", function() {
-                //     //console.log($(this).val());
-                    
-                // })
+            }
+        },
+        mounted: function() {
+            $(".ipt-real-nick").on("input", function() {
+                //console.log($(this).val());
                 var $input = $(".ipt-fake-box input");
-                // console.log($input)
-                if (!$(that).val()) {
-                    //无值光标顶置
+                if (!$(this).val()) {//无值光标顶置
                     $('.ipt-active-nick').css('left', $input.eq(0).offset().left - parseInt($('.ipt-box-nick').parent().css('padding-left')) + 'px');
                 }
-                if (/^[0-9]*$/g.test($(that).val())) {//有值只能是数字
-                    var pwd = $(that).val().trim();
+                if (/^[0-9]*$/g.test($(this).val())) {//有值只能是数字
+                    //console.log($(this).val());
+                    var pwd = $(this).val().trim();
                     for (var i = 0, len = pwd.length; i < len; i++) {
                         $input.eq(i).val(pwd[i]);
                         if ($input.eq(i).next().length) {//模拟光标，先将图片容器定位，控制left值而已
@@ -258,9 +212,9 @@
                         }
                     }
                     $input.each(function() {//将有值的当前input后的所有input清空
-                        var index = $(that).index();
+                        var index = $(this).index();
                         if (index >= len) {
-                            $(that).val("");
+                            $(this).val("");
                         }
                     });
                     if (len == 6) {
@@ -268,16 +222,13 @@
                         console.log('输入完整，执行操作');
                     }
                 } else {//清除val中的非数字，返回纯number的value
-                    var arr = $(that).val().match(/\d/g);
-                    $(that).val($(that).val().slice(0, $(that).val().lastIndexOf(arr[arr.length - 1]) + 1));
+                    var arr = $(this).val().match(/\d/g);
+                    $(this).val($(this).val().slice(0, $(this).val().lastIndexOf(arr[arr.length - 1]) + 1));
+                    //console.log($(this).val());
                 }
-            }
-        },
-        mounted: function() {
+            })
         }
     }
-
-    
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>
 <style lang="scss" scoped>
@@ -318,13 +269,13 @@
             border-bottom:1px solid #dbdbdb;
             position: relative;
             i{
-                width:px2rem(34);
-                height:px2rem(34);
+                width:px2rem(50);
+                height:px2rem(50);
                 display: inline-block;
-                background:url('/static/assets/images/failure.png') no-repeat center;
-                background-size:px2rem(34);
+                background:url('/static/assets/images/pay_password_esc.png') no-repeat center;
+                background-size:px2rem(50);
                 position:absolute;
-                top:px2rem(24);
+                top:px2rem(20);
                 right:px2rem(30);
                 cursor: pointer;
             }

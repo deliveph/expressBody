@@ -148,6 +148,7 @@ export default {
         padding: px2rem(10);
         border: 1px solid #dddddd;
         border-radius: px2rem(10);
+        -webkit-appearance: none;
     }
     button {
         width: px2rem(142);

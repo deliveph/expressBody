@@ -139,7 +139,7 @@ export default {
                             if(msg.code == 0){
                                 that.$vux.toast.text(msg.message, 'middle',100)
                                 setTimeout(function(){ 
-                                    that.$router.push({path: '/'}) 
+                                    that.$router.push({path: '/user'}) 
                                 }, 200);
                             }else if(msg.code == 40004){
 
