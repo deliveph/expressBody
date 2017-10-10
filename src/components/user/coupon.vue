@@ -80,7 +80,8 @@
                     { 'name': '已过期', num: '0' }
                 ],
                 index: 0,
-                items:[]
+                items:[],
+                type:''
             }
         },
         components: {
@@ -136,19 +137,31 @@
                 }
             },
             getTicket(coupon_id,coupon_category_id){
-                let that = this;
-                if(coupon_category_id == 1){
-                    this.$router.push({name:'user'})
-                }else if(coupon_category_id == 2){
-                    this.$router.push({name:'collection'})
-                }else if(coupon_category_id == 3){
-                    this.$router.push({name:'send'})
+                let that = this
+                if(that.type == 1){
+                    if(coupon_category_id == 1){
+                        that.$router.go(-2)
+                    }else if(coupon_category_id == 2){
+                        that.$router.go(-2)
+                    }else if(coupon_category_id == 3){
+                        that.$router.go(-2)
+                    }
+                }else{
+                    if(coupon_category_id == 1){
+                        this.$router.push({name:'user'})
+                    }else if(coupon_category_id == 2){
+                        this.$router.push({name:'collection'})
+                    }else if(coupon_category_id == 3){
+                        this.$router.push({name:'send'})
+                    }
                 }
+                
             }
         },
         created() {
             let that = this
             let index = that.index
+            that.type = that.$route.query.type
             that.getItem(index)
         },
         mounted(){

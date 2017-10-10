@@ -251,8 +251,14 @@ export default {
         .region > div{
             width: 100%;
         }
+        .vux-cell-box{
+            &:before{
+                border-top:0
+            }
+        }
         .weui-cell{
             display: flex;
+            padding:0;
             .weui-cell__hd{
                 width: px2rem(140); 
             }

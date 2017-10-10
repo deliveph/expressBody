@@ -29,7 +29,7 @@
                 <div class="pay-item">
                     <div class="pay-des col-5">可用优惠券：</div>
                     <div class="pay-much col-5 t-r">
-                        <router-link :to="{path:'/coupon'}" class="ft-red"><span  v-if="user_coupon !=''">{{user_coupon.coupon_amount}}快递豆</span><i class="arrow-right"></i></router-link>
+                        <router-link :to="{path:'/coupon',query:{type:1}}" class="ft-red"><span  v-if="user_coupon !=''">{{user_coupon.coupon_amount}}快递豆</span><i class="arrow-right"></i></router-link>
                     </div>
                 </div>
             </li>

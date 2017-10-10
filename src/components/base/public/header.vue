@@ -21,7 +21,7 @@
                 
             </li>
             <li class="courier_message" v-if="express">
-                <h4 class="identify">您的快递宝宝</h4>
+                <h4 class="identify">您的专属快递哥</h4>
                 <router-link  :to="{path:'/chat/p2p-service_'+service_id }" >
                     <div class="photo">
                         <img :src="service_avatar" />
@@ -30,7 +30,8 @@
                         </div>
                     </div>
                 </router-link>
-                <h3 class="name">{{service_nickname}}
+                <h3 class="name">
+                    <span>{{service_nickname}}</span>
                     <!-- @click="tel(service_tell)" -->
                     <a class="icon_tel" @click="tel(service_tel)"></a>
                 </h3>

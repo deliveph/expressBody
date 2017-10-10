@@ -59,7 +59,7 @@ export default new Router({
             name: 'login',
             component: login,
             meta: {
-                title: '快递宝宝'
+                title: '共享快递哥'
             }
         }, /*首次进入未登录页面*/
         {

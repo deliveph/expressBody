@@ -50,7 +50,7 @@
             <x-number :title="estimated_title" v-model="roundValue" button-style="round" :max="100" :min="0"></x-number>
         </div>
         <div class="delivery_time pdlf30  express_list">
-            <popup-picker :title="title3" :data="list3" :columns="3" v-model="value3" :display-format="format"></popup-picker>
+            <popup-picker :title="title3" :data="list3" :columns="3" v-model="value3" :display-format="format" @on-change="onChangePickUpTime"></popup-picker>
         </div>
         <div class="explain pdlf30">
             <label for="">备注说明：</label>
@@ -179,6 +179,9 @@ export default {
             estimateLogisticsFee: 0,
             logisticsGoodsCategoryId: 0,
             logisticsCompanyId: 0,
+            pickUpTime:'',
+            timeday:'',
+            timequantum:'',
             items:[]
         }
     },
@@ -398,28 +401,29 @@ export default {
                 that.$vux.toast.text('请选择物品类型', 'middle', 100)
                 return false
             }
-            // 快递公司
-            // let logistics_company_id = ''
-            // for (let c in that.list1) {
-            //     if (that.value1 == that.list1[c].name) {
-            //         logistics_company_id = that.list1[c].value
-            //     }
-            // }
-            // 物品类型
-            //let logistics_goods_category_id = ''
-            //for (let t in that.list2) {
-            //    if (that.value2 == that.list2[t].name) {
-            //        logistics_goods_category_id = that.list2[t].value
-            //    }
-            //}
+
+            let take_start_time = ''
+            let take_end_time = ''
+            if(that.timeday == 1){
+                that.timeday = that.getDateStr(0)
+            }else if(that.timeday == 2){
+                that.timeday = that.getDateStr(1)
+            }else if(that.timeday == 3){
+                that.timeday = that.getDatStr(2)
+            }
+
+            let arr = that.timequantum.split("~")
+            take_start_time = that.timeday +' ' + arr[0] +':00'
+            take_end_time = that.timeday + ' ' +arr[1]+':00'
+
             let data = qs.stringify({
                 'shipper_address_id': that.default_shipper_address.shipper_address_id,
                 'consignee_address_id': that.default_consignee_address.consignee_address_id,
                 'logistics_company_id': that.logisticsCompanyId,
                 'logistics_goods_category_id': that.logisticsGoodsCategoryId,
                 'estimate_weight': that.roundValue,
-                'take_start_time': '2017-09-22 16:00:00',
-                'take_end_time': '2017-09-22 17:00:00',
+                'take_start_time': take_start_time,
+                'take_end_time': take_end_time,
                 'remark': that.remark
             })
             this.http(that.configs.apiTop + "/order/submit-ship-order", "post", data, function(res) {
@@ -472,6 +476,10 @@ export default {
         },
         onChangeOfLogisticsCompanies(values) {
             this.logisticsCompanyId = values[0]
+        },
+        onChangePickUpTime(values){
+            this.timeday = values[0]
+            this.timequantum = values[1]
         }
     },
     watch: {
