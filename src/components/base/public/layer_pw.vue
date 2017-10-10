@@ -61,7 +61,6 @@ export default {
                     that.$vux.toast.text(msg.message, 'middle', 100); 
                     that.$emit('listenEvent',"is_verification=1")
                 } else if (msg.code == 40004) {
-                    location.href = that.configs.accreditUrl
                 } else{
                     that.$vux.toast.text(msg.message, 'middle', 100);1
                 }

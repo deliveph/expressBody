@@ -118,9 +118,15 @@
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>
 <style lang="scss">
 @import '../../../static/assets/css/px2rem.scss';
-.weui-cell{
-    padding:13px 0 !important;
+.league-item{
+    .weui-cell{
+        padding:13px 0
+    }
+    .weui-cells:before{
+        border-top:0
+    }
 }
+
 .weui-label{
     font-size:px2rem(28);margin-right:px2rem(20)
 }

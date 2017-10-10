@@ -3,7 +3,7 @@
         <div class="oldPassword" v-if="old">
             <h3>请输入旧的支付密码</h3>
             <div class="pw_input ipt-box-nick">
-                <input type="tel" maxlength="6" class="ipt-real-nick" v-model="old_password"/>
+                <input type="tel" maxlength="6" class="ipt-real-nick" readonlyunselectable="on"  v-model="old_password"/>
                 <div class="ipts-box-nick">
                     <div class="ipt-fake-box">
                         <input type="password" maxlength="1">
@@ -23,7 +23,7 @@
         <div class="oldPassword newPassword" v-else-if="newPayPaw">
             <h3>请输入新的支付密码</h3>
             <div class="pw_input ipt-box-nick">
-                <input type="tel" maxlength="6" class="ipt-real-nick" v-model="new_password"/>
+                <input type="tel" maxlength="6" class="ipt-real-nick" readonlyunselectable="on" v-model="new_password"/>
                 <div class="ipts-box-nick">
                     <div class="ipt-fake-box">
                         <input type="password" maxlength="1">
@@ -43,7 +43,7 @@
         <div class="oldPassword succeedPassword" v-else="succeedPayPaw" >
             <h3>请确认支付密码</h3>
             <div class="pw_input ipt-box-nick">
-                <input type="tel" maxlength="6" class="ipt-real-nick" v-model="confirm_password"/>
+                <input type="tel" maxlength="6" class="ipt-real-nick" readonlyunselectable="on" v-model="confirm_password"/>
                 <div class="ipts-box-nick">
                     <div class="ipt-fake-box">
                         <input type="password" maxlength="1">

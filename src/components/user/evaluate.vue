@@ -6,7 +6,7 @@
                 <dt><img :src="items.service_avatar" alt=""></dt>
                 <dd>{{items.service_nickname}}</dd>
             </dl>
-            <rater class="appraise-start" v-model="dstar" active-color="#fc6"  slot="value" font-size=30 margin=3></rater>
+            <rater class="appraise-start" v-model="dstar" active-color="#fc6"  slot="value" font-size=40 margin=8></rater>
         </div>
         <div class="commit-eval">
             <button class="commit-btn" @click="saveRes">提交评论</button>

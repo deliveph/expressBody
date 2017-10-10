@@ -165,7 +165,7 @@ export default {
                     that.result = msg.data;
                     that.service = msg.data.service
                 } 
-            }) 
+            })
             that.orderlist()
         }else{
             that.layerPwhide = true
@@ -173,18 +173,16 @@ export default {
     },
     methods: { 
         getInfo(result) { 
-            console.log(result)
             let that = this 
             this.http(that.configs.apiTop + "/page/service-home", "get",  '', function(res) { 
-                // console.log(res) 
                 let msg = res.data 
                 if (msg.code == 0) { 
-                    // console.log(msg) 
                     that.$router.push({path:'/service',query:{'is_verification':'1'}})
                     that.result = msg.data;
                     that.service = msg.data.service
                 } 
             }) 
+            that.orderlist()
         },
         orderlist(){
             let that = this

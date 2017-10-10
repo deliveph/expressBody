@@ -475,6 +475,7 @@
                 width: 100%;
                 resize: none;
                 border: 0;
+                font-size:px2rem(28)
             }
         }
     }
@@ -1091,7 +1092,10 @@
             }
         }
         .appraise-start {
-            padding: px2rem(75);
+            padding: px2rem(75) 0;
+            text-align: center;
+            margin: 0 auto;
+            width: 100%;
         }
     }
     .commit-eval {

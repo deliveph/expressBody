@@ -35,7 +35,7 @@
                                                 </div>
                                             </router-link>
                                             <div class="order-option">
-                                                <p class="ft-red">总计：<span>200</span>快递豆</p>
+                                                <p class="ft-red">总计：<span>{{ship.ship_order_fee}}</span>快递豆</p>
                                                 <span  class="order-btn" v-if="ship.ship_order_status_id == -1">删除订单</span>
                                                 <span  class="order-btn" v-else-if="ship.ship_order_status_id == 1 || ship.ship_order_status_id == 2">取消订单</span>
                                                 <span  class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 3">去支付</span>
@@ -70,7 +70,7 @@
                                                 </div>
                                             </router-link>
                                             <div class="order-option">
-                                                <p class="ft-red">总计：<span>200</span>快递豆</p>
+                                                <p class="ft-red">总计：<span>{{ship.ship_order_fee}}</span>快递豆</p>
                                                 <span  class="order-btn" v-if="collection.collection_order_status_id == -1">删除订单</span>
                                                 <span  class="order-btn" v-else-if="collection.collection_order_status_id == 1 || collection.collection_order_status_id == 2">取消订单</span>
                                                 <span  class="order-btn" v-else-if="collection.collection_order_status_id == 3">修改收货时间</span>
