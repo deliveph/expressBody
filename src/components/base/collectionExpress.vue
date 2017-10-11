@@ -1,7 +1,9 @@
 <template>
     <div class="collection">
         <tab :line-width=2 active-color='#356931' v-model="index">
-            <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list2" @click="demo2 = item" :key="index"><span>{{item}}</span></tab-item>
+            <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list2" @click="demo2 = item" :key="index">
+                <span>{{item}}</span>
+            </tab-item>
         </tab>
         <div class="collection_wrap" v-model="index">
             <div class="forthwith_box" v-if=" index == 0 ">
@@ -40,7 +42,7 @@
                     </div>
                 </div>
                 <div class="expect_time">
-                    <popup-picker :title="title3" :data="list3" :columns="3" v-model="value1" :display-format="format" :placeholder="placeholder3"></popup-picker>
+                    <popup-picker :title="title3" :data="list3" :columns="3" v-model="value1" :display-format="format" :placeholder="placeholder3" @on-change="onChangePickUpTime"></popup-picker>
                 </div>
                 <div class="readAgreement">
                     <input type="checkbox" v-model="readfalse">
@@ -89,7 +91,7 @@
                         <label for="">详细地址：</label>
                         <input type="text" name="add" placeholder="请输入收货详细地址" v-model="reservationAddress">
                     </div>
-                    
+
                     <div class="default">
                         <input type="checkbox" v-model="defaultFalse1" @click="defaultMsg1">
                         <span>默认共享快递哥</span>
@@ -129,92 +131,44 @@ export default {
             list2: list(),
             demo2: '即时收件',
             index: 0,
-            readfalse:false,
-            readfalse1:false,
-            title1:'预约收件时间',
-            title2:'预约收件时间',
+            readfalse: true,
+            readfalse1: true,
+            title1: '预约收件时间',
+            title2: '预约收件时间',
             title3: '期望上门时间',
-            list3: [{
-                name: '今天',
-                value: 'today',
-                parent: 0
-            }, {
-                name: '明天',
-                value: 'tomorrow',
-                parent: 0
-            }, {
-                name: '后天',
-                value: 'dopodomani',
-                parent: '0'
-            }, {
-                name: '一小时内',
-                value: 'within_hour',
-                parent: 'today'
-            }, {
-                name: '11:00~12:00',
-                value: 'time_quantum1112',
-                parent: 'today'
-            }, {
-                name: '13:00~14:00',
-                value: 'time_quantum1314',
-                parent: 'today'
-            }, {
-                name: '08:00~09:00',
-                value: 'time_quantum0809',
-                parent: 'tomorrow'
-            },{
-                name: '10:00~11:00',
-                value: 'time_quantum1011',
-                parent: 'tomorrow'
-            },{
-                name: '12:00~13:00',
-                value: 'time_quantum1213',
-                parent: 'tomorrow'
-            },{
-                name: '08:00~09:00',
-                value: 'time_quantum0809',
-                parent: 'dopodomani'
-            },{
-                name: '10:00~11:00',
-                value: 'time_quantum1011',
-                parent: 'dopodomani'
-            },{
-                name: '12:00~13:00',
-                value: 'time_quantum1213',
-                parent: 'dopodomani'
-            }],
+            list3: [],
             value1: ['一小时内'],
             value2: ['一小时内'],
             value3: ['一小时内'],
             placeholder2: '请选择预约收件时间',
             placeholder3: '请选择期望上门时间',
             format: function(value, name) {
-                if(name){
+                if (name) {
                     return `${name}`
-                }else{
+                } else {
                     return `${value}`
                 }
             },
             // 即时收件
             realCode: '',
-            realExpressPhone:'',
-            realLogisticFee:'',
-            realName:'',
-            realPhone:'',
-            realAddress:'',
-            defaultFalse:false,
+            realExpressPhone: '',
+            realLogisticFee: '',
+            realName: '',
+            realPhone: '',
+            realAddress: '',
+            defaultFalse: false,
             // 预约收件
-            reservationCode:'',
-            reservationExpressPhone:'',
-            reservationLogisticFee:'',
-            reservationName:'',
-            reservationPhone:'',
-            reservationAddress:'',
-            defaultFalse1:false,
+            reservationCode: '',
+            reservationExpressPhone: '',
+            reservationLogisticFee: '',
+            reservationName: '',
+            reservationPhone: '',
+            reservationAddress: '',
+            defaultFalse1: false,
             // 
-            items:[],
-            stage:{},
-            service_time:'',
+            items: [],
+            stage: {},
+            service_time: '',
 
             //时间
             begin: '08:00',
@@ -232,14 +186,14 @@ export default {
             estimateLogisticsFee: 0,
             logisticsGoodsCategoryId: 0,
             logisticsCompanyId: 0,
-            pickUpTime:'',
+            pickUpTime: '',
             //期望上门时间 
-            timeday:'',
-            timequantum:'',
+            timeday: '',
+            timequantum: '-',
             //预约上门时间
-            timeday1:'',
-            timequantum1:'',
-            arr:[]
+            timeday1: '',
+            timequantum1: '',
+            arr: []
         }
     },
     components: {
@@ -254,171 +208,177 @@ export default {
     methods: {
         realSubmit() {
             let that = this;
-            if(that.realCode == ''){
+            if (that.realCode == '') {
                 that.$vux.toast.text('请输入快递单号', 'middle', 100)
                 return false
-            }else if(that.realName == ''){
+            } else if (that.realName == '') {
                 that.$vux.toast.text('请输入收货人名称', 'middle', 100)
                 return false
-            }else if(that.realPhone == ''){
+            } else if (that.realPhone == '') {
                 that.$vux.toast.text('请输入收货人手机', 'middle', 100)
                 return false
-            }else if(that.realAddress == ''){
+            } else if (that.realAddress == '') {
                 that.$vux.toast.text('请输入收货人地址', 'middle', 100)
                 return false
-            }else if(!that.readfalse){
+            } else if (!that.readfalse) {
                 that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
                 return false
             }
-            
-            if(that.realLogisticFee == ''){
+
+            if (that.realLogisticFee == '') {
                 that.realLogisticFee = 0
             }
 
             let take_start_time = ''
             let take_end_time = ''
-            if(that.timeday == 1){
-                that.timeday = that.getDateStr(0)
-            }else if(that.timeday == 2){
-                that.timeday = that.getDateStr(1)
-            }else if(that.timeday == 3){
-                that.timeday = that.getDatStr(2)
-            }
+            // if (that.timeday == 1) {
+            //     that.timeday = that.getDateStr(0)
+            // } else if (that.timeday == 2) {
+            //     that.timeday = that.getDateStr(1)
+            // } else if (that.timeday == 3) {
+            //     that.timeday = that.getDatStr(2)
+            // }
 
-            let arr = that.timequantum.split("~")
-            take_start_time = that.timeday +' ' + arr[0] +':00'
-            take_end_time = that.timeday + ' ' +arr[1]+':00'
+            if (that.timequantum == "-") { // 一小时内
+                take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
+                take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
+            } else {
+                let arr = that.timequantum.split("~")
+                take_start_time = arr[0]
+                take_end_time = arr[1]
+            }
 
             let data = qs.stringify({
                 'logistics_code': that.realCode,
                 'courier_phone': that.realExpressPhone,
-                'collection_logistics_fee':that.realLogisticFee,
-                'delivery_start_time':take_start_time,
-                'delivery_end_time':take_end_time,
-                'consignee_name':that.realName,
-                'consignee_phone':that.realPhone,
-                'consignee_address':that.realAddress,
-                'estimate_collection_start_time':'',
-                'estimate_collection_end_time':''
+                'collection_logistics_fee': that.realLogisticFee,
+                'delivery_start_time': take_start_time,
+                'delivery_end_time': take_end_time,
+                'consignee_name': that.realName,
+                'consignee_phone': that.realPhone,
+                'consignee_address': that.realAddress,
             })
-            this.http(that.configs.apiTop + "/order/submit-estimate-consignee-order", "post", data, function(res) {
+            this.http(that.configs.apiTop + "/order/submit-consignee-order", "post", data, function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
-                   that.$vux.toast.text(msg.message, 'middle', 100);
-                   setTimeout(function(){ 
-                       that.$router.push({path: '/order'}) 
-                   }, 200);
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                    setTimeout(function() {
+                        that.$router.push({ path: '/order' })
+                    }, 200);
                 } else if (msg.code == 40004) {
                 } else {
                     that.$vux.toast.text(msg.message, 'middle', 100);
                 }
             })
         },
-        defaultMsg(){
+        defaultMsg() {
             let that = this
             let stage = that.stage
-            if(!that.defaultFalse){
-                if(stage.current_service != ''){
+            if (that.defaultFalse) {
+                if (stage.current_service != '') {
                     that.defaultFalse = true
                     that.realName = stage.current_service.service_nickname
                     that.realPhone = stage.current_service.service_phone
                     that.realAddress = stage.stage_full_address
                 }
-            }else{
+            } else {
                 that.defaultFalse = false
                 that.realName = ''
                 that.realPhone = ''
                 that.realAddress = ''
             }
         },
-        defaultMsg1(){
+        defaultMsg1() {
             let that = this
             let stage = that.stage
-            if(!that.defaultFalse1){
-                if(stage.current_service != ''){
+            if (that.defaultFalse1) {
+                if (stage.current_service != '') {
                     that.defaultFalse1 = true
                     that.reservationName = stage.current_service.service_nickname
                     that.reservationPhone = stage.current_service.service_phone
                     that.reservationAddress = stage.stage_full_address
                 }
-            }else{
+            } else {
                 that.defaultFalse1 = false
                 that.reservationName = ''
                 that.reservationPhone = ''
                 that.reservationAddress = ''
             }
         },
-        reservationSubmit(){
+        reservationSubmit() {
             let that = this;
-            if(that.reservationCode == ''){
+            if (that.reservationCode == '') {
                 that.$vux.toast.text('请输入快递单号', 'middle', 100)
                 return false
-            }else if(that.reservationName == ''){
+            } else if (that.reservationName == '') {
                 that.$vux.toast.text('请输入收货人名称', 'middle', 100)
                 return false
-            }else if(that.reservationPhone == ''){
+            } else if (that.reservationPhone == '') {
                 that.$vux.toast.text('请输入收货人手机', 'middle', 100)
                 return false
-            }else if(that.reservationAddress == ''){
+            } else if (that.reservationAddress == '') {
                 that.$vux.toast.text('请输入收货人地址', 'middle', 100)
                 return false
-            }else if(!that.defaultFalse1){
+            } else if (!that.defaultFalse1) {
                 that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
                 return false
             }
-            
-            if(that.reservationLogisticFee == ''){
+
+            console.log(that.timequantum)
+            return
+            if (that.reservationLogisticFee == '') {
                 that.reservationLogisticFee = 0
             }
 
             let take_start_time = ''
             let take_end_time = ''
-            if(that.timeday == 1){
+            if (that.timeday == 1) {
                 that.timeday = that.getDateStr(0)
-            }else if(that.timeday == 2){
+            } else if (that.timeday == 2) {
                 that.timeday = that.getDateStr(1)
-            }else if(that.timeday == 3){
+            } else if (that.timeday == 3) {
                 that.timeday = that.getDatStr(2)
             }
 
+
             let arr = that.timequantum.split("~")
-            take_start_time = that.timeday +' ' + arr[0] +':00'
-            take_end_time = that.timeday + ' ' +arr[1]+':00'
+            take_start_time = that.timeday + ' ' + arr[0] + ':00'
+            take_end_time = that.timeday + ' ' + arr[1] + ':00'
 
 
             let collection_start_time = ''
             let collection_end_time = ''
-            if(that.timeday1 == 1){
+            if (that.timeday1 == 1) {
                 that.timeday1 = that.getDateStr(0)
-            }else if(that.timeday1 == 2){
+            } else if (that.timeday1 == 2) {
                 that.timeday1 = that.getDateStr(1)
-            }else if(that.timeday1 == 3){
+            } else if (that.timeday1 == 3) {
                 that.timeday1 = that.getDatStr(2)
             }
 
             let arr2 = that.timequantum1.split("~")
-            collection_start_time = that.timeday1 +' ' + arr2[0] +':00'
-            collection_end_time = that.timeday1 + ' ' +arr2[1]+':00'
+            collection_start_time = that.timeday1 + ' ' + arr2[0] + ':00'
+            collection_end_time = that.timeday1 + ' ' + arr2[1] + ':00'
 
             let data = qs.stringify({
                 'logistics_code': that.reservationCode,
                 'courier_phone': that.reservationExpressPhone,
-                'collection_logistics_fee':that.reservationLogisticFee,
-                'delivery_start_time':take_start_time,
-                'delivery_end_time':take_end_time,
-                'consignee_name':that.reservationName,
-                'consignee_phone':that.reservationPhone,
-                'consignee_address':that.reservationAddress,
-                'estimate_collection_start_time':collection_start_time,
-                'estimate_collection_end_time':collection_end_time
+                'collection_logistics_fee': that.reservationLogisticFee,
+                'delivery_start_time': take_start_time,
+                'delivery_end_time': take_end_time,
+                'consignee_name': that.reservationName,
+                'consignee_phone': that.reservationPhone,
+                'consignee_address': that.reservationAddress,
+                'estimate_collection_start_time': collection_start_time,
+                'estimate_collection_end_time': collection_end_time
             })
             this.http(that.configs.apiTop + "/order/submit-estimate-consignee-order", "post", data, function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
-                   that.$vux.toast.text(msg.message, 'middle', 100);
-                   setTimeout(function(){ 
-                       that.$router.push({path: '/order'}) 
-                   }, 200);
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                    setTimeout(function() {
+                        that.$router.push({ path: '/order' })
+                    }, 200);
                 } else if (msg.code == 40004) {
                 } else {
                     that.$vux.toast.text(msg.message, 'middle', 100);
@@ -426,17 +386,17 @@ export default {
             })
         },
         //即时收件期望上门时间 
-        onChangePickUpTime(values){
+        onChangePickUpTime(values) {
             this.timeday = values[0]
             this.timequantum = values[1]
         },
         //预约收件预约上门时间 
-        onChangePickUpTime1(values){
+        onChangePickUpTime1(values) {
             this.timeday1 = values[0]
             this.timequantum1 = values[1]
         },
         //预约收件期望上门时间 
-        onChangeExpectTime(values){
+        onChangeExpectTime(values) {
             this.timeday = values[0]
             this.timequantum = values[1]
         },
@@ -486,67 +446,120 @@ export default {
                 name: '后天',
                 value: '3',
                 parent: 0
+            }, {
+                name: '一小时内',
+                value: '-',
+                parent: '1'
             }]
-            that.benginTm1 = that.begin.substring(0, 2);
-            that.benginTm = that.begin.replace(":", "");
-            that.endTm1 = that.end.substring(0, 2);
-            that.endTm = that.end.replace(":", "");
-            that.len = (parseInt(that.endTm1) - parseInt(that.benginTm1))
-            for (let i = 0; i <= that.len; i++) {
-                let itemTm = parseInt(that.benginTm1) + parseInt(i)
-                if (itemTm >= 10) { } else {
-                    itemTm = '0' + itemTm
-                }
-                let itemTm1 = itemTm + ':00';
-                let itemTm2 = itemTm + '00';
-                that.itemList.push(itemTm1)
-                that.formatTm.push(itemTm)
+            let newDate = that.formatDateTime(new Date, "yyyy/MM/dd")
+            let startDate = newDate + " " + that.begin + ":00"
+            let endDate = newDate + " " + that.end + ":00"
+            let startDateTimestamp = new Date(startDate).getTime()
+            let endDateTimestamp = new Date(endDate).getTime()
+            let step = 60 * 60 * 1000
+            // 今天
+            endDateTimestamp -= step
+            for (let timestamp = startDateTimestamp; timestamp <= endDateTimestamp; timestamp += step) {
+                let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
+                let tmp2 = that.formatDateTime(new Date(timestamp + step), "yyyy/MM/dd hh:mm:ss")
+                that.arr.push({
+                    name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
+                    value: tmp1 + "~" + tmp2,
+                    parent: '1'
+                })
             }
-            let newDate = that.formatDateTime(new Date, "yyyy-MM-dd hh:mm:ss")
-            let formatNewDate = newDate.substring(11, 13).replace(":", "");
-            for (let s = 0; s < that.formatTm.length; s++) {
-                if (parseInt(formatNewDate) <= parseInt(that.formatTm[s])) {
-                    let itemTm3 = that.formatTm[s] + ':00'
-                    that.timeList1.push(itemTm3)
-                }
+            let step1 = 24 * 60 * 60 * 1000
+            // 明天
+            endDateTimestamp = endDateTimestamp + step1
+            for (let timestamp = startDateTimestamp + step1; timestamp <= endDateTimestamp; timestamp += step) {
+                let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
+                let tmp2 = that.formatDateTime(new Date(timestamp + step), "yyyy/MM/dd hh:mm:ss")
+                that.arr.push({
+                    name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
+                    value: tmp1 + "~" + tmp2,
+                    parent: '2'
+                })
             }
-            for (let j = 0; j < that.itemList.length; j++) {
-                let itemList1 = '';
-                var num = that.itemList.length - j;
-                if (num == 1) {
+            // 后天
+            endDateTimestamp = endDateTimestamp + step1
+            for (let timestamp = startDateTimestamp + 2 * step1; timestamp <= endDateTimestamp; timestamp += step) {
+                let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
+                let tmp2 = that.formatDateTime(new Date(timestamp + step), "yyyy/MM/dd hh:mm:ss")
+                that.arr.push({
+                    name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
+                    value: tmp1 + "~" + tmp2,
+                    parent: '3'
+                })
+            }
+            // that.benginTm1 = that.begin.substring(0, 2);
+            // console.log(that.benginTm1)
+            // that.benginTm = that.begin.replace(":", "");
+            // console.log(that.benginTm)
+            // that.endTm1 = that.end.substring(0, 2);
+            // console.log(that.endTm1)
+            // that.endTm = that.end.replace(":", "");
+            // console.log(that.endTm)
+            // that.len = (parseInt(that.endTm1) - parseInt(that.benginTm1))
+            // console.log(that.len)
+            // for (let i = 0; i <= that.len; i++) {
+            //     let itemTm = parseInt(that.benginTm1) + parseInt(i)
+            //     console.log(itemTm)
+            //     if (itemTm >= 10) { } else {
+            //         itemTm = '0' + itemTm
+            //     }
+            //     let itemTm1 = itemTm + ':00';
+            //     let itemTm2 = itemTm + '00';
+            //     that.itemList.push(itemTm1)
+            //     that.formatTm.push(itemTm)
+            // }
+            // let newDate = that.formatDateTime(new Date, "yyyy-MM-dd hh:mm:ss")
+            // console.log(newDate)
+            // let formatNewDate = newDate.substring(11, 13).replace(":", "")
+            // console.log(formatNewDate)
+            // for (let s = 0; s < that.formatTm.length; s++) {
+            //     if (parseInt(formatNewDate) <= parseInt(that.formatTm[s])) {
+            //         let itemTm3 = that.formatTm[s] + ':00'
+            //         that.timeList1.push(itemTm3)
+            //     }
+            // }
+            // for (let j = 0; j < that.itemList.length; j++) {
+            //     let itemList1 = '';
+            //     var num = that.itemList.length - j;
+            //     if (num == 1) {
 
-                } else {
-                    itemList1 = that.itemList[j] + "~" + that.itemList[j + 1]
-                }
-                that.arr.push({
-                    name:itemList1,  
-                    value:itemList1,
-                    parent:'2'
-                })
-                that.arr.push({
-                    name:itemList1,  
-                    value:itemList1,
-                    parent:'3'
-                })
-            }
-            for (let m = 0; m < that.timeList1.length; m++) {
-                let itemList2 = '';
-                let num = that.timeList1.length - m;
-                if (num == 1) {
-                    itemList2 = ''
-                } else {
-                    itemList2 = that.timeList1[m] + "~" + that.timeList1[m + 1]
-                }
-                that.arr.push({
-                    name:itemList2,  
-                    value:itemList2,
-                    parent:'1'
-                })
-            }
+            //     } else {
+            //         itemList1 = that.itemList[j] + "~" + that.itemList[j + 1]
+            //     }
+            //     that.arr.push({
+            //         name: itemList1,
+            //         value: itemList1,
+            //         parent: '2'
+            //     })
+            //     that.arr.push({
+            //         name: itemList1,
+            //         value: itemList1,
+            //         parent: '3'
+            //     })
+            // }
+            // for (let m = 0; m < that.timeList1.length; m++) {
+            //     let itemList2 = '';
+            //     let num = that.timeList1.length - m;
+            //     if (num == 1) {
+            //         itemList2 = ''
+            //     } else {
+            //         itemList2 = that.timeList1[m] + "~" + that.timeList1[m + 1]
+            //     }
+            //     that.arr.push({
+            //         name: itemList2,
+            //         value: itemList2,
+            //         parent: '1'
+            //     })
+            // }
             that.list3 = that.arr
+            console.log(that.list3)
         }
     },
-    created(){
+    created() {
         let that = this
         this.http(that.configs.apiTop + "/page/user-collection", "get", '', function(res) {
             let msg = res.data
@@ -570,30 +583,29 @@ export default {
 <style lang="scss">
 @import '../../../static/assets/css/px2rem.scss';
 @import '../../../static/assets/css/express.scss';
-.collection{
+.collection {}
 
-}
-.expect_time.vux-cell-box{
+.expect_time.vux-cell-box {}
 
+.collection .vux-tab .vux-tab-item.vux-tab-selected span {
+    border-bottom: 3px solid #366931 !important;
+    padding-bottom: px2rem(14)
 }
-.collection .vux-tab .vux-tab-item.vux-tab-selected span{
-    border-bottom:3px solid  #366931 !important;
-    padding-bottom:px2rem(14)
-}
-.collection .vux-tab-item + .vux-tab-ink-bar {
+
+.collection .vux-tab-item+.vux-tab-ink-bar {
     display: none !important;
 }
 </style>
 <style lang="less">
-    .forthwith_box{
-        .expect_time{
-            .weui-cell{
-                display:flex;
-                padding:0;
-            }
-            .vux-cell-box{
-                width:100%;
-            }
+.forthwith_box {
+    .expect_time {
+        .weui-cell {
+            display: flex;
+            padding: 0;
         }
-    } 
+        .vux-cell-box {
+            width: 100%;
+        }
+    }
+}
 </style>

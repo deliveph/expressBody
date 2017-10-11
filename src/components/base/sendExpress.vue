@@ -376,6 +376,7 @@ export default {
                 })
             }
             that.list3 = that.items
+            console.log(that.list3)
         },
         onChange(val) {
         },
