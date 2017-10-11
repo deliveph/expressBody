@@ -212,7 +212,7 @@ export default {
         },
         // 用户支付订单
         pay(collection_order_number) {
-            this.$router.push({ path: '/confirm', query: { ship_order_number: collection_order_number, type: 'collection' } })
+            this.$router.push({ path: '/confirm', query: { express_order_number: collection_order_number, express_order_type: 'collection' } })
         },
         // 去评价
         evaluate(collection_order_number) {

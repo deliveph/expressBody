@@ -58,6 +58,11 @@ function connectChatroom ({state, commit, dispatch}, obj) {
 }
 
 export default {
+  chooseCoupon({
+    commit
+  }, coupon) {
+    commit('CHOOSECOUPON', coupon)
+  },
   // 手机号输入
   telephone_input({
     commit
