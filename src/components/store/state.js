@@ -3,6 +3,7 @@ import {
   cityList
 } from './data'
 export default {
+  chooseCoupon: {},
   // 已定位过
   address: {},
   hasLocation: false,
@@ -28,7 +29,8 @@ export default {
   navListActive: false,
   shadowActive: true,
   position: {},
-  Verification: [{
+  Verification: [
+    {
       isActive: false,
       VerificationNum: ''
     },

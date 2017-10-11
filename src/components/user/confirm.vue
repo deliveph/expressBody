@@ -4,7 +4,7 @@
             <div class="pay-item">
                 <div class="pay-des col-5">应付金额：</div>
                 <div class="pay-much col-5 t-r">
-                    <span class="ft-red">{{ship_order.order_fee}}快递豆</span>
+                    <span class="ft-red">{{epress_order.order_fee}}快递豆</span>
                 </div>
             </div>
             <h2>支付明细</h2>
@@ -12,8 +12,11 @@
                 <li>
                     <div class="pay-item">
                         <div class="pay-des col-5">快递金额：</div>
-                        <div class="pay-much col-5 t-r">
-                            <span class="ft-red">{{ship_order.estimate_logistics_fee}}快递豆</span>
+                        <div class="pay-much col-5 t-r" v-if="express_order_type == 'ship'">
+                            <span class="ft-red">{{epress_order.estimate_logistics_fee}}快递豆</span>
+                        </div>
+                        <div class="pay-much col-5 t-r" v-else>
+                            <span class="ft-red">{{epress_order.collection_logistics_fee}}快递豆</span>
                         </div>
                     </div>
                 </li>
@@ -21,7 +24,7 @@
                     <div class="pay-item">
                         <div class="pay-des col-5">服务费：</div>
                         <div class="pay-much col-5 t-r">
-                            <span class="ft-red">{{ship_order.service_fee}}快递豆</span>
+                            <span class="ft-red">{{epress_order.service_fee}}快递豆</span>
                         </div>
                     </div>
                 </li>
@@ -29,7 +32,7 @@
                     <div class="pay-item">
                         <div class="pay-des col-5">可用优惠券：</div>
                         <div class="pay-much col-5 t-r">
-                            <router-link :to="{path:'/coupon',query:{type:1}}">
+                            <router-link :to="{path: '/coupon', query: {express_order_number: express_order_number, express_order_type: express_order_type}}">
                                 <span v-if="JSON.stringify(user_coupon) != '{}'" class="ft-red">{{user_coupon.coupon_amount}}快递豆</span>
                                 <span v-else>请选择</span>
                                 <i class="arrow-right"></i>
@@ -86,13 +89,13 @@ import qs from 'qs'
 export default {
     data() {
         return {
-            ship_order_number: '',
+            express_order_number: "",
+            express_order_type: "",
             items: [],
-            ship_order: [],
+            epress_order: {},
             user_coupon: {},
             layerSetting: false,
             password: '',
-            type: ''
         }
     },
     components: {
@@ -101,16 +104,25 @@ export default {
     },
     created() {
         let that = this
-        that.ship_order_number = this.$route.query.ship_order_number
-        that.type = this.$route.query.type
-        if (that.type == 'ship') {
-            this.http(that.configs.apiTop + "/page/affirm-ship-order/" + that.ship_order_number, "get", '', function(res) {
+        that.express_order_number = this.$route.query.express_order_number
+        that.express_order_type = this.$route.query.express_order_type
+        if (that.express_order_type == 'ship') {
+            this.http(that.configs.apiTop + "/page/affirm-ship-order/" + that.express_order_number, "get", '', function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
                     let data = msg.data
                     that.items = msg.data
-                    that.ship_order = data.ship_order
+                    that.epress_order = data.ship_order
                     that.user_coupon = data.user_coupon
+                    let chooseCoupon = that.$store.state.chooseCoupon
+                    if (JSON.stringify(chooseCoupon) != "{}") {
+                        that.user_coupon = {
+                            user_coupon_id: chooseCoupon.user_coupon_id,
+                            coupon_id: chooseCoupon.coupon_id,
+                            coupon_amount: chooseCoupon.coupon_amount,
+                        }
+                        this.$store.dispatch('chooseCoupon', {})
+                    }
                 } else if (msg.code == 40004) {
                     // location.href = that.configs.accreditUrl
                 } else {
@@ -118,13 +130,23 @@ export default {
                 }
             })
         } else {
-            this.http(that.configs.apiTop + "/page/affirm-collection-order/" + that.ship_order_number, "get", '', function(res) {
+            this.http(that.configs.apiTop + "/page/affirm-collection-order/" + that.express_order_number, "get", '', function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
                     let data = msg.data
                     that.items = msg.data
-                    that.ship_order = data.ship_order
-                    that.user_coupon = data.user_coupon
+                    that.epress_order = data.collection_order
+                    let chooseCoupon = that.$store.state.chooseCoupon
+                    if (JSON.stringify(chooseCoupon) != "{}") {
+                        that.user_coupon = {
+                            user_coupon_id: chooseCoupon.user_coupon_id,
+                            coupon_id: chooseCoupon.coupon_id,
+                            coupon_amount: chooseCoupon.coupon_amount,
+                        }
+                        this.$store.dispatch('chooseCoupon', {})
+                    } else {
+                        that.user_coupon = data.user_coupon
+                    }
                 } else if (msg.code == 40004) {
                     // location.href = that.configs.accreditUrl
                 } else {
@@ -132,7 +154,7 @@ export default {
                 }
             })
         }
-
+    
     },
     methods: {
         confirmPay() {
@@ -160,14 +182,14 @@ export default {
                 'user_coupon_id': user_coupon_id,
                 'user_pay_password': that.password
             })
-            if (that.type == 'ship') {
-                this.http(that.configs.apiTop + "/order/pay-ship-order/" + that.ship_order_number, "post", data, function(res) {
+            if (that.express_order_type == 'ship') {
+                this.http(that.configs.apiTop + "/order/pay-ship-order/" + that.express_order_number, "post", data, function(res) {
                     let msg = res.data
                     if (msg.code == 0) {
                         that.$vux.toast.text(msg.message, 'middle', 100);
                         setTimeout(function() {
                             // ship_order_number 订单号 condition 寄件或收件
-                            that.$router.push({ path: '/evalresult', query: { type: 1, status: 1, ship_order_number: that.ship_order_number, condition: that.type } })
+                            that.$router.push({ path: '/evalresult', query: { type: 1, status: 1, ship_order_number: that.express_order_number, condition: that.express_order_type } })
                         }, 200);
                     } else if (msg.code == 40004) {
                         // location.href = that.configs.accreditUrl
@@ -179,12 +201,12 @@ export default {
                     }
                 })
             } else {
-                this.http(that.configs.apiTop + "/collection-order/pay/" + that.ship_order_number, "post", data, function(res) {
+                this.http(that.configs.apiTop + "/collection-order/pay/" + that.express_order_number, "post", data, function(res) {
                     let msg = res.data
                     if (msg.code == 0) {
                         that.$vux.toast.text(msg.message, 'middle', 100);
                         setTimeout(function() {
-                            that.$router.push({ path: '/evalresult', query: { type: 1, status: 1, ship_order_number: that.ship_order_number, condition: that.type } })
+                            that.$router.push({ path: '/evalresult', query: { type: 1, status: 1, ship_order_number: that.express_order_number, condition: that.express_order_type } })
                         }, 200);
                     } else if (msg.code == 40004) {
                         // location.href = that.configs.accreditUrl
