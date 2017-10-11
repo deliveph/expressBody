@@ -81,7 +81,10 @@ export default new Router({
         {
             path: '/collection',
             name: 'Collection',
-            component: Collection
+            component: Collection,
+            meta: {
+                title: '收件'
+            }
         }, //代收
         {
             path: '/open',
@@ -94,157 +97,250 @@ export default new Router({
         {
             path: '/Userindex',
             name: 'Userindex',
-            component: Userindex
+            component: Userindex,
+            meta: {
+                title: '个人中心'
+            }
         }, //个人主页面 
         {
             path: '/person',
             name: 'Person',
-            component: Person
+            component: Person,
+            meta: {
+                title: '个人资料'
+            }
         }, //个人资料 
         {
             path: '/explain',
             name: 'explain',
-            component: explain
+            component: explain,
+            meta: {
+                title: '服务与说明'
+            }
         }, //服务与说明 
         {
             path: '/advise',
             name: 'advise',
-            component: advise
+            component: advise,
+            meta: {
+                title: '投诉与建议'
+            }
         }, //投诉与建议 
         {
             path: '/league',
             name: 'league',
-            component: league
+            component: league,
+            meta: {
+                title: '加盟我们'
+            }
         }, //加盟我们 
         {
             path: '/name',
             name: 'changename',
-            component: Changename
+            component: Changename,
+            meta: {
+                title: '修改昵称'
+            }
         }, //昵称 
         {
             path: '/editaddr',
             name: 'editaddr',
-            component: editaddr
+            component: editaddr,
+            meta: {
+                title: '编辑地址'
+            }
         }, //编辑地址 
         {
             path: '/balance',
             name: 'balance',
-            component: balance
+            component: balance,
+            meta: {
+                title: '余额'
+            }
         }, //余额 
         {
             path: '/inquire',
             name: 'Inquire',
-            component: Inquire
+            component: Inquire,
+            meta: {
+                title: '查询快递'
+            }
         }, //查询快递 
         {
             path: '/result',
             name: 'Result',
-            component: Result
+            component: Result,
+            meta: {
+                title: '快递详情'
+            }
         }, //快递结果 
         {
             path: '/send',
             name: 'Send',
-            component: Send
+            component: Send,
+            meta: {
+                title: '寄快递'
+            }
         }, //寄快递 
         {
             path: '/Invite',
             name: 'Invite',
-            component: Invite
+            component: Invite,
+            meta: {
+                title: '邀请好友'
+            }
         }, //邀请好友 
         {
             path: '/payresult',
             name: 'payResult',
-            component: payResult
+            component: payResult,
+            meta: {
+                title: '充值结果'
+            }
         }, //充值结果（成功/失败） 
         {
             path: '/payset',
             name: 'payset',
-            component: payset
+            component: payset,
+            meta: {
+                title: '支付设置'
+            }
         }, //支付设置 
         {
             path: '/findpaypwd',
             name: 'findpaypwd',
-            component: findpaypwd
+            component: findpaypwd,
+            meta: {
+                title: '找回支付密码'
+            }
         }, //找回支付密码 
         {
             path: '/coupon',
             name: 'coupon',
-            component: coupon
+            component: coupon,
+            meta: {
+                title: '我的优惠券'
+            }
         }, //我的优惠券 
         {
             path: '/order',
             name: 'order',
-            component: order
+            component: order,
+            meta: {
+                title: '全部订单'
+            }
         }, //全部订单 
         {
             path: '/waitaccept',
             name: 'waitaccept',
-            component: waitaccept
+            component: waitaccept,
+            meta: {
+                title: '待接单'
+            }
         }, //待接单 
         {
             path: '/accept',
             name: 'accept',
-            component: accept
+            component: accept,
+            meta: {
+                title: '已接单'
+            }
         }, //已接单 
         {
             path: '/waitpay',
             name: 'waitpay',
-            component: waitpay
+            component: waitpay,
+            meta: {
+                title: '待支付'
+            }
         }, //待支付 
         {
             path: '/finish',
             name: 'finish',
-            component: finish
+            component: finish,
+            meta: {
+                title: '已完成'
+            }
         }, //已完成 
         {
             path: '/evaluate',
             name: 'evaluate',
-            component: evaluate
+            component: evaluate,
+            meta: {
+                title: '去评价'
+            }
         }, //去评价 
         {
             path: '/evalresult',
             name: 'evalresult',
-            component: evalresult
+            component: evalresult,
+            meta: {
+                title: '评价'
+            }
         }, //评价结果页面 
         {
             path: '/confirm',
             name: 'confirm',
-            component: confirm
+            component: confirm,
+            meta: {
+                title: '确认订单'
+            }
         }, //确认订单 
         {
             path: '/orderdetail',
             name: 'orderdetail',
-            component: orderdetail
+            component: orderdetail,
+            meta: {
+                title: '订单详情'
+            }
         }, //订单详情 
         {
             path: '/repget',
             name: 'repget',
-            component: repget
+            component: repget,
+            meta: {
+                title: '订单详情'
+            }
         }, //代收订单详情 
         {
             path: '/ordercancel',
             name: 'ordercancel',
-            component: ordercancel
+            component: ordercancel,
+            meta: {
+                title: '取消订单'
+            }
         }, //订单取消 
         {
             path: '/discount',
             name: 'discount',
-            component: discount
+            component: discount,
+            meta: {
+                title: '领劵中心'
+            }
         }, //领劵中心 
         {
             path: '/friends',
             name: 'friends',
-            component: friends
+            component: friends,
+            meta: {
+                title: '好友列表'
+            }
         }, //好友列表
         {
             path: '/invitesuc',
             name: 'invitesuc',
-            component: invitesuc
+            component: invitesuc,
+            meta: {
+                title: '扫码关注二维码'
+            }
         }, //好友成功列表 
         {
             path: '/address/:attribute',
             name: 'address',
-            component: address
+            component: address,
+            meta: {
+                title: '地址列表'
+            }
         }, //地址列表 
         {
             path: '/modifypwd',
@@ -257,18 +353,27 @@ export default new Router({
         {
             path: '/editaddress/:attribute',
             name: 'editAddress',
-            component: editAddress
+            component: editAddress,
+            meta: {
+                title: '地址'
+            }
         }, //添加地址和编辑地址（通过type来做判断） 
         {
             path: '/oldPassword',
             name: 'Oldpassword',
-            component: Oldpassword
+            component: Oldpassword,
+            meta: {
+                title: '修改支付密码'
+            }
         }, //修改支付密码（旧密码） 
         {
             path: '/level',
             name: 'level',
-            component: level
-        }, //修改支付密码（旧密码） 
+            component: level,
+            meta: {
+                title: '等级'
+            }
+        }, //等级
         {
             path: '/service',
             name: 'service',
@@ -311,7 +416,10 @@ export default new Router({
         {
             path: '/setpaypw',
             name: 'setpaypw',
-            component: setpaypw
+            component: setpaypw,
+            meta:{
+                title: '设置支付密码'
+            }
         },
         // 最近消息列表（会话）
         {
@@ -326,7 +434,10 @@ export default new Router({
         {
             path: '/chat/:sessionId',
             name: 'chat',
-            component: chat
+            component: chat,
+            meta:{
+                title: '聊天'
+            }
         },
         // 聊天历史记录
         {

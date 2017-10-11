@@ -196,6 +196,7 @@ export default {
     color:#999;
     padding:px2rem(20);
     border-radius:px2rem(10);
+    -webkit-appearance: none;
   }
   #app .g-window .m-chat-editor-main .u-editor-icons{
     width:auto;

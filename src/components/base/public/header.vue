@@ -32,7 +32,6 @@
                 </router-link>
                 <h3 class="name">
                     <span>{{service_nickname}}</span>
-                    <!-- @click="tel(service_tell)" -->
                     <a class="icon_tel" @click="tel(service_tel)"></a>
                 </h3>
                 <p>
@@ -40,13 +39,6 @@
                     <span>{{service_id}}</span>
                 </p>
             </li>
-            
-            <!-- <li class="not_login" v-else>
-                <div class="photo">
-                    <img src="/static/assets/images/head_def.png" />
-                </div>
-                <h3 class="name notLogin">未登录</h3>
-            </li> -->
         </ul>
     </div>
 </template>
@@ -62,11 +54,11 @@ export default {
             userid: '',
             express: false,
             user_avatar:'/static/assets/images/head_def.png',
-            user_nickname:'快递宝宝',
+            user_nickname:'共享快递哥',
             service_avatar:'/static/assets/images/head_def.png',
-            service_nickname:'快递宝宝',
+            service_nickname:'共享快递哥',
             user_balance:'0',
-            service_tel:'18681587662',
+            service_tel:'',
             user_level_logo:'/static/assets/images/user_level/icon_1_shaowei.png',
             service_level_logo:'/static/assets/images/platform_level/liebing_s1.png',
             service_id:''
@@ -87,7 +79,6 @@ export default {
             let that = this
             let user = that.headerObject.user
             let service = that.headerObject.service
-            console.log(service)
             let service1 = JSON.stringify(service)
             that.userid =  user.user_id
             that.user_avatar = user.user_avatar
@@ -100,7 +91,6 @@ export default {
                 that.service_avatar = service.service_avatar
                 that.service_nickname = service.service_nickname
                 that.service_tel = service.service_phone
-                console.log(that.service_tel)
                 let service_level = service.service_level
                 that.service_level_logo = service_level.service_level_logo
             }
@@ -111,7 +101,6 @@ export default {
     },
     methods: {
         tel(msg) {
-            console.log(msg)
             window.location.href="tel:"+msg
         }
     }

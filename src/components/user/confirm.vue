@@ -148,7 +148,10 @@ export default {
         },
         pay() {
             let that = this
-            if (this.password.length < 6) {
+            if (that.password.length < 6) {
+                that.$vux.toast.text('请输入6位数的密码', 'middle', 100);
+                return false;
+            }else if(that.password == ''){
                 that.$vux.toast.text('请输入6位数的密码', 'middle', 100);
                 return false;
             }

@@ -68,20 +68,55 @@
                         <span class="ft-red">{{items.order_fee}}快递豆</span>
                     </p>
                 </div>
-                <div class="order-list-item" v-if>
+                <div class="order-list-item" >
                     <p>实付金额：
                         <span class="ft-red">{{items.order_fee}}快递豆</span>
                     </p>
                 </div>
                 <!--已完成-->
-                <div class="order-list-item">
+                <div class="order-list-item" v-if="items.collection_order_status_id >= 5 && status == 'user'">
                     <p>评价结果：
-                        <ul class="start-icon">
+                        <ul class="start-icon" v-if="items.service_score == '0.00'">
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li></li>
+                        </ul>
+                        <ul class="start-icon" v-else-if="items.service_score == '1.00'">
+                            <li class="sel"></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li></li>
+                        </ul>
+                        <ul class="start-icon" v-else-if="items.service_score == '2.00'">
+                            <li class="sel"></li>
+                            <li class="sel"></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li></li>
+                        </ul>
+                        <ul class="start-icon" v-else-if="items.service_score == '3.00'">
+                            <li class="sel"></li>
+                            <li class="sel"></li>
+                            <li class="sel"></li>
+                            <li class=""></li>
+                            <li></li>
+                        </ul>
+                        <ul class="start-icon" v-else-if="items.service_score == '4.00'">
                             <li class="sel"></li>
                             <li class="sel"></li>
                             <li class="sel"></li>
                             <li class="sel"></li>
                             <li></li>
+                        </ul>
+                        <ul class="start-icon" v-else-if="items.service_score == '5.00'">
+                            <li class="sel"></li>
+                            <li class="sel"></li>
+                            <li class="sel"></li>
+                            <li class="sel"></li>
+                            <li class="sel"></li>
                         </ul>
                     </p>
                 </div>
@@ -163,7 +198,7 @@ export default {
                             if (msg.code == 0) {
                                 that.$vux.toast.text(msg.message, 'middle', 100)
                                 setTimeout(function() {
-                                    that.$router.push({ path: '/user' })
+                                    that.$router.push({ path: '/order' })
                                 }, 200);
                             } else if (msg.code == 40004) {
 

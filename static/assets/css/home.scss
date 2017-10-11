@@ -28,6 +28,7 @@
         display: flex;
     }
     li {
+        width: 50%;
         flex: 1;
         text-align: center;
         position: relative;
@@ -60,6 +61,16 @@
                 display: inline-block;
                 vertical-align: middle;
                 margin-left: px2rem(20);
+                margin-right: px2rem(20)
+            }
+            .name{
+                display: flex;
+                span{
+                    flex: 1;
+                    overflow: hidden;
+                    text-overflow:ellipsis;
+                    white-space: nowrap;
+                }
             }
         }
     }
@@ -92,6 +103,9 @@
         color: #fff;
         margin-top: px2rem(60);
         height: px2rem(40);
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
         &.notLogin{
             margin-top:px2rem(20);
         }

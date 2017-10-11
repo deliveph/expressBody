@@ -164,8 +164,8 @@ export default {
                 }
             },
             //时间
-            begin: '08:00',
-            end: '21:00',
+            begin: '',
+            end: '',
             benginTm1: '',
             benginTm: '',
             endTm1: '',
@@ -260,6 +260,8 @@ export default {
                 }
                 that.list2 = logistics_goods_categories
                 that.time_quantum = arr.service_time.start_time + '~' + arr.service_time.end_time
+                that.begin = arr.service_time.start_time
+                that.end = arr.service_time.end_time
             } else if (msg.code == 40004) {
                 location.href = that.configs.accreditUrl
             } else {

@@ -66,7 +66,7 @@
                 <p>预计费用：<span class="ft-red">￥ {{items.order_fee}}</span></p>
             </div>
             <!--已完成-->
-            <div class="order-list-item" v-if="items.ship_order_status_id >= 5 && status == 'user' || items.ship_order_status_id >= 5 && status == 'service'">
+            <div class="order-list-item" v-if="items.ship_order_status_id >= 5 && status == 'user'">
                 <p>评价结果：
                     <ul class="start-icon" v-if="items.service_score == '0.00'">
                         <li class=""></li>
@@ -131,7 +131,7 @@
         </button>
     </div>
 
-    <div class="layer_warp layer_writeOrder" v-if="writelayerStorey">
+    <div class="layer_warp layer_writeOrder" >
         <div class="layer_table">
             <div class="layer_table_cell">
                 <div class="layer_box">
@@ -478,7 +478,8 @@
             }
             .phone_code{
                 input{
-                    width:95%
+                    width:95%;
+                    -webkit-appearance: none;
                 }
             }
         }

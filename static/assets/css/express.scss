@@ -65,9 +65,7 @@
             font-size: px2rem(28);
             color: #666;
             min-width: px2rem(170);
-            padding-left: px2rem(30);
             text-align: left;
-            // flex: 0;
         }
         select {
             flex: 1;
@@ -84,6 +82,7 @@
         }
         .vux-popup-picker-value {
             color: #333;
+            font-size:px2rem(30);
             &::before {
                 width: px2rem(40);
                 height: px2rem(40);
@@ -97,7 +96,7 @@
         }
         .weui-cell__ft {
             width: px2rem(40);
-            height: px2rem(40);
+            // height: px2rem(40);
             background: url('/static/assets/images/more_list.png') no-repeat center;
             background-size: px2rem(40);
             display: inline-block;

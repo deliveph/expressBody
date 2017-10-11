@@ -496,10 +496,11 @@
                 .avatar_row {
                     display: flex;
                     span {
-                        flex: 2;
+                        // flex: 1;
                         font-size: px2rem(30);
                         color: #999;
                         vertical-align: middle;
+                        width: 80px;
                     }
                     em {
                         flex: 1;
@@ -543,7 +544,7 @@
                     }
                 }
                 p {
-                    font-size: px2rem(24);
+                    font-size: px2rem(30);
                     color: #333;
                     margin-top: px2rem(20);
                     line-height: px2rem(36);

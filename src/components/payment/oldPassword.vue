@@ -3,7 +3,7 @@
         <div class="oldPassword" v-if="old">
             <h3>请输入旧的支付密码</h3>
             <div class="pw_input ipt-box-nick">
-                <input type="tel" maxlength="6" class="ipt-real-nick" readonlyunselectable="on"  v-model="old_password"/>
+                <input type="tel" maxlength="6" class="ipt-real-nick" v-model="old_password" />
                 <div class="ipts-box-nick">
                     <div class="ipt-fake-box">
                         <input type="password" maxlength="1">
@@ -215,7 +215,10 @@ export default {
         z-index: 3;
         color:transparent;
         text-shadow: 0px 0px 0px #333;
-        
+        -webkit-appearance: none;
+    }
+    .ipt-real-nick:focus{
+        outline: none;
     }
     .ipts-box-nick {
         position: absolute;
@@ -248,6 +251,7 @@ export default {
                 text-align: center;
                 padding: 0;
                 border-radius: 2px;
+                -webkit-appearance: none;
             }
         }
         .ipt-active-nick {

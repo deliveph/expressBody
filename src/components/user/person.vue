@@ -8,7 +8,7 @@
                             <span>头像</span>
                             <em>
                                 <span class="avatar"><img v-bind:src="avatar" alt=""></span>
-                                <i class="arrow-right"></i>
+                                <!-- <i class="arrow-right"></i> -->
                             </em>
                             <input type="file" name="file" value="" @change="onFileChange">
                         </div>
