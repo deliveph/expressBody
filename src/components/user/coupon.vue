@@ -8,9 +8,13 @@
         <div class="tab-container" ref="tabcon" v-if="items != ''">
             <div class="coupon-list" v-if="index == 0">
                 <ul>
-                    <li v-for="(item,i) in items" :key="i" :class="(current_coupon_category_id == item.coupon_category_id || item.coupon_category_id == 1)  ? '' : 'disable'">
+                    <li v-for="(item,i) in items" :key="i" :class="(current_coupon_category_id > 0 && (current_coupon_category_id != item.coupon_category_id && item.coupon_category_id != 1))  ? 'disable' : ''">
                         <div class="coupon-l">
-                            <router-link to="" href="javascript:;" @click.native="getTicket(i, item.coupon_category_id)">
+                            <router-link to="" href="javascript:;" v-if="(current_coupon_category_id > 0 && (current_coupon_category_id != item.coupon_category_id && item.coupon_category_id != 1))">
+                                <i class="arrow-left"></i>
+                                <span>立即使用</span>
+                            </router-link>
+                            <router-link to="" href="javascript:;" @click.native="getTicket(i, item.coupon_category_id)" v-else>
                                 <i class="arrow-left"></i>
                                 <span>立即使用</span>
                             </router-link>
@@ -27,7 +31,7 @@
             </div>
             <div class="coupon-list after" v-if="index == 2">
                 <ul>
-                    <li v-for="(item,i) in items" :key="i" :class="(current_coupon_category_id == item.coupon_category_id || item.coupon_category_id == 1)  ? '' : 'disable'">
+                    <li v-for="(item,i) in items" :key="i">
                         <div class="coupon-l">
                             <router-link to="" href="javascript:;">
                                 <i class="arrow-left"></i>
@@ -88,7 +92,7 @@ export default {
             items: [],
             express_order_number: '',
             express_order_type: "",
-            current_coupon_category_id: 1,
+            current_coupon_category_id: 0,
         }
     },
     components: {
@@ -158,9 +162,9 @@ export default {
                 if (coupon_category_id == 1) {
                     this.$router.push({ name: 'user' })
                 } else if (coupon_category_id == 2) {
-                    this.$router.push({ name: 'collection' })
+                    this.$router.push({ name: 'Collection'})
                 } else if (coupon_category_id == 3) {
-                    this.$router.push({ name: 'send' })
+                    this.$router.push({ name: 'Send' })
                 }
             }
 
@@ -170,9 +174,15 @@ export default {
         let that = this
         let index = that.index
         that.getItem(index)
-        that.express_order_number = that.$route.query.express_order_number
-        that.express_order_type = that.$route.query.express_order_type
-        that.current_coupon_category_id = that.express_order_type == "ship" ? 1 : 2
+        if (that.$route.query.express_order_number != undefined) {
+            that.express_order_number = that.$route.query.express_order_number 
+        }
+        if (that.$route.query.express_order_type != undefined) {
+            that.express_order_type = that.$route.query.express_order_type
+        }
+        if (that.express_order_type != "") {
+            that.current_coupon_category_id = that.express_order_type == "ship" ? 3 : 2
+        }
     },
     mounted() {
     }

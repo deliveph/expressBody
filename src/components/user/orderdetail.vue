@@ -586,4 +586,5 @@ export default {
             }
         }   
     }
+}
 </style>
