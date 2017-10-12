@@ -238,7 +238,6 @@ export default {
             // } else if (that.timeday == 3) {
             //     that.timeday = that.getDatStr(2)
             // }
-
             if (that.timequantum == "-") { // 一小时内
                 take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
                 take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
@@ -323,42 +322,50 @@ export default {
                 that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
                 return false
             }
-
-            console.log(that.timequantum)
-            return
             if (that.reservationLogisticFee == '') {
                 that.reservationLogisticFee = 0
             }
-
             let take_start_time = ''
             let take_end_time = ''
-            if (that.timeday == 1) {
-                that.timeday = that.getDateStr(0)
-            } else if (that.timeday == 2) {
-                that.timeday = that.getDateStr(1)
-            } else if (that.timeday == 3) {
-                that.timeday = that.getDatStr(2)
+            // if (that.timeday == 1) {
+            //     that.timeday = that.getDateStr(0)
+            // } else if (that.timeday == 2) {
+            //     that.timeday = that.getDateStr(1)
+            // } else if (that.timeday == 3) {
+            //     that.timeday = that.getDatStr(2)
+            // }
+            // let arr = that.timequantum.split("~")
+            // take_start_time = that.timeday + ' ' + arr[0] + ':00'
+            // take_end_time = that.timeday + ' ' + arr[1] + ':00'
+            if (that.timequantum == "-") { // 一小时内
+                take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
+                take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
+            } else {
+                let arr = that.timequantum.split("~")
+                take_start_time = arr[0]
+                take_end_time = arr[1]
             }
-
-
-            let arr = that.timequantum.split("~")
-            take_start_time = that.timeday + ' ' + arr[0] + ':00'
-            take_end_time = that.timeday + ' ' + arr[1] + ':00'
-
 
             let collection_start_time = ''
             let collection_end_time = ''
-            if (that.timeday1 == 1) {
-                that.timeday1 = that.getDateStr(0)
-            } else if (that.timeday1 == 2) {
-                that.timeday1 = that.getDateStr(1)
-            } else if (that.timeday1 == 3) {
-                that.timeday1 = that.getDatStr(2)
+            // if (that.timeday1 == 1) {
+            //     that.timeday1 = that.getDateStr(0)
+            // } else if (that.timeday1 == 2) {
+            //     that.timeday1 = that.getDateStr(1)
+            // } else if (that.timeday1 == 3) {
+            //     that.timeday1 = that.getDatStr(2)
+            // }
+            // let arr2 = that.timequantum1.split("~")
+            // collection_start_time = that.timeday1 + ' ' + arr2[0] + ':00'
+            // collection_end_time = that.timeday1 + ' ' + arr2[1] + ':00'
+            if (that.timequantum1 == "-") { // 一小时内
+                collection_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
+                collection_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
+            } else {
+                let arr = that.timequantum1.split("~")
+                collection_start_time = arr[0]
+                collection_end_time = arr[1]
             }
-
-            let arr2 = that.timequantum1.split("~")
-            collection_start_time = that.timeday1 + ' ' + arr2[0] + ':00'
-            collection_end_time = that.timeday1 + ' ' + arr2[1] + ':00'
 
             let data = qs.stringify({
                 'logistics_code': that.reservationCode,
@@ -458,10 +465,9 @@ export default {
             let endDateTimestamp = new Date(endDate).getTime()
             let step = 60 * 60 * 1000
             // 今天
-            endDateTimestamp -= step
             for (let timestamp = startDateTimestamp; timestamp <= endDateTimestamp; timestamp += step) {
                 let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
-                let tmp2 = that.formatDateTime(new Date(timestamp + step), "yyyy/MM/dd hh:mm:ss")
+                let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
                 that.arr.push({
                     name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
                     value: tmp1 + "~" + tmp2,
@@ -473,7 +479,7 @@ export default {
             endDateTimestamp = endDateTimestamp + step1
             for (let timestamp = startDateTimestamp + step1; timestamp <= endDateTimestamp; timestamp += step) {
                 let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
-                let tmp2 = that.formatDateTime(new Date(timestamp + step), "yyyy/MM/dd hh:mm:ss")
+                let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
                 that.arr.push({
                     name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
                     value: tmp1 + "~" + tmp2,
@@ -484,13 +490,14 @@ export default {
             endDateTimestamp = endDateTimestamp + step1
             for (let timestamp = startDateTimestamp + 2 * step1; timestamp <= endDateTimestamp; timestamp += step) {
                 let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
-                let tmp2 = that.formatDateTime(new Date(timestamp + step), "yyyy/MM/dd hh:mm:ss")
+                let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
                 that.arr.push({
                     name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
                     value: tmp1 + "~" + tmp2,
                     parent: '3'
                 })
             }
+
             // that.benginTm1 = that.begin.substring(0, 2);
             // console.log(that.benginTm1)
             // that.benginTm = that.begin.replace(":", "");
@@ -556,7 +563,6 @@ export default {
             //     })
             // }
             that.list3 = that.arr
-            console.log(that.list3)
         }
     },
     created() {
@@ -567,15 +573,15 @@ export default {
                 that.items = msg.data
                 that.stage = msg.data.stage
                 that.service_time = msg.data.service_time.start_time + '-' + msg.data.service_time.end_time
-                that.begin = arr.service_time.start_time
-                that.end = arr.service_time.end_time
+                that.begin = msg.data.service_time.start_time
+                that.end = msg.data.service_time.end_time
+                //时间段
+                that.formattedTimeInit()
             } else if (msg.code == 40004) {
             } else {
                 that.$vux.toast.text(msg.message, 'middle', 100);
             }
         })
-        //时间段
-        that.formattedTimeInit()
     }
 }
 </script>
