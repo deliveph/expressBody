@@ -24,9 +24,17 @@ const TELEPHONE_INPUT = 'TELEPHONE_INPUT',
   CLOSE_LOCATION_ERROR = 'CLOSE_LOCATION_ERROR',
   WEB_ERROR = 'WEB_ERROR',
   CLOSE_AUTOCOMPLETELIST = 'CLOSE_AUTOCOMPLETELIST',
-  CHOOSECOUPON = 'CHOOSECOUPON'
+  CHOOSECOUPON = 'CHOOSECOUPON',
+  CHOOSECONSIGNEEADDRESS = 'CHOOSECONSIGNEEADDRESS',
+  CHOOSESHIPADDRESS = 'CHOOSESHIPADDRESS'
 
 export default {
+  [CHOOSESHIPADDRESS](state, shipAddress) {
+    state.chooseShipAddress = shipAddress
+  },
+  [CHOOSECONSIGNEEADDRESS](state, consigneeAddress) {
+    state.chooseConsigneeAddress = consigneeAddress
+  },
   [CHOOSECOUPON](state, coupon) {
     state.chooseCoupon = coupon
   },

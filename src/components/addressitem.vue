@@ -2,8 +2,8 @@
     <div class="address">
         <ul class="address-list" v-if="items.length != 0">
             <li v-for="(item,k) in items" :key="k">
-                <div class="address-info">
-                    <router-link :to="{name:'Send',params:{'shipper_name':item.shipper_name,'shipper_phone':item.shipper_phone,'shipper_full_address':item.shipper_full_address}}">
+                <div class="address-info" @click="chooseShipAddress(k)">
+                    <router-link to="" href="javascript:;">
                         <dl>
                             <dt>{{item.shipper_name}}</dt>
                             <dd>{{item.shipper_phone}}</dd>
@@ -59,6 +59,11 @@ export default {
         Confirm
     },
     methods: {
+        chooseShipAddress(k) {
+            let that = this
+            that.$store.dispatch("chooseShipAddress", that.items[k])
+            that.$router.push({ name: 'Send' })
+        },
         ondelete(id) {
             let that = this
             this.$vux.confirm.show({

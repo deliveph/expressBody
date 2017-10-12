@@ -58,6 +58,16 @@ function connectChatroom ({state, commit, dispatch}, obj) {
 }
 
 export default {
+  chooseShipAddress({
+    commit
+  }, shipAddress) {
+    commit('CHOOSESHIPADDRESS', shipAddress)
+  },
+  chooseConsigneeAddress({
+    commit
+  }, consigneeAddress) {
+    commit('CHOOSECONSIGNEEADDRESS', consigneeAddress)
+  },
   chooseCoupon({
     commit
   }, coupon) {

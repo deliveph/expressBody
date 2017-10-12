@@ -3,6 +3,8 @@ import {
   cityList
 } from './data'
 export default {
+  chooseShipAddress: {},
+  chooseConsigneeAddress: {},
   chooseCoupon: {},
   // 已定位过
   address: {},
