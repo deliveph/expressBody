@@ -179,10 +179,10 @@ export default {
             estimateLogisticsFee: 0,
             logisticsGoodsCategoryId: 0,
             logisticsCompanyId: 0,
-            pickUpTime:'',
-            timeday:'',
-            timequantum:'',
-            items:[]
+            pickUpTime: '',
+            timeday: '',
+            timequantum: '-',
+            items: []
         }
     },
     computed: {
@@ -249,8 +249,8 @@ export default {
                 // 物品类型
                 for (let j = 0; j < arr.logistics_goods_categories.length; j++) {
                     if (j == 0) {
-                        that.value2[0] = arr.logistics_goods_categories[j].logistics_goods_category_name 
-                        that.logisticsGoodsCategoryId = String(arr.logistics_goods_categories[j].logistics_goods_category_id) 
+                        that.value2[0] = arr.logistics_goods_categories[j].logistics_goods_category_name
+                        that.logisticsGoodsCategoryId = String(arr.logistics_goods_categories[j].logistics_goods_category_id)
                     }
                     logistics_goods_categories.push({
                         name: arr.logistics_goods_categories[j].logistics_goods_category_name,
@@ -262,14 +262,14 @@ export default {
                 that.time_quantum = arr.service_time.start_time + '~' + arr.service_time.end_time
                 that.begin = arr.service_time.start_time
                 that.end = arr.service_time.end_time
+                //时间段
+                that.formattedTimeInit()
             } else if (msg.code == 40004) {
                 location.href = that.configs.accreditUrl
             } else {
                 that.$vux.toast.text(msg.message, 'middle', 100);
             }
         })
-        //时间段
-        that.formattedTimeInit()
     },
     methods: {
         // 计算时间段
@@ -303,10 +303,10 @@ export default {
             let d = dd.getDate();
             return y + "-" + m + "-" + d;
         },
-        //格式时间段()
+        // 格式时间段()
         formattedTimeInit() {
             let that = this
-            that.items = [{
+            that.arr = [{
                 name: '今天',
                 value: '1',
                 parent: 0
@@ -318,65 +318,189 @@ export default {
                 name: '后天',
                 value: '3',
                 parent: 0
+            }, {
+                name: '一小时内',
+                value: '-',
+                parent: '1'
             }]
-            that.benginTm1 = that.begin.substring(0, 2);
-            that.benginTm = that.begin.replace(":", "");
-            that.endTm1 = that.end.substring(0, 2);
-            that.endTm = that.end.replace(":", "");
-            that.len = (parseInt(that.endTm1) - parseInt(that.benginTm1))
-            for (let i = 0; i <= that.len; i++) {
-                let itemTm = parseInt(that.benginTm1) + parseInt(i)
-                if (itemTm >= 10) { } else {
-                    itemTm = '0' + itemTm
-                }
-                let itemTm1 = itemTm + ':00';
-                let itemTm2 = itemTm + '00';
-                that.itemList.push(itemTm1)
-                that.formatTm.push(itemTm)
-            }
-            let newDate = that.formatDateTime(new Date, "yyyy-MM-dd hh:mm:ss")
-            let formatNewDate = newDate.substring(11, 13).replace(":", "");
-            for (let s = 0; s < that.formatTm.length; s++) {
-                if (parseInt(formatNewDate) <= parseInt(that.formatTm[s])) {
-                    let itemTm3 = that.formatTm[s] + ':00'
-                    that.timeList1.push(itemTm3)
+            let newDate = that.formatDateTime(new Date, "yyyy/MM/dd")
+            let startDate = newDate + " " + that.begin + ":00"
+            let endDate = newDate + " " + that.end + ":00"
+            let startDateTimestamp = new Date(startDate).getTime()
+            let endDateTimestamp = new Date(endDate).getTime()
+            let step = 60 * 60 * 1000
+            let currentTimestamp = new Date().getTime()
+            // 今天
+            for (let timestamp = startDateTimestamp; timestamp <= endDateTimestamp; timestamp += step) {
+                if (timestamp >= currentTimestamp) {
+                    let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
+                    let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
+                    that.arr.push({
+                        name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
+                        value: tmp1 + "~" + tmp2,
+                        parent: '1'
+                    })
                 }
             }
-            for (let j = 0; j < that.itemList.length; j++) {
-                let itemList1 = '';
-                var num = that.itemList.length - j;
-                if (num == 1) {
+            let step1 = 24 * 60 * 60 * 1000
+            // 明天
+            endDateTimestamp = endDateTimestamp + step1
+            for (let timestamp = startDateTimestamp + step1; timestamp <= endDateTimestamp; timestamp += step) {
+                let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
+                let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
+                that.arr.push({
+                    name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
+                    value: tmp1 + "~" + tmp2,
+                    parent: '2'
+                })
+            }
+            // 后天
+            endDateTimestamp = endDateTimestamp + step1
+            for (let timestamp = startDateTimestamp + 2 * step1; timestamp <= endDateTimestamp; timestamp += step) {
+                let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
+                let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
+                that.arr.push({
+                    name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
+                    value: tmp1 + "~" + tmp2,
+                    parent: '3'
+                })
+            }
+            that.list3 = that.arr
+            // that.benginTm1 = that.begin.substring(0, 2);
+            // console.log(that.benginTm1)
+            // that.benginTm = that.begin.replace(":", "");
+            // console.log(that.benginTm)
+            // that.endTm1 = that.end.substring(0, 2);
+            // console.log(that.endTm1)
+            // that.endTm = that.end.replace(":", "");
+            // console.log(that.endTm)
+            // that.len = (parseInt(that.endTm1) - parseInt(that.benginTm1))
+            // console.log(that.len)
+            // for (let i = 0; i <= that.len; i++) {
+            //     let itemTm = parseInt(that.benginTm1) + parseInt(i)
+            //     console.log(itemTm)
+            //     if (itemTm >= 10) { } else {
+            //         itemTm = '0' + itemTm
+            //     }
+            //     let itemTm1 = itemTm + ':00';
+            //     let itemTm2 = itemTm + '00';
+            //     that.itemList.push(itemTm1)
+            //     that.formatTm.push(itemTm)
+            // }
+            // let newDate = that.formatDateTime(new Date, "yyyy-MM-dd hh:mm:ss")
+            // console.log(newDate)
+            // let formatNewDate = newDate.substring(11, 13).replace(":", "")
+            // console.log(formatNewDate)
+            // for (let s = 0; s < that.formatTm.length; s++) {
+            //     if (parseInt(formatNewDate) <= parseInt(that.formatTm[s])) {
+            //         let itemTm3 = that.formatTm[s] + ':00'
+            //         that.timeList1.push(itemTm3)
+            //     }
+            // }
+            // for (let j = 0; j < that.itemList.length; j++) {
+            //     let itemList1 = '';
+            //     var num = that.itemList.length - j;
+            //     if (num == 1) {
+            //     } else {
+            //         itemList1 = that.itemList[j] + "~" + that.itemList[j + 1]
+            //     }
+            //     that.arr.push({
+            //         name: itemList1,
+            //         value: itemList1,
+            //         parent: '2'
+            //     })
+            //     that.arr.push({
+            //         name: itemList1,
+            //         value: itemList1,
+            //         parent: '3'
+            //     })
+            // }
+            // for (let m = 0; m < that.timeList1.length; m++) {
+            //     let itemList2 = '';
+            //     let num = that.timeList1.length - m;
+            //     if (num == 1) {
+            //         itemList2 = ''
+            //     } else {
+            //         itemList2 = that.timeList1[m] + "~" + that.timeList1[m + 1]
+            //     }
+            //     that.arr.push({
+            //         name: itemList2,
+            //         value: itemList2,
+            //         parent: '1'
+            //     })
+            // }
+            // let that = this
+            // that.items = [{
+            //     name: '今天',
+            //     value: '1',
+            //     parent: 0
+            // }, {
+            //     name: '明天',
+            //     value: '2',
+            //     parent: 0
+            // }, {
+            //     name: '后天',
+            //     value: '3',
+            //     parent: 0
+            // }]
+            // that.benginTm1 = that.begin.substring(0, 2);
+            // that.benginTm = that.begin.replace(":", "");
+            // that.endTm1 = that.end.substring(0, 2);
+            // that.endTm = that.end.replace(":", "");
+            // that.len = (parseInt(that.endTm1) - parseInt(that.benginTm1))
+            // for (let i = 0; i <= that.len; i++) {
+            //     let itemTm = parseInt(that.benginTm1) + parseInt(i)
+            //     if (itemTm >= 10) { } else {
+            //         itemTm = '0' + itemTm
+            //     }
+            //     let itemTm1 = itemTm + ':00';
+            //     let itemTm2 = itemTm + '00';
+            //     that.itemList.push(itemTm1)
+            //     that.formatTm.push(itemTm)
+            // }
+            // let newDate = that.formatDateTime(new Date, "yyyy-MM-dd hh:mm:ss")
+            // let formatNewDate = newDate.substring(11, 13).replace(":", "");
+            // for (let s = 0; s < that.formatTm.length; s++) {
+            //     if (parseInt(formatNewDate) <= parseInt(that.formatTm[s])) {
+            //         let itemTm3 = that.formatTm[s] + ':00'
+            //         that.timeList1.push(itemTm3)
+            //     }
+            // }
+            // for (let j = 0; j < that.itemList.length; j++) {
+            //     let itemList1 = '';
+            //     var num = that.itemList.length - j;
+            //     if (num == 1) {
 
-                } else {
-                    itemList1 = that.itemList[j] + "~" + that.itemList[j + 1]
-                }
-                that.items.push({
-                    name:itemList1,  
-                    value:itemList1,
-                    parent:'2'
-                })
-                that.items.push({
-                    name:itemList1,  
-                    value:itemList1,
-                    parent:'3'
-                })
-            }
-            for (let m = 0; m < that.timeList1.length; m++) {
-                let itemList2 = '';
-                let num = that.timeList1.length - m;
-                if (num == 1) {
-                    itemList2 = ''
-                } else {
-                    itemList2 = that.timeList1[m] + "~" + that.timeList1[m + 1]
-                }
-                that.items.push({
-                    name:itemList2,  
-                    value:itemList2,
-                    parent:'1'
-                })
-            }
-            that.list3 = that.items
-            console.log(that.list3)
+            //     } else {
+            //         itemList1 = that.itemList[j] + "~" + that.itemList[j + 1]
+            //     }
+            //     that.items.push({
+            //         name:itemList1,  
+            //         value:itemList1,
+            //         parent:'2'
+            //     })
+            //     that.items.push({
+            //         name:itemList1,  
+            //         value:itemList1,
+            //         parent:'3'
+            //     })
+            // }
+            // for (let m = 0; m < that.timeList1.length; m++) {
+            //     let itemList2 = '';
+            //     let num = that.timeList1.length - m;
+            //     if (num == 1) {
+            //         itemList2 = ''
+            //     } else {
+            //         itemList2 = that.timeList1[m] + "~" + that.timeList1[m + 1]
+            //     }
+            //     that.items.push({
+            //         name:itemList2,  
+            //         value:itemList2,
+            //         parent:'1'
+            //     })
+            // }
+            // that.list3 = that.items
+            // console.log(that.list3)
         },
         onChange(val) {
         },
@@ -407,17 +531,24 @@ export default {
 
             let take_start_time = ''
             let take_end_time = ''
-            if(that.timeday == 1){
-                that.timeday = that.getDateStr(0)
-            }else if(that.timeday == 2){
-                that.timeday = that.getDateStr(1)
-            }else if(that.timeday == 3){
-                that.timeday = that.getDatStr(2)
+            // if (that.timeday == 1) {
+            //     that.timeday = that.getDateStr(0)
+            // } else if (that.timeday == 2) {
+            //     that.timeday = that.getDateStr(1)
+            // } else if (that.timeday == 3) {
+            //     that.timeday = that.getDatStr(2)
+            // }
+            // let arr = that.timequantum.split("~")
+            // take_start_time = that.timeday + ' ' + arr[0] + ':00'
+            // take_end_time = that.timeday + ' ' + arr[1] + ':00'
+            if (that.timequantum == "-") { // 一小时内
+                take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
+                take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
+            } else {
+                let arr = that.timequantum.split("~")
+                take_start_time = arr[0]
+                take_end_time = arr[1]
             }
-
-            let arr = that.timequantum.split("~")
-            take_start_time = that.timeday +' ' + arr[0] +':00'
-            take_end_time = that.timeday + ' ' +arr[1]+':00'
 
             let data = qs.stringify({
                 'shipper_address_id': that.default_shipper_address.shipper_address_id,
@@ -480,16 +611,16 @@ export default {
         onChangeOfLogisticsCompanies(values) {
             this.logisticsCompanyId = values[0]
         },
-        onChangePickUpTime(values){
+        onChangePickUpTime(values) {
             this.timeday = values[0]
             this.timequantum = values[1]
         }
     },
     watch: {
-        roundValue: function () {
+        roundValue: function() {
             this.getEstimateLogisticsFee();
         },
-        logisticsCompanyId: function () {
+        logisticsCompanyId: function() {
             this.getEstimateLogisticsFee()
         }
     }
@@ -554,10 +685,9 @@ export default {
 }
 </style>
 <style lang="scss">
-    .send_warp{
-        .weui-cell{
-            padding:0
-        }
+.send_warp {
+    .weui-cell {
+        padding: 0
     }
-    
+}
 </style>
