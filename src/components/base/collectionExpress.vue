@@ -464,15 +464,18 @@ export default {
             let startDateTimestamp = new Date(startDate).getTime()
             let endDateTimestamp = new Date(endDate).getTime()
             let step = 60 * 60 * 1000
+            let currentTimestamp = new Date().getTime()
             // 今天
             for (let timestamp = startDateTimestamp; timestamp <= endDateTimestamp; timestamp += step) {
-                let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
-                let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
-                that.arr.push({
-                    name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
-                    value: tmp1 + "~" + tmp2,
-                    parent: '1'
-                })
+                if (timestamp >= currentTimestamp) {
+                    let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
+                    let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
+                    that.arr.push({
+                        name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
+                        value: tmp1 + "~" + tmp2,
+                        parent: '1'
+                    })
+                }
             }
             let step1 = 24 * 60 * 60 * 1000
             // 明天
