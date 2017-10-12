@@ -149,12 +149,12 @@ export default {
                 value: 'time_quantum1213',
                 parent: 'dopodomani'
             }],
-            value1: ['默认'],
+            value1: [''],
             value2: [''],
             value3: ['一小时内'],
             placeholder1: '请选择快递公司',
             placeholder2: '请选择物品类型',
-            roundValue: 0,
+            roundValue: 1,
             estimated_title: '预估重量',
             format: function(value, name) {
                 if (name) {
@@ -193,33 +193,14 @@ export default {
         Toast
     },
     created() {
-        let that = this
-        let shipper_name = that.$route.params.shipper_name
-        let shipper_phone = that.$route.params.shipper_phone
-        let shipper_full_address = that.$route.params.shipper_full_address
-        let consignee_name = that.$route.params.consignee_name
-        let consignee_phone = that.$route.params.consignee_phone
-        let consignee_full_address = that.$route.params.consignee_full_address
-        let shipper = {
-            'shipper_name': shipper_name,
-            'shipper_phone': shipper_phone,
-            'shipper_full_address': shipper_full_address
-        }
-        let consignee = {
-            'consignee_name': consignee_name,
-            'consignee_phone': consignee_phone,
-            'consignee_full_address': consignee_full_address
-        }
-
+        let that = this        
+        let chooseConsigneeAddress = that.$store.state.chooseConsigneeAddress
+        let chooseShipAddress = that.$store.state.chooseShipAddress
         this.http(that.configs.apiTop + "/page/user-ship", "get", '', function(res) {
             let msg = res.data
             if (msg.code == 0) {
                 let arr = msg.data
-                let logistics_companies = [{
-                    name: '默认',
-                    value: '0',
-                    parent: 0
-                }]
+                let logistics_companies = []
                 let logistics_goods_categories = []
                 let arr2 = {
                     name: '',
@@ -231,14 +212,32 @@ export default {
                     value: '',
                     parent: ''
                 }
-                if (JSON.stringify(that.default_consignee_address) == '{}') {
+                if (JSON.stringify(chooseConsigneeAddress) == '{}') {
                     that.default_consignee_address = arr.default_consignee_address
+                } else {
+                    that.default_consignee_address = {
+                        'consignee_address_id': chooseConsigneeAddress.consignee_address_id,
+                        'consignee_name': chooseConsigneeAddress.consignee_name,
+                        'consignee_phone': chooseConsigneeAddress.consignee_phone,
+                        'consignee_full_address': chooseConsigneeAddress.consignee_full_address
+                    }
                 }
-                if (JSON.stringify(that.default_shipper_address) == '{}') {
+                if (JSON.stringify(chooseShipAddress) == '{}') {
                     that.default_shipper_address = arr.default_shipper_address
+                } else {
+                    that.default_shipper_address = {
+                        'shipper_address_id': chooseShipAddress.shipper_address_id,
+                        'shipper_name': chooseShipAddress.shipper_name,
+                        'shipper_phone': chooseShipAddress.shipper_phone,
+                        'shipper_full_address': chooseShipAddress.shipper_full_address
+                    }
                 }
                 // 快递公司
                 for (let i = 0; i < arr.logistics_companies.length; i++) {
+                    if (i == 0) {
+                        that.value1[0] = arr.logistics_companies[i].logistics_company_name
+                        that.logisticsCompanyId = String(arr.logistics_companies[i].logistics_company_id)
+                    }
                     logistics_companies.push({
                         name: arr.logistics_companies[i].logistics_company_name,
                         value: String(arr.logistics_companies[i].logistics_company_id),

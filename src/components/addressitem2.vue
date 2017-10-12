@@ -2,8 +2,8 @@
     <div class="address">
         <ul class="address-list" v-if="items.length != 0">
             <li v-for="(item,k) in items" :key="k">
-                <div class="address-info">
-                    <router-link :to="{name:'Send',params:{'consignee_name':item.consignee_name,'consignee_phone':item.consignee_phone,'consignee_full_address':item.consignee_full_address}}">
+                <div class="address-info" @click="chooseConsigneeAddress(k)">
+                    <router-link to="" href="javascript:;">
                         <dl>
                             <dt>{{item.consignee_name}}</dt>
                             <dd>{{item.consignee_phone}}</dd>
@@ -48,10 +48,10 @@ export default {
         return {
             items: [],
             id: '',
-            name:'',
-            phone:'',
-            address:'',
-            is_default_shipper_address:'',
+            name: '',
+            phone: '',
+            address: '',
+            is_default_shipper_address: '',
             show: false
         }
     },
@@ -59,6 +59,11 @@ export default {
         Confirm
     },
     methods: {
+        chooseConsigneeAddress(k) {
+            let that = this
+            that.$store.dispatch("chooseConsigneeAddress", that.items[k])
+            that.$router.push({ name: 'Send' })
+        },
         ondelete(id) {
             let that = this
             this.$vux.confirm.show({
@@ -96,7 +101,7 @@ export default {
         addNew() {
             let that = this
             let index = that.$parent.index
-            this.$router.push({ name: 'editAddress', query: { type: index},params:{} })
+            this.$router.push({ name: 'editAddress', query: { type: index }, params: {} })
         }
     },
     created() {
