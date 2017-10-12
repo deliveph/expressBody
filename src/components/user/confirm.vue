@@ -352,6 +352,8 @@ export default {
         z-index: 999;
         color: transparent;
         text-shadow: 0px 0px 0px #333;
+        width: 200%;
+        margin-left: -100%;
     }
     .ipts-box-nick {
         position: absolute;

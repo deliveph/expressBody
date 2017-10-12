@@ -216,6 +216,8 @@ export default {
         color:transparent;
         text-shadow: 0px 0px 0px #333;
         -webkit-appearance: none;
+        width: 200%;
+        margin-left: -100%;
     }
     .ipt-real-nick:focus{
         outline: none;
