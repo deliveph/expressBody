@@ -69,7 +69,7 @@ export function onMyInfo (obj) {
 }
 
 export function onUserInfo (users) {
-  console.log(users, "^^^^")
+  console.log(users, '^^^^')
   if (!Array.isArray(users)) {
     users = [users]
   }

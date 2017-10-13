@@ -92,8 +92,12 @@ Vue.prototype.token = function () {
   return configs.tokenconfigs.token
 }
 
-Vue.prototype.http = function (url, method, data, callback) {
+Vue.prototype.http = function (url, method, data, callback, responseType) {
   let that = this
+  if (responseType === undefined) {
+    responseType = 'json'
+  }
+  console.log(responseType)
   this.$ajax({
     url: url,
     method: method,
@@ -101,7 +105,7 @@ Vue.prototype.http = function (url, method, data, callback) {
       'Authorization': configs.tokenId
     },
     data: data,
-    responseType: 'json',
+    responseType: responseType,
     beforeSend: function () {
       that.$vux.loading.show({
         text: 'Loading'
@@ -138,7 +142,7 @@ Vue.prototype.$weChat = function () {
   }).then(function (res) {
     let msg = res.data.data
     that.wx.config({
-      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
       appId: msg.app_id, //必填，公众号的唯一标识 
       timestamp: msg.timestamp,
       nonceStr: msg.nonce_str,
@@ -167,7 +171,7 @@ Vue.prototype.$weChat = function () {
         }
       })
 
-      that.http(that.configs.apiTop + "/weixin/share-config", "get", '', function (res) {
+      that.http(that.configs.apiTop + '/weixin/share-config', 'get', '', function (res) {
         let msg = res.data
         if (msg.code == 0) {
           let data = msg.data;
