@@ -18,10 +18,6 @@
                         <img src="/static/assets/images/btn_shou@2x.png" />
                         <p>代收快递</p>
                     </router-link>
-                    <!-- <router-link :to="{name:'session'}">
-                        <img src="/static/assets/images/btn_shou@2x.png" />
-                        <p>代收快递</p>
-                    </router-link> -->
                 </li>
                 <li>
                     <router-link :to="{name:'Send'}">
@@ -83,6 +79,7 @@
                 </div>    
             </div>
         </div>
+        <draggable></draggable>
     </div>
 </template>
 
@@ -93,6 +90,7 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import VueAMap from 'vue-amap'
 import { Toast } from 'vux'
 import qs  from 'qs'
+import draggable from '..//base/public/draggable'
 let map
 export default {
     data(){
@@ -129,7 +127,8 @@ export default {
         Banner,
         VueAMap,
         Toast,
-        qs
+        qs,
+        draggable
     },
     methods: {
         messageBox() {
@@ -169,7 +168,6 @@ export default {
     computed: {
         
     },
-    
     created() {
         let that = this
         let is_perfect = this.$route.query.is_perfect
@@ -189,7 +187,6 @@ export default {
                 // that.service = data.service
                 that.carousels = data.carousels
             } else if (msg.code == 40004) {
-                // location.href = that.configs.accreditUrl
             } else {
                 that.$vux.toast.text(msg.message, 'middle', 100);
             }

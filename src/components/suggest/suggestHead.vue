@@ -2,20 +2,11 @@
     <div class="suggest-header">
         <div class="city-wrapper">
             <div class="city-content border-right-1px" >
-                <!-- <div class="city-select"  v-show="isChoosed" @click= "switch_input_city">
-                            <span class="text">{{ position.city || '南昌'}}</span>
-                        </div> -->
                 <div class="city-input-wrapper" v-show="isChoosed">
-                    <input type="text" ref="tipinput" placeholder="城市中文名或拼音" class="city-input" style="display: block;" v-model="suggestInputValue">
+                    <input type="text" ref="tipinput" placeholder="请输入城市名或拼音" class="city-input" style="display: block;" v-model="suggestInputValue">
                 </div>
             </div>
         </div>
-        <!-- <div class="address-wrapper">
-                    <input type="text" placeholder="请输入地点" class="address-input" v-model="suggestInputValue">
-                    <div class="clear" style="display: none;">
-                        <i class="mfic-wrong"></i>
-                    </div>
-                </div> -->
         <div class="cancel-wrapper">
             <span class="text border-left-1px" @click="back_home">取消</span>
         </div>
@@ -58,26 +49,30 @@ export default {
     }
 }
 </script>
-<style>
+<style lang="scss">
+@import '../../../static/assets/css/px2rem.scss';
+
 .suggest-header {
     position: relative;
     z-index: 10;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    height: 44px;
+    height: px2rem(90);
     white-space: nowrap;
     background: #fff;
     box-shadow: 0 2px 3px rgba(0, 0, 0, .12);
 }
 
 .suggest-header .city-wrapper {
-    padding: 13px 0;
-    width:500px;
+    padding:0 px2rem(26);
+    padding-right:0;
+    width:px2rem(620);
 }
 
 .suggest-header .city-wrapper .city-content {
-    height: 18px;
+    /* height: 18px; */
+    border:1px solid #ebeced;
+    border-radius: px2rem(26);
+    margin-top:px2rem(15)
 }
 
 .border-bottom-1px,
@@ -155,6 +150,19 @@ input {
     height: 100%;
 }
 
+.border-right-1px:before {
+    content:'';
+    width:px2rem(26);
+    height:px2rem(26);
+    background:url('/static/assets/images/btn_search.png') no-repeat center;
+    background-size:px2rem(26);
+    vertical-align: middle;
+    display: inline-block;
+    margin-top:px2rem(14);
+    margin-right: px2rem(20);
+    margin-left: px2rem(20)
+}
+
 .border-bottom-1px:after,
 .border-bottom-1px:before,
 .border-left-1px:after,
@@ -170,18 +178,21 @@ input {
 }
 
 .suggest-header .city-wrapper .city-content .city-input-wrapper {
-    width: 143px;
-    height: 18px;
-    padding: 0 10px;
+    width: px2rem(520);
+    height: px2rem(56);
+    padding-left:px2rem(60)
 }
 
 .suggest-header .city-wrapper .city-content .city-input-wrapper .city-input {
     display: table-cell;
     width: 100%;
-    height: 14px;
-    margin-top: -13px;
-    padding: 15px 0;
+    display: inline-block;
+    // height: 14px;
+    // margin-top: -13px;
+    // padding: 15px 0;
     vertical-align: middle;
-    font-size: 14px;
+    height:px2rem(55);
+    font-size: px2rem(28);
+    background: transparent
 }
 </style>

@@ -400,7 +400,7 @@ export default new Router({
             name: 'suggest',
             component: suggest,
             meta: {
-                title: '城市选择'
+                title: '切换城市'
             }
         },
         //客服全部订单

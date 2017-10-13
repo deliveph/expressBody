@@ -144,13 +144,13 @@ export default {
   },
   // 选址
   [CHOOSER_ADDRESS](state, index) {
-    console.log(state.startOrEnd)
+    console.log(state,index,"124124")
     if (state.startOrEnd == 'getOn') {
       state.address.start = state.autocompleteList[index].name
-      console.log(state.position.start)
+      console.log(state.address.start)
     } else {
-      state.address.end = state.autocompleteList[index].name
-      console.log(state.position.end)
+      state.address.start = state.autocompleteList[index].name
+      console.log(state.address.start)
     }
   },
   // 关闭定位错误提示
@@ -159,7 +159,7 @@ export default {
     state.location = false
   },
   [CLOSE_AUTOCOMPLETELIST](state) {
-    console.log(1234)
+    console.log(state)
     state.autocompleteList = []
     console.log(state.autocompleteList)
   },

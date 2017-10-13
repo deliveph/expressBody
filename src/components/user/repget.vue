@@ -68,13 +68,13 @@
                         <span class="ft-red">{{items.order_fee}}快递豆</span>
                     </p>
                 </div>
-                <div class="order-list-item" >
+                <div class="order-list-item" v-if="items.collection_order_status_id >= 5">
                     <p>实付金额：
                         <span class="ft-red">{{items.order_fee}}快递豆</span>
                     </p>
                 </div>
                 <!--已完成-->
-                <div class="order-list-item" v-if="items.collection_order_status_id >= 5 && status == 'user'">
+                <div class="order-list-item" v-if="items.collection_order_status_id >= 6 && status == 'user'">
                     <p>评价结果：
                         <ul class="start-icon" v-if="items.service_score == '0.00'">
                             <li class=""></li>

@@ -9,6 +9,7 @@ import VueAMap from 'vue-amap'
 import $ from 'jquery'
 import qs from 'qs'
 import store from '@/components/store/index'
+// import draggabilly from 'draggabilly'
 // 同步单页路由与数据中心
 // import stores from './stores'
 // import vueDragDrop from 'vue-drag-and-drop'
@@ -30,6 +31,7 @@ Vue.use(VueAMap)
 Vue.use(require('vue-wechat-title'))
 Vue.use(mint)
 Vue.use(draggable)
+// Vue.use(draggabilly)
 // Vue.use(vueDrag)
 // Vue.use(vueDragDrop)
 // 添加手势触摸事件，使用方法如 v-touch:swipeleft

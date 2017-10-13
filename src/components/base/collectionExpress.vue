@@ -101,7 +101,7 @@
                     <popup-picker :title="title3" :data="list3" :columns="3" v-model="value3" :display-format="format" :placeholder="placeholder3" @on-change="onChangeExpectTime"></popup-picker>
                 </div>
                 <div class="readAgreement">
-                    <input type="checkbox" v-model="readfalse1">
+                    <input type="checkbox" v-model="readfalse1" @click="appointment">
                     <span>我已阅读并同意</span>
                     <router-link :to="{name:'Detail',query:{type:'agreement'}}">《共享快递哥协议》</router-link>
                 </div>
@@ -131,8 +131,8 @@ export default {
             list2: list(),
             demo2: '即时收件',
             index: 0,
-            readfalse: true,
-            readfalse1: true,
+            readfalse: false,
+            readfalse1: false,
             title1: '预约收件时间',
             title2: '预约收件时间',
             title3: '期望上门时间',
@@ -231,13 +231,6 @@ export default {
 
             let take_start_time = ''
             let take_end_time = ''
-            // if (that.timeday == 1) {
-            //     that.timeday = that.getDateStr(0)
-            // } else if (that.timeday == 2) {
-            //     that.timeday = that.getDateStr(1)
-            // } else if (that.timeday == 3) {
-            //     that.timeday = that.getDatStr(2)
-            // }
             if (that.timequantum == "-") { // 一小时内
                 take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
                 take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
@@ -318,25 +311,17 @@ export default {
             } else if (that.reservationAddress == '') {
                 that.$vux.toast.text('请输入收货人地址', 'middle', 100)
                 return false
-            } else if (!that.defaultFalse1) {
+            } else if (!that.readfalse1) {
                 that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
                 return false
             }
             if (that.reservationLogisticFee == '') {
                 that.reservationLogisticFee = 0
             }
+
+            
             let take_start_time = ''
             let take_end_time = ''
-            // if (that.timeday == 1) {
-            //     that.timeday = that.getDateStr(0)
-            // } else if (that.timeday == 2) {
-            //     that.timeday = that.getDateStr(1)
-            // } else if (that.timeday == 3) {
-            //     that.timeday = that.getDatStr(2)
-            // }
-            // let arr = that.timequantum.split("~")
-            // take_start_time = that.timeday + ' ' + arr[0] + ':00'
-            // take_end_time = that.timeday + ' ' + arr[1] + ':00'
             if (that.timequantum == "-") { // 一小时内
                 take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
                 take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
@@ -348,16 +333,6 @@ export default {
 
             let collection_start_time = ''
             let collection_end_time = ''
-            // if (that.timeday1 == 1) {
-            //     that.timeday1 = that.getDateStr(0)
-            // } else if (that.timeday1 == 2) {
-            //     that.timeday1 = that.getDateStr(1)
-            // } else if (that.timeday1 == 3) {
-            //     that.timeday1 = that.getDatStr(2)
-            // }
-            // let arr2 = that.timequantum1.split("~")
-            // collection_start_time = that.timeday1 + ' ' + arr2[0] + ':00'
-            // collection_end_time = that.timeday1 + ' ' + arr2[1] + ':00'
             if (that.timequantum1 == "-") { // 一小时内
                 collection_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
                 collection_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
@@ -500,72 +475,11 @@ export default {
                     parent: '3'
                 })
             }
-
-            // that.benginTm1 = that.begin.substring(0, 2);
-            // console.log(that.benginTm1)
-            // that.benginTm = that.begin.replace(":", "");
-            // console.log(that.benginTm)
-            // that.endTm1 = that.end.substring(0, 2);
-            // console.log(that.endTm1)
-            // that.endTm = that.end.replace(":", "");
-            // console.log(that.endTm)
-            // that.len = (parseInt(that.endTm1) - parseInt(that.benginTm1))
-            // console.log(that.len)
-            // for (let i = 0; i <= that.len; i++) {
-            //     let itemTm = parseInt(that.benginTm1) + parseInt(i)
-            //     console.log(itemTm)
-            //     if (itemTm >= 10) { } else {
-            //         itemTm = '0' + itemTm
-            //     }
-            //     let itemTm1 = itemTm + ':00';
-            //     let itemTm2 = itemTm + '00';
-            //     that.itemList.push(itemTm1)
-            //     that.formatTm.push(itemTm)
-            // }
-            // let newDate = that.formatDateTime(new Date, "yyyy-MM-dd hh:mm:ss")
-            // console.log(newDate)
-            // let formatNewDate = newDate.substring(11, 13).replace(":", "")
-            // console.log(formatNewDate)
-            // for (let s = 0; s < that.formatTm.length; s++) {
-            //     if (parseInt(formatNewDate) <= parseInt(that.formatTm[s])) {
-            //         let itemTm3 = that.formatTm[s] + ':00'
-            //         that.timeList1.push(itemTm3)
-            //     }
-            // }
-            // for (let j = 0; j < that.itemList.length; j++) {
-            //     let itemList1 = '';
-            //     var num = that.itemList.length - j;
-            //     if (num == 1) {
-
-            //     } else {
-            //         itemList1 = that.itemList[j] + "~" + that.itemList[j + 1]
-            //     }
-            //     that.arr.push({
-            //         name: itemList1,
-            //         value: itemList1,
-            //         parent: '2'
-            //     })
-            //     that.arr.push({
-            //         name: itemList1,
-            //         value: itemList1,
-            //         parent: '3'
-            //     })
-            // }
-            // for (let m = 0; m < that.timeList1.length; m++) {
-            //     let itemList2 = '';
-            //     let num = that.timeList1.length - m;
-            //     if (num == 1) {
-            //         itemList2 = ''
-            //     } else {
-            //         itemList2 = that.timeList1[m] + "~" + that.timeList1[m + 1]
-            //     }
-            //     that.arr.push({
-            //         name: itemList2,
-            //         value: itemList2,
-            //         parent: '1'
-            //     })
-            // }
             that.list3 = that.arr
+        },
+        appointment(){
+            let that = this
+            that.readfalse1 = true
         }
     },
     created() {

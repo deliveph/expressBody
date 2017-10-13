@@ -1,31 +1,149 @@
 <template>
-    
+    <div>
+        <img src="/static/assets/images/btn_relation.png" class="draggable" id="draggable"/>
+    </div>
 </template>
 
 <script>
-import draggable from 'vuedraggable'
+import $ from 'jquery'
+// import draggabilly  from 'draggabilly'
+let dom = null
+
 export default {
-    data(){
-        return{
-            tags:''
+    data() {
+        return {
+            
         }
     },
-    components:{
-        draggable
+    components: {
+        // draggabilly 
     },
     methods: {
-      getdata (evt) {
-        console.log(evt.draggedContext.element.id)
-      },
-      datadragEnd (evt) {
-        console.log('拖动前的索引 :' + evt.oldIndex)
-        console.log('拖动后的索引 :' + evt.newIndex)
-        console.log(this.tags)
-      }
+        // draggable(){
+        //     var div1 = document.querySelector('#draggable');
+            
+
+        //     var maxW = document.body.clientWidth - div1.offsetWidth;
+        //     var maxH = document.body.clientHeight - div1.offsetHeight;
+
+        //     console.log(div1)
+        //     console.log(div1.offsetWidth)
+        //     console.log(maxW,maxH)
+
+        //     div1.addEventListener('touchstart', function (e) {
+        //         var ev = e || window.event;
+        //         var touch = ev.targetTouches[0];
+        //         oL = touch.clientX - div1.offsetLeft;
+        //         oT = touch.clientY - div1.offsetTop;
+        //         document.addEventListener("touchmove", defaultEvent, false);
+        //     })
+
+
+        //     div1.addEventListener('touchmove', function (e) {
+        //         var ev = e || window.event;
+        //         var touch = ev.targetTouches[0];
+        //         var oLeft = touch.clientX - oL;
+        //         var oTop = touch.clientY - oT;
+        //         if (oLeft < 0) {
+        //             oLeft = 0;
+        //         } else if (oLeft >= maxW) {
+        //             oLeft = maxW;
+        //         }
+        //         if (oTop < 0) {
+        //             oTop = 0;
+        //         } else if (oTop >= maxH) {
+        //             oTop = maxH;
+        //         }
+
+        //         div1.style.left = oLeft + 'px';
+        //         div1.style.top = oTop + 'px';
+
+        //     })
+        //     div1.addEventListener('touchend', function () {
+        //         document.removeEventListener("touchmove", defaultEvent);
+        //     })
+
+        //     function defaultEvent(e) {
+
+
+        //         e.preventDefault();
+        //     }
+        // }
+    },
+    mounted: function () {
+            var div1 = document.querySelector('#draggable');
+            
+
+            var maxW = document.body.clientWidth - div1.offsetWidth;
+            var maxH = document.body.clientHeight - div1.offsetHeight;
+            var oL,oT
+            div1.addEventListener('touchstart', function (e) {
+                var ev = e || window.event;
+                var touch = ev.targetTouches[0];
+                oL = touch.clientX - div1.offsetLeft;
+                oT = touch.clientY - div1.offsetTop;
+                document.addEventListener("touchmove", defaultEvent, false);
+            })
+
+
+            div1.addEventListener('touchmove', function (e) {
+                var ev = e || window.event;
+                var touch = ev.targetTouches[0];
+                var oLeft = touch.clientX - oL;
+                var oTop = touch.clientY - oT;
+                if (oLeft < 0) {
+                    oLeft = 0;
+                } else if (oLeft >= maxW) {
+                    oLeft = maxW;
+                }
+                if (oTop < 0) {
+                    oTop = 0;
+                } else if (oTop >= maxH) {
+                    oTop = maxH;
+                }
+
+                div1.style.left = oLeft + 'px';
+                div1.style.top = oTop + 'px';
+
+            })
+            div1.addEventListener('touchend', function () {
+                document.removeEventListener("touchmove", defaultEvent);
+            })
+
+            function defaultEvent(e) {
+
+
+                e.preventDefault();
+            }
+    },
+    created() {
+        // this.draggable()
     }
 }
+
+
 </script>
 
+
 <style lang="scss" scoped>
-    
+@import '../../../../static/assets/css/px2rem.scss';
+.drag-content{
+    position:absolute;
+    top:px2rem(100);
+    right:px2rem(50);
+    z-index:3;
+    .demo-basic{
+        position: relative;
+        
+    }
+}
+
+.draggable{
+    width:px2rem(146);
+    height:px2rem(146);
+    position: absolute;
+    z-index:999;
+    top:px2rem(300);
+    right:0;
+}
 </style>

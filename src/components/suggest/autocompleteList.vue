@@ -36,14 +36,24 @@ export default {
   },
   computed: {
     ...mapState([
-      'autocompleteList'
+      'autocompleteList',
     ])
   },
   methods: {
+    // choose_address(index){
+
+
+      // this.$store.dispatch('choose_address', index)
+      // this.$store.dispatch('close_autocompletelist')
+      // this.$router.push({path:'/user'})
+    // }
     choose_address(index){
+      // console.log(msg)
+      // console.log(this.address)
+      // this.address.end = msg
       this.$store.dispatch('choose_address', index)
       this.$store.dispatch('close_autocompletelist')
-      this.$router.push({path:'/'})
+      this.$router.push({path:'/user'})
     }
   },
   mounted () {

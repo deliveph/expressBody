@@ -88,13 +88,13 @@
                         <span class="ft-red">{{items.order_fee}}快递豆</span>
                     </p>
                 </div>
-                <div class="order-list-item" v-if="items.ship_order_status_id >= 1 && status == 'service' || items.ship_order_status_id >= 2 && status == 'service'">
+                <div class="order-list-item" v-if="items.ship_order_status_id >= 4 && status == 'service' || items.ship_order_status_id >= 4 && status == 'service'">
                     <p>预计费用：
                         <span class="ft-red">￥ {{items.order_fee}}</span>
                     </p>
                 </div>
                 <!--已完成-->
-                <div class="order-list-item" v-if="items.ship_order_status_id >= 5 && status == 'user' || items.ship_order_status_id >= 5 && status == 'service'">
+                <div class="order-list-item" v-if="items.ship_order_status_id >= 5 && status == 'user'">
                     <p>评价结果：
                         <ul class="start-icon" v-if="items.service_score == '0.00'">
                             <li class=""></li>

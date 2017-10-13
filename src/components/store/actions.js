@@ -253,7 +253,6 @@ export default {
     commit,
     state
   }, value) {
-    console.log(value)
     AMap.plugin('AMap.Autocomplete', function () {
       var autocomplete = new AMap.Autocomplete({})
       autocomplete.search(value, function (status, result) {
