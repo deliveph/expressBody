@@ -69,7 +69,6 @@ export default {
   computed: {
     sessionId () {
       let sessionId = this.$route.params.sessionId
-      console.log(sessionId, 'OOO')
       return sessionId
     },
     sessionName () {
@@ -90,8 +89,7 @@ export default {
       }
     },
     scene () {
-      console.log(132)
-      console.log(util.parseSession(this.sessionId))
+      console.log(util.parseSession(this.sessionId), "sessionId")
       return util.parseSession(this.sessionId).scene
     },
     to () {

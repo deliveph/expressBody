@@ -18,6 +18,7 @@
     "axios": "^0.16.2",
     "body-parser": "^1.17.1",
     "cookie-parser": "^1.4.3",
+    "draggabilly": "^2.1.1",
     "ejs": "^2.5.6",
     "globby": "^6.1.0",
     "iscroll": "^5.2.0",

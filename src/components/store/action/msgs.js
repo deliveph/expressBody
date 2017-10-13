@@ -2,7 +2,7 @@ import store from '../../store'
 import config from '../../../configs'
 import util from '../../../utils'
 
-function formatMsg (msg) {
+function formatMsg(msg) {
   const nim = store.state.nim
   if (msg.type === 'robot') {
     if (msg.content && msg.content.flag === 'bot') {
@@ -25,21 +25,21 @@ function formatMsg (msg) {
   return msg
 }
 
-export function onRoamingMsgs (obj) {
+export function onRoamingMsgs(obj) {
   let msgs = obj.msgs.map(msg => {
     return formatMsg(msg)
   })
   store.commit('updateMsgs', msgs)
 }
 
-export function onOfflineMsgs (obj) {
+export function onOfflineMsgs(obj) {
   let msgs = obj.msgs.map(msg => {
     return formatMsg(msg)
   })
   store.commit('updateMsgs', msgs)
 }
 
-export function onMsg (msg) {
+export function onMsg(msg) {
   msg = formatMsg(msg)
   store.commit('putMsg', msg)
   if (msg.sessionId === store.state.currSessionId) {
@@ -52,7 +52,7 @@ export function onMsg (msg) {
   }
 }
 
-function onSendMsgDone (error, msg) {
+function onSendMsgDone(error, msg) {
   store.dispatch('hideLoading')
   if (error) {
     // 被拉黑
@@ -67,7 +67,7 @@ function onSendMsgDone (error, msg) {
 }
 
 // 消息撤回
-export function onRevocateMsg (error, msg) {
+export function onRevocateMsg(error, msg) {
   const nim = store.state.nim
   if (error) {
     if (error.code === 508) {
@@ -94,7 +94,7 @@ export function onRevocateMsg (error, msg) {
     to: msg.to,
     tip,
     time: msg.time,
-    done: function sendTipMsgDone (error, tipMsg) {
+    done: function sendTipMsgDone(error, tipMsg) {
       let idClient = msg.deletedIdClient || msg.idClient
       store.commit('replaceMsg', {
         sessionId: msg.sessionId,
@@ -112,20 +112,28 @@ export function onRevocateMsg (error, msg) {
   })
 }
 
-export function revocateMsg ({state, commit}, msg) {
+export function revocateMsg({
+  state,
+  commit
+}, msg) {
   const nim = state.nim
-  let {idClient} = msg
+  let {
+    idClient
+  } = msg
   msg = Object.assign(msg, state.msgsMap[idClient])
   nim.deleteMsg({
     msg,
-    done: function deleteMsgDone (error) {
+    done: function deleteMsgDone(error) {
       onRevocateMsg(error, msg)
     }
   })
 }
 
 // 发送普通消息
-export function sendMsg ({state, commit}, obj) {
+export function sendMsg({
+  state,
+  commit
+}, obj) {
   const nim = state.nim
   obj = obj || {}
   let type = obj.type || ''
@@ -151,15 +159,23 @@ export function sendMsg ({state, commit}, obj) {
 }
 
 // 发送文件消息
-export function sendFileMsg ({state, commit}, obj) {
+export function sendFileMsg({
+  state,
+  commit
+}, obj) {
   const nim = state.nim
-  let {scene, to, fileInput} = obj
+  let {
+    scene,
+    to,
+    fileInput
+  } = obj
   let type = 'file'
   if (/\.(png|jpg|bmp|jpeg|gif)$/i.test(fileInput.value)) {
     type = 'image'
   } else if (/\.(mov|mp4|ogg|webm)$/i.test(fileInput.value)) {
     type = 'video'
   }
+  console.log(fileInput)
   store.dispatch('showLoading')
   nim.sendFile({
     scene,
@@ -172,7 +188,7 @@ export function sendFileMsg ({state, commit}, obj) {
     uploaderror: function () {
       console && console.log('上传失败')
     },
-    uploaddone: function(error, file) {
+    uploaddone: function (error, file) {
       // console.log(error);
       // console.log(file);
     },
@@ -180,15 +196,125 @@ export function sendFileMsg ({state, commit}, obj) {
       // console && console.log('正在发送消息, id=', msg);
     },
     done: function (error, msg) {
-      onSendMsgDone (error, msg)
+      onSendMsgDone(error, msg)
+    }
+  })
+}
+
+// 发送音频消息
+export function sendAudioMsg({
+  state,
+  commit
+}, obj) {
+  // const nim = state.nim
+  // let {
+  //   scene,
+  //   to,
+  //   blob
+  // } = obj
+  // nim.previewFile({
+  //   type: 'image',
+  //   blob,
+  //   uploadprogress: function (obj) {
+  //       // console.log('文件总大小: ' + obj.total + 'bytes')
+  //       // console.log('已经上传的大小: ' + obj.loaded + 'bytes')
+  //       // console.log('上传进度: ' + obj.percentage)
+  //       // console.log('上传进度文本: ' + obj.percentageText)
+  //   },
+  //   done: function(error, file) {
+  //     console.log(file, error)
+  //       // console.log('上传image' + (!error?'成功':'失败'));
+  //       // show file to the user
+  //   //     if (!error) {
+  //   //         var msg = nim.sendFile({
+  //   //             scene: 'p2p',
+  //   //             to: 'account',
+  //   //             file: file,
+  //   //             done: sendMsgDone
+  //   //         });
+  //   //         console.log('正在发送p2p image消息, id=' + msg.idClient);
+  //   //         pushMsg(msg);
+  //   //     }
+  //   }
+  // })
+  // // if (/\.(png|jpg|bmp|jpeg|gif)$/i.test(fileInput.value)) {
+  // //   type = 'image'
+  // // } else if (/\.(mov|mp4|ogg|webm)$/i.test(fileInput.value)) {
+  // //   type = 'video'
+  // // }
+  // console.log(blob)
+  // store.dispatch('showLoading')
+  // nim.sendFile({
+  //   scene,
+  //   to,
+  //   type,
+  //   blob,
+  //   uploadprogress: function (data) {
+  //     // console.log(data.percentageText)
+  //   },
+  //   uploaderror: function () {
+  //     console && console.log('上传失败')
+  //   },
+  //   uploaddone: function (error, file) {
+  //     // console.log(error);
+  //     // console.log(file);
+  //   },
+  //   beforesend: function (msg) {
+  //     // console && console.log('正在发送消息, id=', msg);
+  //   },
+  //   done: function (error, msg) {
+  //     onSendMsgDone(error, msg)
+  //   }
+  // })
+  alert('发送音频消息')
+  const nim = state.nim
+  let {
+    scene,
+    to,
+    blob
+  } = obj
+  store.dispatch('showLoading')
+  console.log(nim)
+  nim.sendFile({
+    scene,
+    to,
+    blob,
+    type: 'audio',
+    uploadprogress: function (data) {
+      // console.log(data.percentageText)
+    },
+    uploaderror: function () {
+      console && console.log('上传失败')
+    },
+    uploaddone: function (error, file) {
+      // console.log(error);
+      // console.log(file);
+    },
+    beforesend: function (msg) {
+      // console && console.log('正在发送消息, id=', msg);
+    },
+    done: function (error, msg) {
+      onSendMsgDone(error, msg)
     }
   })
 }
 
 // 发送机器人消息
-export function sendRobotMsg ({state, commit}, obj) {
+export function sendRobotMsg({
+  state,
+  commit
+}, obj) {
   const nim = state.nim
-  let {type, scene, to, robotAccid, content, params, target, body} = obj
+  let {
+    type,
+    scene,
+    to,
+    robotAccid,
+    content,
+    params,
+    target,
+    body
+  } = obj
   scene = scene || 'p2p'
   if (type === 'text') {
     nim.sendRobotMsg({
@@ -230,7 +356,10 @@ export function sendRobotMsg ({state, commit}, obj) {
 }
 
 // 发送消息已读回执
-export function sendMsgReceipt ({state, commit}) {
+export function sendMsgReceipt({
+  state,
+  commit
+}) {
   // 如果有当前会话
   let currSessionId = store.state.currSessionId
   if (currSessionId) {
@@ -241,7 +370,7 @@ export function sendMsgReceipt ({state, commit}) {
       if (state.sessionMap[currSessionId]) {
         nim.sendMsgReceipt({
           msg: state.sessionMap[currSessionId].lastMsg,
-          done: function sendMsgReceiptDone (error, obj) {
+          done: function sendMsgReceiptDone(error, obj) {
             // do something
           }
         })
@@ -251,20 +380,26 @@ export function sendMsgReceipt ({state, commit}) {
 }
 
 function sendMsgReceiptDone(error, obj) {
-    console.log('发送消息已读回执' + (!error?'成功':'失败'), error, obj);
+  console.log('发送消息已读回执' + (!error ? '成功' : '失败'), error, obj);
 }
 
-export function getHistoryMsgs ({state, commit}, obj) {
+export function getHistoryMsgs({
+  state,
+  commit
+}, obj) {
   const nim = state.nim
   if (nim) {
-    let {scene, to} = obj
+    let {
+      scene,
+      to
+    } = obj
     let options = {
       scene,
       to,
       reverse: false,
       asc: true,
       limit: config.localMsglimit || 20,
-      done: function getHistoryMsgsDone (error, obj) {
+      done: function getHistoryMsgsDone(error, obj) {
         if (obj.msgs) {
           if (obj.msgs.length === 0) {
             commit('setNoMoreHistoryMsgs')
@@ -292,11 +427,15 @@ export function getHistoryMsgs ({state, commit}, obj) {
   }
 }
 
-export function resetNoMoreHistoryMsgs ({commit}) {
+export function resetNoMoreHistoryMsgs({
+  commit
+}) {
   commit('resetNoMoreHistoryMsgs')
 }
 
 // 继续与机器人会话交互
-export function continueRobotMsg ({commit}, robotAccid) {
+export function continueRobotMsg({
+  commit
+}, robotAccid) {
   commit('continueRobotMsg', robotAccid)
 }

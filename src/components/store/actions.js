@@ -11,7 +11,7 @@ import pageUtil from '../../utils/page'
 import {showLoading, hideLoading, showFullscreenImg, hideFullscreenImg} from './action/widgetUi'
 import {initNimSDK} from './action/initNimSDK'
 import {deleteSession, setCurrSession, resetCurrSession} from './action/session'
-import {sendMsg, sendFileMsg, sendMsgReceipt, sendRobotMsg, revocateMsg, getHistoryMsgs, resetNoMoreHistoryMsgs, continueRobotMsg} from './action/msgs'
+import {sendMsg, sendAudioMsg, sendFileMsg, sendMsgReceipt, sendRobotMsg, revocateMsg, getHistoryMsgs, resetNoMoreHistoryMsgs, continueRobotMsg} from './action/msgs'
 
 // console.log(123)
 function connectNim ({state, commit, dispatch}, obj) {
@@ -320,6 +320,7 @@ export default {
   resetCurrSession,
   // 发送消息
   sendMsg,
+  sendAudioMsg,
   sendFileMsg,
   sendRobotMsg,
   // 发送消息已读回执

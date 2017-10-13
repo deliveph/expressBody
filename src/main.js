@@ -94,8 +94,12 @@ Vue.prototype.token = function () {
   return configs.tokenconfigs.token
 }
 
-Vue.prototype.http = function (url, method, data, callback) {
+Vue.prototype.http = function (url, method, data, callback, responseType) {
   let that = this
+  if (responseType === undefined) {
+    responseType = 'json'
+  }
+  console.log(responseType)
   this.$ajax({
     url: url,
     method: method,
@@ -103,7 +107,7 @@ Vue.prototype.http = function (url, method, data, callback) {
       'Authorization': configs.tokenId
     },
     data: data,
-    responseType: 'json',
+    responseType: responseType,
     beforeSend: function () {
       that.$vux.loading.show({
         text: 'Loading'
@@ -169,7 +173,7 @@ Vue.prototype.$weChat = function () {
         }
       })
 
-      that.http(that.configs.apiTop + "/weixin/share-config", "get", '', function (res) {
+      that.http(that.configs.apiTop + '/weixin/share-config', 'get', '', function (res) {
         let msg = res.data
         if (msg.code == 0) {
           let data = msg.data;

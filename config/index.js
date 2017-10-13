@@ -28,20 +28,6 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api':{
-        target:'http://test.menory.com/',
-        changeOrigin:true,
-        pathRewrite:{
-          '^/api':'/'
-        }
-      },
-      '/upload':{
-        target:'http://static.menory.top/',
-        changeOrigin:true,
-        pathRewrite:{
-          '^/upload':'/'
-        }
-      }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
