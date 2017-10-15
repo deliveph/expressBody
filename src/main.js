@@ -20,7 +20,7 @@ import mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
 // import vueDrag from 'drag'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = true
 Vue.prototype.$ajax = axios
 Vue.prototype.wx = wx
 Vue.prototype.$ = $

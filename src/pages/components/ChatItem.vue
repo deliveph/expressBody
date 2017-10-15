@@ -28,7 +28,7 @@
       <span v-else-if="msg.type==='custom-type3'" class="msg-text" ref="mediaMsg"></span>
       <span v-else-if="msg.type==='image'" class="msg-text" ref="mediaMsg" @click.stop="showFullImg(msg.originLink)"></span>
       <span v-else-if="msg.type==='video'" class="msg-text" ref="mediaMsg"></span>
-      <span v-else-if="msg.type==='audio'" class="msg-text" @click="playAudio(msg.audioSrc)">{{msg.showText}}</span>
+      <span v-else-if="msg.type==='audio'" class="msg-text" @click="playAudio(msg)">###</span>
       <span v-else-if="msg.type==='file'" class="msg-text"><a :href="msg.fileLink" target="_blank"><i class="u-icon icon-file"></i>{{msg.showText}}</a></span>
       <span v-else-if="msg.type==='robot'" class="msg-text" :class="{'msg-robot': msg.robotFlow!=='out' && !isRobot}">
         <div v-if="msg.robotFlow==='out'">{{msg.showText}}</div>
@@ -370,13 +370,15 @@
         })
       },
       playAudio (src) {
+        console.log(src, '###1')
         if (!this.currentAudio) {
-          this.currentAudio = new Audio(src)
+          this.currentAudio = new Audio(src.audioSrc)// src.audioSrc
           this.currentAudio.play()
           this.currentAudio.onended = () => {
             this.currentAudio = null
           }
         }
+        console.log(this.currentAudio, '###2')
       }
     },
     created(){

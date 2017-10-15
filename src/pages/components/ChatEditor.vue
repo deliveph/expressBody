@@ -280,7 +280,7 @@ export default {
       }
     },
     sendAudioMsg(blob) {
-      alert("sendAudioMsg")
+      // alert("sendAudioMsg")
       // if (ipt.value) {
       // if (this.type === 'session') {
       this.$store.dispatch('sendAudioMsg', {
@@ -327,6 +327,18 @@ export default {
   },
   created() {
     this.$weChat()
+    console.log(this.$store.state.nim, "###")
+    window.nim.getUser({
+      account: 'service_10004',
+      done: function (error, user) {
+        console.log(error);
+        console.log(user);
+        console.log('获取用户名片' + (!error ? '成功' : '失败'));
+        // if (!error) {
+          // onUsers(user);
+        // }
+      }
+    })
   },
   mounted: function() {
     let that = this
@@ -338,7 +350,14 @@ export default {
     //假设全局变量已经在外部定义
     //按下开始录音
     $('.u-editor-video').on('touchstart', function(event) {
-      console.log("按下开始录音")
+      // console.log("按下开始录音")
+      // let currentAudio = new Audio("http://express1.menory.com/demo.amr")// src.audioSrc
+      // console.log(currentAudio)
+      // currentAudio.play()
+      // currentAudio.onended = () => {
+      //   currentAudio = null
+      // }
+      // return
       // let blob = SDK.NIM.blob.fromDataURL('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAyADIDASIAAhEBAxEB/8QAGgABAAMBAQEAAAAAAAAAAAAAAAIEBgUDAf/EACwQAAEEAQMCBQMFAQAAAAAAAAEAAgMRBAUSISIxBhNBUWEUMnEjkaGxstH/xAAaAQACAwEBAAAAAAAAAAAAAAAAAQIDBAUG/8QAIREAAgIBAwUBAAAAAAAAAAAAAAECERIEFCExM0FxodH/2gAMAwEAAhEDEQA/ANkiKtm5gxI203fK87Y2XVnv+w7lXNpK2ebLKhHMyUuDHbtpokdr9lksjPzM187pMowYEBIfKw7TIR3ArsL4vuquJNlYenYub9TPE2U1I272lx4cGngjtYPp8rPuoWLI3SLlaTqr8pz8XLa2PNiHW1vZw9CPhdVXxkpK0MIiKQBZzXcgxZGVJz+hh20D3cTf+QtE40LDS4+gaLJXE13FfFqNSxyRvkg8qTpI2HktPNe7gVRqe2x4tqzh5OP5PhAxMaDULXHn1sElWtQo+HJdvb6cEbvwP5VbLex3hzJxnSmSXHjDJKFciq49vlT1SYjw8xrTuknYyNu1v3E1dD8WuZza9kPwSymAaRnMNzF7GFx4LmubyCtoOyxpx/q9UwtMi3mPGAllcfgU3n3WyW/SJ4EkERFrA+EWORahkxszJnS5QEz3MEZMguwBX9eq9FFzA4EEWCk0n1HbqjN5GmQyajKxkhDiwxuO8dba+1xruOVX1DCZp2JFPNlDysZrY4uN5DjxurgE178LRnToDN5vXd9r4UpNPxZQBLE14BsB3ItZ9tF3Y4OKmnNWvPNfTx0zAxsKHdj9Zl63yu5dIT6n/ivqLWNY3a0ABSWhJJUiIRETAIiIAIiIAIiIAIiIA//Z')
       // that.sendAudioMsg(blob)
       // return
@@ -360,11 +379,11 @@ export default {
       // xhr.send()
       // return 
       // return
-      that.http("http://static.menory.top/download-weixin-voice", "get", "", function(res) {
-        alert("上传自己服务器成功2")
-        that.sendAudioMsg(res.data)
-      }, "blob")
-      return
+      // that.http("http://static.menory.top/download-weixin-voice", "get", "", function(res) {
+      //   alert("上传自己服务器成功2")
+      //   that.sendAudioMsg(res.data)
+      // }, "blob")
+      // return
       event.preventDefault();
       START = new Date().getTime();
       that.click_record = true
@@ -387,6 +406,7 @@ export default {
     })
     //松手结束录音
     $('.u-editor-video').on('touchend', function(event) {
+      // return 
       console.log("松手结束录音")
       event.preventDefault();
       that.click_record = false
@@ -402,9 +422,9 @@ export default {
       } else {
         that.wx.stopRecord({
           success: function(res) {
-            alert("停止录音成功");
+            // alert("停止录音成功");
             voice.localId = res.localId;
-            alert("voice.localId：" + voice.localId);
+            // alert("voice.localId：" + voice.localId);
             // that.wx.playVoice({
             //   localId: res.localId // 需要播放的音频的本地ID，由stopRecord接口获得
             // });
@@ -419,7 +439,7 @@ export default {
 
     //上传录音
     function uploadVoice() {
-      alert("开始上传录音")
+      // alert("开始上传录音")
       //调用微信的上传录音接口把本地录音先上传到微信的服务器
       //不过，微信只保留3天，而我们需要长期保存，我们需要把资源从微信服务器下载到自己的服务器
       that.wx.uploadVoice({
@@ -427,19 +447,11 @@ export default {
         isShowProgressTips: 1, // 默认为1，显示进度提示
         success: function(res) {
           // 把录音在微信服务器上的id（res.serverId）发送到自己的服务器供下载。
-          alert("上传录音成功")
-          that.http("http://static.menory.top/download-weixin-voice", "get", JSON.stringify(res), function(blob) {
-            alert("上传自己服务器成功")
-            that.sendAudioMsg({
-              blob: blob
-            })
-            // sendAudioMsg({
-            //   name: "#1",
-            //   size: msg.size,
-            //   md5: "md5",
-            //   mp3Url: msg.url,
-            //   dur: msg.size
-            // })
+          // alert("上传录音成功:" + res.serverId)
+          that.http("http://static.menory.top/download-weixin-voice?media_id=" + res.serverId, "get", "", function(res) {
+            // alert("上传自己服务器成功2")
+            // console.log(res.data, "###")
+            that.sendAudioMsg(res.data)
           }, "blob")
         }
       });

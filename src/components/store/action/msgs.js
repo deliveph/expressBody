@@ -206,37 +206,48 @@ export function sendAudioMsg({
   state,
   commit
 }, obj) {
-  // const nim = state.nim
-  // let {
-  //   scene,
-  //   to,
-  //   blob
-  // } = obj
-  // nim.previewFile({
-  //   type: 'image',
-  //   blob,
-  //   uploadprogress: function (obj) {
-  //       // console.log('文件总大小: ' + obj.total + 'bytes')
-  //       // console.log('已经上传的大小: ' + obj.loaded + 'bytes')
-  //       // console.log('上传进度: ' + obj.percentage)
-  //       // console.log('上传进度文本: ' + obj.percentageText)
-  //   },
-  //   done: function(error, file) {
-  //     console.log(file, error)
-  //       // console.log('上传image' + (!error?'成功':'失败'));
-  //       // show file to the user
-  //   //     if (!error) {
-  //   //         var msg = nim.sendFile({
-  //   //             scene: 'p2p',
-  //   //             to: 'account',
-  //   //             file: file,
-  //   //             done: sendMsgDone
-  //   //         });
-  //   //         console.log('正在发送p2p image消息, id=' + msg.idClient);
-  //   //         pushMsg(msg);
-  //   //     }
-  //   }
-  // })
+  const nim = state.nim
+  let {
+    scene,
+    to,
+    blob
+  } = obj
+  nim.previewFile({
+    type: 'audio',
+    blob,
+    uploadprogress: function (obj) {
+        // console.log('文件总大小: ' + obj.total + 'bytes')
+        // console.log('已经上传的大小: ' + obj.loaded + 'bytes')
+        // console.log('上传进度: ' + obj.percentage)
+        // console.log('上传进度文本: ' + obj.percentageText)
+    },
+    done: function (error, file) {
+      console.log(file, error)
+      // console.log('上传image' + (!error?'成功':'失败'));
+      // let file1 = {
+      //   url: file.url,
+      //   mp3Url: file.url,
+      //   name: file.name,
+      //   size: file.size,
+      //   md5: file.md5,
+      //   ext: file.ext,
+      //   dur: file.dur
+      // }
+      if (!error) {
+        nim.sendFile({
+          scene,
+          to,
+          type: 'audio',
+          file: file,
+          done: function (error, msg) {
+            onSendMsgDone(error, msg)
+          }
+        })
+        // console.log('正在发送p2p image消息, id=' + msg.idClient)
+        // pushMsg(msg)
+      }
+    }
+  })
   // // if (/\.(png|jpg|bmp|jpeg|gif)$/i.test(fileInput.value)) {
   // //   type = 'image'
   // // } else if (/\.(mov|mp4|ogg|webm)$/i.test(fileInput.value)) {
@@ -266,37 +277,37 @@ export function sendAudioMsg({
   //     onSendMsgDone(error, msg)
   //   }
   // })
-  alert('发送音频消息')
-  const nim = state.nim
-  let {
-    scene,
-    to,
-    blob
-  } = obj
-  store.dispatch('showLoading')
-  console.log(nim)
-  nim.sendFile({
-    scene,
-    to,
-    blob,
-    type: 'audio',
-    uploadprogress: function (data) {
-      // console.log(data.percentageText)
-    },
-    uploaderror: function () {
-      console && console.log('上传失败')
-    },
-    uploaddone: function (error, file) {
-      // console.log(error);
-      // console.log(file);
-    },
-    beforesend: function (msg) {
-      // console && console.log('正在发送消息, id=', msg);
-    },
-    done: function (error, msg) {
-      onSendMsgDone(error, msg)
-    }
-  })
+  // alert('发送音频消息')
+  // const nim = state.nim
+  // let {
+  //   scene,
+  //   to,
+  //   blob
+  // } = obj
+  // store.dispatch('showLoading')
+  // console.log(nim)
+  // nim.sendFile({
+  //   scene,
+  //   to,
+  //   blob,
+  //   type: 'audio',
+  //   uploadprogress: function (data) {
+  //     // console.log(data.percentageText)
+  //   },
+  //   uploaderror: function () {
+  //     console && console.log('上传失败')
+  //   },
+  //   uploaddone: function (error, file) {
+  //     // console.log(error);
+  //     // console.log(file);
+  //   },
+  //   beforesend: function (msg) {
+  //     // console && console.log('正在发送消息, id=', msg);
+  //   },
+  //   done: function (error, msg) {
+  //     onSendMsgDone(error, msg)
+  //   }
+  // })
 }
 
 // 发送机器人消息
