@@ -132,11 +132,10 @@ export default {
     },
     methods: {
         messageBox() {
-
         },
         confirm() {
             let that = this;
-            that.$router.push({ path: '/person' });
+            that.$router.push({ path: '/person', query: { type: "user" } });
         },
         cancel() {
             let that = this

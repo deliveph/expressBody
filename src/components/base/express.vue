@@ -4,9 +4,9 @@
             <ul>
                 <li class="courier_message">
                     <div class="photo">
-                        <img :src="service.service_avatar == 'undefined' ? '/static/assets/images/head_def.png' : service.service_avatar" /> 
+                        <img :src="service.service_avatar == 'undefined' ? '/static/assets/images/head_def.png' : service.service_avatar" />
                         <div class="grade">
-                            <grade class="icon_express_1" :src="service.service_level.service_level_logo == undefined ? '/static/assets/images/platform_level/liebing_s1.png' : service.service_level.service_level_logo"></grade>
+                            <grade class="icon_express_1" :src="service_level_logo"></grade>
                         </div>
                     </div>
                 </li>
@@ -18,15 +18,15 @@
         <div class="statistics">
             <ul>
                 <li>
-                    <P class="number">{{ result.today_receive_order_number == undefined ? '0' : result.today_receive_order_number }}</p> 
+                    <P class="number">{{ result.today_receive_order_number == undefined ? '0' : result.today_receive_order_number }}</p>
                     <p>今日接单(个)</p>
                 </li>
                 <li>
-                    <P class="number">{{ result.today_finish_order_number == undefined ? '0' : result.today_finish_order_number }}</p> 
+                    <P class="number">{{ result.today_finish_order_number == undefined ? '0' : result.today_finish_order_number }}</p>
                     <p>今日已完成(个)</p>
                 </li>
                 <li>
-                    <p class="number">{{ result.today_result == undefined ? '0' : result.today_result }}</p> 
+                    <p class="number">{{ result.today_result == undefined ? '0' : result.today_result }}</p>
                     <p>今日赚取(元)</p>
                 </li>
             </ul>
@@ -53,7 +53,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name:'Person',query:{type:'service'}}"> 
+                    <router-link :to="{name:'Person',query:{type:'service'}}">
                         <img src="/static/assets/images/btn_me.png" />
                         <p>我的资料</p>
                     </router-link>
@@ -98,13 +98,17 @@
                     <div v-if="item.express_order_type == 'collection'">
                         <div v-for="(collection,c) in collections" :key="c">
                             <div v-if="item.express_order_number == collection.collection_order_number">
-                                <li class="put" >
+                                <li class="put">
                                     <router-link :to="{path:'repget',query:{ship_order_number:collection.collection_order_number,status:'service'}}">
                                         <i class="icon_put"></i>
                                         <div class="odd">
-                                            <p class="order_number">订单号：<span>{{collection.collection_order_number}}</span></p>
-                                            <p class="express_number">快递单号：<span>{{collection.logistics_code}}</span></p>
-                                            
+                                            <p class="order_number">订单号：
+                                                <span>{{collection.collection_order_number}}</span>
+                                            </p>
+                                            <p class="express_number">快递单号：
+                                                <span>{{collection.logistics_code}}</span>
+                                            </p>
+
                                         </div>
                                         <div class="time">
                                             <p>{{collection.collection_order_create_time}}</p>
@@ -120,7 +124,7 @@
         <div class="no-order" v-else>
             <div class="no-img"></div>
             <p>暂无订单</p>
-        </div>        
+        </div>
         <LayerPw v-if="layerPwhide" v-bind:Info="result" v-on:listenEvent="getInfo"></LayerPw>
     </div>
 </template>
@@ -143,48 +147,50 @@ export default {
     },
     data() {
         return {
-            layerPwhide:true,
-            is_verification:0,
-            data: {}, 
+            layerPwhide: true,
+            is_verification: 0,
+            data: {},
             result: {},
-            service:{},
-            items:[],
-            ships:[],
-            collections:[]
+            service: {},
+            items: [],
+            ships: [],
+            collections: [],
+            service_level_logo: '/static/assets/images/platform_level/liebing_s1.png',
         }
     },
     created() {
         let that = this
         let data = this.$route.query.password
         this.is_verification = this.$route.query.is_verification
-        if(that.is_verification == '1'){
+        if (that.is_verification == '1') {
             that.layerPwhide = false
-            this.http(that.configs.apiTop + "/page/service-home", "get",  '', function(res) { 
-                let msg = res.data 
-                if (msg.code == 0) { 
+            this.http(that.configs.apiTop + "/page/service-home", "get", '', function(res) {
+                let msg = res.data
+                if (msg.code == 0) {
                     that.result = msg.data;
                     that.service = msg.data.service
-                } 
+                    that.service_level_logo = service.service_level.service_level_logo
+                }
             })
             that.orderlist()
-        }else{
+        } else {
             that.layerPwhide = true
         }
     },
-    methods: { 
-        getInfo(result) { 
-            let that = this 
-            this.http(that.configs.apiTop + "/page/service-home", "get",  '', function(res) { 
-                let msg = res.data 
-                if (msg.code == 0) { 
-                    that.$router.push({path:'/service',query:{'is_verification':'1'}})
+    methods: {
+        getInfo(result) {
+            let that = this
+            this.http(that.configs.apiTop + "/page/service-home", "get", '', function(res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                    that.$router.push({ path: '/service', query: { 'is_verification': '1' } })
                     that.result = msg.data;
                     that.service = msg.data.service
-                } 
-            }) 
+                }
+            })
             that.orderlist()
         },
-        orderlist(){
+        orderlist() {
             let that = this
             this.http(that.configs.apiTop + "/order/orders", "get", '', function(res) {
                 let msg = res.data
@@ -192,7 +198,7 @@ export default {
                     let data = msg.data
                     that.items = data.items
                     that.ships = data.ships
-                    that.collections = data.collections                    
+                    that.collections = data.collections
                 } else if (msg.code == 40004) {
                     // location.href = that.configs.accreditUrl
                 } else {
@@ -200,7 +206,7 @@ export default {
                 }
             })
         }
-    } 
+    }
 }
 </script>
 
@@ -223,6 +229,7 @@ export default {
         margin-top: px2rem(40);
     }
 }
+
 .amap-demo {
     height: 300px;
 }
@@ -249,46 +256,46 @@ export default {
             }
         }
     }
-    .service_message{
-        top:px2rem(16);
-        right:px2rem(30);
-        width:px2rem(44);
-        height:px2rem(44);
-        background:url('/static/assets/images/btn_person_news.png') no-repeat center;
-        background-size:px2rem(44);
-        i{}
+    .service_message {
+        top: px2rem(16);
+        right: px2rem(30);
+        width: px2rem(44);
+        height: px2rem(44);
+        background: url('/static/assets/images/btn_person_news.png') no-repeat center;
+        background-size: px2rem(44);
+        i {}
     }
 }
 
-.statistics{
+.statistics {
     height: px2rem(130);
-    background-color:#fff; 
-    ul{
-        display:flex;
-        padding:px2rem(20) px2rem(10);
+    background-color: #fff;
+    ul {
+        display: flex;
+        padding: px2rem(20) px2rem(10);
     }
-    li{
-        flex:1;
+    li {
+        flex: 1;
         text-align: center;
-        border-right:1px solid #f0f2f5;
-        height:px2rem(90);
-        &:last-child{
-            border-right:0;
+        border-right: 1px solid #f0f2f5;
+        height: px2rem(90);
+        &:last-child {
+            border-right: 0;
         }
-        p{
-            font-size:px2rem(28);
+        p {
+            font-size: px2rem(28);
             color: #333;
-            &.number{
+            &.number {
                 font-size: px2rem(30);
-                color:#fd2073;
-                margin-bottom:px2rem(16);
+                color: #fd2073;
+                margin-bottom: px2rem(16);
             }
         }
     }
 }
 
-.entrance_list{
-    background-color:#fff; 
+.entrance_list {
+    background-color: #fff;
 }
 
 .order_list {
@@ -317,8 +324,8 @@ export default {
         padding: px2rem(20) px2rem(20) px2rem(10);
         border-radius: px2rem(10);
         box-shadow: 0px px2rem(4) px2rem(16) rgba(164, 164, 164, .17);
-        a{
-            width:100%;
+        a {
+            width: 100%;
         }
         i {
             width: px2rem(52);
@@ -379,17 +386,15 @@ export default {
             color: #999;
             margin-top: px2rem(20)
         }
-        .time{
+        .time {
             font-size: px2rem(28);
             color: #999;
             height: px2rem(80);
             line-height: px2rem(80);
-            border-top:1px solid #e5e5e5;
-            padding-left:px2rem(72);
-            margin-top:px2rem(40);
-            p{
-                
-            }
+            border-top: 1px solid #e5e5e5;
+            padding-left: px2rem(72);
+            margin-top: px2rem(40);
+            p {}
         }
     }
 }
