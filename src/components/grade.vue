@@ -1,12 +1,11 @@
 <template>
-    <div class="grade_img">
-    </div>
+    <img class="grade_img">
 </template>
 
 <script>
 export default {
-    data(){
-        return{
+    data() {
+        return {
 
         }
     }
@@ -14,5 +13,5 @@ export default {
 </script>
 
 <style lang="scss" scoped >
-    @import '../../static/assets/css/public.scss';
+@import '../../static/assets/css/public.scss';
 </style>

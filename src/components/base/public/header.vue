@@ -5,11 +5,11 @@
             <i></i>
         </router-link>
         <ul>
-            <li class="user_message" >
+            <li class="user_message">
                 <div class="photo">
                     <img v-bind:src="user_avatar" />
                     <div class="grade">
-                        <grade class="icon_user_1"></grade>
+                        <grade class="icon_user_1" :src="user_level_logo"></grade>
                     </div>
                 </div>
                 <h3 class="name">{{user_nickname}}</h3>
@@ -18,12 +18,11 @@
                     <span>{{user_balance}}</span>
                     <i class="icon_bean"></i>
                 </p>
-                
             </li>
-             <!-- v-if="express" -->
+            <!-- v-if="express" -->
             <li class="courier_message">
                 <h4 class="identify">您的专属快递哥</h4>
-                <router-link  :to="{path:'/chat/p2p-service_'+service_id }" >
+                <router-link :to="{path:'/chat/p2p-service_'+service_id }">
                     <div class="photo">
                         <img :src="service_avatar" />
                         <div class="grade">
@@ -46,23 +45,23 @@
 
 <script>
 import Grade from '../../../components/grade'
-import {mapActions,mapState,mapGetters} from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
-    props:['headerObject'],
+    props: ['headerObject'],
     data() {
         return {
             token: '',
             userid: '',
             express: false,
-            user_avatar:'/static/assets/images/head_def.png',
-            user_nickname:'共享快递哥',
-            service_avatar:'/static/assets/images/head_def.png',
-            service_nickname:'共享快递哥',
-            user_balance:'0',
-            service_tel:'',
-            user_level_logo:'/static/assets/images/user_level/icon_1_shaowei.png',
-            service_level_logo:'/static/assets/images/platform_level/liebing_s1.png',
-            service_id:''
+            user_avatar: '/static/assets/images/head_def.png',
+            user_nickname: '共享快递哥',
+            service_avatar: '/static/assets/images/head_def.png',
+            service_nickname: '共享快递哥',
+            user_balance: '0',
+            service_tel: '',
+            user_level_logo: '/static/assets/images/user_level/icon_1_shaowei.png',
+            service_level_logo: '/static/assets/images/platform_level/liebing_s1.png',
+            service_id: ''
         }
     },
     components: {
@@ -75,18 +74,18 @@ export default {
         ])
     },
     watch: {
-        position(oldVal,newVal) {},
-        headerObject(){
+        position(oldVal, newVal) { },
+        headerObject() {
             let that = this
             let user = that.headerObject.user
             let service = that.headerObject.service
             let service1 = JSON.stringify(service)
-            that.userid =  user.user_id
+            that.userid = user.user_id
             that.user_avatar = user.user_avatar
-            that.user_nickname = user.user_nickname 
-            that.user_balance  = user.user_balance
+            that.user_nickname = user.user_nickname
+            that.user_balance = user.user_balance
             that.user_level_logo = user.user_level.user_level_logo
-            if(service1 != '{}'){
+            if (service1 != '{}') {
                 that.express = true
                 that.service_id = service.service_id
                 that.service_avatar = service.service_avatar
@@ -102,7 +101,7 @@ export default {
     },
     methods: {
         tel(msg) {
-            window.location.href="tel:"+msg
+            window.location.href = "tel:" + msg
         }
     }
 }

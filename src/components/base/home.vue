@@ -76,7 +76,7 @@
                             </div>
                         </div>
                     </div>
-                </div>    
+                </div>
             </div>
         </div>
         <draggable></draggable>
@@ -89,37 +89,37 @@ import Banner from '../base/public/banner'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import VueAMap from 'vue-amap'
 import { Toast } from 'vux'
-import qs  from 'qs'
+import qs from 'qs'
 import draggable from '..//base/public/draggable'
 let map
 export default {
-    data(){
+    data() {
         let self = this
         return {
-          center: [121.59996, 31.197646],
-          lng: 0,
-          lat: 0,
-          loaded: false,
-          service:[],
-          user:[],
-          carousels:[],
-          dataobject:[],
-          result:[],
-          is_perfect:false,
-          plugin: [{
-            pName: 'Geolocation',
-            events: {
-              init(o) {
-                // o 是高德地图定位插件实例
-                o.getCurrentPosition((status, result) => {
-                    self.result = result
-                    if (result && result.position) {
-                        self.reportUserLocation()
+            center: [121.59996, 31.197646],
+            lng: 0,
+            lat: 0,
+            loaded: false,
+            service: [],
+            user: [],
+            carousels: [],
+            dataobject: [],
+            result: [],
+            is_perfect: false,
+            plugin: [{
+                pName: 'Geolocation',
+                events: {
+                    init(o) {
+                        // o 是高德地图定位插件实例
+                        o.getCurrentPosition((status, result) => {
+                            self.result = result
+                            if (result && result.position) {
+                                self.reportUserLocation()
+                            }
+                        });
                     }
-                });
-              }
-            }
-          }]
+                }
+            }]
         };
     },
     components: {
@@ -136,23 +136,23 @@ export default {
         },
         confirm() {
             let that = this;
-            that.$router.push({path: '/person'}); 
+            that.$router.push({ path: '/person' });
         },
-        cancel(){
+        cancel() {
             let that = this
             that.$parent.layerhide = false
             that.wx.closeWindow()
         },
-        reportUserLocation(){
+        reportUserLocation() {
             let that = this
             let data = qs.stringify({
-                'province_region_name':that.result.addressComponent.province,
-                'city_region_name':that.result.addressComponent.city,
-                'district_region_name':that.result.addressComponent.district,
-                'community_region_name':that.result.addressComponent.township,
-                'full_address':that.result.formattedAddress,
-                'latitude':that.result.position.lng,
-                'longitude':that.result.province.lat
+                'province_region_name': that.result.addressComponent.province,
+                'city_region_name': that.result.addressComponent.city,
+                'district_region_name': that.result.addressComponent.district,
+                'community_region_name': that.result.addressComponent.township,
+                'full_address': that.result.formattedAddress,
+                'latitude': that.result.position.lng,
+                'longitude': that.result.province.lat
             })
             this.http(that.configs.apiTop + "/user/report-user-location", "post", data, function(res) {
                 let msg = res.data
@@ -166,15 +166,15 @@ export default {
         }
     },
     computed: {
-        
+
     },
     created() {
         let that = this
         let is_perfect = this.$route.query.is_perfect
         this.$weChat()
-        if( is_perfect == 0 ){
+        if (is_perfect == 0) {
             that.is_perfect = true
-        }else{
+        } else {
             that.is_perfect = false
         }
         this.http(that.configs.apiTop + "/page/user-home", "get", '', function(res) {
@@ -196,74 +196,76 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../static/assets/css/px2rem.scss';
-    @import '../../../static/assets/css/home.scss';
-    
-    .layer_warp{
+@import '../../../static/assets/css/px2rem.scss';
+@import '../../../static/assets/css/home.scss';
+
+.layer_warp {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    .layer_table {
         width: 100%;
         height: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 10;
-        .layer_table{
-            width: 100%;
-            height: 100%;
-            display: table;
-            text-align: center;
-        }
-        .layer_table_cell{
-            display: table-cell;
-            vertical-align: middle;
-        }
-        .layer_box{
-            width:px2rem(600);
-            // height: px2rem(460);
-            background-color: #fff;
-            display: inline-block;
-            border-radius:px2rem(10);
-        }
-        .layer_title{
-            font-size:px2rem(30);
-            color:#fff;
-            height:px2rem(88);
-            line-height:px2rem(88);
-            background-color:#366931;
-            border-top-left-radius: px2rem(10);
-            border-top-right-radius: px2rem(10);
-        }
-        .layer_container{
-            
-        }
-        .layer_footer{
-            height:px2rem(90);
-            border-top:1px solid #e0e0e0;
-            display:flex;
-            line-height:px2rem(90);
-        }
-        .layer_footer_cancel,.layer_footer_confirm,.layer_footer_cancel button,.layer_footer_confirm button{
-            flex:1;
-            border-right:1px solid #e0e0e0;
-            text-align: center;
-            font-size:px2rem(34);
-            color:#007aff;
-        }
-        .layer_footer button{
-            width: 100%;
-            height: px2rem(90);
-        }
-        .layer_footer_confirm,.layer_footer_cancel button,.layer_footer_confirm button{
-            border-right:0
-        }
+        display: table;
+        text-align: center;
     }
+    .layer_table_cell {
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .layer_box {
+        width: px2rem(600); // height: px2rem(460);
+        background-color: #fff;
+        display: inline-block;
+        border-radius: px2rem(10);
+    }
+    .layer_title {
+        font-size: px2rem(30);
+        color: #fff;
+        height: px2rem(88);
+        line-height: px2rem(88);
+        background-color: #366931;
+        border-top-left-radius: px2rem(10);
+        border-top-right-radius: px2rem(10);
+    }
+    .layer_container {}
+    .layer_footer {
+        height: px2rem(90);
+        border-top: 1px solid #e0e0e0;
+        display: flex;
+        line-height: px2rem(90);
+    }
+    .layer_footer_cancel,
+    .layer_footer_confirm,
+    .layer_footer_cancel button,
+    .layer_footer_confirm button {
+        flex: 1;
+        border-right: 1px solid #e0e0e0;
+        text-align: center;
+        font-size: px2rem(34);
+        color: #007aff;
+    }
+    .layer_footer button {
+        width: 100%;
+        height: px2rem(90);
+    }
+    .layer_footer_confirm,
+    .layer_footer_cancel button,
+    .layer_footer_confirm button {
+        border-right: 0
+    }
+}
 
-    .message_box{
-        padding:px2rem(40) px2rem(66) px2rem(36);
-        p{
-            font-size:px2rem(34);
-            color:#333;
-            line-height: px2rem(50);
-        }
+.message_box {
+    padding: px2rem(40) px2rem(66) px2rem(36);
+    p {
+        font-size: px2rem(34);
+        color: #333;
+        line-height: px2rem(50);
     }
+}
 </style>

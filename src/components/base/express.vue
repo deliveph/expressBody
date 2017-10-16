@@ -6,7 +6,7 @@
                     <div class="photo">
                         <img :src="service.service_avatar == 'undefined' ? '/static/assets/images/head_def.png' : service.service_avatar" /> 
                         <div class="grade">
-                            <grade class="icon_express_1"></grade>
+                            <grade class="icon_express_1" :src="service.service_level.service_level_logo == undefined ? '/static/assets/images/platform_level/liebing_s1.png' : service.service_level.service_level_logo"></grade>
                         </div>
                     </div>
                 </li>
