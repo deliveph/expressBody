@@ -5,7 +5,7 @@
                 <i class="atonce" v-if="items.collection_order_type_id == 1"></i>
                 <i class="subscribe" v-else></i>
                 <p>下单时间：
-                    <span class="ft-red">{{items.collection_order_create_time_f}}</span>
+                    <span class="ft-red">{{items.collection_order_create_time}}</span>
                 </p>
             </div>
             <div class="order-box">
@@ -58,7 +58,12 @@
                 </div>
                 <div class="order-list-item">
                     <p>送件时间：
-                        <span>{{items.delivery_start_time_f}} ~ {{items.delivery_end_time_f}}</span>
+                        <span>{{items.delivery_start_time}}~{{items.delivery_end_time}}</span>
+                    </p>
+                </div>
+                <div class="order-list-item" v-if="items.collection_order_type_id == 2">
+                    <p>预约收件时间：
+                        <span>{{items.estimate_collection_start_time}}~{{items.estimate_collection_start_time}}</span>
                     </p>
                 </div>
                 <div class="order-list-item">
@@ -74,53 +79,53 @@
                 </div>
                 <div class="order-list-item" v-if="items.collection_order_status_id >= 5">
                     <p>实付金额：
-                        <span class="ft-red">{{items.order_fee}}快递豆</span>
+                        <span class="ft-red">{{items.accrued_fee}}快递豆</span>
                     </p>
                 </div>
                 <!--已完成-->
                 <div class="order-list-item" v-if="items.collection_order_status_id >= 6 && status == 'user'">
                     <p>评价结果：
-                        <ul class="start-icon" v-if="items.service_score == '0.00'">
-                            <li class=""></li>
-                            <li class=""></li>
-                            <li class=""></li>
-                            <li class=""></li>
-                            <li></li>
+                        <ul class="start-icon" v-if="items.service_score >= 5">
+                            <li class="sel"></li>
+                            <li class="sel"></li>
+                            <li class="sel"></li>
+                            <li class="sel"></li>
+                            <li class="sel"></li>
                         </ul>
-                        <ul class="start-icon" v-else-if="items.service_score == '1.00'">
-                            <li class="sel"></li>
-                            <li class=""></li>
-                            <li class=""></li>
-                            <li class=""></li>
-                            <li></li>
-                        </ul>
-                        <ul class="start-icon" v-else-if="items.service_score == '2.00'">
-                            <li class="sel"></li>
-                            <li class="sel"></li>
-                            <li class=""></li>
-                            <li class=""></li>
-                            <li></li>
-                        </ul>
-                        <ul class="start-icon" v-else-if="items.service_score == '3.00'">
-                            <li class="sel"></li>
-                            <li class="sel"></li>
-                            <li class="sel"></li>
-                            <li class=""></li>
-                            <li></li>
-                        </ul>
-                        <ul class="start-icon" v-else-if="items.service_score == '4.00'">
+                        <ul class="start-icon" v-else-if="items.service_score >= 4">
                             <li class="sel"></li>
                             <li class="sel"></li>
                             <li class="sel"></li>
                             <li class="sel"></li>
                             <li></li>
                         </ul>
-                        <ul class="start-icon" v-else-if="items.service_score == '5.00'">
+                        <ul class="start-icon" v-else-if="items.service_score >= 3">
                             <li class="sel"></li>
                             <li class="sel"></li>
                             <li class="sel"></li>
+                            <li class=""></li>
+                            <li></li>
+                        </ul>
+                        <ul class="start-icon" v-else-if="items.service_score >= 2">
                             <li class="sel"></li>
                             <li class="sel"></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li></li>
+                        </ul>
+                        <ul class="start-icon" v-else-if="items.service_score >= 1">
+                            <li class="sel"></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li></li>
+                        </ul>
+                        <ul class="start-icon" v-else-if="items.service_score >= 0">
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li></li>
                         </ul>
                     </p>
                 </div>
@@ -142,7 +147,6 @@
 
         </div>
 
-
         <!-- 用户信息 -->
         <div class="layer_warp layer_user_message" v-if="layerSend">
             <div class="layer_table">
@@ -154,8 +158,10 @@
                                     <img v-bind:src="items.user_avatar" />
                                 </div>
                                 <p class="name">{{items.user_name}}</p>
-                                <p><span>电话：</span>{{items.user_phone}}</p>
-                                <p><span>地址：</span>{{items.user_addr}}</p>
+                                <p>
+                                    <span>电话：</span>{{items.user_phone}}</p>
+                                <p>
+                                    <span>地址：</span>{{items.user_addr}}</p>
                             </div>
                         </div>
                         <div class="layer_footer">
@@ -178,12 +184,12 @@ export default {
             collection_order_number: '',
             items: [],
             status: '',
-            layerSend:false
+            layerSend: false
         }
     },
     created() {
         let that = this
-        that.collection_order_number = this.$route.query.ship_order_number
+        that.collection_order_number = this.$route.query.collection_order_number
         that.status = this.$route.query.status
         this.http(that.configs.apiTop + "/order/collection-order-detail/" + that.collection_order_number, "get", '', function(res) {
             let msg = res.data
@@ -207,13 +213,13 @@ export default {
             let that = this
             let collection_order_type_id = that.items.collection_order_type_id
             let index = ''
-            if(collection_order_type_id == 1){
+            if (collection_order_type_id == 1) {
                 index = 0
-            }else if(collection_order_type_id == 2){
+            } else if (collection_order_type_id == 2) {
                 index = 1
             }
             if (order_number != '') {
-                this.$router.push({ name: 'Collection', query: { collection_order_number: order_number,index:index}})
+                this.$router.push({ name: 'Collection', query: { collection_order_number: order_number, index: index } })
             } else {
                 this.$router.push({ name: 'Collection' })
             }
@@ -306,11 +312,11 @@ export default {
                 }
             })
         },
-        sendMessage(){
+        sendMessage() {
             let that = this
-            this.$router.push({path:'/chat/p2p-user_'+that.items.user_id})
+            this.$router.push({ path: '/chat/p2p-user_' + that.items.user_id })
         },
-        layerSendFun(){
+        layerSendFun() {
             let that = this
             this.layerSend = true
         }
@@ -377,44 +383,43 @@ export default {
     }
 }
 
-.layer_warp{
+.layer_warp {
     &.layer_user_message {
-        .message_main{
+        .message_main {
             padding: px2rem(40) px2rem(66) px2rem(76);
             text-align: center;
-            .img{
-                width:px2rem(124);
+            .img {
+                width: px2rem(124);
                 height: px2rem(124);
-                border-radius:50%;
-                background-color:rgba(58,105,49,0.34);
-                margin:0 auto;
-                img{
-                    width:px2rem(114);
-                    height:px2rem(114);
-                    border-radius:50%;
+                border-radius: 50%;
+                background-color: rgba(58, 105, 49, 0.34);
+                margin: 0 auto;
+                img {
+                    width: px2rem(114);
+                    height: px2rem(114);
+                    border-radius: 50%;
                     vertical-align: middle;
-                } 
+                }
             }
-            p{
-                font-size:px2rem(28);
-                color:#999;
-                margin-bottom:px2rem(18);
-                &.name{
-                    font-size:px2rem(30);
-                    color:#333;
-                    margin:px2rem(20) 0;
+            p {
+                font-size: px2rem(28);
+                color: #999;
+                margin-bottom: px2rem(18);
+                &.name {
+                    font-size: px2rem(30);
+                    color: #333;
+                    margin: px2rem(20) 0;
                 }
             }
         }
-        .layer_footer_cancel{
-            border:0;
+        .layer_footer_cancel {
+            border: 0;
         }
         button {
             width: 100%;
-            height:100%;
+            height: 100%;
             font-size: px2rem(24);
-            color: #fff;
-            // line-height: px2rem(70);
+            color: #fff; // line-height: px2rem(70);
             border-bottom-right-radius: 0.05rem;
             border-bottom-left-radius: 0.05rem;
             border: 0;
@@ -422,5 +427,4 @@ export default {
         }
     }
 }
-
 </style>

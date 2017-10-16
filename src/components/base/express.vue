@@ -99,7 +99,7 @@
                         <div v-for="(collection,c) in collections" :key="c">
                             <div v-if="item.express_order_number == collection.collection_order_number">
                                 <li class="put">
-                                    <router-link :to="{path:'repget',query:{ship_order_number:collection.collection_order_number,status:'service'}}">
+                                    <router-link :to="{path:'repget',query:{collection_order_number:collection.collection_order_number,status:'service'}}">
                                         <i class="icon_put"></i>
                                         <div class="odd">
                                             <p class="order_number">订单号：

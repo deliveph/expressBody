@@ -4,9 +4,9 @@
             <div class="order-box">
                 <div class="order-list-item">
                     <p>下单时间：
-                        <span class="ft-red">{{items.ship_order_create_time_f}}</span>
+                        <span class="ft-red">{{items.ship_order_create_time}}</span>
                     </p>
-                    <p class="nickname" v-if="status == 'service'" @click="layerSendFun" ><img :src="items.user_avatar" />
+                    <p class="nickname" v-if="status == 'service'" @click="layerSendFun"><img :src="items.user_avatar" />
                         <span>{{items.user_nickname}}</span>
                     </p>
                 </div>
@@ -38,7 +38,6 @@
                     </p>
                 </div>
                 <div class="order-list-item">
-
                     <p>订单状态：
                         <span class="ft-red" v-if="items.ship_order_status_id == -1">已取消</span>
                         <span class="ft-red" v-else-if="items.ship_order_status_id == 1">待接单</span>
@@ -65,7 +64,7 @@
                 </div>
                 <div class="order-list-item">
                     <p>取件时间：
-                        <span>{{items.take_start_time_f}}~{{items.take_end_time_f}}</span>
+                        <span>{{items.take_start_time}}~{{items.take_end_time}}</span>
                     </p>
                 </div>
                 <div class="order-list-item">
@@ -76,10 +75,11 @@
             </div>
             <div class="order-box">
                 <!--待评价-->
-                <div class="order-list-item" v-if="items.ship_order_status_id >= 3 && status == 'user' || items.ship_order_status_id >= 3 && status == 'service'">
+                <div class="order-list-item" v-if="(items.ship_order_status_id >= 3 && status == 'user') || (items.ship_order_status_id >= 3 && status == 'service')">
                     <p>快递单号：
                         <span class="ft-blue">{{items.logistics_company_name}}
-                            <router-link :to="{path:'/result',query:{code:items.logistics_code}}">{{items.logistics_code}}</router-link>
+                            <router-link :to="{path:'/result',query:{code:items.logistics_code}}" v-if="items.logistics_code != '0'">{{items.logistics_code}}</router-link>
+                            <router-link to="" href="javascript:;" v-else>--</router-link>
                         </span>
                     </p>
                 </div>
@@ -96,47 +96,47 @@
                 <!--已完成-->
                 <div class="order-list-item" v-if="items.ship_order_status_id >= 5 && status == 'user'">
                     <p>评价结果：
-                        <ul class="start-icon" v-if="items.service_score == '0.00'">
-                            <li class=""></li>
-                            <li class=""></li>
-                            <li class=""></li>
-                            <li class=""></li>
-                            <li></li>
+                        <ul class="start-icon" v-if="items.service_score >= 5">
+                            <li class="sel"></li>
+                            <li class="sel"></li>
+                            <li class="sel"></li>
+                            <li class="sel"></li>
+                            <li class="sel"></li>
                         </ul>
-                        <ul class="start-icon" v-else-if="items.service_score == '1.00'">
-                            <li class="sel"></li>
-                            <li class=""></li>
-                            <li class=""></li>
-                            <li class=""></li>
-                            <li></li>
-                        </ul>
-                        <ul class="start-icon" v-else-if="items.service_score == '2.00'">
-                            <li class="sel"></li>
-                            <li class="sel"></li>
-                            <li class=""></li>
-                            <li class=""></li>
-                            <li></li>
-                        </ul>
-                        <ul class="start-icon" v-else-if="items.service_score == '3.00'">
-                            <li class="sel"></li>
-                            <li class="sel"></li>
-                            <li class="sel"></li>
-                            <li class=""></li>
-                            <li></li>
-                        </ul>
-                        <ul class="start-icon" v-else-if="items.service_score == '4.00'">
+                        <ul class="start-icon" v-else-if="items.service_score >= 4">
                             <li class="sel"></li>
                             <li class="sel"></li>
                             <li class="sel"></li>
                             <li class="sel"></li>
                             <li></li>
                         </ul>
-                        <ul class="start-icon" v-else-if="items.service_score == '5.00'">
+                        <ul class="start-icon" v-else-if="items.service_score >= 3">
                             <li class="sel"></li>
                             <li class="sel"></li>
                             <li class="sel"></li>
+                            <li class=""></li>
+                            <li></li>
+                        </ul>
+                        <ul class="start-icon" v-else-if="items.service_score >= 2">
                             <li class="sel"></li>
                             <li class="sel"></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li></li>
+                        </ul>
+                        <ul class="start-icon" v-else-if="items.service_score >= 1">
+                            <li class="sel"></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li></li>
+                        </ul>
+                        <ul class="start-icon" v-else-if="items.service_score >= 0">
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li class=""></li>
+                            <li></li>
                         </ul>
                     </p>
                 </div>
@@ -191,7 +191,6 @@
             </div>
         </div>
 
-
         <!-- 用户信息 -->
         <div class="layer_warp layer_user_message" v-if="layerSend">
             <div class="layer_table">
@@ -203,8 +202,10 @@
                                     <img v-bind:src="items.user_avatar" />
                                 </div>
                                 <p class="name">{{items.user_name}}</p>
-                                <p><span>电话：</span>{{items.user_phone}}</p>
-                                <p><span>地址：</span>{{items.shipper_full_address}}</p>
+                                <p>
+                                    <span>电话：</span>{{items.user_phone}}</p>
+                                <p>
+                                    <span>地址：</span>{{items.shipper_full_address}}</p>
                             </div>
                         </div>
                         <div class="layer_footer">
@@ -229,7 +230,7 @@ export default {
             ship_order_number: '',
             status: '',
             writelayerStorey: false,
-            layerSend:false,
+            layerSend: false,
             company: '',
             code: '',
             title1: '',
@@ -421,11 +422,11 @@ export default {
         onChangeOfLogisticsCompanies(values) {
             this.company = values[0]
         },
-        sendMessage(){
+        sendMessage() {
             let that = this
-            this.$router.push({path:'/chat/p2p-user_'+that.items.user_id})
+            this.$router.push({ path: '/chat/p2p-user_' + that.items.user_id })
         },
-        layerSendFun(){
+        layerSendFun() {
             let that = this
             this.layerSend = true
         }
@@ -556,112 +557,109 @@ export default {
         }
     }
 
-    .layer_writeOrder{
-        .register_box{
-            padding:px2rem(40) px2rem(66) px2rem(76);
-            input{
-                font-size:px2rem(24);
-                color:#cacaca;
-                width:100%;
-                height:px2rem(50);
-                line-height:px2rem(50);
-                padding:px2rem(10);
-                border:1px solid #dddddd;
-                border-radius:px2rem(10);
+    .layer_writeOrder {
+        .register_box {
+            padding: px2rem(40) px2rem(66) px2rem(76);
+            input {
+                font-size: px2rem(24);
+                color: #cacaca;
+                width: 100%;
+                height: px2rem(50);
+                line-height: px2rem(50);
+                padding: px2rem(10);
+                border: 1px solid #dddddd;
+                border-radius: px2rem(10);
             }
-            button{
-                width:px2rem(142);
-                height:px2rem(70);
-                font-size:px2rem(24);
-                color:#fff;
-                line-height:px2rem(70);
-                border-radius:px2rem(10);
-                margin-left:px2rem(20);
-                border:0;
+            button {
+                width: px2rem(142);
+                height: px2rem(70);
+                font-size: px2rem(24);
+                color: #fff;
+                line-height: px2rem(70);
+                border-radius: px2rem(10);
+                margin-left: px2rem(20);
+                border: 0;
                 background-color: #afc3ad;
-                &.action{
+                &.action {
                     background-color: #366931;
                 }
-
             }
-            .phone_number{
-                display:flex;
-                margin-bottom:px2rem(30);
-                height:px2rem(50);
-                line-height:px2rem(50);
-                padding:px2rem(10);
-                border:1px solid #dddddd;
-                border-radius:px2rem(10);
-                input{
-                    flex:0;
-                    width:px2rem(270);
+            .phone_number {
+                display: flex;
+                margin-bottom: px2rem(30);
+                height: px2rem(50);
+                line-height: px2rem(50);
+                padding: px2rem(10);
+                border: 1px solid #dddddd;
+                border-radius: px2rem(10);
+                input {
+                    flex: 0;
+                    width: px2rem(270);
                 }
-                button{
-                }
+                button {}
             }
-            .phone_code{
-                input{
-                    width:95%;
+            .phone_code {
+                input {
+                    width: 95%;
                     -webkit-appearance: none;
                 }
             }
         }
-        .vux-cell-box{
-            width:100%;
-            &:before{
-                border-top:0
+        .vux-cell-box {
+            width: 100%;
+            &:before {
+                border-top: 0
             }
-            .weui-cell{
-                padding:0
+            .weui-cell {
+                padding: 0
             }
-            .vux-popup-picker-select{
+            .vux-popup-picker-select {
                 text-align: left !important;
             }
-        }   
+        }
     }
 }
 
 
-.layer_warp{
+.layer_warp {
     &.layer_user_message {
-        .message_main{
+        .message_main {
             padding: px2rem(40) px2rem(66) px2rem(76);
             text-align: center;
-            .img{
-                width:px2rem(124);
+            .img {
+                width: px2rem(124);
                 height: px2rem(124);
-                line-height:px2rem(124);
-                border-radius:50%;
-                background-color:rgba(58,105,49,0.34);
-                margin:0 auto;
-                img{
-                    width:px2rem(114);
-                    height:px2rem(114);
-                    border-radius:50%;
+                line-height: px2rem(124);
+                border-radius: 50%;
+                background-color: rgba(58, 105, 49, 0.34);
+                margin: 0 auto;
+                img {
+                    width: px2rem(114);
+                    height: px2rem(114);
+                    border-radius: 50%;
                     vertical-align: top;
-                    margin-top:px2rem(6)
-                } 
+                    margin-top: px2rem(6)
+                }
             }
-            p{
-                font-size:px2rem(28);
-                color:#999;
-                margin-bottom:px2rem(18);
-                &.name{
-                    font-size:px2rem(30);
-                    color:#333;
-                    margin:px2rem(20) 0;
+            p {
+                font-size: px2rem(28);
+                color: #999;
+                margin-bottom: px2rem(18);
+                &.name {
+                    font-size: px2rem(30);
+                    color: #333;
+                    margin: px2rem(20) 0;
                 }
             }
         }
-        .layer_footer_cancel{
-            border:0;
+        .layer_footer_cancel {
+            border: 0;
         }
         button {
             width: 100%;
-            height:100%;
+            height: 100%;
             font-size: px2rem(24);
-            color: #fff;
-            // line-height: px2rem(70);
+            color: #fff; // line-height: px2rem(70);
             border-bottom-right-radius: 0.05rem;
             border-bottom-left-radius: 0.05rem;
             border: 0;

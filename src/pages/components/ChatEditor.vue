@@ -329,7 +329,7 @@ export default {
     this.$weChat()
     console.log(this.$store.state.nim, "###")
     window.nim.getUser({
-      account: 'service_10004',
+      account: 'user_10046',
       done: function (error, user) {
         console.log(error);
         console.log(user);
