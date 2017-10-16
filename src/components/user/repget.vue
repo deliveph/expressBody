@@ -13,7 +13,7 @@
                     <p>订单编号：
                         <span>{{items.collection_order_number}}</span>
                     </p>
-                    <p class="nickname" v-if="status == 'service'" @click="layerSend">
+                    <p class="nickname" v-if="status == 'service'" @click="layerSendFun">
                         <img :src="items.user_avatar" />
                         <span>{{items.user_nickname}}</span>
                     </p>
@@ -205,12 +205,18 @@ export default {
         // 用户编辑订单
         editerorder(order_number) {
             let that = this
-            if (!order_number) {
-                this.$router.push({ name: 'Collection', query: { ship_order_number: order_number } })
+            let collection_order_type_id = that.items.collection_order_type_id
+            let index = ''
+            if(collection_order_type_id == 1){
+                index = 0
+            }else if(collection_order_type_id == 2){
+                index = 1
+            }
+            if (order_number != '') {
+                this.$router.push({ name: 'Collection', query: { collection_order_number: order_number,index:index}})
             } else {
                 this.$router.push({ name: 'Collection' })
             }
-
         },
         // 用户取消订单
         cancel(collection_order_number) {
@@ -302,9 +308,9 @@ export default {
         },
         sendMessage(){
             let that = this
-            this.$router.push({path:'/chat/'})
+            this.$router.push({path:'/chat/p2p-user_'+that.items.user_id})
         },
-        layerSend(){
+        layerSendFun(){
             let that = this
             this.layerSend = true
         }

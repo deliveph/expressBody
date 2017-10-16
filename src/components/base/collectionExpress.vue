@@ -149,6 +149,8 @@ export default {
                     return `${value}`
                 }
             },
+
+            collection_order_number:'',
             // 即时收件
             realCode: '',
             realExpressPhone: '',
@@ -266,11 +268,13 @@ export default {
         defaultMsg() {
             let that = this
             let stage = that.stage
+            let current_service = stage.current_service
+            console.log(current_service)
             if (!that.defaultFalse) {
                 if (stage.current_service != '') {
                     that.defaultFalse = true
-                    that.realName = stage.current_service.service_nickname
-                    that.realPhone = stage.current_service.service_phone
+                    that.realName = current_service.service_nickname
+                    that.realPhone = current_service.service_phone
                     that.realAddress = stage.stage_full_address
                 }
             } else {
@@ -283,11 +287,13 @@ export default {
         defaultMsg1() {
             let that = this
             let stage = that.stage
+            let current_service = stage.current_service
+            console.log(current_service)
             if (that.defaultFalse1) {
                 if (stage.current_service != '') {
                     that.defaultFalse1 = true
-                    that.reservationName = stage.current_service.service_nickname
-                    that.reservationPhone = stage.current_service.service_phone
+                    that.reservationName = current_service.service_nickname
+                    that.reservationPhone = current_service.service_phone
                     that.reservationAddress = stage.stage_full_address
                 }
             } else {
@@ -483,23 +489,60 @@ export default {
         }
     },
     created() {
-        console.log("###333")
         let that = this
-        this.http(that.configs.apiTop + "/page/user-collection", "get", '', function(res) {
-            let msg = res.data
-            if (msg.code == 0) {
-                that.items = msg.data
-                that.stage = msg.data.stage
-                that.service_time = msg.data.service_time.start_time + '-' + msg.data.service_time.end_time
-                that.begin = msg.data.service_time.start_time
-                that.end = msg.data.service_time.end_time
-                //时间段
-                that.formattedTimeInit()
-            } else if (msg.code == 40004) {
-            } else {
-                that.$vux.toast.text(msg.message, 'middle', 100);
-            }
-        })
+        that.collection_order_number = that.$route.query.collection_order_number
+        that.index = that.$route.query.index
+        if(collection_order_number != ''){
+            this.http(that.configs.apiTop + "/order/collection-order-detail/"+that.collection_order_number, "get", '', function(res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                    let data = msg.data
+                    // 即时收件
+                    if(that.index == 0){
+                        that.realCode = parseInt(data.logistics_code)
+                        that.realExpressPhone = parseInt(data.courier_phone)
+                        that.realLogisticFee = data.collection_logistics_fee
+                        that.realName = data.consignee_name
+                        that.realPhone = data.consignee_phone
+                        that.realAddress = data.consignee_address
+                    }else if(that.index == 1){
+                        // 预约收件
+                        that.reservationCode = parseInt(data.logistics_code)
+                        that.reservationExpressPhone = parseInt(data.courier_phone)
+                        that.realLogisticFee = data.reservationLogisticFee
+                        that.reservationName = data.consignee_name
+                        that.reservationPhone = data.consignee_phone
+                        that.reservationAddress = data.consignee_address
+                    }else{
+                        that.items = msg.data
+                        that.stage = msg.data.stage
+                        that.service_time = msg.data.service_time.start_time + '-' + msg.data.service_time.end_time
+                        that.begin = msg.data.service_time.start_time
+                        that.end = msg.data.service_time.end_time
+                    }                    
+                } else if (msg.code == 40004) {
+                } else {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                }
+            })
+        }else{
+            this.http(that.configs.apiTop + "/page/user-collection", "get", '', function(res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                    that.items = msg.data
+                    that.stage = msg.data.stage
+                    that.service_time = msg.data.service_time.start_time + '-' + msg.data.service_time.end_time
+                    that.begin = msg.data.service_time.start_time
+                    that.end = msg.data.service_time.end_time
+                    //时间段
+                    that.formattedTimeInit()
+                } else if (msg.code == 40004) {
+                } else {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                }
+            })
+        }
+        
     }
 }
 </script>

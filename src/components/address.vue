@@ -89,7 +89,7 @@ export default {
                     'shipper_detail_address':that.address,
                     'is_default_shipper_address':that.is_default_shipper_address,
                 })
-                if(that.id){
+                if(that.id != ''){
                     this.http(that.configs.apiTop + "/address/edit-shipper-address/"+that.id, "post", data, function (res) {
                             let msg = res.data
                             if(msg.code == 0){
@@ -166,14 +166,16 @@ export default {
    created(){
        let that = this
        let id = this.$route.params.attribute;
-       that.id = id;
+       if(parseInt(id)== id){
+           that.id = id
+       }
+       
         // index 0 寄件人 1 收件人   
        that.index = this.$route.query.type;
-
        console.log(that.index,that.id)
        if(that.index == 0){
            that.nameLabel = '寄件人'
-           if(that.id){
+           if(that.id != ''){
                console.log(123)
                 this.http(that.configs.apiTop + "/address/shipper-address-detail/"+that.id, "get", '', function (res) {
                     let msg = res.data
@@ -201,7 +203,7 @@ export default {
             }
        }else{
            that.nameLabel = '收件人'
-           if(that.id){
+           if(that.id != ""){
                 this.http(that.configs.apiTop + "/address/consignee-address-detail/"+that.id, "get", '', function (res) {
                     let msg = res.data
                     if(msg.code == 0){
