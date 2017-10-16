@@ -24,14 +24,15 @@
             </ul>
             <div class="structure mt20">
                 <h1>收支明细</h1>
-                <ul class="income-item" v-if="items">
+                <ul class="income-item" v-if="items.length != 0">
                     <li v-for="(item,i) in items" :key="i">
                         <div class="income-info col-8">
                             <p>{{item.consume_category_name}}</p>
                             <span>{{item.create_time}}</span>
                         </div>
                         <div class="income-add col-2">
-                            <p class="add t-r">{{item.consume}}</p>
+                            <p class="add t-r" v-if="parseInt(item.consume) > 0"> + {{item.consume}}</p>
+                            <p class="subtract t-r" v-else-if="parseInt(item.consume) < 0">{{item.consume}}</p>
                             <!-- <p class="subtract t-r">-10</p> -->
                             <!--
                             <p class="subtract">-10</p>
@@ -86,3 +87,10 @@
     }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>
+<style lang="scss" scoped>
+    @import '../../../static/assets/css/px2rem.scss';
+
+    .no-balance{
+        padding-bottom: px2rem(80);
+    }
+</style>

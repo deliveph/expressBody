@@ -17,7 +17,7 @@
       :type="msg.type"
       v-touch:hold="revocateMsg"
     >
-      <a class="msg-head" v-if="msg.avatar" :href="msg.link">
+      <a class="msg-head" v-if="msg.avatar" @click="userMessage">
         <img :src="msg.avatar">
       </a>
       
@@ -370,7 +370,6 @@
         })
       },
       playAudio (src) {
-        console.log(src, '###1')
         if (!this.currentAudio) {
           this.currentAudio = new Audio(src.audioSrc)// src.audioSrc
           this.currentAudio.play()
@@ -379,6 +378,9 @@
           }
         }
         console.log(this.currentAudio, '###2')
+      },
+      userMessage(){
+
       }
     },
     created(){

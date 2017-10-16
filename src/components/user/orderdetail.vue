@@ -6,7 +6,7 @@
                     <p>下单时间：
                         <span class="ft-red">{{items.ship_order_create_time_f}}</span>
                     </p>
-                    <p class="nickname" v-if="status == 'service'"><img :src="items.user_avatar" />
+                    <p class="nickname" v-if="status == 'service'" @click="layerSendFun" ><img :src="items.user_avatar" />
                         <span>{{items.user_nickname}}</span>
                     </p>
                 </div>
@@ -83,7 +83,7 @@
                         </span>
                     </p>
                 </div>
-                <div class="order-list-item" v-if="items.ship_order_status_id >= 1 && status == 'user' || items.ship_order_status_id >= 2 && status == 'user'">
+                <div class="order-list-item" v-if="items.ship_order_status_id == 1 && status == 'user' || items.ship_order_status_id == 2 && status == 'user'">
                     <p>预计费用：
                         <span class="ft-red">{{items.order_fee}}快递豆</span>
                     </p>
@@ -191,6 +191,31 @@
             </div>
         </div>
 
+
+        <!-- 用户信息 -->
+        <div class="layer_warp layer_user_message" v-if="layerSend">
+            <div class="layer_table">
+                <div class="layer_table_cell">
+                    <div class="layer_box">
+                        <div class="layer_container">
+                            <div class="message_main">
+                                <div class="img">
+                                    <img v-bind:src="items.user_avatar" />
+                                </div>
+                                <p class="name">{{items.user_name}}</p>
+                                <p><span>电话：</span>{{items.user_phone}}</p>
+                                <p><span>地址：</span>{{items.shipper_full_address}}</p>
+                            </div>
+                        </div>
+                        <div class="layer_footer">
+                            <div class="layer_footer_cancel">
+                                <button @click="sendMessage">发送信息</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -204,6 +229,7 @@ export default {
             ship_order_number: '',
             status: '',
             writelayerStorey: false,
+            layerSend:false,
             company: '',
             code: '',
             title1: '',
@@ -393,8 +419,15 @@ export default {
         },
         //取物流公司id 
         onChangeOfLogisticsCompanies(values) {
-            console.log(values[0])
             this.company = values[0]
+        },
+        sendMessage(){
+            let that = this
+            this.$router.push({path:'/chat/p2p-user_'+that.items.user_id})
+        },
+        layerSendFun(){
+            let that = this
+            this.layerSend = true
         }
     }
 }
@@ -585,6 +618,55 @@ export default {
                 text-align: left !important;
             }
         }   
+    }
+}
+
+
+.layer_warp{
+    &.layer_user_message {
+        .message_main{
+            padding: px2rem(40) px2rem(66) px2rem(76);
+            text-align: center;
+            .img{
+                width:px2rem(124);
+                height: px2rem(124);
+                line-height:px2rem(124);
+                border-radius:50%;
+                background-color:rgba(58,105,49,0.34);
+                margin:0 auto;
+                img{
+                    width:px2rem(114);
+                    height:px2rem(114);
+                    border-radius:50%;
+                    vertical-align: top;
+                    margin-top:px2rem(6)
+                } 
+            }
+            p{
+                font-size:px2rem(28);
+                color:#999;
+                margin-bottom:px2rem(18);
+                &.name{
+                    font-size:px2rem(30);
+                    color:#333;
+                    margin:px2rem(20) 0;
+                }
+            }
+        }
+        .layer_footer_cancel{
+            border:0;
+        }
+        button {
+            width: 100%;
+            height:100%;
+            font-size: px2rem(24);
+            color: #fff;
+            // line-height: px2rem(70);
+            border-bottom-right-radius: 0.05rem;
+            border-bottom-left-radius: 0.05rem;
+            border: 0;
+            background-color: #366931;
+        }
     }
 }
 </style>

@@ -250,6 +250,9 @@ export default {
     border-radius:px2rem(6);
     margin: 0 auto;
     margin-bottom:px2rem(20);
+    div{
+      line-height: 0.24rem;
+    }
   }
 
   #app{

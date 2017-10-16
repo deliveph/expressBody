@@ -27,16 +27,16 @@
         methods: {
             save(){
                 let that = this
-                 // if(that.phone == ''){
-                //     this.$vux.toast.text('请输入姓名', 'middle',100);
-                //     return false;
-                // }
+                let reg = /^[\u4E00-\u9FA5A-Za-z0-9]+$/
                 if(that.name == ''){ 
                     this.$vux.toast.text('请输入姓名', 'middle',100); 
                     return false; 
-                } 
+                }
+                if(!(reg.test(that.name))){
+                    this.$vux.toast.text('请输入正确格式（数字、字母、中文）', 'middle',100); 
+                    return false; 
+                }
                  
- 
                 if(this.$route.query.type == 'service' ){ 
                     let data = qs.stringify({ 
                         'service_nickname':that.name

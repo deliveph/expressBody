@@ -4,6 +4,7 @@
             <div class="result-status" v-if="pay">
                 <i class="status-suc"></i>
                 <p>充值成功</p>
+                <router-link to="/balance" class="btn">我的余额</router-link>
             </div>
             <div class="result-status" v-else>
                 <i class="status-fail"></i>
@@ -45,6 +46,19 @@
         }
         p{
             text-align:center;font-size:px2rem(34);color:#333;margin-top:px2rem(30);
+        }
+        .btn{
+            width:80%;
+            height: px2rem(68);
+            line-height: px2rem(68);
+            margin:0 auto;
+            border-radius: px2rem(10);
+            display: block;
+            text-align: center;
+            color: #fff;
+            font-size: px2rem(28);
+            margin-top:px2rem(80);
+            background-color: #366931;
         }
     }
 

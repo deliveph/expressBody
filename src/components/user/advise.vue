@@ -17,8 +17,6 @@
                         <p>你的反馈(必填)</p>
                         <div class="matter">
                             <x-textarea :max="200" v-model="text" placeholder="请输入产品功能/系统意见，感谢您的反馈我们将不断优化体验" @on-focus="onEvent('focus')" @on-blur="onEvent('blur')"></x-textarea>
-                            <!-- <textarea placeholder="请输入产品功能/系统意见，感谢您的反馈我们将不断优化体验"></textarea>
-                            <div class="num"><span>0</span><em>/</em><span>30</span></div> -->
                         </div>
                     </div>
                     <div class="advise-item mt46">
@@ -142,6 +140,13 @@
             },
             submitUserFeedback(){
                 let that = this
+                if(that.id == ''){
+                    that.$vux.toast.text('请选择您要反馈的意见类型', 'middle', 100);
+                    return
+                }else if(that.text == ''){
+                    that.$vux.toast.text('请输入产品功能/系统意见', 'middle', 100);
+                    return
+                }
                 let data = qs.stringify({
                     'user_feedback_category_id':that.id,
                     'user_feedback_content':that.text,
@@ -153,7 +158,6 @@
                     let msg = res.data
                     if(msg.code == 0){
                         that.$vux.toast.text(msg.message, 'middle', 100);
-                        that.id = ''
                         that.text = ''
                         that.imgs = []
                     }else if(msg.code == 40004){
@@ -178,6 +182,10 @@
                     let msg = res.data
                     if (msg.code == 0) {
                         that.items = msg.data.user_feedback_categories
+
+                        that.opinion_type(that.items[0].user_feedback_category_id)
+
+                        console.log()
                     } else {
                         that.$vux.toast.text(msg.message, 'middle', 100);
                     }

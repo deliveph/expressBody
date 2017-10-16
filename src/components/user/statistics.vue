@@ -1,7 +1,7 @@
 <template>
     <div id="statistics" class="statistics_warp">
         <div class="title por">
-            <router-link to="{name:'detail'}" class="poa"></router-link>
+            <router-link to="{name:'detail'}" class="poa">使用帮助</router-link>
             <ul>
                 <li class="ordersTotal">
                     <i class="icon_ordersTotal"></i>
@@ -91,8 +91,8 @@ export default {
       } 
       let Today = date.getFullYear() + '-' + mon + '-' + day; 
  
-      this.value1 = Today; 
-      this.value2 = Today; 
+    //   this.value1 = Today; 
+    //   this.value2 = Today; 
  
     //   console.log(Today); 
       this.getStatistics(); 

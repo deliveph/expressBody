@@ -89,14 +89,14 @@
         </div>
 
         <!-- 查询条件框  -->
-        <div class="layer_warp" v-if="layer" @click="layerWarp()">
+        <div class="layer_warp layer_refer" v-if="layer" @click="layerWarp()">
             <div class="layer_main" @click="layerMain()">
                 <div class="layer_title">
                     <input type="number" v-model="orderCode" placeholder="请输入订单号"/>
                 </div>
                 <div class="layer_conter">
                     <h3>请选择订单状态</h3>
-                    <ul>
+                    <ul class="order_type_list">
                         <li @click="order_combos('wait_order')" :class="{active: express_order_status == 'wait_order'}" v-model="express_order_status">
                             待接单
                         </li>
@@ -267,20 +267,21 @@
         padding:0 px2rem(20);
         background-color:#fff;
         i{
-            width:px2rem(44);
-            height:px2rem(40);
-            background:url('/static/assets/images/btn_await.png') no-repeat center;
-            background-size:px2rem(44) px2rem(40);
+            width:px2rem(50);
+            height:px2rem(50);
+            background:url('/static/assets/images/orderform_find.png') no-repeat center;
+            background-size:px2rem(50) px2rem(50);
             display: inline-block;
-            vertical-align: text-bottom;
+            vertical-align: top;
             margin-right:px2rem(16);
+            margin-top: px2rem(26);
         }
         span{
             font-size:px2rem(30);
             colore:#333;
         }
     }
-
+    
     .layer_warp {
         width: 100%;
         height: 100%;
@@ -289,6 +290,11 @@
         left: 0;
         background: rgba(0, 0, 0, 0.5);
         z-index: 10;
+        &.layer_refer{
+            .layer_title{
+                background-color:transparent;
+            }
+        }
         .layer_main {
             width: px2rem(520);
             height: 100%;
@@ -321,7 +327,7 @@
                 font-size: px2rem(28);
                 font-size: #333;
             }
-            ul {
+            .order_type_list {
                 margin-top: px2rem(20);
                 display: flex;
                 flex-wrap: wrap;
@@ -334,16 +340,15 @@
                     padding: 0 px2rem(30);
                     margin-bottom: px2rem(30);
                     text-align: center;
+                    margin-right:px2rem(20);
                     cursor: pointer;
-                    &:hover,
-                    .active {
+                    &.active {
                         background-color: #366931;
                         color: #fff;
                     }
-                    &:nth-child(2n){
-                        margin:0 px2rem(20);
-                    }
-
+                    // &:nth-child(2n){
+                    //     margin:0 px2rem(20);
+                    // }
                 }
 
             }

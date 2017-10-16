@@ -61,12 +61,14 @@
                 display: inline-block;
                 vertical-align: middle;
                 margin-left: px2rem(20);
-                margin-right: px2rem(20)
+                // margin-right: px2rem(20)
             }
             .name{
                 display: flex;
+                justify-content: center;
                 span{
-                    flex: 1;
+                    // flex: 1;
+                    line-height: initial;
                     overflow: hidden;
                     text-overflow:ellipsis;
                     white-space: nowrap;

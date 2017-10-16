@@ -159,8 +159,7 @@ export default {
             margin-right: px2rem(20);
             margin-bottom: px2rem(36);
             cursor: pointer;
-            &:hover,
-            .active {
+            &.active {
                 background: #356931;
                 color: #fff;
             }

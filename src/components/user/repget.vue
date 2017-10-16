@@ -13,6 +13,10 @@
                     <p>订单编号：
                         <span>{{items.collection_order_number}}</span>
                     </p>
+                    <p class="nickname" v-if="status == 'service'" @click="layerSend">
+                        <img :src="items.user_avatar" />
+                        <span>{{items.user_nickname}}</span>
+                    </p>
                 </div>
                 <div class="order-list-item">
                     <p>订单状态：
@@ -58,12 +62,12 @@
                     </p>
                 </div>
                 <div class="order-list-item">
-                    <p>代收流费：
+                    <p>代收物流费：
                         <span class="ft-red">￥{{items.collection_logistics_fee}}</span>
                     </p>
                 </div>
                 <!--待支付-->
-                <div class="order-list-item">
+                <div class="order-list-item" v-if="items.collection_order_status_id == 4 && status == 'user'">
                     <p>应付金额：
                         <span class="ft-red">{{items.order_fee}}快递豆</span>
                     </p>
@@ -137,6 +141,32 @@
             </div>
 
         </div>
+
+
+        <!-- 用户信息 -->
+        <div class="layer_warp layer_user_message" v-if="layerSend">
+            <div class="layer_table">
+                <div class="layer_table_cell">
+                    <div class="layer_box">
+                        <div class="layer_container">
+                            <div class="message_main">
+                                <div class="img">
+                                    <img v-bind:src="items.user_avatar" />
+                                </div>
+                                <p class="name">{{items.user_name}}</p>
+                                <p><span>电话：</span>{{items.user_phone}}</p>
+                                <p><span>地址：</span>{{items.user_addr}}</p>
+                            </div>
+                        </div>
+                        <div class="layer_footer">
+                            <div class="layer_footer_cancel">
+                                <button @click="sendMessage">发送信息</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -148,6 +178,7 @@ export default {
             collection_order_number: '',
             items: [],
             status: '',
+            layerSend:false
         }
     },
     created() {
@@ -269,7 +300,121 @@ export default {
                 }
             })
         },
+        sendMessage(){
+            let that = this
+            this.$router.push({path:'/chat/'})
+        },
+        layerSend(){
+            let that = this
+            this.layerSend = true
+        }
     }
 }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>
+<style lang="scss">
+@import '../../../static/assets/css/px2rem.scss';
+.layer_warp {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    .layer_table {
+        width: 100%;
+        height: 100%;
+        display: table;
+        text-align: center;
+    }
+    .layer_table_cell {
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .layer_box {
+        width: px2rem(600); // height: px2rem(460);
+        background-color: #fff;
+        display: inline-block;
+        border-radius: px2rem(10);
+    }
+    .layer_title {
+        font-size: px2rem(30);
+        color: #fff;
+        height: px2rem(88);
+        line-height: px2rem(88);
+        background-color: #366931;
+        border-top-left-radius: px2rem(10);
+        border-top-right-radius: px2rem(10);
+    }
+    .layer_container {}
+    .layer_footer {
+        height: px2rem(90);
+        border-top: 1px solid #e0e0e0;
+        display: flex;
+        line-height: px2rem(90);
+    }
+    .layer_footer_cancel,
+    .layer_footer_confirm,
+    .layer_footer_cancel button,
+    .layer_footer_confirm button {
+        flex: 1;
+        border-right: 1px solid #e0e0e0;
+        text-align: center;
+        font-size: px2rem(34);
+        color: #007aff;
+    }
+    .layer_footer_confirm,
+    .layer_footer_cancel button,
+    .layer_footer_confirm button {
+        border-right: 0
+    }
+}
+
+.layer_warp{
+    &.layer_user_message {
+        .message_main{
+            padding: px2rem(40) px2rem(66) px2rem(76);
+            text-align: center;
+            .img{
+                width:px2rem(124);
+                height: px2rem(124);
+                border-radius:50%;
+                background-color:rgba(58,105,49,0.34);
+                margin:0 auto;
+                img{
+                    width:px2rem(114);
+                    height:px2rem(114);
+                    border-radius:50%;
+                    vertical-align: middle;
+                } 
+            }
+            p{
+                font-size:px2rem(28);
+                color:#999;
+                margin-bottom:px2rem(18);
+                &.name{
+                    font-size:px2rem(30);
+                    color:#333;
+                    margin:px2rem(20) 0;
+                }
+            }
+        }
+        .layer_footer_cancel{
+            border:0;
+        }
+        button {
+            width: 100%;
+            height:100%;
+            font-size: px2rem(24);
+            color: #fff;
+            // line-height: px2rem(70);
+            border-bottom-right-radius: 0.05rem;
+            border-bottom-left-radius: 0.05rem;
+            border: 0;
+            background-color: #366931;
+        }
+    }
+}
+
+</style>
