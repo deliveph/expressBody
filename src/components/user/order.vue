@@ -83,7 +83,7 @@
                                             <div class="order-status" v-if="collection.collection_order_status_id == -1">已取消</div>
                                             <div class="order-status" v-else-if="collection.collection_order_status_id == 1">待接单</div>
                                             <div class="order-status" v-else-if="collection.collection_order_status_id == 2">已接单</div>
-                                            <div class="order-status" v-else-if="collection.collection_order_status_id == 3">已接单-已确认收货</div>
+                                            <div class="order-status" v-else-if="collection.collection_order_status_id == 3">已确认收货</div>
                                             <div class="order-status" v-else-if="collection.collection_order_status_id == 4">待支付</div>
                                             <div class="order-status" v-else-if="collection.collection_order_status_id == 5">待评价</div>
                                             <div class="order-status" v-else-if="collection.collection_order_status_id == 6">已完成</div>

@@ -36,7 +36,7 @@
                         <label for="">详细地址：</label>
                         <input type="text" name="address" placeholder="请输入收货详细地址" value="" v-model="realAddress">
                     </div>
-                    <div class="default">
+                    <div class="default" v-if="stage.current_service != undefined">
                         <input type="checkbox" v-model="defaultFalse" @click="defaultMsg">
                         <span>默认共享快递哥</span>
                     </div>
@@ -92,7 +92,7 @@
                         <input type="text" name="add" placeholder="请输入收货详细地址" v-model="reservationAddress">
                     </div>
 
-                    <div class="default">
+                    <div class="default" v-if="stage.current_service != undefined">
                         <input type="checkbox" v-model="defaultFalse1" @click="defaultMsg1">
                         <span>默认共享快递哥</span>
                     </div>
@@ -131,8 +131,8 @@ export default {
             list2: list(),
             demo2: '即时收件',
             index: 0,
-            readfalse: false,
-            readfalse1: false,
+            readfalse: true,
+            readfalse1: true,
             title1: '预约收件时间',
             title2: '预约收件时间',
             title3: '期望上门时间',
@@ -266,7 +266,7 @@ export default {
         defaultMsg() {
             let that = this
             let stage = that.stage
-            if (that.defaultFalse) {
+            if (!that.defaultFalse) {
                 if (stage.current_service != '') {
                     that.defaultFalse = true
                     that.realName = stage.current_service.service_nickname
@@ -483,6 +483,7 @@ export default {
         }
     },
     created() {
+        console.log("###333")
         let that = this
         this.http(that.configs.apiTop + "/page/user-collection", "get", '', function(res) {
             let msg = res.data
