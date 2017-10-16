@@ -94,9 +94,12 @@
         .grade {
             width: 100%;
             position: absolute;
-            bottom: px2rem(-38);
+            bottom: px2rem(-120);
             .grade_img {
+                width: px2rem(128);
+                height: px2rem(70);
                 margin: 0 auto;
+                border-radius: initial;
             }
         }
     }

@@ -174,9 +174,9 @@
                 let that = this
                 let user_feedback_module = '';
                 if(that.index == 0){
-                    user_feedback_module = 'S'
-                }else{
                     user_feedback_module = 'C'
+                }else{
+                    user_feedback_module = 'S'
                 }
                 this.http(that.configs.apiTop + "/user/user-feedback-categories?user_feedback_module="+user_feedback_module, "get",  '', function(res) {
                     let msg = res.data

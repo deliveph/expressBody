@@ -111,7 +111,6 @@ export default {
             this.http(that.configs.apiTop + "/address/consignee-addresses", "get", '', function(res) {
                 let msg = res.data
                 let consignee_addresses = msg.data.consignee_addresses
-                console.log(consignee_addresses)
                 if (msg.code == 0) {
                     that.items = consignee_addresses;
                     that.id = consignee_addresses.id;

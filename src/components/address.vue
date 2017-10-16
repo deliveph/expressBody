@@ -27,7 +27,7 @@
     </div> 
 </template> 
 <script>
-import { XAddress,ChinaAddressV3Data } from 'vux'
+import { XAddress,ChinaAddressV3Data, Toast } from 'vux'
 import qs from 'qs'
 export default { 
    data(){ 
@@ -41,7 +41,7 @@ export default {
           id:'',
           nameLabel:'寄件人',
           title2: '所在地区',
-          value2: ['','',''],
+          value2: ['北京市','市辖区','东城区'],
           addressData:ChinaAddressV3Data,
           province:'',
           city:'',
@@ -51,19 +51,35 @@ export default {
    },
    components: {
         ChinaAddressV3Data,
-        XAddress
+        XAddress,
+        Toast
     },
    methods:{ 
        addressFun(){
            let that = this;
+           let reg = /^1[0-9]{10}$/
            if(that.checked == false){
                 that.is_default_shipper_address = 'N'
             }else{
                 that.is_default_shipper_address = 'Y'
             }
-            // console.log(that.id)
             if(that.index == 0){
-                console.log(4234)
+                if(that.name == ''){
+                    that.$vux.toast.text('请输入寄件人名字', 'middle',100);
+                    return false;
+                }else if(that.phone == ''){
+                    that.$vux.toast.text('请输入手机号码', 'middle',100);
+                    return false;
+                }else if(!(reg.test(that.phone))){
+                    that.$vux.toast.text('手机号码输入有误', 'middle',100);
+                    return false;
+                }else if(that.province == ''){
+                    that.$vux.toast.text('请输入所在地区', 'middle',100);
+                    return false;
+                }else if(that.address == ''){
+                    that.$vux.toast.text('请输入详细地址', 'middle',100);
+                    return false;
+                }
                 let data = qs.stringify({
                     'province_region_id':that.province,
                     'city_region_id':that.city,
@@ -94,6 +110,22 @@ export default {
                         })
                 }
             }else{
+                if(that.name == ''){
+                    that.$vux.toast.text('请输入收件人名字', 'middle',100);
+                    return false;
+                }else if(that.phone == ''){
+                    that.$vux.toast.text('请输入手机号码', 'middle',100);
+                    return false;
+                }else if(!(reg.test(that.phone))){
+                    that.$vux.toast.text('手机号码输入有误', 'middle',100);
+                    return false;
+                }else if(that.province == ''){
+                    that.$vux.toast.text('请输入所在地区', 'middle',100);
+                    return false;
+                }else if(that.address == ''){
+                    that.$vux.toast.text('请输入详细地址', 'middle',100);
+                    return false;
+                }
                 let data = qs.stringify({
                     'province_region_id':that.province,
                     'city_region_id':that.city,
@@ -123,8 +155,6 @@ export default {
                         })
                 }
             }
-           
-           
        },
         onShadowChange (ids, names) {
             let that = this;
@@ -135,21 +165,25 @@ export default {
    },
    created(){
        let that = this
-    //    that.index = this.$route.params.type;
-       let id = this.$route.params.id;
+       let id = this.$route.params.attribute;
        that.id = id;
+        // index 0 寄件人 1 收件人   
        that.index = this.$route.query.type;
+
        console.log(that.index,that.id)
        if(that.index == 0){
            that.nameLabel = '寄件人'
            if(that.id){
+               console.log(123)
                 this.http(that.configs.apiTop + "/address/shipper-address-detail/"+that.id, "get", '', function (res) {
                     let msg = res.data
                     if(msg.code == 0){
-                    let data = msg.data;
+                    let data = msg.data
+                    console.log(data,"12412")
                     that.name = data.shipper_name
                     that.phone = data.shipper_phone
                     that.value2 = [data.province_region_name,data.city_region_name,data.district_region_name]
+                    console.log(that.value2)
                     that.province = data.province_region_name
                     that.city = data.city_region_name
                     that.district = data.district_region_name

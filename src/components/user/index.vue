@@ -13,7 +13,7 @@
                             <router-link :to="{path:'/person',query:{type:'user'}}" v-else>{{ data.user_nickname }}</router-link>
                         </p>
                         <router-link to="/level">
-                            <grade class="m0 icon_express_1" :src="user_level_logo"></grade>
+                            <grade class="m0" :src="user_level_logo"></grade>
                         </router-link>
                     </dd>
                 </dl>

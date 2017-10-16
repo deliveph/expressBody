@@ -81,7 +81,7 @@ export default {
                     that.http(that.configs.apiTop + "/address/delete-shipper-address/" + id, "get", '', function(res) {
                         let msg = res.data
                         if (msg.code == 0) {
-                            this.http(that.configs.apiTop + "/address/shipper-addresses", "get", '', function(res) {
+                            that.http(that.configs.apiTop + "/address/shipper-addresses", "get", '', function(res) {
                                 let msg = res.data
                                 let shipper_addresses = msg.data.shipper_addresses
                                 if (msg.code == 0) {
@@ -102,6 +102,22 @@ export default {
             let that = this
             let index = that.$parent.index
             this.$router.push({ name: 'editAddress', query: { type: index } })
+        },
+        addressList(){
+            let that = this
+            let index = that.$parent.index
+            if (index == 0) {
+                this.http(that.configs.apiTop + "/address/shipper-addresses", "get", '', function(res) {
+                    let msg = res.data
+                    let shipper_addresses = msg.data.shipper_addresses
+                    if (msg.code == 0) {
+                        that.items = shipper_addresses;
+                        that.id = shipper_addresses.id;
+                    } else if (msg.code == 40004) {
+                        // location.href = that.configs.accreditUrl
+                    }
+                })
+            }
         }
     },
     created() {
@@ -111,7 +127,6 @@ export default {
             this.http(that.configs.apiTop + "/address/shipper-addresses", "get", '', function(res) {
                 let msg = res.data
                 let shipper_addresses = msg.data.shipper_addresses
-                console.log(msg)
                 if (msg.code == 0) {
                     that.items = shipper_addresses;
                     that.id = shipper_addresses.id;

@@ -6,7 +6,7 @@
                     <div class="photo">
                         <img :src="service.service_avatar == 'undefined' ? '/static/assets/images/head_def.png' : service.service_avatar" /> 
                         <div class="grade">
-                            <grade class="icon_express_1" :src="service.service_level.service_level_logo == undefined ? '/static/assets/images/platform_level/liebing_s1.png' : service.service_level.service_level_logo"></grade>
+                            <grade class="icon_express_1" :src="service_level.service_level_logo == undefined ? '/static/assets/images/platform_level/liebing_s1.png' : service_level.service_level_logo"></grade>
                         </div>
                     </div>
                 </li>
@@ -148,6 +148,7 @@ export default {
             data: {}, 
             result: {},
             service:{},
+            service_level:{},
             items:[],
             ships:[],
             collections:[]
@@ -164,6 +165,7 @@ export default {
                 if (msg.code == 0) { 
                     that.result = msg.data;
                     that.service = msg.data.service
+                    that.service_level = that.service.service_level
                 } 
             })
             that.orderlist()
@@ -186,7 +188,7 @@ export default {
         },
         orderlist(){
             let that = this
-            this.http(that.configs.apiTop + "/order/orders", "get", '', function(res) {
+            this.http(that.configs.apiTop + "/order/orders?express_order_status=wait_order", "get", '', function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
                     let data = msg.data

@@ -15,8 +15,8 @@
       :time="msg.time"
       :flow="msg.flow"
       :type="msg.type"
-      v-touch:hold="revocateMsg"
     >
+          <!-- v-touch:hold="revocateMsg" -->
       <a class="msg-head" v-if="msg.avatar" @click="userMessage">
         <img :src="msg.avatar">
       </a>

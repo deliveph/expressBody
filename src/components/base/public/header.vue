@@ -9,7 +9,7 @@
                 <div class="photo">
                     <img v-bind:src="user_avatar" />
                     <div class="grade">
-                        <grade class="icon_user_1" :src="user_level_logo"></grade>
+                        <grade :src="user_level_logo"></grade>
                     </div>
                 </div>
                 <h3 class="name">{{user_nickname}}</h3>
@@ -20,13 +20,13 @@
                 </p>
             </li>
             <!-- v-if="express" -->
-            <li class="courier_message">
+            <li class="courier_message" v-if="express">
                 <h4 class="identify">您的专属快递哥</h4>
                 <router-link :to="{path:'/chat/p2p-service_'+service_id }">
                     <div class="photo">
                         <img :src="service_avatar" />
                         <div class="grade">
-                            <grade class="icon_express_1" :src="service_level_logo"></grade>
+                            <grade :src="service_level_logo"></grade>
                         </div>
                     </div>
                 </router-link>
