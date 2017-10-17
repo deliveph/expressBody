@@ -131,56 +131,9 @@ export default {
       })
     }
   },
-  beforeCreate() {
-    console.log("####")
-    return
-    // let that = this
-    // let token = this.$route.query.token //url token
-    // // this.$weChat()
-    // if (token === undefined) {
-    //   let tokens = JSON.parse(localStorage.getItem("token"))
-    //   if (tokens === null || (token = tokens.token) == undefined) {
-    //     location.href = that.configs.accreditUrl + "?redirect_uri=" + encodeURIComponent(location.href)
-    //     return
-    //   }
-    //   // console.log(tokens)
-    //   return
-    //   // http://public.1kgx.com/index.html#/orderdetail?ship_order_number=2017101724412667877&status=service
-    // } else {
-    //   localStorage.setItem("token", JSON.stringify({
-    //     'token': token,
-    //     'time': that.configs.curTime
-    //   }))
-    // }
-    // console.log(token, "###222")
-  },
   created() {
-    console.log("###2")
-    // let that = this
-    // let token = this.$route.query.token //url token
-    // // this.$weChat()
-    // if (token === undefined) {
-    //   let tokens = JSON.parse(localStorage.getItem("token"))
-    //   if (tokens === null || (token = tokens.token) == undefined) {
-    //     location.href = that.configs.accreditUrl + "?redirect_uri=" + encodeURIComponent(location.href)
-    //     return
-    //   }
-    //   // console.log(tokens)
-    //   return
-    //   // http://public.1kgx.com/index.html#/orderdetail?ship_order_number=2017101724412667877&status=service
-    // } else {
-    //   localStorage.setItem("token", JSON.stringify({
-    //     'token': token,
-    //     'time': that.configs.curTime
-    //   }))
-    // }
-    // console.log(token, "###222")
-    return
-    that.configs.tokenId = token
-    console.log(token, "###")
-    return
-    console.log(123)
-    this.http(that.configs.apiTop + "/new-ease/get-im-config", "get", '', function(res) {
+    let that = this
+    that.http(that.configs.apiTop + "/new-ease/get-im-config", "get", '', function(res) {
       let msg = res.data
       let data = msg.data
       if (msg.code == 0) {

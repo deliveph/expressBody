@@ -102,7 +102,7 @@ Vue.prototype.http = function (url, method, data, callback, responseType) {
   if (responseType === undefined) {
     responseType = 'json'
   }
-  console.log(url, responseType, configs.tokenId, 'http')
+  console.log(url, responseType, 'http')
   let token = that.$route.query.token
   // this.$weChat()
   if (token === undefined) {
@@ -118,7 +118,8 @@ Vue.prototype.http = function (url, method, data, callback, responseType) {
       'time': that.configs.curTime
     }))
   }
-  this.$ajax({
+  console.log(token, 'token')
+  that.$ajax({
     url: url,
     method: method,
     headers: {
@@ -133,19 +134,20 @@ Vue.prototype.http = function (url, method, data, callback, responseType) {
     }
   }).then(res => {
     let data = res.data
-    let that = this
+    console.log(data.code, 'code')
     if (data.code === 40004) {
       that.$vux.toast.text('登录已过期，正重新登录...', 'middle', 100)
       setTimeout(function () {
         // that.wx.closeWindow()
         location.href = that.configs.accreditUrl + '?redirect_uri=' + encodeURIComponent(location.href)
       }, 200)
-      return
+    } else {
+      that.$vux.loading.hide()
+      console.log('callback')
+      callback(res)
     }
-    that.$vux.loading.hide()
-    console.log('callback')
-    callback(res)
   }).catch(function (err) {
+    console.log('http.error', url, err)
     // that.loadingState = '加载失败'
   })
 }

@@ -190,6 +190,8 @@ export default {
                 that.$vux.toast.text(msg.message, 'middle', 100);
             }
         })
+    },
+    mounted() {
     }
 }
 </script>

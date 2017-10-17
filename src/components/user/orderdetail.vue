@@ -227,15 +227,18 @@
                 </div>
             </div>
         </div>
+        <LayerPw v-if="layerPwhide" v-on:listenEvent="getOrder"></LayerPw>
     </div>
 </template>
 
 <script>
 import { Toast, Confirm, PopupPicker } from 'vux'
+import LayerPw from '../base/public/layer_pw'
 import qs from 'qs'
 export default {
     data() {
         return {
+            layerPwhide: false,
             items: [],
             ship_order_number: '',
             status: '',
@@ -263,24 +266,29 @@ export default {
     components: {
         Toast,
         Confirm,
-        PopupPicker
+        PopupPicker,
+        LayerPw
     },
     created() {
-        let that = this
-        that.ship_order_number = this.$route.query.ship_order_number
-        that.status = this.$route.query.status
-        this.http(that.configs.apiTop + "/order/ship-order-detail/" + that.ship_order_number, "get", '', function(res) {
-            let msg = res.data
-            if (msg.code == 0) {
-                that.items = msg.data
-            } else if (msg.code == 40004) {
-
-            } else {
-                that.$vux.toast.text(msg.message, 'middle', 100);
-            }
-        })
+        this.getOrder()
     },
     methods: {
+        getOrder(result) {
+            console.log(result)
+            let that = this
+            that.ship_order_number = that.$route.query.ship_order_number
+            that.status = that.$route.query.status
+            that.http(that.configs.apiTop + "/order/ship-order-detail/" + that.ship_order_number, "get", '', function(res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                    that.items = msg.data
+                } else if (msg.code === 40016) {
+                    that.layerPwhide = true
+                } else {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                }
+            })
+        },
         // 用户编辑订单
         editerorder(order_number) {
             let that = this
