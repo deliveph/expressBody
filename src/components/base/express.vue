@@ -1,5 +1,5 @@
 <template>
-    <div id="express">
+    <div id="express" v-wechat-title="$route.meta.title">
         <div id="header" class="por express_head">
             <ul>
                 <li class="courier_message">
@@ -99,7 +99,7 @@
                         <div v-for="(collection,c) in collections" :key="c">
                             <div v-if="item.express_order_number == collection.collection_order_number">
                                 <li class="put">
-                                    <router-link :to="{path:'repget',query:{collection_order_number:collection.collection_order_number,status:'service'}}">
+                                    <router-link :to="{path:'repget',query:{ship_order_number:collection.collection_order_number,status:'service'}}">
                                         <i class="icon_put"></i>
                                         <div class="odd">
                                             <p class="order_number">订单号：
@@ -155,7 +155,7 @@ export default {
             items: [],
             ships: [],
             collections: [],
-            service_level_logo: '/static/assets/images/platform_level/liebing_s1.png',
+            service_level_logo: '',
         }
     },
     created() {
@@ -167,9 +167,11 @@ export default {
             this.http(that.configs.apiTop + "/page/service-home", "get", '', function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
-                    that.result = msg.data;
+                    that.result = msg.data
                     that.service = msg.data.service
-                    that.service_level_logo = service.service_level.service_level_logo
+                    let service = msg.data.service
+                    let service_level = service.service_level
+                    that.service_level_logo = service_level.service_level_logo
                 }
             })
             that.orderlist()

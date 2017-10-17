@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper" v-wechat-title="$route.meta.title">
         <ul class="advise">
             <li class="on">
                 <router-link to="/order/">
@@ -75,7 +75,7 @@
                         <div v-for="(collection,c) in collections" :key="c">
                             <div v-if="item.express_order_number == collection.collection_order_number">
                                 <li class="put" >
-                                    <router-link :to="{path:'repget',query:{collection_order_number:collection.collection_order_number,status:'user'}}">
+                                    <router-link :to="{path:'repget',query:{ship_order_number:collection.collection_order_number,status:'user'}}">
                                         <i class="icon_put"></i>
                                         <div class="odd">
                                             <p class="order_number">订单号：<span>{{collection.collection_order_number}}</span></p>

@@ -79,7 +79,7 @@
                 </div>
             </div>
         </div>
-        <draggable></draggable>
+        <draggable :header-object="dataobject"></draggable>
     </div>
 </template>
 

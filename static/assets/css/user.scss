@@ -1207,6 +1207,10 @@
             font-size: px2rem(28);
             color: #999;
             flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            -webkit-box-flex: inherit;
             &.nickname {
                 width: px2rem(180);
                 overflow: hidden;

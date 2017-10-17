@@ -8,7 +8,6 @@
                             <span>头像</span>
                             <em>
                                 <span class="avatar"><img v-bind:src="avatar" alt=""></span>
-                                <!-- <i class="arrow-right"></i> -->
                             </em>
                             <input type="file" name="file" value="" @change="onFileChange">
                         </div>
@@ -35,7 +34,7 @@
                             <span>联系地址</span>
                             <p>{{address}}</p>
                         </router-link>
-                        <router-link to="/editaddr" v-else>
+                        <router-link :to="{path:'/editaddr',query:{type:'edit'}}" v-else>
                             <span>联系地址</span>
                             <p>{{address}}</p>
                             <em>
