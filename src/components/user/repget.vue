@@ -410,8 +410,6 @@ export default {
         },
         sendMessage() {
             let that = this
-            console.log('p2p-user_' + that.items.user_id)
-            return
             this.$router.push({ path: '/chat/p2p-user_' + that.items.user_id })
         },
         layerSendFun() {
