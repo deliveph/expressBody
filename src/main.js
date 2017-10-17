@@ -50,7 +50,10 @@ import {
   LoadingPlugin
 } from 'vux'
 
-import { Toast, Loading} from 'vux'
+import {
+  Toast,
+  Loading
+} from 'vux'
 
 Vue.use(ToastPlugin)
 Vue.use(AlertPlugin)
@@ -99,12 +102,27 @@ Vue.prototype.http = function (url, method, data, callback, responseType) {
   if (responseType === undefined) {
     responseType = 'json'
   }
-  console.log(responseType)
+  console.log(url, responseType, configs.tokenId, 'http')
+  let token = that.$route.query.token
+  // this.$weChat()
+  if (token === undefined) {
+    let tokens = JSON.parse(localStorage.getItem('token'))
+    if (tokens === null || (token = tokens.token) === undefined) {
+      location.href = that.configs.accreditUrl + '?redirect_uri=' + encodeURIComponent(location.href)
+      return
+    }
+    // http://public.1kgx.com/index.html#/orderdetail?ship_order_number=2017101724412667877&status=service
+  } else {
+    localStorage.setItem('token', JSON.stringify({
+      'token': token,
+      'time': that.configs.curTime
+    }))
+  }
   this.$ajax({
     url: url,
     method: method,
     headers: {
-      'Authorization': configs.tokenId
+      'Authorization': token
     },
     data: data,
     responseType: responseType,
@@ -113,21 +131,22 @@ Vue.prototype.http = function (url, method, data, callback, responseType) {
         text: 'Loading'
       })
     }
-    // withCredentials: true
   }).then(res => {
     let data = res.data
     let that = this
-    if (data.code == 40004) {
-      that.$vux.toast.text('token失效', 'middle', 100)
-      setTimeout(function(){ 
-        that.wx.closeWindow()
+    if (data.code === 40004) {
+      that.$vux.toast.text('登录已过期，正重新登录...', 'middle', 100)
+      setTimeout(function () {
+        // that.wx.closeWindow()
+        location.href = that.configs.accreditUrl + '?redirect_uri=' + encodeURIComponent(location.href)
       }, 200)
       return
     }
     that.$vux.loading.hide()
+    console.log('callback')
     callback(res)
   }).catch(function (err) {
-    // that.loadingState = "加载失败"
+    // that.loadingState = '加载失败'
   })
 }
 
@@ -144,7 +163,7 @@ Vue.prototype.$weChat = function () {
   }).then(function (res) {
     let msg = res.data.data
     that.wx.config({
-      debug:false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
       appId: msg.app_id, //必填，公众号的唯一标识 
       timestamp: msg.timestamp,
       nonceStr: msg.nonce_str,
@@ -224,7 +243,7 @@ Vue.prototype.$weChat = function () {
         }
       })
     })
-    that.wx.error(function (res) { })
+    that.wx.error(function (res) {})
   }).catch(function (err) {
     // that.loadingState = "加载失败"
   })

@@ -2,21 +2,21 @@
   <div id="app">
     <router-view v-wechat-title="$route.meta.title"></router-view>
     <!-- <div id="test" v-drag>
-      <img src="/static/assets/images/inquire_bg.png" align="left" style="">
-    </div> -->
-    <!-- <div class="image"  draggable drop="handleImageDrop">
-              <img src="/static/assets/images/inquire_bg.png" align="left">
-          </div> -->
-    <!-- <draggable v-model="tags" :move="getdata" @update="datadragEnd" class="draggable">
-          <img src="/static/assets/images/inquire_bg.png" align="left" style="position: fixed;top: 50%;right: 0;width: 30px;height: 30px;">
-        </draggable> -->
-    <!-- <div id="box">
-          HTML位置
-          <br>x:{{val.x}} <br>y:{{val.y}}
-          <div v-drag="greet" id="drag" :style="style">
-          //注意这里要通过指令绑定函数将当前元素的位置数据传出来
-          </div>
+          <img src="/static/assets/images/inquire_bg.png" align="left" style="">
         </div> -->
+    <!-- <div class="image"  draggable drop="handleImageDrop">
+                  <img src="/static/assets/images/inquire_bg.png" align="left">
+              </div> -->
+    <!-- <draggable v-model="tags" :move="getdata" @update="datadragEnd" class="draggable">
+              <img src="/static/assets/images/inquire_bg.png" align="left" style="position: fixed;top: 50%;right: 0;width: 30px;height: 30px;">
+            </draggable> -->
+    <!-- <div id="box">
+              HTML位置
+              <br>x:{{val.x}} <br>y:{{val.y}}
+              <div v-drag="greet" id="drag" :style="style">
+              //注意这里要通过指令绑定函数将当前元素的位置数据传出来
+              </div>
+            </div> -->
   </div>
 </template>
 
@@ -56,8 +56,8 @@ export default {
     return {
       tags: '',
       transitionName: 'forward',
-      net_ease_accid:'',
-      net_ease_token:''
+      net_ease_accid: '',
+      net_ease_token: ''
     }
   },
   components: {
@@ -100,10 +100,10 @@ export default {
   updated() {
     let that = this
     // 提交sdk连接请求
-    if(that.net_ease_token != ''){      
+    if (that.net_ease_token != '') {
     }
     this.$store.dispatch('connect')
-    this.$store.dispatch('updateRefreshState') 
+    this.$store.dispatch('updateRefreshState')
   },
   mounted: function() {
   },
@@ -114,59 +114,87 @@ export default {
     }
   },
   methods: {
-    getImConfig(){
+    getImConfig() {
       let that = this
-      this.http(that.configs.apiTop + "/new-ease/get-im-config", "get", '', function(res) { 
-          let msg = res.data
-          let data = msg.data
-          if (msg.code == 0) { 
-              that.config.test.appkey = data.net_ease_app_key
-              cookie.setCookie('uid', data.net_ease_accid)
-              cookie.setCookie('sdktoken', data.net_ease_token)
-          } else if (msg.code == 40004) { 
-              location.href = that.configs.accreditUrl 
-          } else{ 
-              that.$vux.toast.text(msg.message, 'middle', 100); 
-          } 
-      }) 
-    }
-  },
-  created() {
-    let that = this
-    let token = this.$route.query.token //url token
-    // this.$weChat()
-    if (token == '' || token == null || token == undefined) {
-      let tokens = JSON.parse(localStorage.getItem("token"))
-      token = tokens.token
-      if (token == '' || token == null || token == undefined) {
-        that.wx.closeWindow()
-        return
-      }
-      // 过期判断
-    } else {
-      localStorage.setItem("token", JSON.stringify({
-        'token': token,
-        'time': that.configs.curTime
-      }))
-    }
-    that.configs.tokenId = token
-    // console.log(123)
-    this.http(that.configs.apiTop + "/new-ease/get-im-config", "get", '', function(res) { 
+      this.http(that.configs.apiTop + "/new-ease/get-im-config", "get", '', function(res) {
         let msg = res.data
         let data = msg.data
-        
-        if (msg.code == 0) { 
-            config.appkey = data.net_ease_app_key
-            cookie.setCookie('uid', data.net_ease_accid)
-            cookie.setCookie('sdktoken', data.net_ease_token)
-            that.net_ease_accid = data.net_ease_accid
-            that.net_ease_token = data.net_ease_token
-        } else if (msg.code == 40004) { 
-            location.href = that.configs.accreditUrl 
-        } else{ 
-            that.$vux.toast.text(msg.message, 'middle', 100); 
-        } 
-    }) 
+        if (msg.code == 0) {
+          that.config.test.appkey = data.net_ease_app_key
+          cookie.setCookie('uid', data.net_ease_accid)
+          cookie.setCookie('sdktoken', data.net_ease_token)
+        } else if (msg.code == 40004) {
+          location.href = that.configs.accreditUrl
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100);
+        }
+      })
+    }
+  },
+  beforeCreate() {
+    console.log("####")
+    return
+    // let that = this
+    // let token = this.$route.query.token //url token
+    // // this.$weChat()
+    // if (token === undefined) {
+    //   let tokens = JSON.parse(localStorage.getItem("token"))
+    //   if (tokens === null || (token = tokens.token) == undefined) {
+    //     location.href = that.configs.accreditUrl + "?redirect_uri=" + encodeURIComponent(location.href)
+    //     return
+    //   }
+    //   // console.log(tokens)
+    //   return
+    //   // http://public.1kgx.com/index.html#/orderdetail?ship_order_number=2017101724412667877&status=service
+    // } else {
+    //   localStorage.setItem("token", JSON.stringify({
+    //     'token': token,
+    //     'time': that.configs.curTime
+    //   }))
+    // }
+    // console.log(token, "###222")
+  },
+  created() {
+    console.log("###2")
+    // let that = this
+    // let token = this.$route.query.token //url token
+    // // this.$weChat()
+    // if (token === undefined) {
+    //   let tokens = JSON.parse(localStorage.getItem("token"))
+    //   if (tokens === null || (token = tokens.token) == undefined) {
+    //     location.href = that.configs.accreditUrl + "?redirect_uri=" + encodeURIComponent(location.href)
+    //     return
+    //   }
+    //   // console.log(tokens)
+    //   return
+    //   // http://public.1kgx.com/index.html#/orderdetail?ship_order_number=2017101724412667877&status=service
+    // } else {
+    //   localStorage.setItem("token", JSON.stringify({
+    //     'token': token,
+    //     'time': that.configs.curTime
+    //   }))
+    // }
+    // console.log(token, "###222")
+    return
+    that.configs.tokenId = token
+    console.log(token, "###")
+    return
+    console.log(123)
+    this.http(that.configs.apiTop + "/new-ease/get-im-config", "get", '', function(res) {
+      let msg = res.data
+      let data = msg.data
+      if (msg.code == 0) {
+        config.appkey = data.net_ease_app_key
+        cookie.setCookie('uid', data.net_ease_accid)
+        cookie.setCookie('sdktoken', data.net_ease_token)
+        that.net_ease_accid = data.net_ease_accid
+        that.net_ease_token = data.net_ease_token
+      } else if (msg.code == 40004) {
+        location.href = that.configs.accreditUrl
+      } else {
+        that.$vux.toast.text(msg.message, 'middle', 100);
+      }
+    })
     // that.getImConfig()
   }
 }
