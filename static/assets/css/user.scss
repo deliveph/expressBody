@@ -1375,16 +1375,19 @@
                 border: 1px solid #f1f1f1;
                 margin-bottom: px2rem(20);
                 padding: 0 px2rem(40);
+                display: flex;
                 label {
                     font-size: px2rem(28);
                     color: #666;
                     vertical-align: middle;
+                    min-width: px2rem(100)
                 }
                 input {
                     font-size: px2rem(28);
                     color: #333;
                     vertical-align: middle;
                     border: 0;
+                    flex: 1
                 }
                 &.info-dis {
                     display: flex;
