@@ -1,11 +1,11 @@
 <template>
-    <div class="collection">
+    <div class="collection" v-wechat-title="$route.meta.title">
         <tab :line-width=2 active-color='#356931' v-model="index">
             <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list2" @click="demo2 = item" :key="index">
                 <span>{{item}}</span>
             </tab-item>
         </tab>
-        <div class="collection_wrap" v-model="index">
+        <div class="collection_wrap">
             <div class="forthwith_box" v-if=" index == 0 ">
                 <h3 class="title">快递信息</h3>
                 <div class="ex_msg forthwith_msg">
@@ -149,7 +149,6 @@ export default {
                     return `${value}`
                 }
             },
-
             collection_order_number:'',
             // 即时收件
             realCode: '',
@@ -269,7 +268,6 @@ export default {
             let that = this
             let stage = that.stage
             let current_service = stage.current_service
-            console.log(current_service)
             if (!that.defaultFalse) {
                 if (stage.current_service != '') {
                     that.defaultFalse = true
@@ -288,8 +286,7 @@ export default {
             let that = this
             let stage = that.stage
             let current_service = stage.current_service
-            console.log(current_service)
-            if (that.defaultFalse1) {
+            if (!that.defaultFalse1) {
                 if (stage.current_service != '') {
                     that.defaultFalse1 = true
                     that.reservationName = current_service.service_nickname
@@ -491,8 +488,27 @@ export default {
     created() {
         let that = this
         that.collection_order_number = that.$route.query.collection_order_number
-        that.index = that.$route.query.index
-        if(collection_order_number != ''){
+        let index = that.$route.query.index
+
+        this.http(that.configs.apiTop + "/page/user-collection", "get", '', function(res) {
+            let msg = res.data
+            if (msg.code == 0) {
+                that.items = msg.data
+                that.stage = msg.data.stage
+                that.service_time = msg.data.service_time.start_time + '-' + msg.data.service_time.end_time
+                that.begin = msg.data.service_time.start_time
+                that.end = msg.data.service_time.end_time
+                //时间段
+                that.formattedTimeInit()
+            } else if (msg.code == 40004) {
+            } else {
+                that.$vux.toast.text(msg.message, 'middle', 100);
+            }
+        })
+        if(typeof index != 'undefined'){
+            that.index = parseInt(index)
+        }
+        if(typeof that.collection_order_number != 'undefined'){
             this.http(that.configs.apiTop + "/order/collection-order-detail/"+that.collection_order_number, "get", '', function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
@@ -526,23 +542,8 @@ export default {
                 }
             })
         }else{
-            this.http(that.configs.apiTop + "/page/user-collection", "get", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    that.items = msg.data
-                    that.stage = msg.data.stage
-                    that.service_time = msg.data.service_time.start_time + '-' + msg.data.service_time.end_time
-                    that.begin = msg.data.service_time.start_time
-                    that.end = msg.data.service_time.end_time
-                    //时间段
-                    that.formattedTimeInit()
-                } else if (msg.code == 40004) {
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
+            
         }
-        
     }
 }
 </script>

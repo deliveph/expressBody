@@ -1,5 +1,5 @@
 <template>
-    <div id="sendExpress" class="send_warp">
+    <div id="sendExpress" class="send_warp" v-wechat-title="$route.meta.title">
         <div class="receiveSend_add">
             <ul>
                 <router-link :to="{path:'address/shipper'}" tag="li" class="send pdlf30">
@@ -182,7 +182,8 @@ export default {
             pickUpTime: '',
             timeday: '',
             timequantum: '-',
-            items: []
+            items: [],
+            ship_order_number:''
         }
     },
     computed: {
@@ -193,7 +194,8 @@ export default {
         Toast
     },
     created() {
-        let that = this        
+        let that = this       
+        that.ship_order_number = that.$route.query.ship_order_number 
         let chooseConsigneeAddress = that.$store.state.chooseConsigneeAddress
         let chooseShipAddress = that.$store.state.chooseShipAddress
         this.http(that.configs.apiTop + "/page/user-ship", "get", '', function(res) {
@@ -269,6 +271,33 @@ export default {
                 that.$vux.toast.text(msg.message, 'middle', 100);
             }
         })
+
+        if(typeof that.ship_order_number != 'undefined'){
+            this.http(that.configs.apiTop + "/order/ship-order-detail/"+that.ship_order_number, "get", '', function(res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                    let data = msg.data
+                    that.default_consignee_address = {
+                        'consignee_address_id': data.consignee_address_id,
+                        'consignee_name': data.consignee_name,
+                        'consignee_phone': data.consignee_phone,
+                        'consignee_full_address': data.consignee_full_address
+                    }
+                    that.default_shipper_address = {
+                        'shipper_address_id': data.shipper_address_id,
+                        'shipper_name': data.shipper_name,
+                        'shipper_phone': data.shipper_phone,
+                        'shipper_full_address': data.shipper_full_address
+                    }
+                    that.value1 = data.logistics_company_name
+                    that.value2 = data.logistics_goods_category_name
+                    that.roundValue = data.estimate_weight
+                    that.remark = data.remark
+                    that.checkbox = true
+                    thata.estimateLogisticsFee = order_fee
+                }
+            })
+        }
     },
     methods: {
         // 计算时间段
@@ -376,70 +405,116 @@ export default {
         },
         submitBtn() {
             let that = this;
-            if (that.default_shipper_address.shipper_address_id == '') {
-                that.$vux.toast.text('请选择寄件地址', 'middle', 100)
-                return false
-            } else if (that.default_consignee_address.consignee_address_id == '') {
-                that.$vux.toast.text('请选择寄件地址', 'middle', 100)
-                return false
-            } else if (!that.checkbox) {
-                that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
-                return false
-            } else if (that.remark.lenght == 30) {
-                that.$vux.toast.text('请输入30字符内的说明', 'middle', 100)
-                return false
-            } else if (that.logisticsGoodsCategoryId <= 0) {
-                that.$vux.toast.text('请选择物品类型', 'middle', 100)
-                return false
-            }
-
-            let take_start_time = ''
-            let take_end_time = ''
-            // if (that.timeday == 1) {
-            //     that.timeday = that.getDateStr(0)
-            // } else if (that.timeday == 2) {
-            //     that.timeday = that.getDateStr(1)
-            // } else if (that.timeday == 3) {
-            //     that.timeday = that.getDatStr(2)
-            // }
-            // let arr = that.timequantum.split("~")
-            // take_start_time = that.timeday + ' ' + arr[0] + ':00'
-            // take_end_time = that.timeday + ' ' + arr[1] + ':00'
-            if (that.timequantum == "-") { // 一小时内
-                take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
-                take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
-            } else {
-                let arr = that.timequantum.split("~")
-                take_start_time = arr[0]
-                take_end_time = arr[1]
-            }
-
-            let data = qs.stringify({
-                'shipper_address_id': that.default_shipper_address.shipper_address_id,
-                'consignee_address_id': that.default_consignee_address.consignee_address_id,
-                'logistics_company_id': that.logisticsCompanyId,
-                'logistics_goods_category_id': that.logisticsGoodsCategoryId,
-                'estimate_weight': that.roundValue,
-                'take_start_time': take_start_time,
-                'take_end_time': take_end_time,
-                'remark': that.remark
-            })
-            this.http(that.configs.apiTop + "/order/submit-ship-order", "post", data, function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                    setTimeout(function() {
-                        that.$router.push({ path: '/order' })
-                    }, 200);
-                } else if (msg.code == 40004) {
-                } else {
-                    if (msg.code == 40014) {
-                        that.showPlugin(msg.message)
-                    } else {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                    }
+            if(typeof that.ship_order_number != 'undefined'){
+                if (that.default_shipper_address.shipper_address_id == '') {
+                    that.$vux.toast.text('请选择寄件地址', 'middle', 100)
+                    return false
+                } else if (that.default_consignee_address.consignee_address_id == '') {
+                    that.$vux.toast.text('请选择寄件地址', 'middle', 100)
+                    return false
+                } else if (!that.checkbox) {
+                    that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
+                    return false
+                } else if (that.remark.lenght == 30) {
+                    that.$vux.toast.text('请输入30字符内的说明', 'middle', 100)
+                    return false
+                } else if (that.logisticsGoodsCategoryId <= 0) {
+                    that.$vux.toast.text('请选择物品类型', 'middle', 100)
+                    return false
                 }
-            })
+                let take_start_time = ''
+                let take_end_time = ''
+                if (that.timequantum == "-") { // 一小时内
+                    take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
+                    take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
+                } else {
+                    let arr = that.timequantum.split("~")
+                    take_start_time = arr[0]
+                    take_end_time = arr[1]
+                }
+                let data = qs.stringify({
+                    'shipper_address_id': that.default_shipper_address.shipper_address_id,
+                    'consignee_address_id': that.default_consignee_address.consignee_address_id,
+                    'logistics_company_id': that.logisticsCompanyId,
+                    'logistics_goods_category_id': that.logisticsGoodsCategoryId,
+                    'estimate_weight': that.roundValue,
+                    'take_start_time': take_start_time,
+                    'take_end_time': take_end_time,
+                    'remark': that.remark
+                })
+                this.http(that.configs.apiTop + "/ship-order/update/"+that.ship_order_number, "post", data, function(res) {
+                    let msg = res.data
+                    if (msg.code == 0) {
+                        that.$vux.toast.text(msg.message, 'middle', 100);
+                        setTimeout(function() {
+                            that.$router.push({ path: '/order' })
+                        }, 200);
+                    } else if (msg.code == 40004) {
+                    } else {
+                        if (msg.code == 40014) {
+                            that.showPlugin(msg.message)
+                        } else {
+                            that.$vux.toast.text(msg.message, 'middle', 100);
+                        }
+                    }
+                })
+            }else{
+                if (that.default_shipper_address.shipper_address_id == '') {
+                    that.$vux.toast.text('请选择寄件地址', 'middle', 100)
+                    return false
+                } else if (that.default_consignee_address.consignee_address_id == '') {
+                    that.$vux.toast.text('请选择寄件地址', 'middle', 100)
+                    return false
+                } else if (!that.checkbox) {
+                    that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
+                    return false
+                } else if (that.remark.lenght == 30) {
+                    that.$vux.toast.text('请输入30字符内的说明', 'middle', 100)
+                    return false
+                } else if (that.logisticsGoodsCategoryId <= 0) {
+                    that.$vux.toast.text('请选择物品类型', 'middle', 100)
+                    return false
+                }
+
+                let take_start_time = ''
+                let take_end_time = ''
+                if (that.timequantum == "-") { // 一小时内
+                    take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
+                    take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
+                } else {
+                    let arr = that.timequantum.split("~")
+                    take_start_time = arr[0]
+                    take_end_time = arr[1]
+                }
+
+                let data = qs.stringify({
+                    'shipper_address_id': that.default_shipper_address.shipper_address_id,
+                    'consignee_address_id': that.default_consignee_address.consignee_address_id,
+                    'logistics_company_id': that.logisticsCompanyId,
+                    'logistics_goods_category_id': that.logisticsGoodsCategoryId,
+                    'estimate_weight': that.roundValue,
+                    'take_start_time': take_start_time,
+                    'take_end_time': take_end_time,
+                    'remark': that.remark
+                })
+                this.http(that.configs.apiTop + "/order/submit-ship-order", "post", data, function(res) {
+                    let msg = res.data
+                    if (msg.code == 0) {
+                        that.$vux.toast.text(msg.message, 'middle', 100);
+                        setTimeout(function() {
+                            that.$router.push({ path: '/order' })
+                        }, 200);
+                    } else if (msg.code == 40004) {
+                    } else {
+                        if (msg.code == 40014) {
+                            that.showPlugin(msg.message)
+                        } else {
+                            that.$vux.toast.text(msg.message, 'middle', 100);
+                        }
+                    }
+                })
+            }
+            
         },
         showPlugin(content) {
             let that = this
@@ -497,15 +572,15 @@ export default {
 }
 </style>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 @import '../../../static/assets/css/px2rem.scss';
 @import '../../../static/assets/css/express.scss';
 
 .express_company {}
 
-.scroller-indicator {
-    background-color: #fff;
-}
+// .scroller-indicator {
+//     background-color: #fff;
+// }
 
 .vux-flexbox .vux-flexbox-item {
     color: #366931;
@@ -522,31 +597,31 @@ export default {
     padding: 0;
 }
 
-.weui-cell__ft {
-    width: px2rem(40);
-    height: px2rem(40);
-    background: url('/static/assets/images/more_list.png') no-repeat center;
-    background-size: px2rem(40);
-    display: inline-block;
-    right: px2rem(0);
-    top: px2rem(28);
-    margin-right: 0;
-}
+// .weui-cell__ft {
+//     width: px2rem(40);
+//     height: px2rem(40);
+//     background: url('/static/assets/images/more_list.png') no-repeat center;
+//     background-size: px2rem(40);
+//     display: inline-block;
+//     right: px2rem(0);
+//     top: px2rem(28);
+//     margin-right: 0;
+// }
 
-.vux-number-round .vux-number-selector {
-    width: px2rem(60);
-    height: px2rem(60);
-    border: 0;
-    border-radius: px2rem(10);
-}
+// .vux-number-round .vux-number-selector {
+//     width: px2rem(60);
+//     height: px2rem(60);
+//     border: 0;
+//     border-radius: px2rem(10);
+// }
 
-.vux-number-round .vux-number-input {
-    width: px2rem(88);
-    height: px2rem(58);
-    border: 1px solid #bfbfbf;
-    margin: 0 px2rem(18);
-    border-radius: px2rem(10);
-}
+// .vux-number-round .vux-number-input {
+//     width: px2rem(88);
+//     height: px2rem(58);
+//     border: 1px solid #bfbfbf;
+//     margin: 0 px2rem(18);
+//     border-radius: px2rem(10);
+// }
 </style>
 <style lang="scss">
 .send_warp {

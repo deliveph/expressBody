@@ -187,15 +187,14 @@ Vue.prototype.$weChat = function () {
     that.wx.ready(function () {
       that.wx.onVoicePlayEnd({
         success: function (res) {
-          // stopWave()
-          alert(res + '123')
+
         }
       })
 
       that.http(that.configs.apiTop + '/weixin/share-config', 'get', '', function (res) {
         let msg = res.data
         if (msg.code == 0) {
-          let data = msg.data;
+          let data = msg.data
           /*分享到朋友圈*/
           that.wx.onMenuShareTimeline({
             title: data.title, // 分享标题
@@ -207,7 +206,7 @@ Vue.prototype.$weChat = function () {
             cancel: function () {
               // 用户取消分享后执行的回调函数
             }
-          });
+          })
 
           /*分享到朋友*/
           that.wx.onMenuShareAppMessage({
@@ -223,7 +222,7 @@ Vue.prototype.$weChat = function () {
             cancel: function () {
               // 用户取消分享后执行的回调函数
             }
-          });
+          })
 
           /*分享到qq*/
           that.wx.onMenuShareQQ({
@@ -248,43 +247,6 @@ Vue.prototype.$weChat = function () {
     // that.loadingState = "加载失败"
   })
 }
-
-//自定义指令JS
-// Vue.directive('drag',
-//   {
-//     bind: function (el, binding) {
-//       //当前元素
-//       let oDiv = el
-//       //上下文
-//       let self = this
-//       console.log(self)
-//       oDiv.onmousedown = function (e) {
-//         //鼠标按下，计算当前元素距离可视区的距离
-//         let disX = e.clientX - oDiv.offsetLeft
-//         let disY = e.clientY - oDiv.offsetTop
-//         console.log(disX, disY)
-//         document.onmousemove = function (e) {
-//           //通过事件委托，计算移动的距离
-//           let l = e.clientX - disX
-//           let t = e.clientY - disY
-//           console.log(l, t)
-//           //移动当前元素
-//           oDiv.style.left = l + 'px'
-//           oDiv.style.top = t + 'px'
-//           //将此时的位置传出去
-//           binding.value({
-//             x: e.pageX,
-//             y: e.pageY
-//           })
-//         }
-//         document.onmouseup = function (e) {
-//           document.onmousemove = null
-//           document.onmouseup = null
-//         }
-//       }
-//     }
-//   }
-// )
 
 /* eslint-disable no-new */
 new Vue({

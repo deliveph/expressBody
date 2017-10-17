@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="change-name">
             <div class="change-name-input">
-                <input type="text" placeholder="请输入姓名(不超过10个字)" v-model="name" maxlength="10">
+                <input type="text" placeholder="请输入姓名(不超过10个字)" v-model="name" minlength="2" maxlength="10">
             </div>
             <div class="change-name-save">
                 <button class="commit-btn" @click="save">保存</button>
@@ -28,6 +28,7 @@ export default {
         save() {
             let that = this
             let reg = /^[\u4E00-\u9FA5A-Za-z0-9]+$/
+            let namelen = parseInt(that.name.length)
             if (that.name == '') {
                 this.$vux.toast.text('请输入姓名', 'middle', 100);
                 return false;
@@ -35,8 +36,10 @@ export default {
             if (!(reg.test(that.name))) {
                 this.$vux.toast.text('请输入正确格式（数字、字母、中文）', 'middle', 100);
                 return false;
+            }else if( namelen > 1 || namelen < 11){
+                this.$vux.toast.text('限制2-10字', 'middle', 100);
+                return false;
             }
-
             if (this.$route.query.type == 'service') {
                 let data = qs.stringify({
                     'service_nickname': that.name

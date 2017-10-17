@@ -1,6 +1,6 @@
 <template>
 <transition enter-active-class="animated fadeInRight">
-    <div class="suggest">
+    <div class="suggest" v-wechat-title="$route.meta.title">
       <suggest-head></suggest-head>
       <autocomplete-list></autocomplete-list>
       <suggest-list></suggest-list>

@@ -75,7 +75,7 @@
             </div>
             <div class="order-box">
                 <!--待评价-->
-                <div class="order-list-item" v-if="(items.ship_order_status_id >= 3 && status == 'user') || (items.ship_order_status_id >= 3 && status == 'service')">
+                <div class="order-list-item" v-if="(items.ship_order_status_id >= 4 && status == 'user') || (items.ship_order_status_id >= 4 && status == 'service')">
                     <p>快递单号：
                         <span class="ft-blue">{{items.logistics_company_name}}
                             <router-link :to="{path:'/result',query:{code:items.logistics_code}}" v-if="items.logistics_code != '0'">{{items.logistics_code}}</router-link>
@@ -88,8 +88,18 @@
                         <span class="ft-red">{{items.order_fee}}快递豆</span>
                     </p>
                 </div>
-                <div class="order-list-item" v-if="items.ship_order_status_id >= 4 && status == 'service' || items.ship_order_status_id >= 4 && status == 'service'">
+                <div class="order-list-item" v-if="items.ship_order_status_id == 1 && status == 'service' || items.ship_order_status_id == 2 && status == 'service'">
                     <p>预计费用：
+                        <span class="ft-red">￥ {{items.order_fee}}</span>
+                    </p>
+                </div>
+                <div class="order-list-item" v-if="items.ship_order_status_id >= 4 && status == 'user' || items.ship_order_status_id >= 4 && status == 'user'">
+                    <p>实付金额:
+                        <span class="ft-red">{{items.order_fee}}快递豆</span>
+                    </p>
+                </div>
+                <div class="order-list-item" v-if="items.ship_order_status_id >= 4 && status == 'service' || items.ship_order_status_id >= 4 && status == 'service'">
+                    <p>实付金额:
                         <span class="ft-red">￥ {{items.order_fee}}</span>
                     </p>
                 </div>
@@ -274,7 +284,7 @@ export default {
         // 用户编辑订单
         editerorder(order_number) {
             let that = this
-            if (!order_number) {
+            if (order_number != '') {
                 this.$router.push({ name: 'Send', query: { ship_order_number: order_number } })
             } else {
                 this.$router.push({ name: 'Send' })

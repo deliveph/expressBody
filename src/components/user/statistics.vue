@@ -18,17 +18,17 @@
         <div class="statistics_time">
             <label for="">时间</label>
             <div class="start">
-                <datetime v-model="value1" @on-change="change"></datetime>
+                <datetime v-model="value1" @on-change="change" :placeholder="placeholder1"></datetime>
             </div>
             <span class="strip"></span>
             <div class="end">
-                <datetime v-model="value2" @on-change="change"></datetime>
+                <datetime v-model="value2" @on-change="change" :placeholder="placeholder2"></datetime>
             </div>
             <button type="button" class="btn active" @click="getStatistics">确定</button>
         </div>
         <div class="statistics_list">
-            <ul v-if="result.express_orders.length != 0"> 
-                <li v-for="item in result.express_orders"> 
+            <ul v-if="express_orders.length != 0"> 
+                <li v-for="item in express_orders" :key="item"> 
                     <div class="row">
                         <p class="order_number">订单号：{{ item.express_order_number }}</p> 
                         <p class="time">{{ item.express_order_create_time }}</p> 
@@ -38,7 +38,7 @@
                     </div>
                 </li>
             </ul>
-            <div class="no-balance" v-if="result.express_orders.length == 0"> 
+            <div class="no-balance" v-if="express_orders.length == 0"> 
                 <img src="/static/assets/images/no_record.png" alt=""> 
                 <p>暂无统计</p> 
             </div> 
@@ -54,29 +54,63 @@ export default {
   },
   data () {
     return {
-      value1: '2017-08-31',
-      value2: '2017-08-31',
-      result: {}
+      value1: '',
+      value2: '',
+      placeholder1:'起始时间',
+      placeholder2:'截止时间',
+      result: {},
+      express_orders:[]
     }
   },
   methods: {
     change (value) {
-      console.log('change', value)
+    },
+    formatDateTime: function(e, t) {
+        var r = function(e) {
+            return e += '', e.replace(/^(\d)$/, '0$1')
+        },
+            n = {
+                yyyy: e.getFullYear(),
+                yy: e.getFullYear().toString().substring(2),
+                M: e.getMonth() + 1,
+                MM: r(e.getMonth() + 1),
+                d: r(e.getDate()),
+                dd: r(e.getDate()),
+                hh: r(e.getHours()),
+                mm: r(e.getMinutes()),
+                ss: r(e.getSeconds()),
+                SSS: r(e.getMilliseconds())
+            }
+        return t || (t = "yyyy-MM-dd hh:mm:ss"), t.replace(/([a-z])(\1)*/gi, function(e) {
+            return n[e]
+        })
     },
     getStatistics() { 
-        let that = this 
-         
-        this.http(that.configs.apiTop + "/page/service-order-total?start_time="+this.value1+'&end_time='+this.value2, "get", '', function (res) { 
+        let that = this
+        let start = ''
+        let end = ''
+        if (!that.value1) {
+            start = that.formatDateTime(new Date(0), "yyyy-MM-dd")
+        }else{
+            start = that.value1
+        }
+        if (!that.value2) {
+            end = that.formatDateTime(new Date(), "yyyy-MM-dd")
+        }else{
+            end = that.value2
+        }
+        this.http(that.configs.apiTop + "/page/service-order-total?start_time="+start+'&end_time='+end, "get", '', function (res) { 
             let msg = res.data 
             if(msg.code == 0){ 
-                // console.log(msg); 
-                that.result = msg.data 
+                let data = msg.data
+                that.result = data
+                that.express_orders = data.express_orders
             }else if(msg.code == 40004){ 
                 that.$vux.toast.text(msg.message, 'middle', 100); 
             }else{ 
                 that.$vux.toast.text(msg.message, 'middle', 100); 
             } 
-        }) 
+        })
     } 
   },
   created() { 
@@ -112,6 +146,7 @@ export default {
             a{
                 top:px2rem(20);
                 right:px2rem(34);
+                color:#fff
             }
             ul{
                 display: flex;

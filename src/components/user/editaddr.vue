@@ -69,7 +69,6 @@ export default {
                 if (msg.code == 0) {
                     that.$router.push({ path: '/person',query:{type:'user'} })
                 } else if (msg.code == 40004) {
-                    // location.href = that.configs.accreditUrl
                 }
             })
         },
@@ -85,13 +84,28 @@ export default {
     },
     created() {
         let that = this
+        let type = that.$route.query.type
         this.http(that.configs.apiTop + "/region/regions", "get", '', function (res) {
             let msg = res.data
             if(msg.code == 0){
                 localStorage.setItem('regions',JSON.stringify(msg.data.regions))
                 that.addressData = msg.data.regions
+                if(type == 'edit'){
+                    that.http(that.configs.apiTop + "/user/profile", "get", '', function (res) {
+                        let msg = res.data
+                        if(msg.code == 0){
+                            let items = msg.data
+                            that.element = items.user_detail_address
+                            that.village_name = items.community_region_name
+                            that.value1 = [items.province_region_name,items.city_region_name,items.district_region_name]
+                            that.province = items.province_region_id
+                            that.city = items.city_region_id
+                            that.district = items.district_region_id
+                        }else if(msg.code == 40004){
+                        }
+                    })
+                }
             }else if(msg.code == 40004){
-                // location.href = that.configs.accreditUrl
             }
         })
     }

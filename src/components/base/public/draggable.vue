@@ -1,6 +1,8 @@
 <template>
     <div>
-        <img src="/static/assets/images/btn_relation.png" class="draggable" id="draggable"/>
+        <router-link :to="{path:'/chat/p2p-service_'+items.service_id }">
+             <img src="/static/assets/images/btn_relation.png" class="draggable" id="draggable"/>
+        </router-link>
     </div>
 </template>
 
@@ -8,9 +10,10 @@
 import $ from 'jquery'
 let dom = null
 export default {
+    props: ['headerObject'],
     data() {
         return {
-            
+            items:[]
         }
     },
     components: {
@@ -62,8 +65,11 @@ export default {
     },
     created() {
     },
-    beforeCreate(){
-        
+    watch:{
+        headerObject() {
+            let that = this
+            that.items = that.headerObject.user
+        }
     }
 }
 

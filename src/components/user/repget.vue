@@ -134,7 +134,7 @@
                 <!-- 用户操作按纽 -->
                 <button class="disable-btn" v-if="items.collection_order_status_id == 1 && status == 'user' || items.collection_order_status_id == 2 && status == 'user'" @click="cancel(items.collection_order_number)">取消</button>
                 <button v-if="items.collection_order_status_id == 1 && status == 'user' || items.collection_order_status_id == 2 && status == 'user'" @click="editerorder(items.collection_order_number)">编辑</button>
-                <button v-else-if="items.collection_order_status_id == 3 && status == 'user'" @click="cancel(items.collection_order_number)">修改送件时间</button>
+                <button v-else-if="items.collection_order_status_id == 3 && status == 'user'" @click="clickModifyTime(items.collection_order_number)">修改送件时间</button>
                 <button v-else-if="items.collection_order_status_id == 4 && status == 'user'" @click="pay(items.collection_order_number)">去支付</button>
                 <button v-else-if="items.collection_order_status_id == 5 && status == 'user'" @click="evaluate(items.collection_order_number)">去评价</button>
                 <button v-else-if="items.collection_order_status_id == 6 && status == 'user'" @click="editerorder()">继续下单</button>
@@ -147,6 +147,35 @@
 
         </div>
 
+
+        <!-- 修改送件时间 -->
+        <div class="layer_warp layer_modifyTime" v-if="layermodifyTime">
+            <div class="layer_table">
+                <div class="layer_table_cell">
+                    <div class="layer_box">
+                        <div class="layer_title">
+                            <p>修改送件时间</p>
+                        </div>
+                        <div class="layer_container">
+                            <div class="phone_register register_box">
+                                <div class="phone_number">
+                                    <popup-picker :title="title1" :data="list1" :columns="1" v-model="value1" :display-format="format" :placeholder="placeholder1" @on-change="onChangePickUpTime"></popup-picker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layer_footer">
+                            <div class="layer_footer_cancel">
+                                <router-link tag="li" to="/"></router-link>
+                                <button @click="modifyTimeCancel">取消</button>
+                            </div>
+                            <div class="layer_footer_confirm">
+                                <button @click="modifyTimeConfirm">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- 用户信息 -->
         <div class="layer_warp layer_user_message" v-if="layerSend">
             <div class="layer_table">
@@ -177,19 +206,81 @@
 </template>
 <script>
 import { Toast } from 'vux'
-import { Confirm } from 'vux'
+import { Confirm, PopupPicker } from 'vux'
 export default {
     data() {
         return {
             collection_order_number: '',
             items: [],
             status: '',
-            layerSend: false
+            layerSend: false,
+            layermodifyTime:false,
+
+            //
+            title1: '',
+            value1: ['一小时内'],
+            placeholder1:'',
+            list1: [{
+                name: '今天',
+                value: 'today',
+                parent: 0
+            }, {
+                name: '明天',
+                value: 'tomorrow',
+                parent: 0
+            }, {
+                name: '后天',
+                value: 'dopodomani',
+                parent: '0'
+            }, {
+                name: '一小时内',
+                value: 'within_hour',
+                parent: 'today'
+            }, {
+                name: '11:00~12:00',
+                value: 'time_quantum1112',
+                parent: 'today'
+            }, {
+                name: '13:00~14:00',
+                value: 'time_quantum1314',
+                parent: 'today'
+            }, {
+                name: '08:00~09:00',
+                value: 'time_quantum0809',
+                parent: 'tomorrow'
+            }, {
+                name: '10:00~11:00',
+                value: 'time_quantum1011',
+                parent: 'tomorrow'
+            }, {
+                name: '12:00~13:00',
+                value: 'time_quantum1213',
+                parent: 'tomorrow'
+            }, {
+                name: '08:00~09:00',
+                value: 'time_quantum0809',
+                parent: 'dopodomani'
+            }, {
+                name: '10:00~11:00',
+                value: 'time_quantum1011',
+                parent: 'dopodomani'
+            }, {
+                name: '12:00~13:00',
+                value: 'time_quantum1213',
+                parent: 'dopodomani'
+            }],
+            format: function(value, name) {
+                if (name) {
+                    return `${name}`
+                } else {
+                    return `${value}`
+                }
+            }
         }
     },
     created() {
         let that = this
-        that.collection_order_number = this.$route.query.collection_order_number
+        that.collection_order_number = this.$route.query.ship_order_number
         that.status = this.$route.query.status
         this.http(that.configs.apiTop + "/order/collection-order-detail/" + that.collection_order_number, "get", '', function(res) {
             let msg = res.data
@@ -205,7 +296,8 @@ export default {
     },
     components: {
         Toast,
-        Confirm
+        Confirm,
+        PopupPicker
     },
     methods: {
         // 用户编辑订单
@@ -252,6 +344,10 @@ export default {
                     }
                 }
             })
+        },
+        // 修改送件时间
+        modifyTime(collection_order_number){
+
         },
         // 用户支付订单
         pay(collection_order_number) {
@@ -314,11 +410,53 @@ export default {
         },
         sendMessage() {
             let that = this
+            console.log('p2p-user_' + that.items.user_id)
+            return
             this.$router.push({ path: '/chat/p2p-user_' + that.items.user_id })
         },
         layerSendFun() {
             let that = this
             this.layerSend = true
+        },
+        clickModifyTime(){
+            let that = this
+            that.layermodifyTime = true
+        },
+        modifyTimeCancel() {
+            let that = this
+            that.layermodifyTime = false
+        },
+        modifyTimeConfirm(){
+            let that = this;
+            if (that.company == '') {
+                this.$vux.toast.text('请选择快递公司', 'middle', 100);
+                return false;
+            } else if (that.code == '') {
+                this.$vux.toast.text('请输入快递单号', 'middle', 100);
+                return false;
+            }
+            let data = qs.stringify({
+                'logistics_company_id': that.company,
+                'logistics_code': that.code,
+            })
+            this.http(that.configs.apiTop + "/ship-order/fill-in-logistics-code/" + that.items.collection_order_number, "post", data, function(res) {
+                let msg = res.data
+                let data = msg.data
+                if (msg.code == 0) {
+                    that.$vux.toast.text(msg.message, 'middle', 100)
+                    that.writelayerStorey = false
+                    setTimeout(function() {
+                        that.$router.push({ path: '/orderdetail' })
+                    }, 200);
+                } else if (msg.code == 40004) {
+                } else {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                }
+            })
+        },
+        onChangePickUpTime(values) {
+            this.timeday = values[0]
+            this.timequantum = values[1]
         }
     }
 }
@@ -398,7 +536,8 @@ export default {
                     width: px2rem(114);
                     height: px2rem(114);
                     border-radius: 50%;
-                    vertical-align: middle;
+                    vertical-align: top;
+                    margin-top:px2rem(5)
                 }
             }
             p {
@@ -424,6 +563,29 @@ export default {
             border-bottom-left-radius: 0.05rem;
             border: 0;
             background-color: #366931;
+        }
+    }
+}
+
+
+.layer_modifyTime{
+    .register_box{
+        padding: px2rem(40) px2rem(66) px2rem(76);
+        text-align: center;
+        .phone_number{
+            height:px2rem(80);
+            line-height:px2rem(80);
+        }
+        .vux-cell-box:before{
+            border:0;
+        }
+        .weui-cell{
+            border:1px solid #d8dce2;
+            border-radius: px2rem(10);
+        }
+        .vux-popup-picker-select{
+            padding:px2rem(5) px2rem(5);
+            text-align: left !important;
         }
     }
 }
