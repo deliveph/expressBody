@@ -202,20 +202,22 @@
                 </div>
             </div>
         </div>
+        <LayerPw v-if="layerPwhide" v-on:listenEvent="getOrder"></LayerPw>
     </div>
 </template>
 <script>
 import { Toast } from 'vux'
+import LayerPw from '../base/public/layer_pw'
 import { Confirm, PopupPicker } from 'vux'
 export default {
     data() {
         return {
+            layerPwhide: false,
             collection_order_number: '',
             items: [],
             status: '',
             layerSend: false,
             layermodifyTime:false,
-
             //
             title1: '',
             value1: ['一小时内'],
@@ -279,27 +281,32 @@ export default {
         }
     },
     created() {
-        let that = this
-        that.collection_order_number = this.$route.query.ship_order_number
-        that.status = this.$route.query.status
-        this.http(that.configs.apiTop + "/order/collection-order-detail/" + that.collection_order_number, "get", '', function(res) {
-            let msg = res.data
-            if (msg.code == 0) {
-                let data = msg.data
-                that.items = data
-            } else if (msg.code == 40004) {
-                // location.href = that.configs.accreditUrl
-            } else {
-                that.$vux.toast.text(msg.message, 'middle', 100);
-            }
-        })
+        this.getOrder()
     },
     components: {
         Toast,
         Confirm,
-        PopupPicker
+        PopupPicker,
+        LayerPw
     },
     methods: {
+        getOrder(result) {
+            let that = this
+            that.collection_order_number = that.$route.query.collection_order_number
+            that.status = that.$route.query.status
+            that.http(that.configs.apiTop + "/order/collection-order-detail/" + that.collection_order_number, "get", '', function(res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                    let data = msg.data
+                    that.items = data
+                } else if (msg.code === 40016) {
+                    that.layerPwhide = true
+                    // location.href = that.configs.accreditUrl
+                } else {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                }
+            })
+        },
         // 用户编辑订单
         editerorder(order_number) {
             let that = this
