@@ -53,11 +53,15 @@
                                 <div v-for="(collection,c) in collections" :key="c">
                                     <div v-if="item.express_order_number == collection.collection_order_number">
                                         <li class="put">
-                                            <router-link :to="{path:'repget',query:{ship_order_number:collection.collection_order_number,status:'user'}}">
+                                            <router-link :to="{path:'repget',query:{collection_order_number:collection.collection_order_number,status:'user'}}">
                                                 <i class="icon_put"></i>
                                                 <div class="odd">
-                                                    <p class="order_number">订单号：<span>{{collection.collection_order_number}}</span></p>
-                                                    <p class="express_number">快递单号：<span>{{collection.logistics_code}}</span></p>
+                                                    <p class="order_number">订单号：
+                                                        <span>{{collection.collection_order_number}}</span>
+                                                    </p>
+                                                    <p class="express_number">快递单号：
+                                                        <span>{{collection.logistics_code}}</span>
+                                                    </p>
                                                 </div>
                                             </router-link>
                                         </li>
@@ -80,70 +84,70 @@
 import { Toast } from 'vux'
 import qs from 'qs'
 export default {
-    data(){
-        return{
-            odd:'',
-            items:[],
-            ships:[],
-            collections:[]
+    data() {
+        return {
+            odd: '',
+            items: [],
+            ships: [],
+            collections: []
         }
     },
     components: {
         Toast
     },
     methods: {
-        see(){
+        see() {
             let that = this
             let reg = /^[1-9]\d*$/
             let odd = that.odd
-            if(odd == ''){
-                that.$vux.toast.text('请输入快递单号', 'middle',100);
+            if (odd == '') {
+                that.$vux.toast.text('请输入快递单号', 'middle', 100);
                 return false;
-            }else if(!reg.test(odd)){
-                that.$vux.toast.text('请输入正确的快递单号', 'middle',100);
+            } else if (!reg.test(odd)) {
+                that.$vux.toast.text('请输入正确的快递单号', 'middle', 100);
                 return false;
             }
-            that.$router.push({path: '/result',query:{code:odd}})
+            that.$router.push({ path: '/result', query: { code: odd } })
         },
-        richscan(){
+        richscan() {
             let that = this;
             // let msg = {"resultStr":"CODE_128,534052156639","errMsg":"scanQRCode:ok"}
             this.wx.scanQRCode({
                 needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-                scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
-                success: function (res) {
+                scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                success: function(res) {
                     let result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
                     let str = result.split(',');
                     let code = '';
-                    if(str.length > 1){
+                    if (str.length > 1) {
                         code = str[1]
-                    }else{
+                    } else {
                         code = str[0]
                     }
                 }
             });
         },
-        cancel(ship_order_number){
+        cancel(ship_order_number) {
             let that = this
             this.$vux.confirm.show({
                 title: '取消订单',
-                    content: '确定要取消此订单???',
+                content: '确定要取消此订单???',
                 // 组件除show外的属性
-                onCancel () {
-                    
-                },
-                onConfirm () {
-                    if(ship_order_number){
-                        that.http(that.configs.apiTop+"/order/cancel-ship-order/"+ship_order_number, "post", '', function(res){
-                            let msg = res.data
-                            if(msg.code == 0){
-                                that.$vux.toast.text(msg.message, 'middle',100)
-                                setTimeout(function(){ 
-                                    that.$router.push({path: '/user'}) 
-                                }, 200);
-                            }else if(msg.code == 40004){
+                onCancel() {
 
-                            }else {
+                },
+                onConfirm() {
+                    if (ship_order_number) {
+                        that.http(that.configs.apiTop + "/order/cancel-ship-order/" + ship_order_number, "post", '', function(res) {
+                            let msg = res.data
+                            if (msg.code == 0) {
+                                that.$vux.toast.text(msg.message, 'middle', 100)
+                                setTimeout(function() {
+                                    that.$router.push({ path: '/user' })
+                                }, 200);
+                            } else if (msg.code == 40004) {
+
+                            } else {
                                 that.$vux.toast.text(msg.message, 'middle', 100);
                             }
                         })
@@ -151,27 +155,27 @@ export default {
                 }
             })
         },
-        deleteShipCode(ship_order_number){
+        deleteShipCode(ship_order_number) {
             let that = this
             this.$vux.confirm.show({
                 title: '删除订单',
-                    content: '确定要删除此订单???',
+                content: '确定要删除此订单???',
                 // 组件除show外的属性
-                onCancel () {
-                    
-                },
-                onConfirm () {
-                    if(ship_order_number){
-                        that.http(that.configs.apiTop+"/ship-order/user-ignore/"+ship_order_number, "post", '', function(res){
-                            let msg = res.data
-                            if(msg.code == 0){
-                                that.$vux.toast.text(msg.message, 'middle',100)
-                                setTimeout(function(){ 
-                                    that.$router.push({path: '/user'}) 
-                                }, 200);
-                            }else if(msg.code == 40004){
+                onCancel() {
 
-                            }else {
+                },
+                onConfirm() {
+                    if (ship_order_number) {
+                        that.http(that.configs.apiTop + "/ship-order/user-ignore/" + ship_order_number, "post", '', function(res) {
+                            let msg = res.data
+                            if (msg.code == 0) {
+                                that.$vux.toast.text(msg.message, 'middle', 100)
+                                setTimeout(function() {
+                                    that.$router.push({ path: '/user' })
+                                }, 200);
+                            } else if (msg.code == 40004) {
+
+                            } else {
                                 that.$vux.toast.text(msg.message, 'middle', 100);
                             }
                         })
@@ -179,27 +183,27 @@ export default {
                 }
             })
         },
-        deleteCollectionCode(collection_order_number){
+        deleteCollectionCode(collection_order_number) {
             let that = this
             this.$vux.confirm.show({
                 title: '删除订单',
-                    content: '确定要删除此订单???',
+                content: '确定要删除此订单???',
                 // 组件除show外的属性
-                onCancel () {
-                    
-                },
-                onConfirm () {
-                    if(collection_order_number){
-                        that.http(that.configs.apiTop+"/collection-order/user-ignore/"+collection_order_number, "post", '', function(res){
-                            let msg = res.data
-                            if(msg.code == 0){
-                                that.$vux.toast.text(msg.message, 'middle',100)
-                                setTimeout(function(){ 
-                                    that.$router.push({path: '/user'}) 
-                                }, 200);
-                            }else if(msg.code == 40004){
+                onCancel() {
 
-                            }else {
+                },
+                onConfirm() {
+                    if (collection_order_number) {
+                        that.http(that.configs.apiTop + "/collection-order/user-ignore/" + collection_order_number, "post", '', function(res) {
+                            let msg = res.data
+                            if (msg.code == 0) {
+                                that.$vux.toast.text(msg.message, 'middle', 100)
+                                setTimeout(function() {
+                                    that.$router.push({ path: '/user' })
+                                }, 200);
+                            } else if (msg.code == 40004) {
+
+                            } else {
                                 that.$vux.toast.text(msg.message, 'middle', 100);
                             }
                         })
@@ -208,7 +212,7 @@ export default {
             })
         }
     },
-    created(){
+    created() {
         let that = this;
         this.$weChat();
         this.http(that.configs.apiTop + "/order/orders", "get", '', function(res) {
@@ -217,7 +221,7 @@ export default {
                 let data = msg.data
                 that.items = data.items
                 that.ships = data.ships
-                that.collections = data.collections                    
+                that.collections = data.collections
             } else if (msg.code == 40004) {
                 // location.href = that.configs.accreditUrl
             } else {
@@ -229,27 +233,26 @@ export default {
 </script>
 
 <style lang="scss">
-    @import '../../../static/assets/css/home.scss';
-    #inquire{
-        padding-bottom:px2rem(80)
+@import '../../../static/assets/css/home.scss';
+#inquire {
+    padding-bottom: px2rem(80)
+}
+
+.no-order {
+    margin-top: px2rem(102);
+    .no-img {
+        background: url('/static/assets/images/no_indent.png') no-repeat;
+        background-size: cover;
+        width: px2rem(250);
+        height: px2rem(250);
+        margin: 0 auto;
     }
-    .no-order {
-        margin-top: px2rem(102);
-        .no-img {
-            background: url('/static/assets/images/no_indent.png') no-repeat;
-            background-size: cover;
-            width: px2rem(250);
-            height: px2rem(250);
-            margin: 0 auto;
-        }
-        p {
-            text-align: center;
-            font-size: px2rem(28);
-            color: #999;
-            margin-top: px2rem(40);
-        }
-        button{
-            
-        }
+    p {
+        text-align: center;
+        font-size: px2rem(28);
+        color: #999;
+        margin-top: px2rem(40);
     }
+    button {}
+}
 </style>
