@@ -154,7 +154,7 @@
         </div>
         <div class="order-group">
             <!-- 用户操作按纽 -->
-            <button class="disable-btn" v-if="(items.ship_order_status_id == 1 && status == 'user') || (items.ship_order_status_id == 2 && status == 'user')" @click="cancel(items.ship_order_number)">取消</button>
+            <button class="disable-btn" v-if="(items.ship_order_status_id == 1 && status == 'user') || (items.ship_order_status_id == 2 && status == 'user')" @click="cancel(items.ship_order_number,'ship')">取消</button>
             <button v-if="items.ship_order_status_id == 1 && status == 'user' || items.ship_order_status_id == 2 && status == 'user'" @click="editerorder(items.ship_order_number)">编辑</button>
             <button v-else-if="items.ship_order_status_id == 3 && status == 'user'" @click="pay(items.ship_order_number)">去支付</button>
             <button v-else-if="items.ship_order_status_id == 4 && status == 'user'" @click="evaluate(items.ship_order_number)">去评价</button>
@@ -310,14 +310,15 @@ export default {
 
                 },
                 onConfirm() {
-                    if (ship_order_number) {
+                    if (ship_order_number,type) {
                         that.http(that.configs.apiTop + "/order/cancel-ship-order/" + ship_order_number, "post", '', function(res) {
                             let msg = res.data
                             if (msg.code == 0) {
-                                that.$vux.toast.text(msg.message, 'middle', 100)
-                                setTimeout(function() {
-                                    that.$router.push({ path: '/user' })
-                                }, 200);
+                                that.$router.push({path: '/ordercancel',query:{status:type}}) 
+                                // that.$vux.toast.text(msg.message, 'middle', 100)
+                                // setTimeout(function() {
+                                //     that.$router.push({ path: '/user' })
+                                // }, 200);
                             } else if (msg.code == 40004) {
 
                             } else {

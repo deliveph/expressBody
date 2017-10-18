@@ -132,7 +132,7 @@
             </div>
             <div class="order-group">
                 <!-- 用户操作按纽 -->
-                <button class="disable-btn" v-if="items.collection_order_status_id == 1 && status == 'user' || items.collection_order_status_id == 2 && status == 'user'" @click="cancel(items.collection_order_number)">取消</button>
+                <button class="disable-btn" v-if="items.collection_order_status_id == 1 && status == 'user' || items.collection_order_status_id == 2 && status == 'user'" @click="cancel(items.collection_order_number,'collection')">取消</button>
                 <button v-if="items.collection_order_status_id == 1 && status == 'user' || items.collection_order_status_id == 2 && status == 'user'" @click="editerorder(items.collection_order_number)">编辑</button>
                 <button v-else-if="items.collection_order_status_id == 3 && status == 'user'" @click="clickModifyTime(items.collection_order_number)">修改送件时间</button>
                 <button v-else-if="items.collection_order_status_id == 4 && status == 'user'" @click="pay(items.collection_order_number)">去支付</button>
@@ -334,14 +334,15 @@ export default {
 
                 },
                 onConfirm() {
-                    if (collection_order_number) {
+                    if (collection_order_number,type) {
                         that.http(that.configs.apiTop + "/order/cancel-collection-order/" + collection_order_number, "post", '', function(res) {
                             let msg = res.data
                             if (msg.code == 0) {
-                                that.$vux.toast.text(msg.message, 'middle', 100)
-                                setTimeout(function() {
-                                    that.$router.push({ path: '/order' })
-                                }, 200);
+                                that.$router.push({path: '/ordercancel',query:{status:type}}) 
+                                // that.$vux.toast.text(msg.message, 'middle', 100)
+                                // setTimeout(function() {
+                                //     that.$router.push({ path: '/order' })
+                                // }, 200);
                             } else if (msg.code == 40004) {
 
                             } else {
@@ -559,15 +560,17 @@ export default {
         .layer_footer_cancel {
             border: 0;
         }
-        button {
-            width: 100%;
-            height: 100%;
-            font-size: px2rem(24);
-            color: #fff; // line-height: px2rem(70);
-            border-bottom-right-radius: 0.05rem;
-            border-bottom-left-radius: 0.05rem;
-            border: 0;
-            background-color: #366931;
+        .layer_footer {
+            button {
+                width: 100%;
+                height: 100%;
+                font-size: px2rem(24);
+                color: #fff; // line-height: px2rem(70);
+                border-bottom-right-radius: 0.05rem;
+                border-bottom-left-radius: 0.05rem;
+                border: 0;
+                background-color: #366931;
+            }
         }
     }
 }

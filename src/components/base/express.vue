@@ -41,7 +41,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name:'Inquire'}">
+                    <router-link :to="{name:'Inquire',query:{status:'service'}}">
                         <img src="/static/assets/images/btn_cha.png" />
                         <p>查询快递</p>
                     </router-link>
@@ -155,7 +155,7 @@ export default {
             items: [],
             ships: [],
             collections: [],
-            service_level_logo: '',
+            service_level_logo: 'http://static.menory.top/images/service_levels/1_liebing_s.png',
         }
     },
     created() {
@@ -167,9 +167,10 @@ export default {
             this.http(that.configs.apiTop + "/page/service-home", "get", '', function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
+                    let data = msg.data
                     that.result = msg.data
                     that.service = msg.data.service
-                    let service = msg.data.service
+                    let service = data.service
                     let service_level = service.service_level
                     that.service_level_logo = service_level.service_level_logo
                 }
@@ -186,8 +187,12 @@ export default {
                 let msg = res.data
                 if (msg.code == 0) {
                     that.$router.push({ path: '/service', query: { 'is_verification': '1' } })
+                    let data = msg.data
                     that.result = msg.data;
                     that.service = msg.data.service
+                    let service = data.service
+                    let service_level = service.service_level
+                    that.service_level_logo = service_level.service_level_logo
                 }
             })
             that.orderlist()

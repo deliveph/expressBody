@@ -24,26 +24,14 @@
             </ul>
             <div class="structure mt20">
                 <h1>收支明细</h1>
-                <ul class="income-item" >
-                    <li >
-                        <div class="income-info col-6">
-                            <p>41241244124124412412441241244124124</p>
-                            <span>124124</span>
-                        </div>
-                        <div class="income-add col-4">
-                            <p class="add t-r" > + 12541251</p>
-                            <!-- <p class="subtract t-r" >-23523523</p> -->
-                            <!-- <p class="subtract t-r">-10</p> -->
-                            <!--
-                            <p class="subtract">-10</p>
-                            -->
-                        </div>
-                    </li>
-                </ul>
                 <ul class="income-item" v-if="items.length != 0">
                     <li v-for="(item,i) in items" :key="i">
                         <div class="income-info col-6">
-                            <p>{{item.consume_category_name}}</p>
+                            <p>{{item.consume_category_name}}
+                                <em v-if="parseInt(item.flow_number.length) > 0">
+                                    （订单号：{{item.flow_number}}）
+                                </em>
+                            </p>
                             <span>{{item.create_time}}</span>
                         </div>
                         <div class="income-add col-6">
@@ -88,6 +76,7 @@
                     let data = msg.data
                     that.items = data.user_finance_log
                     that.sun = data.user_balance 
+                    console.log(that.items[0].flow_number.length)
                 } else if (msg.code == 40004) {
                     // location.href = that.configs.accreditUrl
                 } else {

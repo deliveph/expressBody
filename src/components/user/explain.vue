@@ -3,7 +3,7 @@
         <div class="cen-list">
             <div class="cen-item">
                 <ul class="some-item">
-                     <li v-for="item in data"> 
+                     <li v-for="item in data" :key="item"> 
                         <router-link :to="{path:'/detail',query: {type: 'user',id: item.readme_id}}"> 
                             <span>{{ item.readme_title }}</span> 
                             <em><i class="arrow-right"></i></em> 

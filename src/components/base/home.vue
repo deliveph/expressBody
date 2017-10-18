@@ -26,7 +26,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name:'Inquire'}">
+                    <router-link :to="{name:'Inquire',query:{status:'user'}}">
                         <img src="/static/assets/images/btn_cha.png" />
                         <p>查询快递</p>
                     </router-link>
@@ -135,7 +135,7 @@ export default {
         },
         confirm() {
             let that = this;
-            that.$router.push({ path: '/person', query: { type: "user" } });
+            that.$router.push({ path: '/person', query: { type: "user",is_perfect:0 } });
         },
         cancel() {
             let that = this

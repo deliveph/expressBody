@@ -26,6 +26,24 @@
         ></chat-editor>
       </div>
     </div>
+
+    <!-- 用户信息 -->
+    <div class="layer_warp layer_userMessage" v-if="layerUserMessage">
+        <div class="layer_box">
+            <div class="layer_container">
+                <div class="user_message_main">
+                   <div class="img">
+                      <img src="/static/assets/images/head_def.png" />
+                   </div>
+                   <div class="right_msg">
+                     <p class="name">萌蠢滴大河</p>
+                     <p><span>电话：</span>18681587662</p>
+                     <p><span>地址：</span>大冲国际中心501</p>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -63,7 +81,8 @@ export default {
       leftBtnOptions: {
         backText: ' ',
         preventGoBack: true,
-      }
+      },
+      layerUserMessage:false
     }
   },
   computed: {
@@ -316,6 +335,59 @@ export default {
       } 
     }
   }
+
+
+  .layer_warp{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 10;
+        &.layer_userMessage{
+          .layer_box{
+            width:100%;
+            // height: px2rem(304);
+            background-color: #fff;
+            display: inline-block;
+            border-radius: 0;
+            border-top-left-radius: px2rem(10);
+            border-top-right-radius: px2rem(10);
+            position: absolute;
+            bottom: 0;
+            padding:px2rem(56) px2rem(78);
+            .user_message_main{
+              display: flex;
+              .img{
+                width: px2rem(150);
+                height:px2rem(150);
+                border-radius: 50%;
+                line-height:px2rem(150);
+                vertical-align: middle;
+                img{
+                  width: px2rem(136);
+                  height:px2rem(136);
+                  border-radius: 50%;
+                  vertical-align: top;
+                  margin-top:px2rem(6);
+                }
+              }
+              .right_msg{
+                margin-top:px2rem(10);
+                p{
+                  font-size:px2rem(30);
+                  color:#999;
+                  margin-bottom: px2rem(25);
+                  &.name{
+                    color:#666;
+                  }
+                }
+              }
+            }
+          }
+        }
+    }
   // .g-window .u-msg.session-chat.item-you .msg-text::before 
 </style>
  

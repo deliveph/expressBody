@@ -19,7 +19,6 @@
                     <i class="icon_bean"></i>
                 </p>
             </li>
-            <!-- v-if="express" -->
             <li class="courier_message" v-if="express">
                 <h4 class="identify">您的专属快递哥</h4>
                 <router-link :to="{path:'/chat/p2p-service_'+service_id }">

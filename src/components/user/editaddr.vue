@@ -36,7 +36,8 @@ export default {
             element:'',
             province:'',
             city:'',
-            district:''
+            district:'',
+            is_perfect:''
         }
     },
     components: {
@@ -67,7 +68,12 @@ export default {
             this.http(that.configs.apiTop + "/user/update-profile-address", "post", data, function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
-                    that.$router.push({ path: '/person',query:{type:'user'} })
+                    if(that.is_perfect == 0){
+                        that.$router.push({ path: '/user',query:{is_perfect:1} })
+                    }else{
+                        that.$router.push({ path: '/person',query:{type:'user'} })
+                    }
+                    
                 } else if (msg.code == 40004) {
                 }
             })
@@ -85,6 +91,7 @@ export default {
     created() {
         let that = this
         let type = that.$route.query.type
+        this.is_perfect = that.$route.query.is_perfect
         this.http(that.configs.apiTop + "/region/regions", "get", '', function (res) {
             let msg = res.data
             if(msg.code == 0){

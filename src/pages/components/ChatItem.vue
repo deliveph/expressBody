@@ -34,9 +34,9 @@
         <div v-if="msg.robotFlow==='out'">{{msg.showText}}</div>
         <div v-else-if="msg.subType==='bot'">
           <!-- 多次下发的机器人消息 -->
-          <div v-for="tmsgs in msg.message">
+          <div v-for="tmsgs in msg.message" :key="tmsgs">
             <!-- 多个机器人模板 -->
-            <div v-for="tmsg in tmsgs">
+            <div v-for="tmsg in tmsgs" :key="tmsg">
               <div v-if="tmsg.type==='text'">
                 <p>{{tmsg.text}}</p>
               </div>
@@ -48,24 +48,24 @@
               <div v-else-if="tmsg.type==='url'">
                 <a :class="tmsg.style" :href="tmsg.target" target="_blank">
                   <div v-if="tmsg.image">
-                    <p v-for="tmsg2 in tmsg.image">
+                    <p v-for="tmsg2 in tmsg.image" :key="tmsg2">
                       <img :src="tmsg2.url">
                     </p>
                   </div>
                   <div v-if="tmsg.text">
-                    <p v-for="tmsg2 in tmsg.text">{{tmsg2.text}}</p>
+                    <p v-for="tmsg2 in tmsg.text" :key="tmsg2">{{tmsg2.text}}</p>
                   </div>
                 </a>
               </div>
               <div v-else-if="tmsg.type==='block'">
                 <a :class="tmsg.style" :params="tmsg.params" :target="tmsg.target" @click="sendRobotBlockMsg(tmsg, msg)">
                   <div v-if="tmsg.image">
-                    <p v-for="tmsg2 in tmsg.image">
+                    <p v-for="tmsg2 in tmsg.image" :key="tmsg2">
                       <img :src="tmsg2.url">
                     </p>
                   </div>
                   <div v-if="tmsg.text">
-                    <p v-for="tmsg2 in tmsg.text">{{tmsg2.text}}</p>
+                    <p v-for="tmsg2 in tmsg.text" :key="tmsg2">{{tmsg2.text}}</p>
                   </div>
                 </a>
               </div>
@@ -384,6 +384,8 @@
       }
     },
     created(){
+      let that = this
+
     }
   }
 </script>

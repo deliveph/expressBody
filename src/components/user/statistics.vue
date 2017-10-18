@@ -224,6 +224,10 @@ export default {
                 .vux-datetime{
                     color:#cacaca;
                 }
+                .weui-cell__ft{
+                    padding: 0;
+                    text-align: center
+                }
             }
             .btn{
                 font-size:px2rem(30);

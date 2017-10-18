@@ -34,7 +34,7 @@
                             <span>联系地址</span>
                             <p>{{address}}</p>
                         </router-link>
-                        <router-link :to="{path:'/editaddr',query:{type:'edit'}}" v-else>
+                        <router-link :to="{path:'/editaddr',query:{type:'edit',is_perfect:is_perfect}}" v-else>
                             <span>联系地址</span>
                             <p>{{address}}</p>
                             <em>
@@ -78,7 +78,8 @@ export default {
             address: '',
             score: '',
             serve: false,
-            type: ''
+            type: '',
+            is_perfect:''
         }
     },
     methods: {
@@ -137,6 +138,7 @@ export default {
     created() {
         let that = this
         this.type = this.$route.query.type
+        this.is_perfect = this.$route.query.is_perfect
         if (this.type == 'user') {
             this.http(that.configs.apiTop + "/user/profile", "get", '', function(res) {
                 let msg = res.data

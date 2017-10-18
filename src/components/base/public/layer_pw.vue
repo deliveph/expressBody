@@ -167,7 +167,6 @@ export default {
         display: flex;
         margin-bottom: px2rem(30);
         input {
-            flex: 0;
             width: px2rem(270);
         }
         button {}

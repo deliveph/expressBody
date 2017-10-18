@@ -68,7 +68,7 @@ export default {
     watch:{
         headerObject() {
             let that = this
-            that.items = that.headerObject.user
+            that.items = that.headerObject.service
         }
     }
 }

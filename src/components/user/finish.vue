@@ -40,7 +40,7 @@
                                                 <span class="order-btn" v-if="ship.ship_order_status_id == -1">删除订单</span>
                                                 <span class="order-btn" v-else-if="ship.ship_order_status_id == 1 || ship.ship_order_status_id == 2">取消订单</span>
                                                 <span class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 3">去支付</span>
-                                                <span class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 4">去评价</span>
+                                                <router-link class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 4" tag="span" :to="{path:'/evaluate',query:{ship_order_number:ship.ship_order_number,type: 'ship'}}">去评价</router-link>
                                                 <span class="order-btn" v-else-if="ship.ship_order_status_id == 5">删除订单</span>
                                             </div>
                                         </li>
@@ -79,7 +79,7 @@
                                                 <span class="order-btn" v-else-if="collection.collection_order_status_id == 1 || collection.collection_order_status_id == 2">取消订单</span>
                                                 <span class="order-btn" v-else-if="collection.collection_order_status_id == 3">修改收货时间</span>
                                                 <span class="order-btn bd-finish" v-else-if="collection.collection_order_status_id == 4">去支付</span>
-                                                <span class="order-btn bd-finish" v-else-if="collection.collection_order_status_id == 5">去评价</span>
+                                                <router-link class="order-btn bd-finish" v-else-if="collection.collection_order_status_id == 5" tag="span" :to="{path:'/evaluate',query:{ship_order_number:collection.collection_order_number,type: 'collection'}}">去评价</router-link>
                                                 <span class="order-btn" v-else-if="collection.collection_order_status_id == 6">删除订单</span>
                                             </div>
                                         </li>

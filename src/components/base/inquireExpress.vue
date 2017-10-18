@@ -24,7 +24,7 @@
                                 <div v-for="(ship,s) in ships" :key="s">
                                     <div v-if="item.express_order_number == ship.ship_order_number">
                                         <li class="send">
-                                            <router-link :to="{path:'orderdetail',query:{ship_order_number:ship.ship_order_number,status:'user'}}">
+                                            <router-link :to="{path:'orderdetail',query:{ship_order_number:ship.ship_order_number,status:status}}">
                                                 <i class="icon_send"></i>
                                                 <div class="odd">
                                                     <p class="order_number">订单号：
@@ -53,7 +53,7 @@
                                 <div v-for="(collection,c) in collections" :key="c">
                                     <div v-if="item.express_order_number == collection.collection_order_number">
                                         <li class="put">
-                                            <router-link :to="{path:'repget',query:{collection_order_number:collection.collection_order_number,status:'user'}}">
+                                            <router-link :to="{path:'repget',query:{collection_order_number:collection.collection_order_number,status:status}}">
                                                 <i class="icon_put"></i>
                                                 <div class="odd">
                                                     <p class="order_number">订单号：
@@ -89,7 +89,8 @@ export default {
             odd: '',
             items: [],
             ships: [],
-            collections: []
+            collections: [],
+            status:''
         }
     },
     components: {
@@ -213,8 +214,8 @@ export default {
         }
     },
     created() {
-        let that = this;
-        this.$weChat();
+        let that = this
+        this.status = this.$route.query.status
         this.http(that.configs.apiTop + "/order/orders", "get", '', function(res) {
             let msg = res.data
             if (msg.code == 0) {

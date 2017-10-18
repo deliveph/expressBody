@@ -152,7 +152,13 @@ Vue.prototype.http = function (url, method, data, callback, responseType) {
   })
 }
 
+Vue.prototype.$weChatEx = {
+  shareCallback: function () {
+  }
+}
 Vue.prototype.$weChat = function () {
+  console.log(this.$weChatEx.shareCallback(), '222')
+  console.log(this, '###')
   let that = this
   let data = qs.stringify({
     'url': location.href
@@ -189,15 +195,13 @@ Vue.prototype.$weChat = function () {
     that.wx.ready(function () {
       that.wx.onVoicePlayEnd({
         success: function (res) {
-
         }
       })
-
       that.http(that.configs.apiTop + '/weixin/share-config', 'get', '', function (res) {
         let msg = res.data
         if (msg.code == 0) {
           let data = msg.data
-          /*分享到朋友圈*/
+          // 分享到朋友圈
           that.wx.onMenuShareTimeline({
             title: data.title, // 分享标题
             link: data.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
@@ -209,8 +213,7 @@ Vue.prototype.$weChat = function () {
               // 用户取消分享后执行的回调函数
             }
           })
-
-          /*分享到朋友*/
+          // 分享到朋友
           that.wx.onMenuShareAppMessage({
             title: data.title, // 分享标题
             desc: data.description, // 分享描述
@@ -225,8 +228,7 @@ Vue.prototype.$weChat = function () {
               // 用户取消分享后执行的回调函数
             }
           })
-
-          /*分享到qq*/
+          // 分享到qq
           that.wx.onMenuShareQQ({
             title: data.title, // 分享标题
             desc: data.description, // 分享描述
@@ -259,5 +261,5 @@ new Vue({
   template: '<App/>',
   components: {
     App
-  }
+  },
 })
