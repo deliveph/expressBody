@@ -193,7 +193,7 @@ export default {
             timequantum: '-',
             //预约上门时间
             timeday1: '',
-            timequantum1: '',
+            timequantum1: '-',
             arr: []
         }
     },
@@ -322,7 +322,7 @@ export default {
                 that.reservationLogisticFee = 0
             }
 
-            
+            console.log(that.timequantum, "###")
             let take_start_time = ''
             let take_end_time = ''
             if (that.timequantum == "-") { // 一小时内

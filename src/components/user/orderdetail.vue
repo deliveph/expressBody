@@ -247,11 +247,7 @@ export default {
             company: '',
             code: '',
             title1: '',
-            list1: [{
-                name: '默认',
-                value: '0',
-                parent: 0
-            }],
+            list1: [],
             value1: ['默认'],
             placeholder1: '请选择快递公司',
             format: function(value, name) {
@@ -412,11 +408,7 @@ export default {
         //快递公司列表 
         logisticsCompaniesList() {
             let that = this
-            let logistics_companies = [{
-                name: '默认',
-                value: '0',
-                parent: 0
-            }]
+            let logistics_companies = []
             this.http(that.configs.apiTop + "/logistics/logistics-companies", "get", '', function(res) {
                 let msg = res.data
                 let data = msg.data
