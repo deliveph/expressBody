@@ -141,11 +141,16 @@ Vue.prototype.http = function (url, method, data, callback, responseType) {
         // that.wx.closeWindow()
         location.href = that.configs.accreditUrl + '?redirect_uri=' + encodeURIComponent(location.href)
       }, 200)
+    } else if (data.code === 40017) {
+      that.$vux.toast.text(data.message, 'middle', 100)
+      setTimeout(function () {
+        that.wx.closeWindow()
+      }, 200)
     } else {
-      that.$vux.loading.hide()
       console.log('callback')
       callback(res)
     }
+    that.$vux.loading.hide()
   }).catch(function (err) {
     console.log('http.error', url, err)
     // that.loadingState = '加载失败'
