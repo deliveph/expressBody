@@ -12,7 +12,7 @@
                 </li>
             </ul>
             <router-link class="service_message poa" :to="{path: '/session'}">
-                <i></i>
+                <i v-if="unreadLen > 0"></i>
             </router-link>
         </div>
         <div class="statistics">
@@ -143,7 +143,9 @@ export default {
         }
     },
     computed: {
-
+        unreadLen () {
+            return this.$store.state.customSysMsgUnread
+        }
     },
     data() {
         return {
@@ -156,6 +158,7 @@ export default {
             ships: [],
             collections: [],
             service_level_logo: 'http://static.menory.top/images/service_levels/1_liebing_s.png',
+            unread: 0,
         }
     },
     created() {
@@ -212,6 +215,38 @@ export default {
                     that.$vux.toast.text(msg.message, 'middle', 100);
                 }
             })
+        }
+    },
+    updated:function () {
+        this.$nextTick(function () {
+            // Code that will run only after the
+
+            console.log(this)
+            console.log(this.$store.state.unreadLen)
+            // entire view has been re-rendered
+        })
+        // unreadLenFun(){
+        //     let unreadlist = this.$store.state.unreadLen
+        //     let unreadlen = 0
+        //     for(let i in unreadlist){
+        //         let unreadNumber = unreadlist[i].unread
+        //         unreadlen = unreadNumber + unreadNumber
+        //     }
+        //     console.log(unreadlist,"unreadLenFun")
+        //     this.unread = unreadlen
+        //     console.log(this.unread)
+        //     return unreadlen
+            
+        // }
+    },
+    watch:{
+        unreadFun(){
+            console.log(this.$store.state.customSysMsgUnread,"***")
+            console.log(this.$store.state.unreadLen)
+            console.log(that.unread,this.$store.state.customSysMsgUnread)
+            let that = this
+            that.unread = this.$store.state.customSysMsgUnread
+            console.log(that.unread,this.$store.state.customSysMsgUnread)
         }
     }
 }
@@ -270,7 +305,15 @@ export default {
         height: px2rem(44);
         background: url('/static/assets/images/btn_person_news.png') no-repeat center;
         background-size: px2rem(44);
-        i {}
+        i {
+            width:px2rem(14);
+            height: px2rem(14);
+            background-color:red;
+            border-radius: 50%;
+            position: absolute;
+            top:px2rem(-1);
+            right:px2rem(-1);
+        }
     }
 }
 

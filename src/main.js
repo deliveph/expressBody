@@ -213,6 +213,12 @@ Vue.prototype.$weChat = function () {
             imgUrl: data.image_url, // 分享图标
             success: function () {
               // 用户确认分享后执行的回调函数
+              that.http(that.configs.apiTop + '/user/share-success-callback', 'get', '', function (res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                  that.$vux.toast.text(data.msg, 'middle', 100)
+                }
+              })
             },
             cancel: function () {
               // 用户取消分享后执行的回调函数
@@ -228,6 +234,12 @@ Vue.prototype.$weChat = function () {
             dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
             success: function () {
               // 用户确认分享后执行的回调函数
+              that.http(that.configs.apiTop + '/user/share-success-callback', 'get', '', function (res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                  that.$vux.toast.text(data.msg, 'middle', 100)
+                }
+              })
             },
             cancel: function () {
               // 用户取消分享后执行的回调函数
@@ -241,6 +253,12 @@ Vue.prototype.$weChat = function () {
             imgUrl: data.image_url, // 分享图标
             success: function () {
               // 用户确认分享后执行的回调函数
+              that.http(that.configs.apiTop + '/user/share-success-callback', 'get', '', function (res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                  that.$vux.toast.text(data.msg, 'middle', 100)
+                }
+              })
             },
             cancel: function () {
               // 用户取消分享后执行的回调函数

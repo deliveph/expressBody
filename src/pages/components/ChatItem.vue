@@ -28,7 +28,7 @@
       <span v-else-if="msg.type==='custom-type3'" class="msg-text" ref="mediaMsg"></span>
       <span v-else-if="msg.type==='image'" class="msg-text" ref="mediaMsg" @click.stop="showFullImg(msg.originLink)"></span>
       <span v-else-if="msg.type==='video'" class="msg-text" ref="mediaMsg"></span>
-      <span v-else-if="msg.type==='audio'" class="msg-text" @click="playAudio(msg)">###</span>
+      <span v-else-if="msg.type==='audio'" class="msg-text msg-audio" @click="playAudio(msg)"><em>{{msg.dur}}"</em><i></i></span>
       <span v-else-if="msg.type==='file'" class="msg-text"><a :href="msg.fileLink" target="_blank"><i class="u-icon icon-file"></i>{{msg.showText}}</a></span>
       <span v-else-if="msg.type==='robot'" class="msg-text" :class="{'msg-robot': msg.robotFlow!=='out' && !isRobot}">
         <div v-if="msg.robotFlow==='out'">{{msg.showText}}</div>
@@ -380,7 +380,7 @@
         console.log(this.currentAudio, '###2')
       },
       userMessage(){
-
+          this.
       }
     },
     created(){
@@ -390,12 +390,42 @@
   }
 </script>
 
-<style scoped>
+<style  lang="scss" scoped>
+  @import '../../../static/assets/css/px2rem.scss';
   .p-chat-history {
     .u-msg {
       .msg-link {
         display: none;
       }
+    }
+  }
+
+  #app .g-window .u-msg.session-chat.item-me .msg-text.msg-audio{
+    min-width: px2rem(208);
+    em{
+
+    }
+    i{
+      width:px2rem(34);
+      height:px2rem(34);
+      background: url('/static/assets/images/voice/voice6.png') no-repeat center;
+      background-size:px2rem(34);
+      vertical-align: middle;
+      float: right;
+    }
+  }
+  #app .g-window .u-msg.session-chat.item-you .msg-text.msg-audio{
+    min-width: px2rem(208);
+    em{
+      float: right;
+    }
+    i{
+      width:px2rem(34);
+      height:px2rem(34);
+      background: url('/static/assets/images/voice/voice3.png') no-repeat center;
+      background-size:px2rem(34);
+      vertical-align: middle;
+      display: inline-block;
     }
   }
 </style>

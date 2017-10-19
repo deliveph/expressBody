@@ -202,10 +202,10 @@
         </div>
 
         <!-- 用户信息 -->
-        <div class="layer_warp layer_user_message" v-if="layerSend">
+        <div class="layer_warp layer_user_message" v-if="layerSend" @click="layerSendFun1">
             <div class="layer_table">
                 <div class="layer_table_cell">
-                    <div class="layer_box">
+                    <div class="layer_box" @click.stop="">
                         <div class="layer_container">
                             <div class="message_main">
                                 <div class="img">
@@ -440,6 +440,10 @@ export default {
         layerSendFun() {
             let that = this
             this.layerSend = true
+        },
+        layerSendFun1(){
+            let that = this
+            this.layerSend = false
         }
     }
 }
@@ -668,7 +672,7 @@ export default {
         }
         button {
             width: 100%;
-            height: 100%;
+            height: px2rem(90);
             font-size: px2rem(24);
             color: #fff; // line-height: px2rem(70);
             border-bottom-right-radius: 0.05rem;

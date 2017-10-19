@@ -231,13 +231,13 @@
             },
             loadMore () {
                 let that = this
-                setTimeout(() => {
-                    this.$nextTick(() => {
+                setTimeout(function() {
+                    that.$nextTick(function(){
                         that.page += 1
-                        if (this.items.length > 10) {
-                            this.$refs.scroller.donePullup()
-                            this.orderList()
-                            this.$refs.scroller.disablePullup()
+                        if (that.items.length > 10) {
+                            that.$refs.scroller.donePullup()
+                            that.orderList()
+                            that.$refs.scroller.disablePullup()
                         }
                     })
                 }, 2000)
@@ -261,13 +261,26 @@
                     let msg = res.data
                     if (msg.code == 0) {
                         let data = msg.data
-                        that.items.push(data.items)
-                        let ships = [data.ships]
-                        let collections = [data.collections]
-                        console.log(that.items)
-                        that.ships.push(ships)
-                        that.collections.push(collections)
-                        console.log(that.items,that.ships,that.collections)
+                        console.log(data)
+                        // for (let k in data.ships) {
+                        //     that.ships[k] = data.ships[k]
+                        // }
+                        // console.log(that.ships)
+                        // console.log(that.collections)
+                        // for (let k in data.collections) {
+                        //     that.collections[k] = data.collections[k]
+                        //     console.log(data.collections[k], typeof data.collections[k])
+                        // }
+                        // console.log(that.collections)
+                        // that.items.push(data.items)
+                        // that.ships.push(data.ships)
+                        // let ships = data.ships
+                        // let collections = data.collections
+                        // console.log(that.items)
+                        // console.log(that.ships)
+                        // that.ships.push(ships)
+                        // that.collections.push(collections)
+                        // console.log(that.items,that.ships,that.collections)
                     } else if (msg.code == 40004) {
                         // location.href = that.configs.accreditUrl
                     } else {

@@ -26,6 +26,7 @@
                 ></span> -->
             </cell>
           </group>
+          
           <div class="no-session" v-else>
             <div class="no-img"></div>
             <p>暂无消息</p>
@@ -35,6 +36,7 @@
       </transition>
     <fullscreen-img></fullscreen-img>
     <loading></loading>
+    
   </div>
 </template>
 
@@ -66,6 +68,7 @@
         let temp = this.$store.state.sysMsgUnread
         let sysMsgUnread = temp.addFriend || 0
         let customSysMsgUnread = this.$store.state.customSysMsgUnread
+        let unreadL = sysMsgUnread + customSysMsgUnread
         return sysMsgUnread + customSysMsgUnread
       },
       userInfos () {
@@ -78,9 +81,7 @@
         return `${this.$store.state.userUID}`
       },
       sessionlist () {
-        console.log(this.$store.state.sessionlist,"&^&*^&")
         let sessionlist = this.$store.state.sessionlist.filter(item => {
-          console.log(item)
           item.name = ''
           item.avatar = ''
           if (item.scene === 'p2p') {
@@ -155,8 +156,15 @@
       }
     },
     created(){
-      console.log(25235)
-      console.log(this)
+    },
+    watch:{
+      unreadFun(){
+          console.log(this.$store.state.unreadLen)
+          console.log(that.unread,this.$store.state.customSysMsgUnread)
+          let that = this
+          that.unread = this.$store.state.customSysMsgUnread
+          console.log(that.unread,this.$store.state.customSysMsgUnread)
+      }
     }
   }
 </script>

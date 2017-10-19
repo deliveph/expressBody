@@ -89,8 +89,8 @@
         </div>
 
         <!-- 查询条件框  -->
-        <div class="layer_warp layer_refer" v-if="layer" @click="layerWarp()">
-            <div class="layer_main" @click="layerMain()">
+        <div class="layer_warp layer_refer" v-if="layer" @click="layerWarp">
+            <div class="layer_main" @click.stop="">
                 <div class="layer_title">
                     <input type="number" v-model="orderCode" placeholder="请输入订单号"/>
                 </div>
@@ -144,7 +144,7 @@
                 this.layer = true
             },
             layerWarp(){
-                // this.layer = false
+                this.layer = false
             },
             layerMain(e){
                 // e.stopPropagation()
