@@ -6,8 +6,8 @@
                     <p>下单时间：
                         <span class="ft-red">{{items.ship_order_create_time}}</span>
                     </p>
-                    <p class="nickname" v-if="status == 'service'" @click="layerSendFun"><img :src="items.user_avatar" />
-                        <span>{{items.user_nickname}}</span>
+                    <p class="nickname" v-if="status == 'service'" @click="layerSendFun"><img :src="user.user_avatar" />
+                        <span>{{user.user_nickname}}</span>
                     </p>
                 </div>
             </div>
@@ -209,13 +209,13 @@
                         <div class="layer_container">
                             <div class="message_main">
                                 <div class="img">
-                                    <img v-bind:src="items.user_avatar" />
+                                    <img v-bind:src="user.user_avatar" />
                                 </div>
-                                <p class="name">{{items.user_name}}</p>
+                                <p class="name">{{user.user_name}}</p>
                                 <p>
-                                    <span>电话：</span>{{items.user_phone}}</p>
+                                    <span>电话：</span>{{user.user_phone}}</p>
                                 <p>
-                                    <span>地址：</span>{{items.shipper_full_address}}</p>
+                                    <span>地址：</span>{{user.user_full_address}}</p>
                             </div>
                         </div>
                         <div class="layer_footer">
@@ -239,7 +239,9 @@ export default {
     data() {
         return {
             layerPwhide: false,
-            items: [],
+            items: {},
+            user: {},
+            service_time: {},
             ship_order_number: '',
             status: '',
             writelayerStorey: false,
@@ -270,14 +272,15 @@ export default {
     },
     methods: {
         getOrder(result) {
-            console.log(result)
             let that = this
             that.ship_order_number = that.$route.query.ship_order_number
             that.status = that.$route.query.status
-            that.http(that.configs.apiTop + "/order/ship-order-detail/" + that.ship_order_number, "get", '', function(res) {
+            that.http(that.configs.apiTop + "/page/ship-order-detail/" + that.ship_order_number, "get", '', function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
-                    that.items = msg.data
+                    that.items = msg.data.ship_order
+                    that.user = msg.data.user
+                    that.service_time = msg.data.service_time
                 } else if (msg.code === 40016) {
                     that.layerPwhide = true
                 } else {

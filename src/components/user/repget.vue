@@ -14,8 +14,8 @@
                         <span>{{items.collection_order_number}}</span>
                     </p>
                     <p class="nickname" v-if="status == 'service'" @click="layerSendFun">
-                        <img :src="items.user_avatar" />
-                        <span>{{items.user_nickname}}</span>
+                        <img :src="user.user_avatar" />
+                        <span>{{user.user_nickname}}</span>
                     </p>
                 </div>
                 <div class="order-list-item">
@@ -184,13 +184,13 @@
                         <div class="layer_container">
                             <div class="message_main">
                                 <div class="img">
-                                    <img v-bind:src="items.user_avatar" />
+                                    <img v-bind:src="user.user_avatar" />
                                 </div>
-                                <p class="name">{{items.user_name}}</p>
+                                <p class="name">{{user.user_name}}</p>
                                 <p>
-                                    <span>电话：</span>{{items.user_phone}}</p>
+                                    <span>电话：</span>{{user.user_phone}}</p>
                                 <p>
-                                    <span>地址：</span>{{items.user_addr}}</p>
+                                    <span>地址：</span>{{user.user_full_address}}</p>
                             </div>
                         </div>
                         <div class="layer_footer">
@@ -214,7 +214,9 @@ export default {
         return {
             layerPwhide: false,
             collection_order_number: '',
-            items: [],
+            items: {},
+            user: {},
+            service_time: {},
             status: '',
             layerSend: false,
             layermodifyTime:false,
@@ -294,11 +296,13 @@ export default {
             let that = this
             that.collection_order_number = that.$route.query.collection_order_number
             that.status = that.$route.query.status
-            that.http(that.configs.apiTop + "/order/collection-order-detail/" + that.collection_order_number, "get", '', function(res) {
+            that.http(that.configs.apiTop + "/page/collection-order-detail/" + that.collection_order_number, "get", '', function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
                     let data = msg.data
-                    that.items = data
+                    that.items = data.collection_order
+                    that.user = data.user
+                    that.service_time = data.service_time
                 } else if (msg.code === 40016) {
                     that.layerPwhide = true
                     // location.href = that.configs.accreditUrl
