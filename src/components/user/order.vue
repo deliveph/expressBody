@@ -17,7 +17,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link  :to="{path:'waitpay',query:{express_order_status:'unpaid'}}">
+                <router-link :to="{path:'waitpay',query:{express_order_status:'unpaid'}}">
                     <span>待支付</span>
                 </router-link>
             </li>
@@ -28,7 +28,7 @@
             </li>
         </ul>
         <div class="order-list" v-if="items != ''">
-            <scroller lock-x scrollbar-y use-pullup use-pulldown  @on-pullup-loading="loadMore" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
+            <scroller lock-x scrollbar-y use-pullup use-pulldown @on-pullup-loading="loadMore" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
                 <ul>
                     <div v-for="(item,i) in items" :key="i">
                         <div v-if="item.express_order_type == 'ship'">
@@ -75,12 +75,16 @@
                         <div v-if="item.express_order_type == 'collection'">
                             <div v-for="(collection,c) in collections" :key="c">
                                 <div v-if="item.express_order_number == collection.collection_order_number">
-                                    <li class="put" >
+                                    <li class="put">
                                         <router-link :to="{path:'repget',query:{collection_order_number:collection.collection_order_number,status:'user'}}">
                                             <i class="icon_put"></i>
                                             <div class="odd">
-                                                <p class="order_number">订单号：<span>{{collection.collection_order_number}}</span></p>
-                                                <p class="express_number">快递单号：<span>{{collection.logistics_code}}</span></p>
+                                                <p class="order_number">订单号：
+                                                    <span>{{collection.collection_order_number}}</span>
+                                                </p>
+                                                <p class="express_number">快递单号：
+                                                    <span>{{collection.logistics_code}}</span>
+                                                </p>
                                                 <div class="order-status" v-if="collection.collection_order_status_id == -1">已取消</div>
                                                 <div class="order-status" v-else-if="collection.collection_order_status_id == 1">待接单</div>
                                                 <div class="order-status" v-else-if="collection.collection_order_status_id == 2">已接单</div>
@@ -90,7 +94,7 @@
                                                 <div class="order-status" v-else-if="collection.collection_order_status_id == 6">已完成</div>
                                             </div>
                                         </router-link>
-                                        <div class="order-option "  >
+                                        <div class="order-option ">
                                             <span class="order-btn" v-if="collection.collection_order_status_id == -1" @click="deleteCollectionCode(collection.collection_order_number)">删除订单</span>
                                             <span class="order-btn" v-else-if="collection.collection_order_status_id == 1 || collection.collection_order_status_id == 2" @click="cancel(collection.collection_order_number,'collection')">取消订单</span>
                                             <span class="order-btn" v-else-if="collection.collection_order_status_id == 3">修改收货时间</span>
@@ -108,7 +112,9 @@
                 <div slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" style="position: absolute; width: 100%; height: 40px; bottom: -40px; text-align: center;">
                     <span v-show="status.pullupStatus === 'default'"></span>
                     <span class="pullup-arrow" v-show="status.pullupStatus === 'down' || status.pullupStatus === 'up'" :class="{'rotate': status.pullupStatus === 'up'}">↑</span>
-                    <span v-show="status.pullupStatus === 'loading'"><spinner type="ios-small"></spinner></span>
+                    <span v-show="status.pullupStatus === 'loading'">
+                        <spinner type="ios-small"></spinner>
+                    </span>
                 </div>
             </scroller>
         </div>
@@ -117,187 +123,185 @@
             <p>暂无订单</p>
         </div>
 
-        
     </div>
 </template>
 
 <script>
-    import { Scroller, Spinner, LoadMore  } from 'vux'
-    export default{
-        data() {
-            return{
-                items:[],
-                ships:[],
-                collections:[],
-                n:10,
-                page:1,
-                pullupEnabled: true,
-                status: {
-                    pullupStatus: 'default',
-                    pulldownStatus: 'default'
-                }
+import { Scroller, Spinner, LoadMore } from 'vux'
+export default {
+    data() {
+        return {
+            items: [],
+            ships: [],
+            collections: [],
+            n: 10,
+            page: 1,
+            pullupEnabled: true,
+            status: {
+                pullupStatus: 'default',
+                pulldownStatus: 'default'
             }
-        },
-        components: {
-            Scroller,
-            Spinner,
-            LoadMore
-        },
-        methods:{
-            cancel(ship_order_number,type){
-                let that = this
-                this.$vux.confirm.show({
-                    title: '取消订单',
-                     content: '确定要取消此订单???',
-                    // 组件除show外的属性
-                    onCancel () {
-                        
-                    },
-                    onConfirm () {
-                        if(ship_order_number){
-                            that.http(that.configs.apiTop+"/order/cancel-ship-order/"+ship_order_number, "post", '', function(res){
+        }
+    },
+    components: {
+        Scroller,
+        Spinner,
+        LoadMore
+    },
+    methods: {
+        cancel(express_order_number, type) {
+            let that = this
+            this.$vux.confirm.show({
+                title: '取消订单',
+                content: '确定要取消此订单???',
+                // 组件除show外的属性
+                onCancel() {
+                },
+                onConfirm() {
+                    if (express_order_number) {
+                        if (type === "ship") {
+                            that.http(that.configs.apiTop + "/order/cancel-ship-order/" + express_order_number, "post", '', function(res) {
                                 let msg = res.data
-                                if(msg.code == 0){
+                                if (msg.code == 0) {
                                     // that.$vux.toast.text(msg.message, 'middle',100)
-                                    that.$router.push({path: '/ordercancel',query:{status:type}}) 
+                                    that.$router.push({ path: '/ordercancel', query: { status: type } })
                                     // setTimeout(function(){ 
                                     //     that.$router.push({path: '/ordercancel',query:{status:'user'}}) 
                                     // }, 200);
-                                }else if(msg.code == 40004){
+                                } else if (msg.code == 40004) {
 
-                                }else {
+                                } else {
                                     that.$vux.toast.text(msg.message, 'middle', 100);
                                 }
                             })
-                        }
-                    }
-                })
-            },
-            deleteShipCode(ship_order_number){
-                let that = this
-                this.$vux.confirm.show({
-                    title: '删除订单',
-                     content: '确定要删除此订单???',
-                    // 组件除show外的属性
-                    onCancel () {
-                        
-                    },
-                    onConfirm () {
-                        if(ship_order_number){
-                            that.http(that.configs.apiTop+"/ship-order/user-ignore/"+ship_order_number, "post", '', function(res){
+                        } else {
+                            that.http(that.configs.apiTop + "/order/cancel-collection-order/" + express_order_number, "post", '', function(res) {
                                 let msg = res.data
-                                if(msg.code == 0){
-                                    that.$vux.toast.text(msg.message, 'middle',100)
-                                    setTimeout(function(){ 
-                                        that.$router.push({path: '/user'}) 
-                                    }, 200);
-                                }else if(msg.code == 40004){
+                                if (msg.code == 0) {
+                                    // that.$vux.toast.text(msg.message, 'middle',100)
+                                    that.$router.push({ path: '/ordercancel', query: { status: type } })
+                                    // setTimeout(function(){ 
+                                    //     that.$router.push({path: '/ordercancel',query:{status:'user'}}) 
+                                    // }, 200);
+                                } else if (msg.code == 40004) {
 
-                                }else {
+                                } else {
                                     that.$vux.toast.text(msg.message, 'middle', 100);
                                 }
                             })
                         }
                     }
-                })
-            },
-            deleteCollectionCode(collection_order_number){
-                let that = this
-                this.$vux.confirm.show({
-                    title: '删除订单',
-                     content: '确定要删除此订单???',
-                    // 组件除show外的属性
-                    onCancel () {
-                        
-                    },
-                    onConfirm () {
-                        if(collection_order_number){
-                            that.http(that.configs.apiTop+"/collection-order/user-ignore/"+collection_order_number, "post", '', function(res){
-                                let msg = res.data
-                                if(msg.code == 0){
-                                    that.$vux.toast.text(msg.message, 'middle',100)
-                                    setTimeout(function(){ 
-                                        that.$router.push({path: '/user'}) 
-                                    }, 200);
-                                }else if(msg.code == 40004){
-
-                                }else {
-                                    that.$vux.toast.text(msg.message, 'middle', 100);
-                                }
-                            })
-                        }
-                    }
-                })
-            },
-            loadMore () {
-                let that = this
-                setTimeout(function() {
-                    that.$nextTick(function(){
-                        that.page += 1
-                        if (that.items.length > 10) {
-                            that.$refs.scroller.donePullup()
-                            that.orderList()
-                            that.$refs.scroller.disablePullup()
-                        }
-                    })
-                }, 2000)
-            },
-            refresh () {
-                let that = this
-                setTimeout(() => {
-                    this.page = 1
-                    this.$nextTick(() => {
-                        setTimeout(() => {
-                            this.orderList()
-                            this.$refs.scroller.donePulldown()
-                            this.pullupEnabled && this.$refs.scroller.enablePullup()
-                        }, 10)
-                    })
-                }, 2000)
-            },
-            orderList(){
-                let that = this
-                this.http(that.configs.apiTop + "/order/orders?page="+that.page, "get", '', function(res) {
-                    let msg = res.data
-                    if (msg.code == 0) {
-                        let data = msg.data
-                        console.log(data)
-                        // for (let k in data.ships) {
-                        //     that.ships[k] = data.ships[k]
-                        // }
-                        // console.log(that.ships)
-                        // console.log(that.collections)
-                        // for (let k in data.collections) {
-                        //     that.collections[k] = data.collections[k]
-                        //     console.log(data.collections[k], typeof data.collections[k])
-                        // }
-                        // console.log(that.collections)
-                        // that.items.push(data.items)
-                        // that.ships.push(data.ships)
-                        // let ships = data.ships
-                        // let collections = data.collections
-                        // console.log(that.items)
-                        // console.log(that.ships)
-                        // that.ships.push(ships)
-                        // that.collections.push(collections)
-                        // console.log(that.items,that.ships,that.collections)
-                    } else if (msg.code == 40004) {
-                        // location.href = that.configs.accreditUrl
-                    } else {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                    }
-                })
-            }
+                }
+            })
         },
-        created() {
+        deleteShipCode(ship_order_number) {
             let that = this
-            this.http(that.configs.apiTop + "/order/orders?page=1", "get", '', function(res) {
+            this.$vux.confirm.show({
+                title: '删除订单',
+                content: '确定要删除此订单???',
+                // 组件除show外的属性
+                onCancel() {
+
+                },
+                onConfirm() {
+                    if (ship_order_number) {
+                        that.http(that.configs.apiTop + "/ship-order/user-ignore/" + ship_order_number, "post", '', function(res) {
+                            let msg = res.data
+                            if (msg.code == 0) {
+                                that.$vux.toast.text(msg.message, 'middle', 100)
+                                setTimeout(function() {
+                                    that.$router.push({ path: '/user' })
+                                }, 200);
+                            } else if (msg.code == 40004) {
+
+                            } else {
+                                that.$vux.toast.text(msg.message, 'middle', 100);
+                            }
+                        })
+                    }
+                }
+            })
+        },
+        deleteCollectionCode(collection_order_number) {
+            let that = this
+            this.$vux.confirm.show({
+                title: '删除订单',
+                content: '确定要删除此订单???',
+                // 组件除show外的属性
+                onCancel() {
+
+                },
+                onConfirm() {
+                    if (collection_order_number) {
+                        that.http(that.configs.apiTop + "/collection-order/user-ignore/" + collection_order_number, "post", '', function(res) {
+                            let msg = res.data
+                            if (msg.code == 0) {
+                                that.$vux.toast.text(msg.message, 'middle', 100)
+                                setTimeout(function() {
+                                    that.$router.push({ path: '/user' })
+                                }, 200);
+                            } else if (msg.code == 40004) {
+
+                            } else {
+                                that.$vux.toast.text(msg.message, 'middle', 100);
+                            }
+                        })
+                    }
+                }
+            })
+        },
+        loadMore() {
+            let that = this
+            setTimeout(function() {
+                that.$nextTick(function() {
+                    that.page += 1
+                    if (that.items.length > 10) {
+                        that.$refs.scroller.donePullup()
+                        that.orderList()
+                        that.$refs.scroller.disablePullup()
+                    }
+                })
+            }, 2000)
+        },
+        refresh() {
+            let that = this
+            setTimeout(() => {
+                this.page = 1
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        this.orderList()
+                        this.$refs.scroller.donePulldown()
+                        this.pullupEnabled && this.$refs.scroller.enablePullup()
+                    }, 10)
+                })
+            }, 2000)
+        },
+        orderList() {
+            let that = this
+            this.http(that.configs.apiTop + "/order/orders?page=" + that.page, "get", '', function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
                     let data = msg.data
-                    that.items = data.items
-                    that.ships = data.ships
-                    that.collections = data.collections                    
+                    console.log(data)
+                    // for (let k in data.ships) {
+                    //     that.ships[k] = data.ships[k]
+                    // }
+                    // console.log(that.ships)
+                    // console.log(that.collections)
+                    // for (let k in data.collections) {
+                    //     that.collections[k] = data.collections[k]
+                    //     console.log(data.collections[k], typeof data.collections[k])
+                    // }
+                    // console.log(that.collections)
+                    // that.items.push(data.items)
+                    // that.ships.push(data.ships)
+                    // let ships = data.ships
+                    // let collections = data.collections
+                    // console.log(that.items)
+                    // console.log(that.ships)
+                    // that.ships.push(ships)
+                    // that.collections.push(collections)
+                    // console.log(that.items,that.ships,that.collections)
                 } else if (msg.code == 40004) {
                     // location.href = that.configs.accreditUrl
                 } else {
@@ -305,7 +309,24 @@
                 }
             })
         }
+    },
+    created() {
+        let that = this
+        this.http(that.configs.apiTop + "/order/orders?page=1", "get", '', function(res) {
+            let msg = res.data
+            if (msg.code == 0) {
+                let data = msg.data
+                that.items = data.items
+                that.ships = data.ships
+                that.collections = data.collections
+            } else if (msg.code == 40004) {
+                // location.href = that.configs.accreditUrl
+            } else {
+                that.$vux.toast.text(msg.message, 'middle', 100);
+            }
+        })
     }
+}
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>
 
