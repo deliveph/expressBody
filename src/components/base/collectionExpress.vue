@@ -260,7 +260,12 @@ export default {
                     }, 200);
                 } else if (msg.code == 40004) {
                 } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
+                    if (msg.code == 40014) {
+                            that.showPlugin(msg.message)
+                    }else{
+                        that.$vux.toast.text(msg.message, 'middle', 100);
+                    }
+                    
                 }
             })
         },
@@ -366,7 +371,27 @@ export default {
                     }, 200);
                 } else if (msg.code == 40004) {
                 } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
+                    if (msg.code == 40014) {
+                            that.showPlugin(msg.message)
+                    }else{
+                        that.$vux.toast.text(msg.message, 'middle', 100);
+                    }
+                }
+            })
+        },
+        showPlugin(content) {
+            let that = this
+            this.$vux.confirm.show({
+                title: '提示',
+                content: content,
+                onShow() {
+                },
+                onHide() {
+                },
+                onCancel() {
+                },
+                onConfirm() {
+                    that.$router.push({ path: '/open' })
                 }
             })
         },

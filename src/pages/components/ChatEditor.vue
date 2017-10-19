@@ -326,7 +326,6 @@ export default {
     }
   },
   created() {
-    this.$weChat()
     console.log(this.$store.state.nim, "###")
     window.nim.getUser({
       account: 'user_10046',
