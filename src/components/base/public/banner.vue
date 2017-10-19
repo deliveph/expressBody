@@ -32,12 +32,12 @@ export default {
                 effect: "coverflow",
                 grabCursor: true,
                 setWrapperSize: true,
-                pageination: '.swiper-pagination',
+                pagination: '.swiper-pagination',
                 paginationClickable : true,
                 prevButton:'.swiper-button-prev',
                 nextButton:'.swiper-button-next',
                 mousewheelControl:true,
-                observeParents:true,
+                observeParents:true
             }
         }
     },
@@ -86,6 +86,7 @@ export default {
         width: 100%;
         height:px2rem(470);
         overflow: hidden;
+        position: relative;
         .swiper-slide{
             font-size:16px;
             width: 100%;
@@ -102,5 +103,46 @@ export default {
             }
         }
     }
+
+    .swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {
+        bottom: px2rem(20);
+        left: 0;
+        width: 100%;
+    }
+    .swiper-pagination {
+        position: absolute;
+        text-align: center;
+        -webkit-transition: .3s;
+        -moz-transition: .3s;
+        -o-transition: .3s;
+        transition: .3s;
+        -webkit-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        z-index: 10;
+    }
+    .swiper-container-horizontal{
+        .swiper-pagination-bullets{
+             .swiper-pagination-bullet {
+                 margin: 0 px2rem(10);
+             }
+             .swiper-pagination-bullet {
+                width: px2rem(16);
+                height: px2rem(16);
+                display: inline-block;
+                border-radius: 100%;
+                background: #000;
+                opacity: .2;
+                &.swiper-pagination-bullet-active {
+                    opacity: 1;
+                    background: #007aff;
+                }
+            }
+        }
+        
+    }
+    
+    
 </style>
 

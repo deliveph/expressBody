@@ -177,10 +177,10 @@
             </div>
         </div>
         <!-- 用户信息 -->
-        <div class="layer_warp layer_user_message" v-if="layerSend">
+        <div class="layer_warp layer_user_message" v-if="layerSend" @click="layerSendFun1">
             <div class="layer_table">
                 <div class="layer_table_cell">
-                    <div class="layer_box">
+                    <div class="layer_box" @click.stop="">
                         <div class="layer_container">
                             <div class="message_main">
                                 <div class="img">
@@ -427,6 +427,10 @@ export default {
         layerSendFun() {
             let that = this
             this.layerSend = true
+        },
+        layerSendFun1(){
+            let that = this
+            this.layerSend = false
         },
         clickModifyTime(){
             let that = this

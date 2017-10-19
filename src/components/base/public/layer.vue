@@ -235,4 +235,15 @@
             }
         }
     }
+
+    .layer_phone{
+        .layer_box{
+            .register_box{
+                input{
+                    width: 200%;
+                    margin-left: -100%;
+                }
+            }
+        }
+    }
 </style>

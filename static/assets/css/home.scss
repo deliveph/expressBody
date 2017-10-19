@@ -94,7 +94,8 @@
         .grade {
             width: 100%;
             position: absolute;
-            bottom: px2rem(-120);
+            bottom: px2rem(-40);
+            line-height: initial;
             .grade_img {
                 width: px2rem(128);
                 height: px2rem(70);
