@@ -25,121 +25,127 @@
     </div>
 </template>
 <script>
-    import { Group, XAddress, ChinaAddressV3Data, Toast, Value2nameFilter as value2name } from 'vux'
-    import qs from 'qs'
-    export default{
-        components: {
-            Group,
-            XAddress,
-            Toast
-        },
-        data() {
-            return {
-                title: '您的地址：',
-                value: ["广东省", "深圳市", "南山区"],
-                addressData: ChinaAddressV3Data,
-                showAddress: false,
-                province:'',
-                city:'',
-                district:'',
-                name: '',
-                phone: '',
-                addr: ''
+import { Group, XAddress, ChinaAddressV3Data, Toast, Value2nameFilter as value2name } from 'vux'
+import qs from 'qs'
+export default {
+    components: {
+        Group,
+        XAddress,
+        Toast
+    },
+    data() {
+        return {
+            title: '您的地址：',
+            value: [],
+            addressData: ChinaAddressV3Data,
+            showAddress: false,
+            province: '',
+            city: '',
+            district: '',
+            name: '',
+            phone: '',
+            addr: ''
+        }
+    },
+    created() {
+        let that = this
+        this.http(that.configs.apiTop + "/region/regions", "get", '', function(res) {
+            let msg = res.data
+            if (msg.code == 0) {
+                localStorage.setItem('regions', JSON.stringify(msg.data.regions))
+                that.addressData = msg.data.regions
+            } else if (msg.code == 40004) {
+                // location.href = that.configs.accreditUrl
             }
-        },
-        created() {
+        })
+    },
+    methods: {
+        applyFor() {
+            this.province = this.value[0]
+            this.city = this.value[1]
+            this.district = this.value[2]
+            let reg = /^1[34578]\d{9}$/
             let that = this
-            this.http(that.configs.apiTop + "/region/regions", "get", '', function (res) {
+            let data = {
+                'user_real_name': this.name,
+                'user_phone': this.phone,
+                'province_region_id': this.province,
+                'city_region_id': this.city,
+                'district_region_id': this.district,
+                'user_detail_address': this.addr
+
+            }
+            if (this.name == '') {
+                that.$vux.toast.text('请填写您的名字', 'middle', 100);
+                return
+            }
+
+            if (this.phone == '') {
+                that.$vux.toast.text('请填写手机号码', 'middle', 100);
+                return
+            }
+            if (!(reg.test(this.phone))) {
+                that.$vux.toast.text('请填写正确的手机号码', 'middle', 100);
+                return
+            }
+            if (this.value == '') {
+                that.$vux.toast.text('请选择地址', 'middle', 100);
+                return
+            }
+            if (this.addr == '') {
+                that.$vux.toast.text('请填写详细地址', 'middle', 100);
+                return
+            }
+            console.log(data)
+
+            this.http(that.configs.apiTop + "/stage/apply-join", "post", data, function(res) {
                 let msg = res.data
-                if(msg.code == 0){
-                    localStorage.setItem('regions',JSON.stringify(msg.data.regions))
-                    that.addressData = msg.data.regions
-                }else if(msg.code == 40004){
-                    // location.href = that.configs.accreditUrl
+                if (msg.code == 0) {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                    setTimeout(() => {
+                        that.$router.push({ path: '/Userindex' });
+                    }, 1000)
+                } else {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
                 }
             })
-        },
-        methods: {
-            applyFor() {
-                this.province = this.value[0]
-                this.city = this.value[1]
-                this.district = this.value[2]
-                let reg = /^1[34578]\d{9}$/
-                let that =  this
-                let data = {
-                    'user_real_name': this.name,
-                    'user_phone': this.phone,
-                    'province_region_id': this.province,
-                    'city_region_id': this.city,
-                    'district_region_id': this.district,
-                    'user_detail_address': this.addr
-
-                }
-                if(this.name == ''){
-                    that.$vux.toast.text('请填写您的名字', 'middle', 100);
-                    return
-                }
-                
-                if(this.phone == ''){
-                    that.$vux.toast.text('请填写手机号码', 'middle', 100);
-                    return
-                }
-                if(!(reg.test(this.phone))){
-                    that.$vux.toast.text('请填写正确的手机号码', 'middle', 100);
-                    return
-                }
-                if(this.value == ''){
-                    that.$vux.toast.text('请选择地址', 'middle', 100);
-                    return
-                }
-                if(this.addr == ''){
-                    that.$vux.toast.text('请填写详细地址', 'middle', 100);
-                    return
-                }
-                console.log(data)
-
-                this.http(that.configs.apiTop + "/stage/apply-join", "post",  data, function(res) {
-                    let msg = res.data
-                    if (msg.code == 0) {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                        setTimeout(() =>{
-                            that.$router.push({path:'/Userindex'});
-                        },1000)
-                    } else {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                    }
-                })
 
 
-            }
         }
     }
+}
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>
 <style lang="scss">
 @import '../../../static/assets/css/px2rem.scss';
-.league-item{
-    .weui-cell{
-        padding:13px 0
+.league-item {
+    .weui-cell {
+        padding: 13px 0
     }
-    .weui-cells:before{
-        border-top:0
+    .weui-cells:before {
+        border-top: 0
     }
 }
 
-.weui-label{
-    font-size:px2rem(28);margin-right:px2rem(20)
+.weui-label {
+    font-size: px2rem(28);
+    margin-right: px2rem(20)
 }
-.vux-popup-picker-value{
-    font-size:px2rem(28);
+
+.vux-popup-picker-value {
+    font-size: px2rem(28);
 }
-.modal-open{
-    overflow:auto !important;position: inherit !important;
+
+.modal-open {
+    overflow: auto !important;
+    position: inherit !important;
 }
-.weui-cells:after{
-    border-bottom:inherit !important;
+
+.weui-cells:after {
+    border-bottom: inherit !important;
 }
-.mt80{
-    margin-top:px2rem(80)
+
+.mt80 {
+    margin-top: px2rem(80)
 }
 </style>
