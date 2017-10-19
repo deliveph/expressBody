@@ -17,7 +17,7 @@
       :type="msg.type"
     >
           <!-- v-touch:hold="revocateMsg" -->
-      <a class="msg-head" v-if="msg.avatar" @click="userMessage">
+      <a class="msg-head" v-if="msg.avatar" @click="userMessage(msg)">
         <img :src="msg.avatar">
       </a>
       
@@ -379,8 +379,25 @@
         }
         console.log(this.currentAudio, '###2')
       },
-      userMessage(){
-          this.
+      userMessage(msg){
+          // this.
+          let html = `<div class="layer_warp layer_userMessage" v-if="layerUserMessage">
+                        <div class="layer_box">
+                            <div class="layer_container">
+                                <div class="user_message_main">
+                                  <div class="img">
+                                      <img :src="msg.avatar" />
+                                  </div>
+                                  <div class="right_msg">
+                                    <p class="name">{{msg.name}}</p>
+                                    <p><span>电话：</span>{{msg.phone}}</p>
+                                    <p><span>地址：</span>{{msg.address}}</p>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+          
       }
     },
     created(){
