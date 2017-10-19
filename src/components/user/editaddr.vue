@@ -30,7 +30,7 @@ export default {
         return {
             title1: '省市区',
             value1: ['北京市', '市辖区', '东城区'],
-            addressData: ChinaAddressV3Data,
+            addressData: [],
             showAddress: false,
             village_name:'',
             element:'',
