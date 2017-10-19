@@ -47,7 +47,8 @@
                 <div class="readAgreement">
                     <input type="checkbox" v-model="readfalse">
                     <span>我已阅读并同意</span>
-                    <router-link :to="{name:'Detail',query:{type:'agreement'}}">《共享快递哥协议》</router-link>
+                    <!-- :to="{name:'Detail',query:{type:'agreement'}}" -->
+                    <router-link to="" @click.native="clickAgreement" href="javascript:;">《共享快递哥协议》</router-link>
                 </div>
                 <div class="submit">
                     <p>服务时间：
@@ -103,7 +104,8 @@
                 <div class="readAgreement">
                     <input type="checkbox" v-model="readfalse1" @click="appointment">
                     <span>我已阅读并同意</span>
-                    <router-link :to="{name:'Detail',query:{type:'agreement'}}">《共享快递哥协议》</router-link>
+                    <!-- :to="{name:'Detail',query:{type:'agreement'}}" -->
+                    <router-link to=""  @click.native="clickAgreement1" href="javascript:;">《共享快递哥协议》</router-link>
                 </div>
                 <div class="submit">
                     <p>服务时间：
@@ -254,6 +256,7 @@ export default {
             this.http(that.configs.apiTop + "/order/submit-consignee-order", "post", data, function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
+                    localStorage.removeItem('consignee')
                     that.$vux.toast.text(msg.message, 'middle', 100);
                     setTimeout(function() {
                         that.$router.push({ path: '/order' })
@@ -365,6 +368,7 @@ export default {
             this.http(that.configs.apiTop + "/order/submit-estimate-consignee-order", "post", data, function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
+                    localStorage.removeItem('estimateConsignee')
                     that.$vux.toast.text(msg.message, 'middle', 100);
                     setTimeout(function() {
                         that.$router.push({ path: '/order' })
@@ -508,13 +512,42 @@ export default {
         appointment(){
             let that = this
             that.readfalse1 = true
-        }
+        },
+        clickAgreement(){
+            let that = this
+            let consignee = {
+                'logistics_code': that.realCode,
+                'courier_phone': that.realExpressPhone,
+                'collection_logistics_fee': that.realLogisticFee,
+                'consignee_name': that.realName,
+                'consignee_phone': that.realPhone,
+                'consignee_address': that.realAddress,
+                'defaultFalse':that.defaultFalse
+            }
+            localStorage.setItem('consignee',JSON.stringify(consignee))
+            this.$router.push({name:'Detail',query:{type:'agreement'}})
+        },
+        clickAgreement1(){
+            let that = this
+            let estimateConsignee = {
+                'logistics_code': that.reservationCode,
+                'courier_phone': that.reservationExpressPhone,
+                'collection_logistics_fee': that.reservationLogisticFee,
+                'consignee_name': that.reservationName,
+                'consignee_phone': that.reservationPhone,
+                'consignee_address': that.reservationAddress,
+                'defaultFalse1':that.defaultFalse1
+            }
+            localStorage.setItem('estimateConsignee',JSON.stringify(estimateConsignee))
+            this.$router.push({name:'Detail',query:{type:'agreement'}})
+        },
     },
     created() {
         let that = this
         that.collection_order_number = that.$route.query.collection_order_number
         let index = that.$route.query.index
-
+        let consignee = localStorage.getItem('consignee')
+        let estimateConsignee = localStorage.getItem('estimateConsignee')
         this.http(that.configs.apiTop + "/page/user-collection", "get", '', function(res) {
             let msg = res.data
             if (msg.code == 0) {
@@ -566,8 +599,26 @@ export default {
                     that.$vux.toast.text(msg.message, 'middle', 100);
                 }
             })
-        }else{
-            
+        }
+
+        if(JSON.parse(consignee) != ''){
+            let obj = JSON.parse(consignee)
+            that.realCode = obj.logistics_code
+            that.realExpressPhone = obj.courier_phone
+            that.realLogisticFee = obj.collection_logistics_fee
+            that.realName = obj.consignee_name
+            that.realPhone = obj.consignee_phone
+            that.realAddress = obj.consignee_address
+            that.defaultFalse = obj.defaultFalse
+        }else if(JSON.parse(estimateConsignee) != ''){
+            let obj = JSON.parse(estimateConsignee)
+            that.reservationCode = obj.logistics_code
+            that.reservationExpressPhone = obj.courier_phone
+            that.reservationLogisticFee = obj.collection_logistics_fee
+            that.reservationName = obj.consignee_name
+            that.reservationPhone = obj.consignee_phone
+            that.reservationAddress = obj.consignee_address
+            that.defaultFalse1 = obj.defaultFalse1
         }
     }
 }
