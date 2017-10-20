@@ -12,7 +12,7 @@
                             <router-link to="" href="javascript:;" v-if="data.user_nickname == undefined">未登录</router-link>
                             <router-link :to="{path:'/person',query:{type:'user'}}" v-else>{{ data.user_nickname }}</router-link>
                         </p>
-                        <router-link to="/level">
+                        <router-link :to="{path:'level',query:user_level}">
                             <grade class="m0" :src="user_level_logo"></grade>
                         </router-link>
                     </dd>
@@ -162,19 +162,19 @@ export default {
             items: [],
             data: {},
             share: false,
+            user_level: {},
             user_level_logo: '/static/assets/images/user_level/icon_1_shaowei.png',
         }
     },
     created() {
-        // console.log(123)
         let that = this
         this.http(that.configs.apiTop + "/page/user-personal-center", "get", '', function(res) {
             let msg = res.data
             if (msg.code == 0) {
-                // that.$router.push({ path: '/person' })
                 that.items = msg.data
                 that.data = msg.data.user
-                that.user_level_logo = that.data.user_level.user_level_logo
+                that.user_level = that.data.user_level
+                that.user_level_logo = that.user_level.user_level_logo
             }
         })
     }
