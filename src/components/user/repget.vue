@@ -209,6 +209,7 @@
 import { Toast } from 'vux'
 import LayerPw from '../base/public/layer_pw'
 import { Confirm, PopupPicker } from 'vux'
+import qs from 'qs'
 export default {
     data() {
         return {
@@ -222,64 +223,20 @@ export default {
             layermodifyTime:false,
             //
             title1: '',
-            value1: ['一小时内'],
+            value1: ["一小时内"],
             placeholder1:'',
-            list1: [{
-                name: '今天',
-                value: 'today',
-                parent: 0
-            }, {
-                name: '明天',
-                value: 'tomorrow',
-                parent: 0
-            }, {
-                name: '后天',
-                value: 'dopodomani',
-                parent: '0'
-            }, {
-                name: '一小时内',
-                value: 'within_hour',
-                parent: 'today'
-            }, {
-                name: '11:00~12:00',
-                value: 'time_quantum1112',
-                parent: 'today'
-            }, {
-                name: '13:00~14:00',
-                value: 'time_quantum1314',
-                parent: 'today'
-            }, {
-                name: '08:00~09:00',
-                value: 'time_quantum0809',
-                parent: 'tomorrow'
-            }, {
-                name: '10:00~11:00',
-                value: 'time_quantum1011',
-                parent: 'tomorrow'
-            }, {
-                name: '12:00~13:00',
-                value: 'time_quantum1213',
-                parent: 'tomorrow'
-            }, {
-                name: '08:00~09:00',
-                value: 'time_quantum0809',
-                parent: 'dopodomani'
-            }, {
-                name: '10:00~11:00',
-                value: 'time_quantum1011',
-                parent: 'dopodomani'
-            }, {
-                name: '12:00~13:00',
-                value: 'time_quantum1213',
-                parent: 'dopodomani'
-            }],
+            list1: [
+            ],
             format: function(value, name) {
                 if (name) {
                     return `${name}`
                 } else {
                     return `${value}`
                 }
-            }
+            },
+            begin: "00:00",
+            end: "00:00",
+            timequantum: "-",
         }
     },
     created() {
@@ -292,6 +249,91 @@ export default {
         LayerPw
     },
     methods: {
+        // 计算时间段
+        // 时间格式化
+        formatDateTime: function(e, t) {
+            var r = function(e) {
+                return e += '', e.replace(/^(\d)$/, '0$1')
+            },
+                n = {
+                    yyyy: e.getFullYear(),
+                    yy: e.getFullYear().toString().substring(2),
+                    M: e.getMonth() + 1,
+                    MM: r(e.getMonth() + 1),
+                    d: r(e.getDate()),
+                    dd: r(e.getDate()),
+                    hh: r(e.getHours()),
+                    mm: r(e.getMinutes()),
+                    ss: r(e.getSeconds()),
+                    SSS: r(e.getMilliseconds())
+                }
+            return t || (t = "yyyy-MM-dd hh:mm:ss"), t.replace(/([a-z])(\1)*/gi, function(e) {
+                return n[e]
+            })
+        },
+        formattedTimeInit() {
+            let that = this
+            that.arr = [{
+                name: '今天',
+                value: '1',
+                parent: 0
+            }, {
+                name: '明天',
+                value: '2',
+                parent: 0
+            }, {
+                name: '后天',
+                value: '3',
+                parent: 0
+            }, {
+                name: '一小时内',
+                value: '-',
+                parent: '1'
+            }]
+            let newDate = that.formatDateTime(new Date, "yyyy/MM/dd")
+            let startDate = newDate + " " + that.begin + ":00"
+            let endDate = newDate + " " + that.end + ":00"
+            let startDateTimestamp = new Date(startDate).getTime()
+            let endDateTimestamp = new Date(endDate).getTime()
+            let step = 60 * 60 * 1000
+            let currentTimestamp = new Date().getTime()
+            // 今天
+            for (let timestamp = startDateTimestamp; timestamp <= endDateTimestamp; timestamp += step) {
+                if (timestamp >= currentTimestamp) {
+                    let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
+                    let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
+                    that.arr.push({
+                        name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
+                        value: tmp1 + "~" + tmp2,
+                        parent: '1'
+                    })
+                }
+            }
+            let step1 = 24 * 60 * 60 * 1000
+            // 明天
+            endDateTimestamp = endDateTimestamp + step1
+            for (let timestamp = startDateTimestamp + step1; timestamp <= endDateTimestamp; timestamp += step) {
+                let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
+                let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
+                that.arr.push({
+                    name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
+                    value: tmp1 + "~" + tmp2,
+                    parent: '2'
+                })
+            }
+            // 后天
+            endDateTimestamp = endDateTimestamp + step1
+            for (let timestamp = startDateTimestamp + 2 * step1; timestamp <= endDateTimestamp; timestamp += step) {
+                let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
+                let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
+                that.arr.push({
+                    name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
+                    value: tmp1 + "~" + tmp2,
+                    parent: '3'
+                })
+            }
+            that.list1 = that.arr
+        },
         getOrder(result) {
             let that = this
             that.collection_order_number = that.$route.query.collection_order_number
@@ -303,6 +345,9 @@ export default {
                     that.items = data.collection_order
                     that.user = data.user
                     that.service_time = data.service_time
+                    that.begin = that.service_time.start_time
+                    that.end = that.service_time.end_time
+                    that.formattedTimeInit()
                 } else if (msg.code === 40016) {
                     that.layerPwhide = true
                     // location.href = that.configs.accreditUrl
@@ -358,8 +403,36 @@ export default {
             })
         },
         // 修改送件时间
-        modifyTime(collection_order_number){
-
+        modifyTimeConfirm(){
+            let that = this;
+            if (that.realLogisticFee == '') {
+                that.realLogisticFee = 0
+            }
+            let take_start_time = ''
+            let take_end_time = ''
+            if (that.timequantum == "-") { // 一小时内
+                take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
+                take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
+            } else {
+                let arr = that.timequantum.split("~")
+                take_start_time = arr[0]
+                take_end_time = arr[1]
+            }
+            let data = qs.stringify({
+                'delivery_start_time': take_start_time,
+                'delivery_end_time': take_end_time,
+            })
+            this.http(that.configs.apiTop + "/collection-order/update-take-time/" + that.collection_order_number, "post", data, function(res) {
+                let msg = res.data
+                if (msg.code == 0) {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                    setTimeout(function() {
+                        that.$router.push({ path: '/order' })
+                    }, 200);
+                } else {
+                    that.$vux.toast.text(msg.message, 'middle', 100);
+                }
+            })
         },
         // 用户支付订单
         pay(collection_order_number) {
@@ -440,36 +513,7 @@ export default {
             let that = this
             that.layermodifyTime = false
         },
-        modifyTimeConfirm(){
-            let that = this;
-            if (that.company == '') {
-                this.$vux.toast.text('请选择快递公司', 'middle', 100);
-                return false;
-            } else if (that.code == '') {
-                this.$vux.toast.text('请输入快递单号', 'middle', 100);
-                return false;
-            }
-            let data = qs.stringify({
-                'logistics_company_id': that.company,
-                'logistics_code': that.code,
-            })
-            this.http(that.configs.apiTop + "/ship-order/fill-in-logistics-code/" + that.items.collection_order_number, "post", data, function(res) {
-                let msg = res.data
-                let data = msg.data
-                if (msg.code == 0) {
-                    that.$vux.toast.text(msg.message, 'middle', 100)
-                    that.writelayerStorey = false
-                    setTimeout(function() {
-                        that.$router.push({ path: '/orderdetail' })
-                    }, 200);
-                } else if (msg.code == 40004) {
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        },
         onChangePickUpTime(values) {
-            this.timeday = values[0]
             this.timequantum = values[1]
         }
     }
