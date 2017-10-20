@@ -59,7 +59,7 @@
         <div class="readAgreement">
             <input type="checkbox" v-model="checkbox">
             <span>我已阅读并同意</span>
-            <router-link :to="{name:'Detail',query:{type:'agreement'}}">《共享快递哥》</router-link>
+            <router-link :to="{name:'Detail',query:{type:'agreement'}}">《共享快递哥协议》</router-link>
         </div>
         <div class="submit">
             <div class="row">

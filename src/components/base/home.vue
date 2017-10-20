@@ -41,17 +41,17 @@
         </div>
         <div class="hg30"></div>
         <div class="advertisement_banner">
-            <router-link :to="{name:'Detail',query:{type:'ad'}}">
+            <router-link :to="{name:'Detail',query:{type:'home_tip'}}">
                 <img src="/static/assets/images/picture_fuwu.png" />
             </router-link>
         </div>
         <div class="footer_btn">
             <ul>
                 <li>
-                    <router-link :to="{name:'Detail',query:{type:'free'}}">免费寄快递</router-link>
+                    <router-link :to="{name:'Detail',query:{type:'bottom_menu'}}">免费寄快递</router-link>
                 </li>
                 <li>
-                    <router-link :to="{name:'Detail',query:{type:'free'}}">免费代收快递</router-link>
+                    <router-link :to="{name:'Detail',query:{type:'bottom_menu'}}">免费代收快递</router-link>
                 </li>
             </ul>
         </div>
