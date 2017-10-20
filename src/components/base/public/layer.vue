@@ -43,6 +43,7 @@
 <script>
     import { Toast } from 'vux'
     import qs from 'qs'
+    import $ from 'jquery'
     const TIME_COUNT = 60
     export default{
         data(){
@@ -58,16 +59,19 @@
             Toast
         },
         created() {
-            this.$weChat()
         },
         methods: {
             confirm() {
-                let that = this;
+                let that = this
+                let reg = /^1[0-9]{10}$/
                 if(that.phone == ''){
                     this.$vux.toast.text('请输入手机号码', 'middle',100);
                     return false;
                 }else if(that.code == ''){
                     this.$vux.toast.text('请输入验证码', 'middle',100);
+                    return false;
+                }else if(!reg.test(that.phone)){
+                    this.$vux.toast.text('请输入正确的手机号码', 'middle',100);
                     return false;
                 }
                 let data = qs.stringify({
@@ -82,8 +86,6 @@
                             that.$router.push({path: '/user',query: {is_perfect: "0"}}); 
                         }else if(data.role_type == 'service'){
                             that.$router.push({path: '/service'}); 
-                            // that.$parent.layerPwhide = true;
-                            // that.$parent.layerhide = false
                         }
                     }else if(msg.code == 40004){
                         localStorage.clear("token")
@@ -131,6 +133,13 @@
                 })
                 
             }
+        },
+        mounted: function () {
+            $('.phone_register input').bind('focus',function(){  
+                $('.layer_phone').css('position','absolute');  
+            }).bind('blur',function(){  
+                $('.layer_phone').css({'position':'fixed'});   
+            });  
         }
     }
 </script>
@@ -200,7 +209,7 @@
         padding:px2rem(40) px2rem(66) px2rem(76);
         input{
             font-size:px2rem(24);
-            color:#cacaca;
+            color:#333;
             width:95%;
             height:px2rem(50);
             line-height:px2rem(50);
@@ -214,11 +223,11 @@
             height:px2rem(70);
             font-size:px2rem(24);
             color:#fff;
-            line-height:px2rem(70);
+            // line-height:px2rem(70);
             border-radius:px2rem(10);
             margin-left:px2rem(20);
             border:0;
-            background-color: #afc3ad;
+            background-color: #366931;
             &.action{
                 background-color: #366931;
             }
@@ -232,17 +241,6 @@
                 width:px2rem(270);
             }
             button{
-            }
-        }
-    }
-
-    .layer_phone{
-        .layer_box{
-            .register_box{
-                input{
-                    width: 200%;
-                    margin-left: -100%;
-                }
             }
         }
     }

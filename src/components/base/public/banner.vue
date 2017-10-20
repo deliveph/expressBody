@@ -80,7 +80,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import '../../../../static/assets/css/px2rem.scss';
     .swiper-container{
         width: 100%;

@@ -29,6 +29,7 @@ export default {
             let that = this
             let reg = /^[\u4E00-\u9FA5A-Za-z0-9]+$/
             let namelen = parseInt(that.name.length)
+            console.log(namelen)
             if (that.name == '') {
                 this.$vux.toast.text('请输入姓名', 'middle', 100);
                 return false;
@@ -36,7 +37,7 @@ export default {
             if (!(reg.test(that.name))) {
                 this.$vux.toast.text('请输入正确格式（数字、字母、中文）', 'middle', 100);
                 return false;
-            }else if( namelen > 1 || namelen < 11){
+            }else if( namelen < 2  || namelen > 11){
                 this.$vux.toast.text('限制2-10字', 'middle', 100);
                 return false;
             }
