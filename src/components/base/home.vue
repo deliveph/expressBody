@@ -168,9 +168,9 @@ export default {
 
     },
     created() {
+        console.log("home")
         let that = this
         let is_perfect = this.$route.query.is_perfect
-        this.$weChat()
         if (is_perfect == 0) {
             that.is_perfect = true
         } else {
