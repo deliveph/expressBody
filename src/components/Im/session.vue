@@ -47,7 +47,6 @@ export default {
         }
     },
     created(){
-        this.$weChat()
     },
     components:{
         Toast

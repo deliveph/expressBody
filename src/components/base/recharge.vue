@@ -41,7 +41,6 @@ export default {
     },
     created() {
         let that = this
-        this.$weChat()
         this.http(that.configs.apiTop + "/order/recharge-combos", "get", '', function(res) {
             let msg = res.data
             let data = msg.data

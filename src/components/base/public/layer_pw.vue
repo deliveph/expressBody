@@ -38,9 +38,7 @@ export default {
             password: ''
         }
     },
-    created() {
-        this.$weChat()
-    },
+    created() {},
     components: {
         Toast
     },

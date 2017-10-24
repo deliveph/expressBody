@@ -373,7 +373,7 @@ export default {
             }
         },
         // 用户取消订单
-        cancel(collection_order_number) {
+        cancel(collection_order_number, type) {
             let that = this
             this.$vux.confirm.show({
                 title: '取消订单',
