@@ -268,6 +268,7 @@ export default {
     }
   },
   updateSessions (state, sessions) {
+    // console.log('####111')
     const nim = state.nim
     state.sessionlist = nim.mergeSessions(state.sessionlist, sessions)
     state.sessionlist = state.sessionlist.filter(item => {
@@ -281,6 +282,7 @@ export default {
     })
     state.sessionlist.forEach(item => {
       state.sessionMap[item.id] = item
+      // console.log(state.unreadLen[item.unread],"12412412")
     })
   },
   deleteSessions (state, sessionIds) {

@@ -111,7 +111,6 @@ export default {
     total: 0
   },
   customSysMsgUnread: 0,
-
   // 临时变量
   // 缓存需要获取的用户信息账号,如searchUser
   searchedUsers: [],

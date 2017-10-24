@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="items != ''">
         <router-link :to="{path:'/chat/p2p-service_'+items.service_id }">
              <img src="/static/assets/images/btn_relation.png" class="draggable" id="draggable"/>
         </router-link>

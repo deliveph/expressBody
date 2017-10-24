@@ -29,7 +29,6 @@ export default {
             let that = this
             let reg = /^[\u4E00-\u9FA5A-Za-z0-9]+$/
             let namelen = parseInt(that.name.length)
-            console.log(namelen)
             if (that.name == '') {
                 this.$vux.toast.text('请输入姓名', 'middle', 100);
                 return false;

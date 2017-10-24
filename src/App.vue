@@ -1,22 +1,6 @@
 <template>
   <div id="app">
     <router-view v-wechat-title="$route.meta.title"></router-view>
-    <!-- <div id="test" v-drag>
-          <img src="/static/assets/images/inquire_bg.png" align="left" style="">
-        </div> -->
-    <!-- <div class="image"  draggable drop="handleImageDrop">
-                  <img src="/static/assets/images/inquire_bg.png" align="left">
-              </div> -->
-    <!-- <draggable v-model="tags" :move="getdata" @update="datadragEnd" class="draggable">
-              <img src="/static/assets/images/inquire_bg.png" align="left" style="position: fixed;top: 50%;right: 0;width: 30px;height: 30px;">
-            </draggable> -->
-    <!-- <div id="box">
-              HTML位置
-              <br>x:{{val.x}} <br>y:{{val.y}}
-              <div v-drag="greet" id="drag" :style="style">
-              //注意这里要通过指令绑定函数将当前元素的位置数据传出来
-              </div>
-            </div> -->
   </div>
 </template>
 
@@ -133,6 +117,7 @@ export default {
   },
   created() {
     let that = this
+    this.$weChat()
     that.http(that.configs.apiTop + "/new-ease/get-im-config", "get", '', function(res) {
       let msg = res.data
       let data = msg.data

@@ -55,7 +55,7 @@
                         <span>{{service_time}}</span>
                     </p>
                     <div class="btn">
-                        <button @click="realSubmit">确定</button>
+                        <button @click="realSubmit" id="submitBtn">确定</button>
                     </div>
                 </div>
             </div>
@@ -112,7 +112,7 @@
                         <span>{{service_time}}</span>
                     </p>
                     <div class="btn">
-                        <button @click="reservationSubmit">确定</button>
+                        <button @click="reservationSubmit" id="submitBtn">确定</button>
                     </div>
                 </div>
             </div>
@@ -211,6 +211,7 @@ export default {
     methods: {
         realSubmit() {
             let that = this;
+            document.getElementById('submitBtn').setAttribute("disabled",true)
             if (that.realCode == '') {
                 that.$vux.toast.text('请输入快递单号', 'middle', 100)
                 return false
@@ -255,6 +256,7 @@ export default {
             })
             this.http(that.configs.apiTop + "/order/submit-consignee-order", "post", data, function(res) {
                 let msg = res.data
+                document.getElementById('submitBtn').setAttribute("disabled",false)
                 if (msg.code == 0) {
                     localStorage.removeItem('consignee')
                     that.$vux.toast.text(msg.message, 'middle', 100);
@@ -268,7 +270,6 @@ export default {
                     }else{
                         that.$vux.toast.text(msg.message, 'middle', 100);
                     }
-                    
                 }
             })
         },
@@ -310,6 +311,7 @@ export default {
         },
         reservationSubmit() {
             let that = this;
+            document.getElementById('submitBtn').setAttribute("disabled",true)
             if (that.reservationCode == '') {
                 that.$vux.toast.text('请输入快递单号', 'middle', 100)
                 return false
@@ -329,11 +331,9 @@ export default {
             if (that.reservationLogisticFee == '') {
                 that.reservationLogisticFee = 0
             }
-
-            console.log(that.timequantum, "###")
             let take_start_time = ''
             let take_end_time = ''
-            if (that.timequantum == "-") { // 一小时内
+            if (that.timequantum == "-" || typeof(that.timequantum) == 'undefined') { // 一小时内
                 take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
                 take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
             } else {
@@ -367,6 +367,7 @@ export default {
             })
             this.http(that.configs.apiTop + "/order/submit-estimate-consignee-order", "post", data, function(res) {
                 let msg = res.data
+                document.getElementById('submitBtn').setAttribute("disabled",false)
                 if (msg.code == 0) {
                     localStorage.removeItem('estimateConsignee')
                     that.$vux.toast.text(msg.message, 'middle', 100);
@@ -388,6 +389,7 @@ export default {
             this.$vux.confirm.show({
                 title: '提示',
                 content: content,
+                confirmText:'申请开通',
                 onShow() {
                 },
                 onHide() {
@@ -408,6 +410,7 @@ export default {
         onChangePickUpTime1(values) {
             this.timeday1 = values[0]
             this.timequantum1 = values[1]
+            console.log(this.timeday1,this.timequantum1,"235235")
         },
         //预约收件期望上门时间 
         onChangeExpectTime(values) {

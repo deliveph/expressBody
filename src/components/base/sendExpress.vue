@@ -72,7 +72,7 @@
                 </p>
             </div>
             <div class="btn">
-                <button @click="submitBtn" class="active">确定</button>
+                <button @click="submitBtn" class="active" id="submitBtn">确定</button>
             </div>
         </div>
     </div>
@@ -405,6 +405,7 @@ export default {
         },
         submitBtn() {
             let that = this;
+            document.getElementById('submitBtn').setAttribute("disabled",true)
             if(typeof that.ship_order_number != 'undefined'){
                 if (that.default_shipper_address.shipper_address_id == '') {
                     that.$vux.toast.text('请选择寄件地址', 'middle', 100)
@@ -444,6 +445,7 @@ export default {
                 })
                 this.http(that.configs.apiTop + "/ship-order/update/"+that.ship_order_number, "post", data, function(res) {
                     let msg = res.data
+                    document.getElementById('submitBtn').setAttribute("disabled",true)
                     if (msg.code == 0) {
                         that.$vux.toast.text(msg.message, 'middle', 100);
                         setTimeout(function() {

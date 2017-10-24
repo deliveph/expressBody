@@ -28,7 +28,8 @@
       <span v-else-if="msg.type==='custom-type3'" class="msg-text" ref="mediaMsg"></span>
       <span v-else-if="msg.type==='image'" class="msg-text" ref="mediaMsg" @click.stop="showFullImg(msg.originLink)"></span>
       <span v-else-if="msg.type==='video'" class="msg-text" ref="mediaMsg"></span>
-      <span v-else-if="msg.type==='audio'" class="msg-text msg-audio" @click="playAudio(msg)"><em>{{msg.dur}}"</em><i></i></span>
+      
+      <span v-else-if="msg.type==='audio'" class="msg-text msg-audio" @click="playAudio(msg)"><em>{{msg.file.dur / 1000}}"</em><i></i></span>
       <span v-else-if="msg.type==='file'" class="msg-text"><a :href="msg.fileLink" target="_blank"><i class="u-icon icon-file"></i>{{msg.showText}}</a></span>
       <span v-else-if="msg.type==='robot'" class="msg-text" :class="{'msg-robot': msg.robotFlow!=='out' && !isRobot}">
         <div v-if="msg.robotFlow==='out'">{{msg.showText}}</div>
@@ -140,6 +141,7 @@
     },
     beforeMount () {
       let item = Object.assign({}, this.rawMsg)
+      console.log(this.msg)
       console.log(this.myInfo,"&(*&%#(*@&%(")
       // 标记用户，区分聊天室、普通消息
       if (this.type === 'session') {
@@ -402,7 +404,7 @@
     },
     created(){
       let that = this
-
+      console.log(that.msg)
     }
   }
 </script>

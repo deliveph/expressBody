@@ -60,12 +60,17 @@
                 this.$router.back(-1)
             }
         },
+        mounted:function(){
+            this.$weChatEx.shareCallback()
+        },
         created() { 
             let that = this
+            this.$weChat()
             that.type = this.$route.query.type
             that.status = this.$route.query.status
             that.ship_order_number = this.$route.query.ship_order_number
             that.condition = this.$route.query.condition
+
         }
     }
 </script>

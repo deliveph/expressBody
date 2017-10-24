@@ -363,6 +363,7 @@ export default {
     })
   },
   updateCustomSysMsgUnread (state, obj) {
+    console.log(state,obj)
     let {type, unread} = obj
     switch (type) {
       case 'reset':

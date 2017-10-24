@@ -41,6 +41,7 @@ export default {
             let msg = res.data
             if (msg.code == 0) {
                 let data = msg.data
+                console.log(data)
                 that.isSettingUserPayPassword = data.is_setting_user_pay_password
             } else {
                 that.$vux.toast.text(msg.message, 'middle', 100);

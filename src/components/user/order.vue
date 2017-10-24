@@ -97,7 +97,7 @@
                                         <div class="order-option ">
                                             <span class="order-btn" v-if="collection.collection_order_status_id == -1" @click="deleteCollectionCode(collection.collection_order_number)">删除订单</span>
                                             <span class="order-btn" v-else-if="collection.collection_order_status_id == 1 || collection.collection_order_status_id == 2" @click="cancel(collection.collection_order_number,'collection')">取消订单</span>
-                                            <span class="order-btn" v-else-if="collection.collection_order_status_id == 3">修改收货时间</span>
+                                            <router-link class="order-btn" v-else-if="collection.collection_order_status_id == 3" tag="span" :to="{path:'repget',query:{collection_order_number:collection.collection_order_number,status:'user'}}">修改收货时间</router-link>
                                             <router-link class="order-btn bd-finish" v-else-if="collection.collection_order_status_id == 4" tag="span" :to="{path:'/confirm',query:{express_order_number: collection.collection_order_number, express_order_type: 'collection'}}">去支付</router-link>
                                             <router-link class="order-btn bd-finish" v-else-if="collection.collection_order_status_id == 5" tag="span" :to="{path:'/evaluate',query:{ship_order_number:collection.collection_order_number,type: 'collection'}}">去评价</router-link>
                                             <span class="order-btn" v-else-if="collection.collection_order_status_id == 6" @click="deleteCollectionCode(collection.collection_order_number)">删除订单</span>

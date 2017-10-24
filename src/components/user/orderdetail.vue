@@ -179,7 +179,8 @@
                         <div class="layer_container">
                             <div class="phone_register register_box">
                                 <div class="phone_number">
-                                    <popup-picker :title="title1" :data="list1" :columns="1" v-model="value1" :display-format="format" :placeholder="placeholder1" @on-change="onChangeOfLogisticsCompanies"></popup-picker>
+                                    <popup-picker :title="title1" :data="list1" :columns="1" v-model="value1" :display-format="format" :placeholder="placeholder1" @on-change="onChangeOfLogisticsCompanies" v-if="items.logistics_company_name == '默认'"></popup-picker>
+                                    <span v-else class="logisticsCompanyName">{{items.logistics_company_name}}</span>
                                 </div>
                                 <div class="phone_code">
                                     <label></label>
@@ -356,7 +357,6 @@ export default {
         // 客服确定寄件
         affirmShip(ship_order_number) {
             let that = this
-            console.log(1230)
             this.http(that.configs.apiTop + "/order/affirm-ship-order/" + ship_order_number, "post", '', function(res) {
                 let msg = res.data
                 if (msg.code == 0) {
@@ -375,10 +375,15 @@ export default {
         writelayer(ship_order_number) {
             let that = this
             that.writelayerStorey = true
+            that.value1 = that.items.logistics_company_name
+            that.code = that.items.logistics_code
             that.logisticsCompaniesList()
         },
         writeConfirm() {
             let that = this;
+            if(that.items.logistics_company_name != '默认'){
+                that.company = that.items.logistics_company_name
+            }
             if (that.company == '') {
                 this.$vux.toast.text('请选择快递公司', 'middle', 100);
                 return false;
@@ -527,6 +532,7 @@ export default {
             padding: px2rem(10);
             border: 1px solid #dddddd;
             border-radius: px2rem(10);
+            -webkit-appearance: none;
         }
         button {
             width: px2rem(142);

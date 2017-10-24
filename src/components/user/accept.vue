@@ -77,7 +77,7 @@
                                             <div class="order-option">
                                                 <span class="order-btn" v-if="collection.collection_order_status_id == -1">删除订单</span>
                                                 <span class="order-btn" v-else-if="collection.collection_order_status_id == 1 || collection.collection_order_status_id == 2" @click="cancel(collection.collection_order_number,'collection')">取消订单</span>
-                                                <span class="order-btn" v-else-if="collection.collection_order_status_id == 3">修改收货时间</span>
+                                                <router-link class="order-btn" v-else-if="collection.collection_order_status_id == 3" tag="span" :to="{path:'repget',query:{collection_order_number:collection.collection_order_number,status:'user'}}">修改收货时间</router-link>
                                                 <span class="order-btn bd-finish" v-else-if="collection.collection_order_status_id == 4">去支付</span>
                                                 <span class="order-btn bd-finish" v-else-if="collection.collection_order_status_id == 5">去评价</span>
                                                 <span class="order-btn" v-else-if="collection.collection_order_status_id == 6">删除订单</span>

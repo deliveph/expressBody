@@ -39,8 +39,8 @@
                                     </router-link>
                                     <div class="order-option">
                                         <span class="order-btn" v-if="ship.ship_order_status_id == -1" @click="deleteShipCode(ship.ship_order_number)">删除订单</span>
-                                        <span class="order-btn" v-else-if="ship.ship_order_status_id == 1">接单</span>
-                                        <span class="order-btn" v-else-if="ship.ship_order_status_id == 2">取消订单</span>
+                                        <router-link class="order-btn" v-else-if="ship.ship_order_status_id == 1" :to="{path:'orderdetail',query:{ship_order_number:ship.ship_order_number,status:'service'}}" tag="span">接单</router-link>
+                                        <router-link class="order-btn" v-else-if="ship.ship_order_status_id == 2" :to="{path:'orderdetail',query:{ship_order_number:ship.ship_order_number,status:'service'}}" tag="span">取消订单</router-link>
                                         <!-- <span class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 3">去支付</span>
                                         <span class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 4">去评价</span> -->
                                         <span class="order-btn" v-else-if="ship.ship_order_status_id == 5" @click="deleteShipCode(ship.ship_order_number)">删除订单</span>
@@ -69,9 +69,9 @@
                                     </router-link>
                                     <div class="order-option "  >
                                         <span class="order-btn" v-if="collection.collection_order_status_id == -1" @click="deleteCollectionCode(collection.collection_order_number)">删除订单</span>
-                                        <span class="order-btn" v-else-if="collection.collection_order_status_id == 1">接单</span>
-                                        <span class="order-btn" v-else-if="collection.collection_order_status_id == 2">取消订单</span>
-                                        <span class="order-btn" v-else-if="collection.collection_order_status_id == 3">确认送达</span>
+                                        <router-link class="order-btn" v-else-if="collection.collection_order_status_id == 1" tag="span" :to="{path:'repget',query:{collection_order_number:collection.collection_order_number,status:'service'}}">接单</router-link>
+                                        <!-- <span class="order-btn" v-else-if="collection.collection_order_status_id == 2">取消订单</span> -->
+                                        <router-link class="order-btn" v-else-if="collection.collection_order_status_id == 3" tag="span" :to="{path:'repget',query:{collection_order_number:collection.collection_order_number,status:'service'}}">确认送达</router-link>
                                         <!-- <span class="order-btn bd-finish" v-else-if="collection.collection_order_status_id == 4">去支付</span>
                                         <span class="order-btn bd-finish" v-else-if="collection.collection_order_status_id == 5">去评价</span> -->
                                         <span class="order-btn" v-else-if="collection.collection_order_status_id == 6" @click="deleteCollectionCode(collection.collection_order_number)">删除订单</span>
@@ -97,7 +97,7 @@
                 <div class="layer_conter">
                     <h3>请选择订单状态</h3>
                     <ul class="order_type_list">
-                        <li @click="order_combos('wait_order')" :class="{active: express_order_status == 'wait_order'}" v-model="express_order_status">
+                        <li @click="order_combos('wait_order')" :class="{active: express_order_status == 'wait_order'}" v-model=" express_order_status ">
                             待接单
                         </li>
                         <li @click="order_combos('have_order')" :class="{active: express_order_status == 'have_order'}" v-model="express_order_status">

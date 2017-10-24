@@ -93,7 +93,6 @@ export default {
                     this.http(that.configs.apiTop + "/address/edit-shipper-address/"+that.id, "post", data, function (res) {
                             let msg = res.data
                             if(msg.code == 0){
-                                console.log(1)
                                 that.$router.push({path: '/address/shipper',params:{type:0}}) 
                             }else if(msg.code == 40004){
                                 // location.href = that.configs.accreditUrl
@@ -172,20 +171,16 @@ export default {
        
         // index 0 寄件人 1 收件人   
        that.index = this.$route.query.type;
-       console.log(that.index,that.id)
        if(that.index == 0){
            that.nameLabel = '寄件人'
            if(that.id != ''){
-               console.log(123)
                 this.http(that.configs.apiTop + "/address/shipper-address-detail/"+that.id, "get", '', function (res) {
                     let msg = res.data
                     if(msg.code == 0){
                     let data = msg.data
-                    console.log(data,"12412")
                     that.name = data.shipper_name
                     that.phone = data.shipper_phone
                     that.value2 = [data.province_region_name,data.city_region_name,data.district_region_name]
-                    console.log(that.value2)
                     that.province = data.province_region_name
                     that.city = data.city_region_name
                     that.district = data.district_region_name
@@ -195,7 +190,6 @@ export default {
                     }else{
                             that.checked = false
                     }
-                    console.log(that.name,that.phone,that.value2,that.checked)
                     }else if(msg.code == 40004){
                         // location.href = that.configs.accreditUrl
                     }
@@ -220,7 +214,6 @@ export default {
                     }else{
                         that.checked = false
                     }
-                    console.log(that.name,that.phone,that.value2,that.checked)
                     }else if(msg.code == 40004){
                         // location.href = that.configs.accreditUrl
                     }

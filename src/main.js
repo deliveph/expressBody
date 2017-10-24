@@ -118,7 +118,6 @@ Vue.prototype.http = function (url, method, data, callback, responseType) {
       'time': that.configs.curTime
     }))
   }
-  console.log(token, 'token')
   that.$ajax({
     url: url,
     method: method,
@@ -134,11 +133,9 @@ Vue.prototype.http = function (url, method, data, callback, responseType) {
     }
   }).then(res => {
     let data = res.data
-    console.log(data.code, 'code')
     if (data.code === 40004) {
       that.$vux.toast.text('登录已过期，正重新登录...', 'middle', 100)
       setTimeout(function () {
-        // that.wx.closeWindow()
         location.href = that.configs.accreditUrl + '?redirect_uri=' + encodeURIComponent(location.href)
       }, 200)
     } else if (data.code === 40017) {
@@ -147,7 +144,6 @@ Vue.prototype.http = function (url, method, data, callback, responseType) {
         that.wx.closeWindow()
       }, 200)
     } else {
-      console.log('callback')
       callback(res)
     }
     that.$vux.loading.hide()
@@ -159,12 +155,13 @@ Vue.prototype.http = function (url, method, data, callback, responseType) {
 
 Vue.prototype.$weChatEx = {
   shareCallback: function () {
+    return 1
   }
 }
 Vue.prototype.$weChat = function () {
-  console.log(this.$weChatEx.shareCallback(), '222')
-  console.log(this, '###')
   let that = this
+  var routerName = this.$route.name
+  var routerType = this.$route.query.type
   let data = qs.stringify({
     'url': location.href
   })
@@ -199,8 +196,7 @@ Vue.prototype.$weChat = function () {
     })
     that.wx.ready(function () {
       that.wx.onVoicePlayEnd({
-        success: function (res) {
-        }
+        success: function (res) {}
       })
       that.http(that.configs.apiTop + '/weixin/share-config', 'get', '', function (res) {
         let msg = res.data
@@ -213,10 +209,16 @@ Vue.prototype.$weChat = function () {
             imgUrl: data.image_url, // 分享图标
             success: function () {
               // 用户确认分享后执行的回调函数
-              that.http(that.configs.apiTop + '/user/share-success-callback', 'get', '', function (res) {
+              that.http(that.configs.apiTop + '/user/share-success-callback', 'post', '', function (res) {
                 let msg = res.data
                 if (msg.code == 0) {
-                  that.$vux.toast.text(data.msg, 'middle', 100)
+                  if (routerName == 'evalresult' && routerType != 1) {
+                    that.$router.push({
+                      path: '/order'
+                    })
+                  }
+                } else {
+                  that.$vux.toast.text(data.message, 'middle', 100)
                 }
               })
             },
@@ -234,10 +236,16 @@ Vue.prototype.$weChat = function () {
             dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
             success: function () {
               // 用户确认分享后执行的回调函数
-              that.http(that.configs.apiTop + '/user/share-success-callback', 'get', '', function (res) {
+              that.http(that.configs.apiTop + '/user/share-success-callback', 'post', '', function (res) {
                 let msg = res.data
                 if (msg.code == 0) {
-                  that.$vux.toast.text(data.msg, 'middle', 100)
+                  if (routerName == 'evalresult' && routerType != 1) {
+                    that.$router.push({
+                      path: '/order'
+                    })
+                  }
+                } else {
+                  that.$vux.toast.text(data.message, 'middle', 100)
                 }
               })
             },
@@ -253,12 +261,21 @@ Vue.prototype.$weChat = function () {
             imgUrl: data.image_url, // 分享图标
             success: function () {
               // 用户确认分享后执行的回调函数
-              that.http(that.configs.apiTop + '/user/share-success-callback', 'get', '', function (res) {
+              that.http(that.configs.apiTop + '/user/share-success-callback', 'post', '', function (res) {
                 let msg = res.data
                 if (msg.code == 0) {
-                  that.$vux.toast.text(data.msg, 'middle', 100)
+                  if (routerName == 'evalresult' && routerType != 1) {
+                    that.$router.push({
+                      path: '/order'
+                    })
+                  }
+                } else {
+                  that.$vux.toast.text(data.message, 'middle', 100)
                 }
               })
+              alert(2)
+              alert(routerName)
+              alert(routerType)
             },
             cancel: function () {
               // 用户取消分享后执行的回调函数
