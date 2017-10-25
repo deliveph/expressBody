@@ -83,7 +83,7 @@ export default new Router({
             name: 'Collection',
             component: Collection,
             meta: {
-                title: '收件'
+                title: '代收件'
             }
         }, //代收
         {

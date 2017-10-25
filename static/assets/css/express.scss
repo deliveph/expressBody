@@ -3,7 +3,7 @@
     h3 {
         font-size: px2rem(30);
         color: #333;
-        padding: px2rem(40) 0 px2rem(20) px2rem(30);
+        padding: px2rem(20) 0 px2rem(20) px2rem(30);
     }
     .forthwith_msg {
         background-color: #fff;
@@ -27,6 +27,9 @@
                 // line-height: px2rem(70);
                 padding: px2rem(20);
                 border: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
         }
     }
@@ -52,7 +55,7 @@
         }
     }
     .expect_time {
-        margin-top: px2rem(40);
+        margin-top: px2rem(20);
         height: px2rem(90);
         line-height: px2rem(90);
         border-top: 1px solid #f2f3f4;
@@ -119,7 +122,7 @@
         // }
     }
     .readAgreement {
-        margin: px2rem(60) 0;
+        margin: px2rem(10) 0;
         padding-left: px2rem(30);
         input {
             margin-right: px2rem(10);

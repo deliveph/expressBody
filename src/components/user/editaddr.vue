@@ -151,6 +151,9 @@ export default {
             border: 0;
             font-size: 0.14rem;
             color: #333;
+            .vux-cell-value{
+                color: #333;
+            }
         }
     }
 }

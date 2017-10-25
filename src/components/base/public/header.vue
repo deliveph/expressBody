@@ -6,18 +6,20 @@
         </router-link>
         <ul>
             <li class="user_message">
-                <div class="photo">
-                    <img v-bind:src="user_avatar" />
-                    <div class="grade">
-                        <grade :src="user_level_logo"></grade>
+                <router-link :to="{path:'/Userindex'}">
+                    <div class="photo">
+                        <img v-bind:src="user_avatar" />
+                        <div class="grade">
+                            <grade :src="user_level_logo"></grade>
+                        </div>
                     </div>
-                </div>
-                <h3 class="name">{{user_nickname}}</h3>
-                <p>
-                    <label for="">快递豆：</label>
-                    <span>{{user_balance}}</span>
-                    <i class="icon_bean"></i>
-                </p>
+                    <h3 class="name">{{user_nickname}}</h3>
+                    <p>
+                        <label for="">快递豆：</label>
+                        <span>{{user_balance}}</span>
+                        <i class="icon_bean"></i>
+                    </p>
+                </router-link>
             </li>
             <li class="courier_message" v-if="express">
                 <h4 class="identify">您的专属快递哥</h4>
@@ -55,12 +57,12 @@ export default {
             user_avatar: '/static/assets/images/head_def.png',
             user_nickname: '共享快递哥',
             service_avatar: '/static/assets/images/head_def.png',
-            service_nickname: '共享快递哥',
+            service_nickname: '雷锋',
             user_balance: '0',
-            service_tel: '',
+            service_tel: '0769-82138159',
             user_level_logo: '/static/assets/images/user_level/icon_1_shaowei.png',
-            service_level_logo: '/static/assets/images/platform_level/liebing_s1.png',
-            service_id: ''
+            service_level_logo: '/static/assets/images/platform_level/shangshi_s5.png',
+            service_id: '80001'
         }
     },
     components: {

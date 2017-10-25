@@ -8,7 +8,9 @@
                 <h6 class="pay-status">支付失败</h6>
                 <p></p>
                 <div class="go-eval">
+                     <button class="commit-btn pay_recharge" @click="payRecharge">立即充值</button>
                     <button class="commit-btn" @click="payAgain">重新支付</button>
+                   
                 </div>
             </div>
             <div class="result-module" v-if="status == 1">
@@ -58,6 +60,9 @@
             },
             payAgain(){
                 this.$router.back(-1)
+            },
+            payRecharge(){
+                this.$router.push({path:'/recharge',query:{type:this.type,status:this.status}});
             }
         },
         mounted:function(){

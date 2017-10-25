@@ -33,7 +33,9 @@ export default {
         return {
             items: [],
             id:'',
-            money:''
+            money:'',
+            type:'',
+            status:''
         }
     },
     components: {
@@ -41,6 +43,8 @@ export default {
     },
     created() {
         let that = this
+        that.type = this.$route.query.type
+        that.status = this.$route.query.status
         this.http(that.configs.apiTop + "/order/recharge-combos", "get", '', function(res) {
             let msg = res.data
             let data = msg.data
@@ -65,7 +69,6 @@ export default {
             let that = this
             let recharge_combo_id = that.id
             let fee = that.money
-            console.log(that.id,that.money)
             if(that.id == '' && that.money == ''){
                 that.$vux.toast.text('请选择或输入充值金额', 'middle', 100)
                 return
@@ -82,7 +85,11 @@ export default {
                             signType: data.sign_type,
                             paySign: data.sign,
                             success: function (res) {
-                                that.$router.push({path:'/payresult',query:{status:'success'}})
+                                if(that.type != '' && that.status != ''){
+                                   that.$router.back(-2)
+                                }else{
+                                    that.$router.push({path:'/payresult',query:{status:'success'}})
+                                }
                                 // 支付成功后的回调函数
                             }
                         });
@@ -105,7 +112,11 @@ export default {
                             signType: data.sign_type,
                             paySign: data.sign,
                             success: function (res) {
-                               that.$router.push({path:'/payresult',query:{status:'success'}})
+                                if(that.type != '' && that.status != ''){
+                                   that.$router.back(-2)
+                                }else{
+                                    that.$router.push({path:'/payresult',query:{status:'success'}})
+                                }
                                 // 支付成功后的回调函数
                             }
                         });

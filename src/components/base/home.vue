@@ -9,7 +9,7 @@
             <span v-else>正在定位</span>
         </div>
         <Vheader :header-object="dataobject"></Vheader>
-        <div class="hg20"></div>
+        <div class="hg10"></div>
         <banner :banner-object="carousels"></banner>
         <div class="entrance_list">
             <ul>
@@ -39,7 +39,7 @@
                 </li>
             </ul>
         </div>
-        <div class="hg30"></div>
+        <div class="hg10"></div>
         <div class="advertisement_banner">
             <router-link :to="{name:'Detail',query:{type:'home_tip'}}">
                 <img src="/static/assets/images/picture_fuwu.png" />
@@ -79,7 +79,7 @@
                 </div>
             </div>
         </div>
-        <draggable :header-object="dataobject"></draggable>
+        <draggable :header-object="dataobject" v-if="service != ''"></draggable>
     </div>
 </template>
 
@@ -183,7 +183,7 @@ export default {
                 that.dataobject = data
                 // that.user = data.user
                 // console.log(that.user)
-                // that.service = data.service
+                that.service = data.service
                 that.carousels = data.carousels
             } else if (msg.code == 40004) {
             } else {

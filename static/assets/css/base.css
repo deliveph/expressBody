@@ -291,6 +291,12 @@ textare {
   float: right
 }
 
+.hg10 {
+  height: 0.1rem;
+  background-color: #eff1f4;
+}
+
+
 .hg20 {
   height: 0.2rem;
   background-color: #eff1f4;

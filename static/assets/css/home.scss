@@ -35,10 +35,14 @@
         padding-top: px2rem(60);
         &.user_message {
             .icon_bean {
-                width: px2rem(24);
-                height: px2rem(32);
-                background: url('/static/assets/images/icon_kuaididou.png') no-repeat center;
-                background-size: px2rem(24) px2rem(32);
+                // width: px2rem(24);
+                // height: px2rem(32);
+                width: px2rem(28);
+                height: px2rem(28);
+                // background: url('/static/assets/images/icon_kuaididou.png') no-repeat center;
+                background: url('/static/assets/images/icon_douzi.png') no-repeat center;
+                background-size:px2rem(28); 
+                // background-size: px2rem(24) px2rem(32);
                 display: inline-block;
                 margin-left: px2rem(6);
                 vertical-align: middle;

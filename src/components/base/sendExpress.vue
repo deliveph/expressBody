@@ -47,6 +47,9 @@
             <popup-picker :title="title2" :data="list2" v-model="value2" :placeholder="placeholder2" :columns="1" :display-format="format" @on-change="onChangeOfLogisticsGoodsCategories"></popup-picker>
         </div>
         <div class="estimated_weight pdlf30 express_list">
+            <x-number :title="numberCases_title" v-model="numberCasesValue" button-style="round" :max="100" :min="0"></x-number>
+        </div>
+        <div class="estimated_weight pdlf30 express_list">
             <x-number :title="estimated_title" v-model="roundValue" button-style="round" :max="100" :min="0"></x-number>
         </div>
         <div class="delivery_time pdlf30  express_list">
@@ -155,7 +158,9 @@ export default {
             placeholder1: '请选择快递公司',
             placeholder2: '请选择物品类型',
             roundValue: 1,
-            estimated_title: '预估重量',
+            estimated_title: '预估重量（kg）',
+            numberCasesValue:1,
+            numberCases_title: '件数选择',
             format: function(value, name) {
                 if (name) {
                     return `${name}`

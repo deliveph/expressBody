@@ -1,5 +1,5 @@
 <template>
-    <div v-if="items != ''">
+    <div>
         <router-link :to="{path:'/chat/p2p-service_'+items.service_id }">
              <img src="/static/assets/images/btn_relation.png" class="draggable" id="draggable"/>
         </router-link>
@@ -24,7 +24,6 @@ export default {
             var div1 = document.querySelector('#draggable');
             var maxW = document.body.clientWidth - div1.offsetWidth;
             var maxH = document.body.clientHeight - div1.offsetHeight;
-            console.log(maxW,maxH)
             var oL,oT
             div1.addEventListener('touchstart', function (e) {
                 var ev = e || window.event;
@@ -53,6 +52,7 @@ export default {
 
                 div1.style.left = oLeft + 'px';
                 div1.style.top = oTop + 'px';
+                div1.style.right = 'initial'
 
             })
             div1.addEventListener('touchend', function () {
@@ -94,8 +94,10 @@ export default {
     width:px2rem(146);
     height:px2rem(146);
     position: absolute;
-    z-index:999;
-    top:px2rem(300);
+    z-index:9;
+    top:px2rem(40);
     right:0;
+    left:0;
+    margin: 0 auto
 }
 </style>

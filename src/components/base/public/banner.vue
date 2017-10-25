@@ -84,22 +84,22 @@ export default {
     @import '../../../../static/assets/css/px2rem.scss';
     .swiper-container{
         width: 100%;
-        height:px2rem(470);
+        height:px2rem(320);
         overflow: hidden;
         position: relative;
         .swiper-slide{
             font-size:16px;
             width: 100%;
-            height:px2rem(470);
+            height:px2rem(320);
             float: left;
             overflow: hidden;
             a{
                 width: 100%;
-                height:px2rem(470);
+                height:px2rem(320);
             }
             img{
                 width: 100%;
-                height:px2rem(470);
+                height:px2rem(320);
             }
         }
     }

@@ -18,8 +18,8 @@
                         <input type="number" name="phone" placeholder="请输入快递员手机号码(选填)" v-model="realExpressPhone">
                     </div>
                     <div class="logisticFee addressee_li forthwith_li">
-                        <label for="">代收物流费：</label>
-                        <input type="text" name="logisticFee" placeholder="请输入代收物流金额(选填)" value="" v-model="realLogisticFee">
+                        <label for="">代收物流费（元）：</label>
+                        <input type="number" name="logisticFee" placeholder="请输入代收物流金额(选填)" value="" v-model="realLogisticFee">
                     </div>
                 </div>
                 <h3 class="title">收件人信息</h3>
@@ -64,21 +64,21 @@
                 <div class="ex_msg forthwith_msg">
                     <div class="ex_odd ex_li forthwith_li">
                         <label for="">快递单号：</label>
-                        <input type="text" name="odd" placeholder="请输入快递单号" value="" v-model="reservationCode">
+                        <input type="number" name="odd" placeholder="请输入快递单号" value="" v-model="reservationCode">
                     </div>
                     <div class="ex_phone ex_li forthwith_li">
                         <label for="">快递员电话：</label>
                         <input type="number" name="phone" placeholder="请输入快递员手机号码(选填)" v-model="reservationExpressPhone">
                     </div>
                     <div class="logisticFee addressee_li forthwith_li">
-                        <label for="">代收物流费：</label>
-                        <input type="text" name="logisticFee" placeholder="请输入代收物流金额(选填)" value="" v-model="reservationLogisticFee">
+                        <label for="">代付运费（元）：</label>
+                        <input type="number" name="logisticFee" placeholder="请输入代收物流金额(选填)" value="" v-model="reservationLogisticFee">
                     </div>
                     <div class="ex_time expect_time">
                         <popup-picker :title="title2" :data="list3" :columns="3" v-model="value2" :display-format="format" :placeholder="placeholder2" @on-change="onChangePickUpTime1"></popup-picker>
                     </div>
                 </div>
-                <h3 class="title">收件人信息</h3>
+                <h3 class="title">快递单收件人信息</h3>
                 <div class="addressee_msg forthwith_msg">
                     <div class="addressee_name addressee_li forthwith_li">
                         <label for="">收件人：</label>
@@ -126,24 +126,24 @@ import { PopupPicker } from 'vux'
 import { XNumber } from 'vux'
 import { Toast } from 'vux'
 import qs from 'qs'
-const list = () => ['即时收件', '预约收件']
+const list = () => ['即时代件', '预约代件']
 export default {
     data() {
         return {
             list2: list(),
-            demo2: '即时收件',
+            demo2: '即时代件',
             index: 0,
             readfalse: true,
             readfalse1: true,
-            title1: '预约收件时间',
-            title2: '预约收件时间',
-            title3: '期望上门时间',
+            title1: '预约代件时间',
+            title2: '预约代件时间',
+            title3: '约定送件上门时间',
             list3: [],
             value1: ['一小时内'],
             value2: ['一小时内'],
             value3: ['一小时内'],
-            placeholder2: '请选择预约收件时间',
-            placeholder3: '请选择期望上门时间',
+            placeholder2: '请选择预约代件时间',
+            placeholder3: '请选择约定送件上门时间',
             format: function(value, name) {
                 if (name) {
                     return `${name}`
