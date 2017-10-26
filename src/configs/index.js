@@ -1,4 +1,5 @@
 let config = {
+  loginToken: '',
   tokenId: '',
   localToken: '',
   curTime: new Date().getTime(),

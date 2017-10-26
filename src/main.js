@@ -1,5 +1,5 @@
-// The Vue build version to load with the `import` command 
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias. 
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
 import router from './router'
@@ -50,10 +50,10 @@ import {
   LoadingPlugin
 } from 'vux'
 
-import {
-  Toast,
-  Loading
-} from 'vux'
+// import {
+//   Toast,
+//   Loading
+// } from 'vux'
 
 Vue.use(ToastPlugin)
 Vue.use(AlertPlugin)
@@ -65,64 +65,34 @@ VueAMap.initAMapApiLoader({
   plugin: ['AMap.Geolocation']
 })
 
-Vue.prototype.token = function () {
-  configs.token = this.$route.query.token //url token
-  configs.localToken = localStorage.getItem("token") //本地 token
-  if (configs.localToken == '' || configs.localToken == null || configs.localToken == undefined) { //
-    if (configs.token == '' || configs.token == null || configs.token == undefined) { //url
-      // location.href = configs.accreditUrl
-    } else {
-      localStorage.setItem("token", JSON.stringify({
-        'token': configs.token,
-        'time': configs.curTime
-      }))
-    }
-  } else {
-    let dataObj = JSON.parse(configs.localToken)
-    if (parseInt(configs.curTime) - parseInt(dataObj.time) >= 7200000) {
-      localStorage.clear("token")
-      if (configs.token == '') { //url
-        // location.href = configs.accreditUrl
-      } else {
-        localStorage.setItem("token", JSON.stringify({
-          'token': configs.token,
-          'time': configs.curTime
-        }))
-      }
-      // location.href = configs.accreditUrl
-    } else {
-      configs.token = dataObj.token
-    }
-  }
-  return configs.tokenconfigs.token
-}
+// axios.interceptors.request.use(function (config) {
+//   // 在发送请求之前做些什么
+//   config.headers.Authorization = configs.loginToken
+//   return config
+// }, function (error) {
+//   // 对请求错误做些什么
+//   return Promise.reject(error)
+// })
+
+// // 添加响应拦截器
+// axios.interceptors.response.use(function (response) {
+//   // 对响应数据做点什么
+//   return response
+// }, function (error) {
+//   // 对响应错误做点什么
+//   return Promise.reject(error)
+// })
 
 Vue.prototype.http = function (url, method, data, callback, responseType) {
   let that = this
   if (responseType === undefined) {
     responseType = 'json'
   }
-  console.log(url, responseType, 'http')
-  let token = that.$route.query.token
-  // this.$weChat()
-  if (token === undefined) {
-    let tokens = JSON.parse(localStorage.getItem('token'))
-    if (tokens === null || (token = tokens.token) === undefined) {
-      location.href = that.configs.accreditUrl + '?redirect_uri=' + encodeURIComponent(location.href)
-      return
-    }
-    // http://public.1kgx.com/index.html#/orderdetail?ship_order_number=2017101724412667877&status=service
-  } else {
-    localStorage.setItem('token', JSON.stringify({
-      'token': token,
-      'time': that.configs.curTime
-    }))
-  }
   that.$ajax({
     url: url,
     method: method,
     headers: {
-      'Authorization': token
+      'Authorization': configs.loginToken
     },
     data: data,
     responseType: responseType,
@@ -153,11 +123,6 @@ Vue.prototype.http = function (url, method, data, callback, responseType) {
   })
 }
 
-Vue.prototype.$weChatEx = {
-  shareCallback: function () {
-    return 1
-  }
-}
 Vue.prototype.$weChat = function () {
   let that = this
   var routerName = this.$route.name
@@ -200,7 +165,7 @@ Vue.prototype.$weChat = function () {
       })
       that.http(that.configs.apiTop + '/weixin/share-config', 'get', '', function (res) {
         let msg = res.data
-        if (msg.code == 0) {
+        if (msg.code === 0) {
           let data = msg.data
           // 分享到朋友圈
           that.wx.onMenuShareTimeline({
@@ -238,8 +203,8 @@ Vue.prototype.$weChat = function () {
               // 用户确认分享后执行的回调函数
               that.http(that.configs.apiTop + '/user/share-success-callback', 'post', '', function (res) {
                 let msg = res.data
-                if (msg.code == 0) {
-                  if (routerName == 'evalresult' && routerType != 1) {
+                if (msg.code === 0) {
+                  if (routerName === 'evalresult' && routerType != 1) {
                     that.$router.push({
                       path: '/order'
                     })
@@ -301,5 +266,5 @@ new Vue({
   template: '<App/>',
   components: {
     App
-  },
+  }
 })
