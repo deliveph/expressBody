@@ -1,4 +1,5 @@
 let config = {
+  isAllowRecord: false,
   loginToken: '',
   tokenId: '',
   localToken: '',

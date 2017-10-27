@@ -128,7 +128,7 @@ Vue.prototype.$weChat = function () {
   var routerName = this.$route.name
   var routerType = this.$route.query.type
   let data = qs.stringify({
-    'url': location.href
+    'url': location.href.split('#')[0]
   })
   this.$ajax({
     url: configs.apiTop + '/weixin/js-sdk-config',
@@ -137,29 +137,18 @@ Vue.prototype.$weChat = function () {
     responseType: 'json'
   }).then(function (res) {
     let msg = res.data.data
-    that.wx.config({
-      debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-      appId: msg.app_id, // 必填，公众号的唯一标识
-      timestamp: msg.timestamp,
-      nonceStr: msg.nonce_str,
-      signature: msg.signature,
-      jsApiList: [
-        'getLocation',
-        'openLocation',
-        'onMenuShareAppMessage',
-        'onMenuShareTimeline',
-        'scanQRCode',
-        'closeWindow',
-        'chooseWXPay',
-        'startRecord',
-        'uploadVoice',
-        'stopRecord',
-        'onVoicePlayEnd',
-        'playVoice',
-        'onMenuShareQQ'
-      ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-    })
     that.wx.ready(function () {
+      console.log('ready...............................................')
+      // 尝试录音一下,避免初次以及未知时间间隔之后, 提示用户"是否开启录音"
+      that.wx.startRecord({
+        success: function () {
+          configs.isAllowRecord = true
+          that.wx.stopRecord()
+        },
+        cancel: function () {
+          that.$vux.toast.text('用户拒绝授权录音', 'middle', 100)
+        }
+      })
       that.wx.onVoicePlayEnd({
         success: function (res) {}
       })
@@ -176,8 +165,8 @@ Vue.prototype.$weChat = function () {
               // 用户确认分享后执行的回调函数
               that.http(that.configs.apiTop + '/user/share-success-callback', 'post', '', function (res) {
                 let msg = res.data
-                if (msg.code == 0) {
-                  if (routerName == 'evalresult' && routerType != 1) {
+                if (msg.code === 0) {
+                  if (routerName === 'evalresult' && routerType !== 1) {
                     that.$router.push({
                       path: '/order'
                     })
@@ -204,7 +193,7 @@ Vue.prototype.$weChat = function () {
               that.http(that.configs.apiTop + '/user/share-success-callback', 'post', '', function (res) {
                 let msg = res.data
                 if (msg.code === 0) {
-                  if (routerName === 'evalresult' && routerType != 1) {
+                  if (routerName === 'evalresult' && routerType !== 1) {
                     that.$router.push({
                       path: '/order'
                     })
@@ -228,8 +217,8 @@ Vue.prototype.$weChat = function () {
               // 用户确认分享后执行的回调函数
               that.http(that.configs.apiTop + '/user/share-success-callback', 'post', '', function (res) {
                 let msg = res.data
-                if (msg.code == 0) {
-                  if (routerName == 'evalresult' && routerType != 1) {
+                if (msg.code === 0) {
+                  if (routerName === 'evalresult' && routerType !== 1) {
                     that.$router.push({
                       path: '/order'
                     })
@@ -238,9 +227,6 @@ Vue.prototype.$weChat = function () {
                   that.$vux.toast.text(data.message, 'middle', 100)
                 }
               })
-              alert(2)
-              alert(routerName)
-              alert(routerType)
             },
             cancel: function () {
               // 用户取消分享后执行的回调函数
@@ -251,7 +237,33 @@ Vue.prototype.$weChat = function () {
         }
       })
     })
-    that.wx.error(function (res) {})
+    that.wx.error(function (res) {
+      alert('that.wx.error')
+    })
+    setTimeout(() => {
+      that.wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: msg.app_id, // 必填，公众号的唯一标识
+        timestamp: msg.timestamp,
+        nonceStr: msg.nonce_str,
+        signature: msg.signature,
+        jsApiList: [
+          'getLocation',
+          'openLocation',
+          'onMenuShareAppMessage',
+          'onMenuShareTimeline',
+          'scanQRCode',
+          'closeWindow',
+          'chooseWXPay',
+          'startRecord',
+          'uploadVoice',
+          'stopRecord',
+          'onVoicePlayEnd',
+          'playVoice',
+          'onMenuShareQQ'
+        ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+      })
+    }, 800) // 避免频繁调用ready回调失效
   }).catch(function (err) {
     console.log(err)
     // that.loadingState = "加载失败"
