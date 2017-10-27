@@ -29,68 +29,67 @@ const TELEPHONE_INPUT = 'TELEPHONE_INPUT',
   CHOOSESHIPADDRESS = 'CHOOSESHIPADDRESS'
 
 export default {
-  [CHOOSESHIPADDRESS](state, shipAddress) {
+  [CHOOSESHIPADDRESS] (state, shipAddress) {
     state.chooseShipAddress = shipAddress
   },
-  [CHOOSECONSIGNEEADDRESS](state, consigneeAddress) {
+  [CHOOSECONSIGNEEADDRESS] (state, consigneeAddress) {
     state.chooseConsigneeAddress = consigneeAddress
   },
-  [CHOOSECOUPON](state, coupon) {
+  [CHOOSECOUPON] (state, coupon) {
     state.chooseCoupon = coupon
   },
   // 手机输入登录
-  [TELEPHONE_INPUT](state) {
+  [TELEPHONE_INPUT] (state) {
     if (state.islogined) {
       state.usersidebar = true
     } else {
       state.checkTelephone = true
       state.ismask = true
     }
-
   },
   // 关闭遮罩层
-  [CLOSE_MASK](state) {
+  [CLOSE_MASK] (state) {
     state.checkTelephone = false
     state.messageConfirm = false
     state.ismask = false
   },
   // 菜单切换高亮
-  [SWITCH_NAV](state, index) {
+  [SWITCH_NAV] (state, index) {
     state.navList.forEach(function (item) {
       item.isActive = false
-    });
+    })
     state.navList[index].isActive = true
   },
   // 下拉菜单切换
-  [SWITCH_NAVLIST](state) {
-    state.navListActive = state.navListActive ? false : true
-    state.shadowActive = state.shadowActive ? false : true
+  [SWITCH_NAVLIST] (state) {
+    state.navListActive = !state.navListActive
+    state.shadowActive = !state.shadowActive
   },
   // 显示选址
-  [SHOW_SUGGEST](state, key) {
+  [SHOW_SUGGEST] (state, key) {
     // console.log(state)
     state.startOrEnd = key
     console.log(state.startOrEnd)
-    state.suggest = state.suggest ? false : true
+    state.suggest = !state.suggest
     console.log(state.suggest)
   },
   // 关闭选址
-  [CLOSE_SUGGEST](state) {
-    state.suggest = state.suggest ? false : true
+  [CLOSE_SUGGEST] (state) {
+    state.suggest = !state.suggest
     state.isChoosed = true
   },
-  [SWITCH_INPUT_CITY](state) {
+  [SWITCH_INPUT_CITY] (state) {
     state.isChoosed = !state.isChoosed
   },
   // 选择城市
-  [CHOOSE_CITY_NAME](state, index) {
+  [CHOOSE_CITY_NAME] (state, index) {
     // console.log(state.cityList[index.i].cityName[index.j])
     state.position.city = state.cityList[index.i].cityName[index.j]
     state.isChoosed = true
     console.log(state.position.city)
   },
   // 校验手机号
-  [CHECK_TELEPHONE](state, telephone) {
+  [CHECK_TELEPHONE] (state, telephone) {
     if (telephone) {
       // console.log(telephone)
       var reg = /^1[0-9]{10}$/
@@ -105,31 +104,31 @@ export default {
     }
   },
   // 显示验证码输入框
-  [TOMESSAGECONFIRM](state, telephone) {
+  [TOMESSAGECONFIRM] (state, telephone) {
     // console.log(1)
     state.checkTelephone = false
     state.messageConfirm = true
   },
   // 保存手机
-  [SAVE_TELEPHONE](state) {
+  [SAVE_TELEPHONE] (state) {
     localStorage.setItem('telephone', state.telephone)
     state.islogined = true
   },
   // 获取本地手机号
-  [GET_TELEPHONE](state) {
-    state.islogined = localStorage.getItem('telephone') ? true : false
+  [GET_TELEPHONE] (state) {
+    state.islogined = !!localStorage.getItem('telephone')
     if (state.islogined) {
       state.telephone = localStorage.getItem('telephone')
     }
     // state.usersidebar = localStorage.getItem('telephone') ? true : false
   },
   // 关闭侧边栏
-  [CLOSE_USERSIDEBAR](state) {
+  [CLOSE_USERSIDEBAR] (state) {
     state.usersidebar = !state.usersidebar
     console.log(state.usersidebar)
   },
   // 保存当前位置
-  [SET_POSITON](state, result) {
+  [SET_POSITON] (state, result) {
     console.log('postion')
     const position = {
       address: result.aois[0].name,
@@ -143,8 +142,8 @@ export default {
     // console.log(state.position)
   },
   // 选址
-  [CHOOSER_ADDRESS](state, index) {
-    console.log(state,index,"124124")
+  [CHOOSER_ADDRESS] (state, index) {
+    console.log(state, index, '124124')
     if (state.startOrEnd == 'getOn') {
       state.address.start = state.autocompleteList[index].name
       console.log(state.address.start)
@@ -154,11 +153,11 @@ export default {
     }
   },
   // 关闭定位错误提示
-  [CLOSE_LOCATION_ERROR](state) {
+  [CLOSE_LOCATION_ERROR] (state) {
     state.ismask = false
     state.location = false
   },
-  [CLOSE_AUTOCOMPLETELIST](state) {
+  [CLOSE_AUTOCOMPLETELIST] (state) {
     console.log(state)
     state.autocompleteList = []
     console.log(state.autocompleteList)
@@ -268,7 +267,6 @@ export default {
     }
   },
   updateSessions (state, sessions) {
-    // console.log('####111')
     const nim = state.nim
     state.sessionlist = nim.mergeSessions(state.sessionlist, sessions)
     state.sessionlist = state.sessionlist.filter(item => {
@@ -282,7 +280,6 @@ export default {
     })
     state.sessionlist.forEach(item => {
       state.sessionMap[item.id] = item
-      // console.log(state.unreadLen[item.unread],"12412412")
     })
   },
   deleteSessions (state, sessionIds) {
@@ -334,7 +331,7 @@ export default {
     }
     store.commit('updateMsgByIdClient', msg)
     let tempMsgs = state.msgs[sessionId]
-    let lastMsgIndex = tempMsgs.length  - 1
+    let lastMsgIndex = tempMsgs.length - 1
     if (tempMsgs.length === 0 || msg.time >= tempMsgs[lastMsgIndex].time) {
       tempMsgs.push(msg)
     } else {
@@ -354,7 +351,7 @@ export default {
     if (!tempMsgs || tempMsgs.length === 0) {
       return
     }
-    let lastMsgIndex = tempMsgs.length  - 1
+    let lastMsgIndex = tempMsgs.length - 1
     for (let i = lastMsgIndex; i >= 0; i--) {
       let currMsg = tempMsgs[i]
       if (msg.idClient === currMsg.idClient) {
@@ -370,7 +367,7 @@ export default {
     if (!tempMsgs || tempMsgs.length === 0) {
       return
     }
-    let lastMsgIndex = tempMsgs.length  - 1
+    let lastMsgIndex = tempMsgs.length - 1
     for (let i = lastMsgIndex; i >= 0; i--) {
       let currMsg = tempMsgs[i]
       console.log(idClient, currMsg.idClient, currMsg.text)
@@ -613,7 +610,6 @@ export default {
     } else if (type === 'put') {
       members.forEach(member => {
         if (member.online) {
-          
           state.currChatroomMembers.push(member)
         }
       })

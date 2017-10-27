@@ -36,12 +36,11 @@ import pageUtil from './utils/page'
 
 const sessionHistory = window.sessionStorage
 export default {
-  data() {
+  data () {
     return {
       tags: '',
       transitionName: 'forward',
-      net_ease_accid: '',
-      net_ease_token: ''
+      loginInfo: null
     }
   },
   components: {
@@ -52,7 +51,7 @@ export default {
   },
   watch: {
     // 更新页面所在位置，用于判断是前进页还是后退页
-    '$route'(to, from) {
+    '$route' (to, from) {
       if (to && from) {
         let toPath = to.path
         let fromPath = from.path
@@ -81,59 +80,42 @@ export default {
     }
   },
   // 所有页面更新都会触发此函数
-  updated() {
+  updated () {
     let that = this
-    // 提交sdk连接请求
-    if (that.net_ease_token != '') {
+    if (that.loginInfo === null) {
+      that.http(that.configs.apiTop + '/new-ease/get-im-config', 'get', '', function (res) {
+        let msg = res.data
+        let data = msg.data
+        if (msg.code === 0) {
+          config.appkey = data.net_ease_app_key
+          that.loginInfo = {
+            'uid': data.net_ease_accid,
+            'sdktoken': data.net_ease_token
+          }
+          that.$store.dispatch('connect', that.loginInfo)
+          that.$store.dispatch('updateRefreshState')
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    } else {
+      that.$store.dispatch('connect', that.loginInfo)
+      that.$store.dispatch('updateRefreshState')
     }
-    this.$store.dispatch('connect')
-    this.$store.dispatch('updateRefreshState')
   },
-  mounted: function() {
+  mounted: function () {
   },
   computed: {
     // 是否显示导航条
-    showNav() {
+    showNav () {
       return pageUtil.showNav(this.$route.path)
     }
   },
   methods: {
-    getImConfig() {
-      let that = this
-      this.http(that.configs.apiTop + "/new-ease/get-im-config", "get", '', function(res) {
-        let msg = res.data
-        let data = msg.data
-        if (msg.code == 0) {
-          that.config.test.appkey = data.net_ease_app_key
-          cookie.setCookie('uid', data.net_ease_accid)
-          cookie.setCookie('sdktoken', data.net_ease_token)
-        } else if (msg.code == 40004) {
-          location.href = that.configs.accreditUrl
-        } else {
-          that.$vux.toast.text(msg.message, 'middle', 100);
-        }
-      })
-    }
   },
-  created() {
-    let that = this
+  created () {
     this.$weChat()
-    that.http(that.configs.apiTop + "/new-ease/get-im-config", "get", '', function(res) {
-      let msg = res.data
-      let data = msg.data
-      if (msg.code == 0) {
-        config.appkey = data.net_ease_app_key
-        cookie.setCookie('uid', data.net_ease_accid)
-        cookie.setCookie('sdktoken', data.net_ease_token)
-        that.net_ease_accid = data.net_ease_accid
-        that.net_ease_token = data.net_ease_token
-      } else if (msg.code == 40004) {
-        location.href = that.configs.accreditUrl
-      } else {
-        that.$vux.toast.text(msg.message, 'middle', 100);
-      }
-    })
-  },
+  }
 }
 </script>
 

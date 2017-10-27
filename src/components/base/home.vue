@@ -79,120 +79,114 @@
                 </div>
             </div>
         </div>
-        <draggable :header-object="dataobject" v-if="service != ''"></draggable>
+        <draggable :header-object="dataobject"></draggable>
     </div>
 </template>
 
 <script>
 import Vheader from '../base/public/header'
 import Banner from '../base/public/banner'
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
+// import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import VueAMap from 'vue-amap'
 import { Toast } from 'vux'
 import qs from 'qs'
 import draggable from '..//base/public/draggable'
-let map
+// let map
 export default {
-    data() {
-        let self = this
-        return {
-            center: [121.59996, 31.197646],
-            lng: 0,
-            lat: 0,
-            loaded: false,
-            service: [],
-            user: [],
-            carousels: [],
-            dataobject: [],
-            result: [],
-            is_perfect: false,
-            plugin: [{
-                pName: 'Geolocation',
-                events: {
-                    init(o) {
-                        // o 是高德地图定位插件实例
-                        o.getCurrentPosition((status, result) => {
-                            self.result = result
-                            if (result && result.position) {
-                                self.reportUserLocation()
-                            }
-                        });
-                    }
-                }
-            }]
-        };
-    },
-    components: {
-        Vheader,
-        Banner,
-        VueAMap,
-        Toast,
-        qs,
-        draggable
-    },
-    methods: {
-        messageBox() {
-        },
-        confirm() {
-            let that = this;
-            that.$router.push({ path: '/person', query: { type: "user",is_perfect:0 } });
-        },
-        cancel() {
-            let that = this
-            that.$parent.layerhide = false
-            that.wx.closeWindow()
-        },
-        reportUserLocation() {
-            let that = this
-            let data = qs.stringify({
-                'province_region_name': that.result.addressComponent.province,
-                'city_region_name': that.result.addressComponent.city,
-                'district_region_name': that.result.addressComponent.district,
-                'community_region_name': that.result.addressComponent.township,
-                'full_address': that.result.formattedAddress,
-                'latitude': that.result.position.lng,
-                'longitude': that.result.province.lat
+  data () {
+    let self = this
+    return {
+      center: [121.59996, 31.197646],
+      lng: 0,
+      lat: 0,
+      loaded: false,
+      service: [],
+      user: [],
+      carousels: [],
+      dataobject: {},
+      result: [],
+      is_perfect: false,
+      plugin: [{
+        pName: 'Geolocation',
+        events: {
+          init (o) {
+            // o 是高德地图定位插件实例
+            o.getCurrentPosition((status, result) => {
+              self.result = result
+              if (result && result.position) {
+                self.reportUserLocation()
+              }
             })
-            this.http(that.configs.apiTop + "/user/report-user-location", "post", data, function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                } else if (msg.code == 40004) {
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
+          }
         }
-    },
-    computed: {
-
-    },
-    created() {
-        console.log("home")
-        let that = this
-        let is_perfect = this.$route.query.is_perfect
-        if (is_perfect == 0) {
-            that.is_perfect = true
-        } else {
-            that.is_perfect = false
-        }
-        this.http(that.configs.apiTop + "/page/user-home", "get", '', function(res) {
-            let msg = res.data
-            if (msg.code == 0) {
-                let data = msg.data
-                that.dataobject = data
-                // that.user = data.user
-                // console.log(that.user)
-                that.service = data.service
-                that.carousels = data.carousels
-            } else if (msg.code == 40004) {
-            } else {
-                that.$vux.toast.text(msg.message, 'middle', 100);
-            }
-        })
-    },
-    mounted() {
+      }]
     }
+  },
+  components: {
+    Vheader,
+    Banner,
+    VueAMap,
+    Toast,
+    qs,
+    draggable
+  },
+  methods: {
+    messageBox () {
+    },
+    confirm () {
+      let that = this
+      that.$router.push({ path: '/person', query: { type: 'user', is_perfect: 0 } })
+    },
+    cancel () {
+      let that = this
+      that.$parent.layerhide = false
+      that.wx.closeWindow()
+    },
+    reportUserLocation () {
+      let that = this
+      let data = qs.stringify({
+        'province_region_name': that.result.addressComponent.province,
+        'city_region_name': that.result.addressComponent.city,
+        'district_region_name': that.result.addressComponent.district,
+        'community_region_name': that.result.addressComponent.township,
+        'full_address': that.result.formattedAddress,
+        'latitude': that.result.position.lng,
+        'longitude': that.result.province.lat
+      })
+      this.http(that.configs.apiTop + '/user/report-user-location', 'post', data, function (res) {
+        let msg = res.data
+        if (msg.code === 0) {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    }
+  },
+  computed: {
+  },
+  created () {
+    let that = this
+    let isPerfect = this.$route.query.is_perfect
+    if (isPerfect === 0) {
+      that.is_perfect = true
+    } else {
+      that.is_perfect = false
+    }
+    this.http(that.configs.apiTop + '/page/user-home', 'get', '', function (res) {
+      let msg = res.data
+      if (msg.code === 0) {
+        let data = msg.data
+        that.dataobject = data
+        that.service = data.service
+        that.carousels = data.carousels
+      } else {
+        that.$vux.toast.text(msg.message, 'middle', 100)
+      }
+    })
+  },
+  mounted () {
+  }
 }
 </script>
 

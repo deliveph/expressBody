@@ -53,7 +53,6 @@ import ChatList from './components/ChatList'
 import util from '../utils'
 import pageUtil from '../utils/page'
 
-
 export default {
   components: {
     ChatEditor,
@@ -80,9 +79,9 @@ export default {
     return {
       leftBtnOptions: {
         backText: ' ',
-        preventGoBack: true,
+        preventGoBack: true
       },
-      layerUserMessage:false
+      layerUserMessage: false
     }
   },
   computed: {
@@ -108,7 +107,7 @@ export default {
       }
     },
     scene () {
-      console.log(util.parseSession(this.sessionId), "sessionId")
+      console.log(util.parseSession(this.sessionId), 'sessionId')
       return util.parseSession(this.sessionId).scene
     },
     to () {

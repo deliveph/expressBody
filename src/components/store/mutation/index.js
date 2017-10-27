@@ -173,7 +173,7 @@ export default {
     }
     store.commit('updateMsgByIdClient', msg)
     let tempMsgs = state.msgs[sessionId]
-    let lastMsgIndex = tempMsgs.length  - 1
+    let lastMsgIndex = tempMsgs.length - 1
     if (tempMsgs.length === 0 || msg.time >= tempMsgs[lastMsgIndex].time) {
       tempMsgs.push(msg)
     } else {
@@ -193,7 +193,7 @@ export default {
     if (!tempMsgs || tempMsgs.length === 0) {
       return
     }
-    let lastMsgIndex = tempMsgs.length  - 1
+    let lastMsgIndex = tempMsgs.length - 1
     for (let i = lastMsgIndex; i >= 0; i--) {
       let currMsg = tempMsgs[i]
       if (msg.idClient === currMsg.idClient) {
@@ -209,7 +209,7 @@ export default {
     if (!tempMsgs || tempMsgs.length === 0) {
       return
     }
-    let lastMsgIndex = tempMsgs.length  - 1
+    let lastMsgIndex = tempMsgs.length - 1
     for (let i = lastMsgIndex; i >= 0; i--) {
       let currMsg = tempMsgs[i]
       console.log(idClient, currMsg.idClient, currMsg.text)
@@ -363,7 +363,6 @@ export default {
     })
   },
   updateCustomSysMsgUnread (state, obj) {
-    console.log(state,obj)
     let {type, unread} = obj
     switch (type) {
       case 'reset':
@@ -453,7 +452,6 @@ export default {
     } else if (type === 'put') {
       members.forEach(member => {
         if (member.online) {
-          
           state.currChatroomMembers.push(member)
         }
       })

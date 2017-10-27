@@ -2,7 +2,7 @@ import store from '../../store'
 import config from '../../../configs'
 import util from '../../../utils'
 
-function formatMsg(msg) {
+function formatMsg (msg) {
   const nim = store.state.nim
   if (msg.type === 'robot') {
     if (msg.content && msg.content.flag === 'bot') {
@@ -25,21 +25,21 @@ function formatMsg(msg) {
   return msg
 }
 
-export function onRoamingMsgs(obj) {
+export function onRoamingMsgs (obj) {
   let msgs = obj.msgs.map(msg => {
     return formatMsg(msg)
   })
   store.commit('updateMsgs', msgs)
 }
 
-export function onOfflineMsgs(obj) {
+export function onOfflineMsgs (obj) {
   let msgs = obj.msgs.map(msg => {
     return formatMsg(msg)
   })
   store.commit('updateMsgs', msgs)
 }
 
-export function onMsg(msg) {
+export function onMsg (msg) {
   msg = formatMsg(msg)
   store.commit('putMsg', msg)
   if (msg.sessionId === store.state.currSessionId) {
@@ -52,7 +52,7 @@ export function onMsg(msg) {
   }
 }
 
-function onSendMsgDone(error, msg) {
+function onSendMsgDone (error, msg) {
   store.dispatch('hideLoading')
   if (error) {
     // 被拉黑
@@ -67,7 +67,7 @@ function onSendMsgDone(error, msg) {
 }
 
 // 消息撤回
-export function onRevocateMsg(error, msg) {
+export function onRevocateMsg (error, msg) {
   const nim = store.state.nim
   if (error) {
     if (error.code === 508) {
@@ -94,7 +94,7 @@ export function onRevocateMsg(error, msg) {
     to: msg.to,
     tip,
     time: msg.time,
-    done: function sendTipMsgDone(error, tipMsg) {
+    done: function sendTipMsgDone (error, tipMsg) {
       let idClient = msg.deletedIdClient || msg.idClient
       store.commit('replaceMsg', {
         sessionId: msg.sessionId,
@@ -112,7 +112,7 @@ export function onRevocateMsg(error, msg) {
   })
 }
 
-export function revocateMsg({
+export function revocateMsg ({
   state,
   commit
 }, msg) {
@@ -123,14 +123,14 @@ export function revocateMsg({
   msg = Object.assign(msg, state.msgsMap[idClient])
   nim.deleteMsg({
     msg,
-    done: function deleteMsgDone(error) {
+    done: function deleteMsgDone (error) {
       onRevocateMsg(error, msg)
     }
   })
 }
 
 // 发送普通消息
-export function sendMsg({
+export function sendMsg ({
   state,
   commit
 }, obj) {
@@ -159,7 +159,7 @@ export function sendMsg({
 }
 
 // 发送文件消息
-export function sendFileMsg({
+export function sendFileMsg ({
   state,
   commit
 }, obj) {
@@ -202,7 +202,7 @@ export function sendFileMsg({
 }
 
 // 发送音频消息
-export function sendAudioMsg({
+export function sendAudioMsg ({
   state,
   commit
 }, obj) {
@@ -311,7 +311,7 @@ export function sendAudioMsg({
 }
 
 // 发送机器人消息
-export function sendRobotMsg({
+export function sendRobotMsg ({
   state,
   commit
 }, obj) {
@@ -334,7 +334,7 @@ export function sendRobotMsg({
       robotAccid: robotAccid || to,
       content: {
         type: 'text',
-        content,
+        content
       },
       body,
       done: onSendMsgDone
@@ -345,7 +345,7 @@ export function sendRobotMsg({
       to,
       robotAccid: robotAccid || to,
       content: {
-        type: 'welcome',
+        type: 'welcome'
       },
       body,
       done: onSendMsgDone
@@ -367,7 +367,7 @@ export function sendRobotMsg({
 }
 
 // 发送消息已读回执
-export function sendMsgReceipt({
+export function sendMsgReceipt ({
   state,
   commit
 }) {
@@ -381,7 +381,7 @@ export function sendMsgReceipt({
       if (state.sessionMap[currSessionId]) {
         nim.sendMsgReceipt({
           msg: state.sessionMap[currSessionId].lastMsg,
-          done: function sendMsgReceiptDone(error, obj) {
+          done: function sendMsgReceiptDone (error, obj) {
             // do something
           }
         })
@@ -390,11 +390,11 @@ export function sendMsgReceipt({
   }
 }
 
-function sendMsgReceiptDone(error, obj) {
-  console.log('发送消息已读回执' + (!error ? '成功' : '失败'), error, obj);
+function sendMsgReceiptDone (error, obj) {
+  console.log('发送消息已读回执' + (!error ? '成功' : '失败'), error, obj)
 }
 
-export function getHistoryMsgs({
+export function getHistoryMsgs ({
   state,
   commit
 }, obj) {
@@ -410,7 +410,7 @@ export function getHistoryMsgs({
       reverse: false,
       asc: true,
       limit: config.localMsglimit || 20,
-      done: function getHistoryMsgsDone(error, obj) {
+      done: function getHistoryMsgsDone (error, obj) {
         if (obj.msgs) {
           if (obj.msgs.length === 0) {
             commit('setNoMoreHistoryMsgs')
@@ -430,7 +430,7 @@ export function getHistoryMsgs({
     if (state.currSessionLastMsg) {
       options = Object.assign(options, {
         lastMsgId: state.currSessionLastMsg.idServer,
-        endTime: state.currSessionLastMsg.time,
+        endTime: state.currSessionLastMsg.time
       })
     }
     store.dispatch('showLoading')
@@ -438,14 +438,14 @@ export function getHistoryMsgs({
   }
 }
 
-export function resetNoMoreHistoryMsgs({
+export function resetNoMoreHistoryMsgs ({
   commit
 }) {
   commit('resetNoMoreHistoryMsgs')
 }
 
 // 继续与机器人会话交互
-export function continueRobotMsg({
+export function continueRobotMsg ({
   commit
 }, robotAccid) {
   commit('continueRobotMsg', robotAccid)
