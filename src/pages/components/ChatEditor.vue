@@ -47,6 +47,7 @@
         </div>
       </div>
     </div>
+    
     <!-- 松开手指，取消发送 -->
     <div class="layer_warp" v-if="loosen_record">
       <div class="layer_table">
@@ -65,7 +66,7 @@
 
 <script>
 import ChatEmoji from './ChatEmoji'
-import util from '../../utils'
+// import util from '../../utils'
 import config from '../../configs'
 import $ from 'jquery'
 import { Toast } from 'vux'
@@ -74,7 +75,7 @@ export default {
     ChatEmoji,
     Toast
   },
-  updated() {
+  updated () {
     window.document.body.addEventListener('click', () => {
       this.isEmojiShown = false
     })
@@ -85,20 +86,20 @@ export default {
     to: String,
     isRobot: {
       type: Boolean,
-      default() {
+      default () {
         return false
       }
     }
   },
   watch: {
-    continueRobotAccid(curVal, oldVal) {
+    continueRobotAccid (curVal, oldVal) {
       if (curVal && this.robotInfos[curVal]) {
         this.msgToSent = `@${this.robotInfos[curVal].nick} `
       }
       // 重置
       this.$store.dispatch('continueRobotMsg', '')
     },
-    msgToSent(curVal, oldVal) {
+    msgToSent (curVal, oldVal) {
       if (this.type === 'chatroom' || this.isRobot) {
         return
       }
@@ -112,7 +113,7 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
       classObject: {
         'video': 'hide',
@@ -124,28 +125,28 @@ export default {
       icon1: `${config.resourceUrl}/im/chat-editor-1.png`,
       icon2: `${config.resourceUrl}/im/chat-editor-2.png`,
       click_record: false,
-      loosen_record: false,
+      loosen_record: false
       // icon3: `${config.resourceUrl}/im/chat-editor-3.png`,
     }
   },
   computed: {
-    continueRobotAccid() {
+    continueRobotAccid () {
       return this.$store.state.continueRobotAccid
     },
-    robotslist() {
+    robotslist () {
       return this.$store.state.robotslist
     },
-    robotInfos() {
+    robotInfos () {
       return this.$store.state.robotInfos
     },
-    robotInfosByNick() {
+    robotInfosByNick () {
       return this.$store.state.robotInfosByNick
     }
   },
   methods: {
-    changeChat(obj) {
+    changeChat (obj) {
       console.log(obj)
-      if (obj.video == 'hide') {
+      if (obj.video === 'hide') {
         this.classObject.video = ''
         this.classObject.txt = 'hide'
       } else {
@@ -153,7 +154,7 @@ export default {
         this.classObject.txt = ''
       }
     },
-    sendTextMsg() {
+    sendTextMsg () {
       if (/^\s*$/.test(this.msgToSent)) {
         this.$vux.alert.show({
           title: '请不要刷屏'
@@ -233,7 +234,7 @@ export default {
       }
       this.msgToSent = ''
     },
-    sendPlayMsg() {
+    sendPlayMsg () {
       // 发送猜拳消息
       if (this.type === 'session') {
         this.$store.dispatch('sendMsg', {
@@ -261,7 +262,7 @@ export default {
         })
       }
     },
-    sendFileMsg() {
+    sendFileMsg () {
       let ipt = this.$refs.fileToSent
       this.classObject.video = 'hide'
       this.classObject.txt = ''
@@ -279,7 +280,7 @@ export default {
         }
       }
     },
-    sendAudioMsg(blob) {
+    sendAudioMsg (blob) {
       // alert("sendAudioMsg")
       // if (ipt.value) {
       // if (this.type === 'session') {
@@ -296,166 +297,146 @@ export default {
       // }
       // }
     },
-    showEmoji() {
+    showEmoji () {
       this.isEmojiShown = true
       this.classObject.video = 'hide'
       this.classObject.txt = ''
     },
-    hideEmoji() {
+    hideEmoji () {
       this.isEmojiShown = false
     },
-    addEmoji(emojiName) {
+    addEmoji (emojiName) {
       this.msgToSent += emojiName
       this.hideEmoji()
     },
-    chooseRobot(robot) {
+    chooseRobot (robot) {
       if (robot && robot.account) {
         let len = this.msgToSent.length
         if (len === 0 || this.msgToSent[len - 1] !== '@') {
           this.msgToSent += '@' + robot.nick + ' '
-        } {
+        } else {
           this.msgToSent += robot.nick + ' '
         }
       }
     },
-    hideRobotList() {
+    hideRobotList () {
       this.isRobotListShown = false
     },
-    touchstartVideo() {
+    touchstartVideo () {
 
     }
   },
-  created() {
-    console.log(this.$store.state.nim, "###")
-    window.nim.getUser({
-      account: 'user_10046',
-      done: function (error, user) {
-        console.log(error);
-        console.log(user);
-        console.log('获取用户名片' + (!error ? '成功' : '失败'));
-        // if (!error) {
-          // onUsers(user);
-        // }
-      }
-    })
+  created () {
   },
-  mounted: function() {
+  mounted: function () {
     let that = this
     let START, END
+    let startRecordTime = 0
     let voice = {
       localId: ''
     }
     let recordTimer
-    //假设全局变量已经在外部定义
-    //按下开始录音
-    $('.u-editor-video').on('touchstart', function(event) {
-      // console.log("按下开始录音")
-      // let currentAudio = new Audio("http://express1.menory.com/demo.amr")// src.audioSrc
-      // console.log(currentAudio)
-      // currentAudio.play()
-      // currentAudio.onended = () => {
-      //   currentAudio = null
-      // }
-      // return
-      // let blob = SDK.NIM.blob.fromDataURL('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAyADIDASIAAhEBAxEB/8QAGgABAAMBAQEAAAAAAAAAAAAAAAIEBgUDAf/EACwQAAEEAQMCBQMFAQAAAAAAAAEAAgMRBAUSISIxBhNBUWEUMnEjkaGxstH/xAAaAQACAwEBAAAAAAAAAAAAAAAAAQIDBAUG/8QAIREAAgIBAwUBAAAAAAAAAAAAAAECERIEFCExM0FxodH/2gAMAwEAAhEDEQA/ANkiKtm5gxI203fK87Y2XVnv+w7lXNpK2ebLKhHMyUuDHbtpokdr9lksjPzM187pMowYEBIfKw7TIR3ArsL4vuquJNlYenYub9TPE2U1I272lx4cGngjtYPp8rPuoWLI3SLlaTqr8pz8XLa2PNiHW1vZw9CPhdVXxkpK0MIiKQBZzXcgxZGVJz+hh20D3cTf+QtE40LDS4+gaLJXE13FfFqNSxyRvkg8qTpI2HktPNe7gVRqe2x4tqzh5OP5PhAxMaDULXHn1sElWtQo+HJdvb6cEbvwP5VbLex3hzJxnSmSXHjDJKFciq49vlT1SYjw8xrTuknYyNu1v3E1dD8WuZza9kPwSymAaRnMNzF7GFx4LmubyCtoOyxpx/q9UwtMi3mPGAllcfgU3n3WyW/SJ4EkERFrA+EWORahkxszJnS5QEz3MEZMguwBX9eq9FFzA4EEWCk0n1HbqjN5GmQyajKxkhDiwxuO8dba+1xruOVX1DCZp2JFPNlDysZrY4uN5DjxurgE178LRnToDN5vXd9r4UpNPxZQBLE14BsB3ItZ9tF3Y4OKmnNWvPNfTx0zAxsKHdj9Zl63yu5dIT6n/ivqLWNY3a0ABSWhJJUiIRETAIiIAIiIAIiIAIiIA//Z')
-      // that.sendAudioMsg(blob)
-      // return
-      // let xhr = new XMLHttpRequest()
-      // //配置请求方式、请求地址以及是否同步
-      // xhr.open('GET', 'http://static.menory.top/download-weixin-voice', true)
-      // //设置请求结果类型为blob
-      // xhr.responseType = 'blob'
-      // //请求成功回调函数
-      // xhr.onload = function(e) {
-      //     if (this.status == 200) {//请求成功
-      //         //获取blob对象
-      //         var blob = this.response
-      //         //获取blob对象地址，并把text值赋给容器
-      //         console.log(blob)
-      //         that.sendAudioMsg(blob)
-      //     }
-      // }
-      // xhr.send()
-      // return 
-      // return
-      // that.http("http://static.menory.top/download-weixin-voice", "get", "", function(res) {
-      //   alert("上传自己服务器成功2")
-      //   that.sendAudioMsg(res.data)
-      // }, "blob")
-      // return
-      event.preventDefault();
-      START = new Date().getTime();
-      that.click_record = true
-      recordTimer = setTimeout(function() {
-        that.wx.startRecord({
-          //     success: function() {
-          //       console.log("startRecord.success")
-          //       localStorage.rainAllowRecord = 'true';
-          //     },
-          cancel: function() {
-            that.$vux.toast.text('用户拒绝授权录音', 'middle', 100);
-          }
-        });
-      }, 300);
-    });
-    $('.u-editor-video').on('touchmove', function(event) {
-      console.log("手机移动")
-      that.click_record = false
-      that.loosen_record = true
-    })
-    //松手结束录音
-    $('.u-editor-video').on('touchend', function(event) {
-      // return 
-      console.log("松手结束录音")
-      event.preventDefault();
-      that.click_record = false
-      END = new Date().getTime();
-      that.loosen_record = false
-      if ((END - START) < 300) {
-        console.log("小于300ms，不录音")
-        END = 0;
-        START = 0;
-        //小于300ms，不录音
-        that.$vux.toast.text('少于300ms', 'middle', 100);
-        clearTimeout(recordTimer);
-      } else {
-        that.wx.stopRecord({
-          success: function(res) {
-            // alert("停止录音成功");
-            voice.localId = res.localId;
-            // alert("voice.localId：" + voice.localId);
-            // that.wx.playVoice({
-            //   localId: res.localId // 需要播放的音频的本地ID，由stopRecord接口获得
-            // });
-            uploadVoice();
-          },
-          fail: function(res) {
-            alert(JSON.stringify(res));
-          }
-        });
+    // 假设全局变量已经在外部定义
+    // 按下开始录音
+    let recordStatus = 0 // 0 未录音 1 开始录音 -1 取消录音
+    let touchstartY = 0
+    $('.u-editor-video').on('touchstart', function (event) {
+      let targetTouches = event.originalEvent.targetTouches[0]
+      touchstartY = targetTouches.pageY
+      event.preventDefault()
+      if (config.isAllowRecord !== true) {
+        that.$vux.toast.text('用户拒绝授权录音', 'middle', 100)
+        return
       }
-    });
-
-    //上传录音
-    function uploadVoice() {
+      recordStatus = 1
+      START = new Date().getTime()
+      that.click_record = true
+      recordTimer = setTimeout(function () {
+        that.wx.onVoiceRecordEnd({
+          complete: function (res) {
+            that.click_record = false
+            that.loosen_record = false
+            voice.localId = res.localId
+            that.$vux.toast.text('录音时间太长已自动发送', 'middle', 100)
+            uploadVoice()
+          }
+        })
+        that.wx.startRecord({
+          success: function () {
+            startRecordTime = new Date().getTime()
+          },
+          cancel: function () {
+            that.$vux.toast.text('用户拒绝授权录音', 'middle', 100)
+          }
+        })
+      }, 300)
+    })
+    $('.u-editor-video').on('touchmove', function (event) {
+      let targetTouches = event.originalEvent.targetTouches[0]
+      let touchmoveY = targetTouches.pageY
+      if (touchmoveY - touchstartY < -40) {
+        if (config.isAllowRecord === true) {
+          that.click_record = false
+          that.loosen_record = true
+          recordStatus = -1
+        }
+      } else {
+        that.click_record = true
+        that.loosen_record = false
+        recordStatus = 1
+      }
+    })
+    // 松手结束录音
+    $('.u-editor-video').on('touchend', function (event) {
+      event.preventDefault()
+      that.click_record = false
+      that.loosen_record = false
+      if (recordStatus === 1) {
+        END = new Date().getTime()
+        // 小于300ms，不录音
+        if ((END - START) < 300) {
+          END = 0
+          START = 0
+          clearTimeout(recordTimer)
+        } else {
+          that.wx.stopRecord({
+            success: function (res) {
+              if ((new Date().getTime() - startRecordTime) < 500) {
+                that.$vux.toast.text('录音时间太短', 'middle', 100)
+                return
+              }
+              voice.localId = res.localId
+              uploadVoice()
+            },
+            fail: function (res) {
+              alert(JSON.stringify(res))
+            }
+          })
+        }
+      } else if (recordStatus === -1) {
+        that.wx.stopRecord()
+      }
+      recordStatus = 0
+    })
+    // 上传录音
+    function uploadVoice () {
       // alert("开始上传录音")
-      //调用微信的上传录音接口把本地录音先上传到微信的服务器
-      //不过，微信只保留3天，而我们需要长期保存，我们需要把资源从微信服务器下载到自己的服务器
+      // 调用微信的上传录音接口把本地录音先上传到微信的服务器
+      // 不过，微信只保留3天，而我们需要长期保存，我们需要把资源从微信服务器下载到自己的服务器
       that.wx.uploadVoice({
         localId: voice.localId, // 需要上传的音频的本地ID，由stopRecord接口获得
         isShowProgressTips: 1, // 默认为1，显示进度提示
-        success: function(res) {
+        success: function (res) {
           // 把录音在微信服务器上的id（res.serverId）发送到自己的服务器供下载。
           // alert("上传录音成功:" + res.serverId)
-          that.http("http://static.menory.top/download-weixin-voice?media_id=" + res.serverId, "get", "", function(res) {
+          that.http(config.apiUpload + '/download-weixin-voice?media_id=' + res.serverId, 'get', '', function (res) {
             // alert("上传自己服务器成功2")
             // console.log(res.data, "###")
             that.sendAudioMsg(res.data)
-          }, "blob")
+          }, 'blob')
         }
-      });
+      })
     }
-    //注册微信播放录音结束事件【一定要放在wx.ready函数内】
   }
 }
 </script>

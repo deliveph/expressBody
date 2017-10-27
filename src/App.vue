@@ -31,7 +31,6 @@ Vue.use(AlertPlugin)
 Vue.use(ConfirmPlugin)
 
 import config from './configs'
-import cookie from './utils/cookie'
 import pageUtil from './utils/page'
 
 const sessionHistory = window.sessionStorage
