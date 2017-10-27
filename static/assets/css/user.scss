@@ -145,6 +145,7 @@
                 height: px2rem(76);
                 text-align: center;
                 padding: px2rem(30) 0;
+                position: relative;
                 em {
                     font-size: px2rem(26);
                     color: #333;
@@ -170,6 +171,19 @@
                     &.oicon4 {
                         background: url(/static/assets/images/btn_await_evaluate.png) no-repeat center;
                     }
+                }
+                span{
+                    min-width: px2rem(30);
+                    min-height: px2rem(30);
+                    border-radius: 50%;
+                    background-color:#366931;
+                    font-size:px2rem(16);
+                    color: #fff;
+                    padding:px2rem(5);
+                    display: inline-block;
+                    vertical-align: middle;
+                    position: absolute;
+                    top:px2rem(10)
                 }
             }
         }

@@ -70,24 +70,28 @@
                         <router-link :to="{path:'waitaccept',query:{express_order_status:'wait_order'}}">
                             <i class="oicon1"></i>
                             <em>待接单</em>
+                            <span v-if="items.total_wait_order != 0">{{items.total_wait_order}}</span>
                         </router-link>
                     </li>
                     <li>
                         <router-link :to="{path:'accept',query:{express_order_status:'have_order'}}">
                             <i class="oicon2"></i>
                             <em>已接单</em>
+                            <span v-if="items.total_have_order != 0">{{items.total_have_order}}</span>
                         </router-link>
                     </li>
                     <li>
                         <router-link :to="{path:'waitpay',query:{express_order_status:'unpaid'}}">
                             <i class="oicon3"></i>
                             <em>待支付</em>
+                            <span v-if="items.total_unpaid_order != 0">{{items.total_unpaid_order}}</span>
                         </router-link>
                     </li>
                     <li>
                         <router-link :to="{path:'finish',query:{express_order_status:'wait_comment'}}">
                             <i class="oicon4"></i>
                             <em>待评价</em>
+                            <span v-if="items.total_wait_comment_order != 0">{{items.total_wait_comment_order}}</span>
                         </router-link>
                     </li>
                 </ul>
