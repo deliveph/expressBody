@@ -116,22 +116,18 @@
     },
     methods: {
       enterSysMsgs () {
-        if (this.hideDelBtn())
-          return
+        if (this.hideDelBtn()) { return }
         location.href = '#/sysmsgs'
       },
       enterChat (session) {
-        if (this.hideDelBtn())
-          return
-        if (session && session.id)
-          location.href = `#/chat/${session.id}`
+        if (this.hideDelBtn()) { return }
+        if (session && session.id) { location.href = `#/chat/${session.id}` }
       },
       enterMyChat () {
         // 我的手机页面
         location.href = `#/chat/p2p-${this.myPhoneId}`
       },
-
-      
+  
       deleteSession () {
         if (this.delSessionId !== null) {
           this.$store.dispatch('deleteSession', this.delSessionId)
@@ -155,15 +151,15 @@
         return false
       }
     },
-    created(){
+    created () {
     },
-    watch:{
-      unreadFun(){
-          console.log(this.$store.state.unreadLen)
-          console.log(that.unread,this.$store.state.customSysMsgUnread)
-          let that = this
-          that.unread = this.$store.state.customSysMsgUnread
-          console.log(that.unread,this.$store.state.customSysMsgUnread)
+    watch: {
+      unreadFun () {
+        console.log(this.$store.state.unreadLen)
+        console.log(that.unread, this.$store.state.customSysMsgUnread)
+        let that = this
+        that.unread = this.$store.state.customSysMsgUnread
+        console.log(that.unread, this.$store.state.customSysMsgUnread)
       }
     }
   }

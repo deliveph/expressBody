@@ -9,7 +9,6 @@ import util from '../../../utils'
 export function formatUserInfo (obj) {
   const nim = store.state.nim
   let gender = ''
-  console.log(obj,"}}}}")
   switch (obj.gender) {
     case 'male':
       gender = '男'
@@ -63,13 +62,12 @@ export function formatUserInfo (obj) {
 }
 
 export function onMyInfo (obj) {
-  obj = util.mergeObject(store.state.myInfo, obj);
+  obj = util.mergeObject(store.state.myInfo, obj)
   let myInfo = formatUserInfo(obj)
   store.commit('updateMyInfo', myInfo)
 }
 
 export function onUserInfo (users) {
-  console.log(users, '^^^^')
   if (!Array.isArray(users)) {
     users = [users]
   }

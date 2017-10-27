@@ -58,12 +58,12 @@
                 </div>
                 <div class="order-list-item">
                     <p>送件时间：
-                        <span>{{items.delivery_start_time}}~{{items.delivery_end_time}}</span>
+                        <span>{{items.delivery_start_time.substring(5, 16)}} — {{items.delivery_end_time.substring(5, 16)}}</span>
                     </p>
                 </div>
                 <div class="order-list-item" v-if="items.collection_order_type_id == 2">
                     <p>预约收件时间：
-                        <span>{{items.estimate_collection_start_time}}~{{items.estimate_collection_start_time}}</span>
+                        <span>{{items.estimate_collection_start_time.substring(5, 16)}} — {{items.estimate_collection_start_time.substring(5, 16)}}</span>
                     </p>
                 </div>
                 <div class="order-list-item">

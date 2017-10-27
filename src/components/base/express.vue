@@ -133,122 +133,97 @@
 import Grade from '../../components/grade'
 import LayerPw from '../base/public/layer_pw'
 export default {
-    components: {
-        Grade,
-        LayerPw
-    },
-    methods: {
-        messageBox() {
-
-        }
-    },
-    computed: {
-        unreadLen () {
-            return this.$store.state.customSysMsgUnread
-        }
-    },
-    data() {
-        return {
-            layerPwhide: true,
-            is_verification: 0,
-            data: {},
-            result: {},
-            service: {},
-            items: [],
-            ships: [],
-            collections: [],
-            service_level_logo: 'http://static.menory.top/images/service_levels/1_liebing_s.png',
-            unread: 0,
-        }
-    },
-    created() {
-        let that = this
-        let data = this.$route.query.password
-        this.is_verification = this.$route.query.is_verification
-        if (that.is_verification == '1') {
-            that.layerPwhide = false
-            this.http(that.configs.apiTop + "/page/service-home", "get", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    let data = msg.data
-                    that.result = msg.data
-                    that.service = msg.data.service
-                    let service = data.service
-                    let service_level = service.service_level
-                    that.service_level_logo = service_level.service_level_logo
-                }
-            })
-            that.orderlist()
-        } else {
-            that.layerPwhide = true
-        }
-    },
-    methods: {
-        getInfo(result) {
-            let that = this
-            this.http(that.configs.apiTop + "/page/service-home", "get", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    that.$router.push({ path: '/service', query: { 'is_verification': '1' } })
-                    let data = msg.data
-                    that.result = msg.data;
-                    that.service = msg.data.service
-                    let service = data.service
-                    let service_level = service.service_level
-                    that.service_level_logo = service_level.service_level_logo
-                }
-            })
-            that.orderlist()
-        },
-        orderlist() {
-            let that = this
-            this.http(that.configs.apiTop + "/order/orders?express_order_status=wait_order", "get", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    let data = msg.data
-                    that.items = data.items
-                    that.ships = data.ships
-                    that.collections = data.collections
-                } else if (msg.code == 40004) {
-                    // location.href = that.configs.accreditUrl
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        }
-    },
-    updated:function () {
-        this.$nextTick(function () {
-            // Code that will run only after the
-
-            console.log(this)
-            console.log(this.$store.state.unreadLen)
-            // entire view has been re-rendered
-        })
-        // unreadLenFun(){
-        //     let unreadlist = this.$store.state.unreadLen
-        //     let unreadlen = 0
-        //     for(let i in unreadlist){
-        //         let unreadNumber = unreadlist[i].unread
-        //         unreadlen = unreadNumber + unreadNumber
-        //     }
-        //     console.log(unreadlist,"unreadLenFun")
-        //     this.unread = unreadlen
-        //     console.log(this.unread)
-        //     return unreadlen
-            
-        // }
-    },
-    watch:{
-        unreadFun(){
-            console.log(this.$store.state.customSysMsgUnread,"***")
-            console.log(this.$store.state.unreadLen)
-            console.log(that.unread,this.$store.state.customSysMsgUnread)
-            let that = this
-            that.unread = this.$store.state.customSysMsgUnread
-            console.log(that.unread,this.$store.state.customSysMsgUnread)
-        }
+  components: {
+    Grade,
+    LayerPw
+  },
+  methods: {
+    messageBox () {
     }
+  },
+  computed: {
+    unreadLen () {
+      let unRead = 0
+      for (let k in this.$store.state.sessionlist) {
+        unRead += this.$store.state.sessionlist[k].unread
+      }
+      return unRead
+    }
+  },
+  data () {
+    return {
+      layerPwhide: true,
+      is_verification: 0,
+      data: {},
+      result: {},
+      service: {},
+      items: [],
+      ships: [],
+      collections: [],
+      service_level_logo: 'http://static.menory.top/images/service_levels/1_liebing_s.png',
+      unread: 0
+    }
+  },
+  created () {
+    let that = this
+    let data = this.$route.query.password
+    this.is_verification = this.$route.query.is_verification
+    if (that.is_verification == '1') {
+      that.layerPwhide = false
+      this.http(that.configs.apiTop + '/page/service-home', 'get', '', function (res) {
+        let msg = res.data
+        if (msg.code == 0) {
+          let data = msg.data
+          that.result = msg.data
+          that.service = msg.data.service
+          let service = data.service
+          let service_level = service.service_level
+          that.service_level_logo = service_level.service_level_logo
+        }
+      })
+      that.orderlist()
+    } else {
+      that.layerPwhide = true
+    }
+  },
+  methods: {
+    getInfo (result) {
+      let that = this
+      this.http(that.configs.apiTop + '/page/service-home', 'get', '', function (res) {
+        let msg = res.data
+        if (msg.code === 0) {
+          that.$router.push({ path: '/service', query: { 'is_verification': '1' } })
+          let data = msg.data
+          that.result = msg.data
+          that.service = msg.data.service
+          let service = data.service
+          let service_level = service.service_level
+          that.service_level_logo = service_level.service_level_logo
+        }
+      })
+      that.orderlist()
+    },
+    orderlist () {
+      let that = this
+      this.http(that.configs.apiTop + '/order/orders?express_order_status=wait_order', 'get', '', function (res) {
+        let msg = res.data
+        if (msg.code === 0) {
+          let data = msg.data
+          that.items = data.items
+          that.ships = data.ships
+          that.collections = data.collections
+        } else if (msg.code == 40004) {
+                    // location.href = that.configs.accreditUrl
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    }
+  },
+  updated: function () {
+  },
+  watch: {
+  }
 }
 </script>
 

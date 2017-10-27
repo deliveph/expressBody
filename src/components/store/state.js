@@ -103,6 +103,7 @@ export default {
   noMoreHistoryMsgs: false,
   // 继续对话的机器人id
   continueRobotAccid: '',
+  // sessionUnRead: 0,
 
   // 系统消息
   sysMsgs: [],

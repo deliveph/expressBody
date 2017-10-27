@@ -1,10 +1,10 @@
-/* 
+/*
  * SDK连接相关
  */
 
 import config from '../../../configs'
-import pageUtil from '../../../utils/page'
-import util from '../../../utils'
+// import pageUtil from '../../../utils/page'
+// import util from '../../../utils'
 import store from '../../store'
 // import {onFriends, onSyncFriendAction} from './friends'
 import {onRobots} from './robots'
@@ -19,8 +19,6 @@ export function initNimSDK ({ state, commit, dispatch }, loginInfo) {
     state.nim.disconnect()
   }
   dispatch('showLoading')
-  console.log('initNimSDK')
-  
   // 初始化SDK
   window.nim = state.nim = SDK.NIM.getInstance({
     // debug: true && { api: 'info', style: 'font-size:12px;color:blue;background-color:rgba(0,0,0,0.1)' },
@@ -51,7 +49,7 @@ export function initNimSDK ({ state, commit, dispatch }, loginInfo) {
         // 账号或者密码错误, 请跳转到登录页面并提示错误
         case 302:
           // pageUtil.turnPage('帐号或密码错误', 'login')
-          break;
+          break
         // 被踢, 请提示错误后跳转到登录页面
         case 'kicked':
           // let map = {

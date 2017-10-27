@@ -71,28 +71,28 @@ import Banner from '../base/public/banner'
 import Layer from '../base/public/layer'
 import LayerPw from '../base/public/layer_pw'
 export default {
-    components: {
-        Vheader,
-        Banner,
-        Layer,
-        LayerPw
-    },
-    methods: {
-        messageBox() {
+  components: {
+    Vheader,
+    Banner,
+    Layer,
+    LayerPw
+  },
+  methods: {
+    messageBox () {
 
-        }
-    },
-    computed: {
-
-    },
-    data(){
-        return {
-          layerhide:true,
-          layerPwhide:false
-        };
-    },
-    created() {
     }
+  },
+  computed: {
+
+  },
+  data () {
+    return {
+      layerhide: true,
+      layerPwhide: false
+    }
+  },
+  created () {
+  }
 }
 </script>
 

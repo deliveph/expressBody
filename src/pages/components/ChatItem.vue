@@ -141,8 +141,6 @@
     },
     beforeMount () {
       let item = Object.assign({}, this.rawMsg)
-      console.log(this.msg)
-      console.log(this.myInfo,"&(*&%#(*@&%(")
       // 标记用户，区分聊天室、普通消息
       if (this.type === 'session') {
         if (item.flow === 'in') {
@@ -218,10 +216,10 @@
         item.fileLink = item.file.url
         item.showText = item.file.name
       } else if (item.type === 'notification') {
-        //对于系统通知，更新下用户信息的状态
+        // 对于系统通知，更新下用户信息的状态
         item.showText = util.generateChatroomSysMsg(item)
       } else if (item.type === 'tip') {
-        //对于系统通知，更新下用户信息的状态
+        // 对于系统通知，更新下用户信息的状态
         item.showText = item.tip
       } else if (item.type === 'robot') {
         let content = item.content || {}
@@ -381,9 +379,9 @@
         }
         console.log(this.currentAudio, '###2')
       },
-      userMessage(msg){
+      userMessage (msg) {
           // this.
-          let html = `<div class="layer_warp layer_userMessage" v-if="layerUserMessage">
+        let html = `<div class="layer_warp layer_userMessage" v-if="layerUserMessage">
                         <div class="layer_box">
                             <div class="layer_container">
                                 <div class="user_message_main">
@@ -399,10 +397,9 @@
                             </div>
                         </div>
                     </div>`
-          
       }
     },
-    created(){
+    created () {
       let that = this
       console.log(that.msg)
     }
