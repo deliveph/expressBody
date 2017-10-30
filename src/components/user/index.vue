@@ -157,31 +157,31 @@
 import Grade from '../../components/grade'
 import Shareshade from '../base/public/shareShade'
 export default {
-    components: {
-        Grade,
-        Shareshade
-    },
-    data() {
-        return {
-            items: [],
-            data: {},
-            share: false,
-            user_level: {},
-            user_level_logo: '/static/assets/images/user_level/icon_1_shaowei.png',
-        }
-    },
-    created() {
-        let that = this
-        this.http(that.configs.apiTop + "/page/user-personal-center", "get", '', function(res) {
-            let msg = res.data
-            if (msg.code == 0) {
-                that.items = msg.data
-                that.data = msg.data.user
-                that.user_level = that.data.user_level
-                that.user_level_logo = that.user_level.user_level_logo
-            }
-        })
+  components: {
+    Grade,
+    Shareshade
+  },
+  data () {
+    return {
+      items: [],
+      data: {},
+      share: false,
+      user_level: {},
+      user_level_logo: '/static/assets/images/user_level/icon_1_shaowei.png'
     }
+  },
+  created () {
+    let that = this
+    this.http(that.configs.apiTop + '/page/user-personal-center', 'get', '', function (res) {
+      let msg = res.data
+      if (msg.code == 0) {
+          that.items = msg.data
+          that.data = msg.data.user
+          that.user_level = that.data.user_level
+          that.user_level_logo = that.user_level.user_level_logo
+        }
+    })
+  }
 }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>

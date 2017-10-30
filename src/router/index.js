@@ -166,6 +166,16 @@ const router = new Router({
     }
   }, // 寄快递
   {
+    path: '/update-ship-order',
+    name: 'updateShipOrder',
+    component (resolve) {
+      require(['../components/base/updateShipOrder'], resolve)
+    },
+    meta: {
+      title: '寄快递'
+    }
+  }, // 寄快递
+  {
     path: '/Invite',
     name: 'Invite',
     component (resolve) {

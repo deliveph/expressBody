@@ -3,6 +3,10 @@ import {
   cityList
 } from './data'
 export default {
+  // #####################################################
+  shipOrderCurrentShiperAddress: null,
+  shipOrderCurrentConsignessAddress: null,
+  // #####################################################
   chooseChatUser: null,
   chooseShipAddress: {},
   chooseConsigneeAddress: {},
