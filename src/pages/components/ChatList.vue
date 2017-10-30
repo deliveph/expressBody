@@ -1,5 +1,5 @@
 <template>
-  <ul id="chat-list" class="m-chat-list p-chat-list">
+  <ul id="chat-list" class="m-chat-list p-chat-list" v-on:demo="onDemo">
     <li class="u-msg item-time" v-if="canLoadMore">
       ---- 上拉加载更多 ----
     </li>
@@ -70,6 +70,9 @@
       }
     },
     methods: {
+      onDemo () {
+        console.log('###########')
+      },
       showFullImg (src) {
         this.$store.dispatch('showFullscreenImg', {
           src

@@ -47,10 +47,10 @@
             <popup-picker :title="title2" :data="list2" v-model="value2" :placeholder="placeholder2" :columns="1" :display-format="format" @on-change="onChangeOfLogisticsGoodsCategories"></popup-picker>
         </div>
         <div class="estimated_weight pdlf30 express_list">
-            <x-number :title="numberCases_title" v-model="numberCasesValue" button-style="round" :max="100" :min="0"></x-number>
+            <x-number :title="numberCases_title" v-model="numberCasesValue" button-style="round" :max="1000" :min="0"></x-number>
         </div>
         <div class="estimated_weight pdlf30 express_list">
-            <x-number :title="estimated_title" v-model="roundValue" button-style="round" :max="100" :min="0"></x-number>
+            <x-number :title="estimated_title" v-model="roundValue" button-style="round" :max="1000" :min="0"></x-number>
         </div>
         <div class="delivery_time pdlf30  express_list">
             <popup-picker :title="title3" :data="list3" :columns="3" v-model="value3" :display-format="format" @on-change="onChangePickUpTime"></popup-picker>
@@ -82,494 +82,481 @@
 </template>
 
 <script>
-import { PopupPicker } from 'vux'
-import { XNumber } from 'vux'
-import { Toast, Confirm } from 'vux'
+import { PopupPicker, XNumber, Toast } from 'vux'
 import qs from 'qs'
 export default {
-    data() {
-        return {
-            checkbox: true,
-            default_shipper_address: {},
-            default_consignee_address: {},
-            time_quantum: '',
-            remark: '',
-            title1: '快递公司',
-            title2: '物品类型',
-            title3: '取件时间',
-            list1: [{
-                name: '默认',
-                value: '0',
-                parent: 0
-            }],
-            list2: [],
-            list3: [{
-                name: '今天',
-                value: 'today',
-                parent: 0
-            }, {
-                name: '明天',
-                value: 'tomorrow',
-                parent: 0
-            }, {
-                name: '后天',
-                value: 'dopodomani',
-                parent: '0'
-            }, {
-                name: '一小时内',
-                value: 'within_hour',
-                parent: 'today'
-            }, {
-                name: '11:00~12:00',
-                value: 'time_quantum1112',
-                parent: 'today'
-            }, {
-                name: '13:00~14:00',
-                value: 'time_quantum1314',
-                parent: 'today'
-            }, {
-                name: '08:00~09:00',
-                value: 'time_quantum0809',
-                parent: 'tomorrow'
-            }, {
-                name: '10:00~11:00',
-                value: 'time_quantum1011',
-                parent: 'tomorrow'
-            }, {
-                name: '12:00~13:00',
-                value: 'time_quantum1213',
-                parent: 'tomorrow'
-            }, {
-                name: '08:00~09:00',
-                value: 'time_quantum0809',
-                parent: 'dopodomani'
-            }, {
-                name: '10:00~11:00',
-                value: 'time_quantum1011',
-                parent: 'dopodomani'
-            }, {
-                name: '12:00~13:00',
-                value: 'time_quantum1213',
-                parent: 'dopodomani'
-            }],
-            value1: [''],
-            value2: [''],
-            value3: ['一小时内'],
-            placeholder1: '请选择快递公司',
-            placeholder2: '请选择物品类型',
-            roundValue: 1,
-            estimated_title: '预估重量（kg）',
-            numberCasesValue:1,
-            numberCases_title: '件数选择',
-            format: function(value, name) {
-                if (name) {
-                    return `${name}`
-                } else {
-                    return `${value}`
-                }
-            },
-            //时间
-            begin: '',
-            end: '',
-            benginTm1: '',
-            benginTm: '',
-            endTm1: '',
-            endTm: '',
-            len: '',
-            itemList: new Array,
-            timeList: new Array,
-            formatTm: new Array,
-            timeList1: new Array,
-            timeList2: new Array,
-            estimateLogisticsFee: 0,
-            logisticsGoodsCategoryId: 0,
-            logisticsCompanyId: 0,
-            pickUpTime: '',
-            timeday: '',
-            timequantum: '-',
-            items: [],
-            ship_order_number:''
+  data () {
+    return {
+      checkbox: true,
+      default_shipper_address: {},
+      default_consignee_address: {},
+      time_quantum: '',
+      remark: '',
+      title1: '快递公司',
+      title2: '物品类型',
+      title3: '取件时间',
+      list1: [{
+        name: '默认',
+        value: '0',
+        parent: 0
+      }],
+      list2: [],
+      list3: [{
+        name: '今天',
+        value: 'today',
+        parent: 0
+      }, {
+        name: '明天',
+        value: 'tomorrow',
+        parent: 0
+      }, {
+        name: '后天',
+        value: 'dopodomani',
+        parent: '0'
+      }, {
+        name: '一小时内',
+        value: 'within_hour',
+        parent: 'today'
+      }, {
+        name: '11:00~12:00',
+        value: 'time_quantum1112',
+        parent: 'today'
+      }, {
+        name: '13:00~14:00',
+        value: 'time_quantum1314',
+        parent: 'today'
+      }, {
+        name: '08:00~09:00',
+        value: 'time_quantum0809',
+        parent: 'tomorrow'
+      }, {
+        name: '10:00~11:00',
+        value: 'time_quantum1011',
+        parent: 'tomorrow'
+      }, {
+        name: '12:00~13:00',
+        value: 'time_quantum1213',
+        parent: 'tomorrow'
+      }, {
+        name: '08:00~09:00',
+        value: 'time_quantum0809',
+        parent: 'dopodomani'
+      }, {
+        name: '10:00~11:00',
+        value: 'time_quantum1011',
+        parent: 'dopodomani'
+      }, {
+        name: '12:00~13:00',
+        value: 'time_quantum1213',
+        parent: 'dopodomani'
+      }],
+      value1: [''],
+      value2: [''],
+      value3: ['一小时内'],
+      placeholder1: '请选择快递公司',
+      placeholder2: '请选择物品类型',
+      roundValue: 1,
+      estimated_title: '预估重量（kg）',
+      numberCasesValue: 1,
+      numberCases_title: '件数选择',
+      format: function (value, name) {
+        if (name) {
+          return `${name}`
+        } else {
+          return `${value}`
         }
-    },
-    computed: {
-    },
-    components: {
-        PopupPicker,
-        XNumber,
-        Toast
-    },
-    created() {
-        let that = this       
-        that.ship_order_number = that.$route.query.ship_order_number 
-        let chooseConsigneeAddress = that.$store.state.chooseConsigneeAddress
-        let chooseShipAddress = that.$store.state.chooseShipAddress
-        this.http(that.configs.apiTop + "/page/user-ship", "get", '', function(res) {
-            let msg = res.data
-            if (msg.code == 0) {
-                let arr = msg.data
-                let logistics_companies = []
-                let logistics_goods_categories = []
-                let arr2 = {
-                    name: '',
-                    value: '',
-                    parent: ''
-                }
-                let arr3 = {
-                    name: '',
-                    value: '',
-                    parent: ''
-                }
-                if (JSON.stringify(chooseConsigneeAddress) == '{}') {
-                    that.default_consignee_address = arr.default_consignee_address
-                } else {
-                    that.default_consignee_address = {
-                        'consignee_address_id': chooseConsigneeAddress.consignee_address_id,
-                        'consignee_name': chooseConsigneeAddress.consignee_name,
-                        'consignee_phone': chooseConsigneeAddress.consignee_phone,
-                        'consignee_full_address': chooseConsigneeAddress.consignee_full_address
-                    }
-                }
-                if (JSON.stringify(chooseShipAddress) == '{}') {
-                    that.default_shipper_address = arr.default_shipper_address
-                } else {
-                    that.default_shipper_address = {
-                        'shipper_address_id': chooseShipAddress.shipper_address_id,
-                        'shipper_name': chooseShipAddress.shipper_name,
-                        'shipper_phone': chooseShipAddress.shipper_phone,
-                        'shipper_full_address': chooseShipAddress.shipper_full_address
-                    }
-                }
-                // 快递公司
-                for (let i = 0; i < arr.logistics_companies.length; i++) {
-                    if (i == 0) {
-                        that.value1[0] = arr.logistics_companies[i].logistics_company_name
-                        that.logisticsCompanyId = String(arr.logistics_companies[i].logistics_company_id)
-                    }
-                    logistics_companies.push({
-                        name: arr.logistics_companies[i].logistics_company_name,
-                        value: String(arr.logistics_companies[i].logistics_company_id),
-                        parent: 0,
-                    })
-                }
-                that.list1 = logistics_companies
-                // 物品类型
-                for (let j = 0; j < arr.logistics_goods_categories.length; j++) {
-                    if (j == 0) {
-                        that.value2[0] = arr.logistics_goods_categories[j].logistics_goods_category_name
-                        that.logisticsGoodsCategoryId = String(arr.logistics_goods_categories[j].logistics_goods_category_id)
-                    }
-                    logistics_goods_categories.push({
-                        name: arr.logistics_goods_categories[j].logistics_goods_category_name,
-                        value: String(arr.logistics_goods_categories[j].logistics_goods_category_id),
-                        parent: 0
-                    })
-                }
-                that.list2 = logistics_goods_categories
-                that.time_quantum = arr.service_time.start_time + '~' + arr.service_time.end_time
-                that.begin = arr.service_time.start_time
-                that.end = arr.service_time.end_time
-                //时间段
-                that.formattedTimeInit()
-            } else if (msg.code == 40004) {
-                location.href = that.configs.accreditUrl
-            } else {
-                that.$vux.toast.text(msg.message, 'middle', 100);
-            }
-        })
-
-        if(typeof that.ship_order_number != 'undefined'){
-            this.http(that.configs.apiTop + "/order/ship-order-detail/"+that.ship_order_number, "get", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    let data = msg.data
-                    that.default_consignee_address = {
-                        'consignee_address_id': data.consignee_address_id,
-                        'consignee_name': data.consignee_name,
-                        'consignee_phone': data.consignee_phone,
-                        'consignee_full_address': data.consignee_full_address
-                    }
-                    that.default_shipper_address = {
-                        'shipper_address_id': data.shipper_address_id,
-                        'shipper_name': data.shipper_name,
-                        'shipper_phone': data.shipper_phone,
-                        'shipper_full_address': data.shipper_full_address
-                    }
-                    that.value1 = data.logistics_company_name
-                    that.value2 = data.logistics_goods_category_name
-                    that.roundValue = data.estimate_weight
-                    that.remark = data.remark
-                    that.checkbox = true
-                    thata.estimateLogisticsFee = order_fee
-                }
-            })
-        }
-    },
-    methods: {
-        // 计算时间段
-        // 时间格式化
-        formatDateTime: function(e, t) {
-            var r = function(e) {
-                return e += '', e.replace(/^(\d)$/, '0$1')
-            },
-                n = {
-                    yyyy: e.getFullYear(),
-                    yy: e.getFullYear().toString().substring(2),
-                    M: e.getMonth() + 1,
-                    MM: r(e.getMonth() + 1),
-                    d: r(e.getDate()),
-                    dd: r(e.getDate()),
-                    hh: r(e.getHours()),
-                    mm: r(e.getMinutes()),
-                    ss: r(e.getSeconds()),
-                    SSS: r(e.getMilliseconds())
-                }
-            return t || (t = "yyyy-MM-dd hh:mm:ss"), t.replace(/([a-z])(\1)*/gi, function(e) {
-                return n[e]
-            })
-        },
-        // 格式化今天明天后天
-        getDateStr(AddDayCount) {
-            let dd = new Date();
-            dd.setDate(dd.getDate() + AddDayCount); //获取AddDayCount天后的日期 
-            let y = dd.getFullYear();
-            let m = dd.getMonth() + 1; //获取当前月份的日期 
-            let d = dd.getDate();
-            return y + "-" + m + "-" + d;
-        },
-        // 格式时间段()
-        formattedTimeInit() {
-            let that = this
-            that.arr = [{
-                name: '今天',
-                value: '1',
-                parent: 0
-            }, {
-                name: '明天',
-                value: '2',
-                parent: 0
-            }, {
-                name: '后天',
-                value: '3',
-                parent: 0
-            }, {
-                name: '一小时内',
-                value: '-',
-                parent: '1'
-            }]
-            let newDate = that.formatDateTime(new Date, "yyyy/MM/dd")
-            let startDate = newDate + " " + that.begin + ":00"
-            let endDate = newDate + " " + that.end + ":00"
-            let startDateTimestamp = new Date(startDate).getTime()
-            let endDateTimestamp = new Date(endDate).getTime()
-            let step = 60 * 60 * 1000
-            let currentTimestamp = new Date().getTime()
-            // 今天
-            for (let timestamp = startDateTimestamp; timestamp <= endDateTimestamp; timestamp += step) {
-                if (timestamp >= currentTimestamp) {
-                    let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
-                    let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
-                    that.arr.push({
-                        name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
-                        value: tmp1 + "~" + tmp2,
-                        parent: '1'
-                    })
-                }
-            }
-            let step1 = 24 * 60 * 60 * 1000
-            // 明天
-            endDateTimestamp = endDateTimestamp + step1
-            for (let timestamp = startDateTimestamp + step1; timestamp <= endDateTimestamp; timestamp += step) {
-                let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
-                let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
-                that.arr.push({
-                    name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
-                    value: tmp1 + "~" + tmp2,
-                    parent: '2'
-                })
-            }
-            // 后天
-            endDateTimestamp = endDateTimestamp + step1
-            for (let timestamp = startDateTimestamp + 2 * step1; timestamp <= endDateTimestamp; timestamp += step) {
-                let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
-                let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
-                that.arr.push({
-                    name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
-                    value: tmp1 + "~" + tmp2,
-                    parent: '3'
-                })
-            }
-            that.list3 = that.arr
-        },
-        onChange(val) {
-        },
-        onShow() {
-        },
-        onHide(type) {
-        },
-        change(val) {
-        },
-        submitBtn() {
-            let that = this;
-            document.getElementById('submitBtn').setAttribute("disabled",true)
-            if(typeof that.ship_order_number != 'undefined'){
-                if (that.default_shipper_address.shipper_address_id == '') {
-                    that.$vux.toast.text('请选择寄件地址', 'middle', 100)
-                    return false
-                } else if (that.default_consignee_address.consignee_address_id == '') {
-                    that.$vux.toast.text('请选择寄件地址', 'middle', 100)
-                    return false
-                } else if (!that.checkbox) {
-                    that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
-                    return false
-                } else if (that.remark.lenght == 30) {
-                    that.$vux.toast.text('请输入30字符内的说明', 'middle', 100)
-                    return false
-                } else if (that.logisticsGoodsCategoryId <= 0) {
-                    that.$vux.toast.text('请选择物品类型', 'middle', 100)
-                    return false
-                }
-                let take_start_time = ''
-                let take_end_time = ''
-                if (that.timequantum == "-") { // 一小时内
-                    take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
-                    take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
-                } else {
-                    let arr = that.timequantum.split("~")
-                    take_start_time = arr[0]
-                    take_end_time = arr[1]
-                }
-                let data = qs.stringify({
-                    'shipper_address_id': that.default_shipper_address.shipper_address_id,
-                    'consignee_address_id': that.default_consignee_address.consignee_address_id,
-                    'logistics_company_id': that.logisticsCompanyId,
-                    'logistics_goods_category_id': that.logisticsGoodsCategoryId,
-                    'estimate_weight': that.roundValue,
-                    'take_start_time': take_start_time,
-                    'take_end_time': take_end_time,
-                    'remark': that.remark
-                })
-                this.http(that.configs.apiTop + "/ship-order/update/"+that.ship_order_number, "post", data, function(res) {
-                    let msg = res.data
-                    document.getElementById('submitBtn').setAttribute("disabled",true)
-                    if (msg.code == 0) {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                        setTimeout(function() {
-                            that.$router.push({ path: '/order' })
-                        }, 200);
-                    } else if (msg.code == 40004) {
-                    } else {
-                        if (msg.code == 40014) {
-                            that.showPlugin(msg.message)
-                        } else {
-                            that.$vux.toast.text(msg.message, 'middle', 100);
-                        }
-                    }
-                })
-            }else{
-                if (that.default_shipper_address.shipper_address_id == '') {
-                    that.$vux.toast.text('请选择寄件地址', 'middle', 100)
-                    return false
-                } else if (that.default_consignee_address.consignee_address_id == '') {
-                    that.$vux.toast.text('请选择寄件地址', 'middle', 100)
-                    return false
-                } else if (!that.checkbox) {
-                    that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
-                    return false
-                } else if (that.remark.lenght == 30) {
-                    that.$vux.toast.text('请输入30字符内的说明', 'middle', 100)
-                    return false
-                } else if (that.logisticsGoodsCategoryId <= 0) {
-                    that.$vux.toast.text('请选择物品类型', 'middle', 100)
-                    return false
-                }
-
-                let take_start_time = ''
-                let take_end_time = ''
-                if (that.timequantum == "-") { // 一小时内
-                    take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
-                    take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
-                } else {
-                    let arr = that.timequantum.split("~")
-                    take_start_time = arr[0]
-                    take_end_time = arr[1]
-                }
-
-                let data = qs.stringify({
-                    'shipper_address_id': that.default_shipper_address.shipper_address_id,
-                    'consignee_address_id': that.default_consignee_address.consignee_address_id,
-                    'logistics_company_id': that.logisticsCompanyId,
-                    'logistics_goods_category_id': that.logisticsGoodsCategoryId,
-                    'estimate_weight': that.roundValue,
-                    'take_start_time': take_start_time,
-                    'take_end_time': take_end_time,
-                    'remark': that.remark
-                })
-                this.http(that.configs.apiTop + "/order/submit-ship-order", "post", data, function(res) {
-                    let msg = res.data
-                    if (msg.code == 0) {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                        setTimeout(function() {
-                            that.$router.push({ path: '/order' })
-                        }, 200);
-                    } else if (msg.code == 40004) {
-                    } else {
-                        if (msg.code == 40014) {
-                            that.showPlugin(msg.message)
-                        } else {
-                            that.$vux.toast.text(msg.message, 'middle', 100);
-                        }
-                    }
-                })
-            }
-            
-        },
-        showPlugin(content) {
-            let that = this
-            this.$vux.confirm.show({
-                title: '提示',
-                content: content,
-                onShow() {
-                },
-                onHide() {
-                },
-                onCancel() {
-                },
-                onConfirm() {
-                    that.$router.push({ path: '/open' })
-                }
-            })
-        },
-        getEstimateLogisticsFee() {
-            let that = this
-            this.http(that.configs.apiTop + "/ship-order/get-estimate-logistics-fee?logistics_company_id=" + this.logisticsCompanyId + "&estimate_weight=" + this.roundValue + "&consignee_address_id=" + that.default_consignee_address.consignee_address_id, "get", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    let arr = msg.data
-                    that.estimateLogisticsFee = arr.estimate_logistics_fee
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        },
-        onChangeOfLogisticsGoodsCategories(values) {
-            this.logisticsGoodsCategoryId = values[0]
-        },
-        onChangeOfLogisticsCompanies(values) {
-            this.logisticsCompanyId = values[0]
-        },
-        onChangePickUpTime(values) {
-            this.timeday = values[0]
-            this.timequantum = values[1]
-        }
-    },
-    watch: {
-        roundValue: function() {
-            this.getEstimateLogisticsFee();
-        },
-        logisticsCompanyId: function() {
-            this.getEstimateLogisticsFee()
-        }
+      },
+            // 时间
+      begin: '',
+      end: '',
+      benginTm1: '',
+      benginTm: '',
+      endTm1: '',
+      endTm: '',
+      len: '',
+      itemList: new Array(),
+      timeList: new Array(),
+      formatTm: new Array(),
+      timeList1: new Array(),
+      timeList2: new Array(),
+      estimateLogisticsFee: 0,
+      logisticsGoodsCategoryId: 0,
+      logisticsCompanyId: 0,
+      pickUpTime: '',
+      timeday: '',
+      timequantum: '-',
+      items: [],
+      ship_order_number: ''
     }
+  },
+  computed: {
+  },
+  components: {
+    PopupPicker,
+    XNumber,
+    Toast
+  },
+  created () {
+    let that = this
+    that.ship_order_number = that.$route.query.ship_order_number
+    let chooseConsigneeAddress = that.$store.state.chooseConsigneeAddress
+    let chooseShipAddress = that.$store.state.chooseShipAddress
+    this.http(that.configs.apiTop + '/page/user-ship', 'get', '', function (res) {
+      let msg = res.data
+      if (msg.code === 0) {
+        let arr = msg.data
+        let logistics_companies = []
+        let logistics_goods_categories = []
+        if (JSON.stringify(chooseConsigneeAddress) === '{}') {
+          that.default_consignee_address = arr.default_consignee_address
+        } else {
+          that.default_consignee_address = {
+            'consignee_address_id': chooseConsigneeAddress.consignee_address_id,
+            'consignee_name': chooseConsigneeAddress.consignee_name,
+            'consignee_phone': chooseConsigneeAddress.consignee_phone,
+            'consignee_full_address': chooseConsigneeAddress.consignee_full_address
+          }
+        }
+        if (JSON.stringify(chooseShipAddress) === '{}') {
+          that.default_shipper_address = arr.default_shipper_address
+        } else {
+          that.default_shipper_address = {
+            'shipper_address_id': chooseShipAddress.shipper_address_id,
+            'shipper_name': chooseShipAddress.shipper_name,
+            'shipper_phone': chooseShipAddress.shipper_phone,
+            'shipper_full_address': chooseShipAddress.shipper_full_address
+          }
+        }
+                // 快递公司
+        for (let i = 0; i < arr.logistics_companies.length; i++) {
+          if (i === 0) {
+            that.value1[0] = arr.logistics_companies[i].logistics_company_name
+            that.logisticsCompanyId = String(arr.logistics_companies[i].logistics_company_id)
+          }
+          logistics_companies.push({
+            name: arr.logistics_companies[i].logistics_company_name,
+            value: String(arr.logistics_companies[i].logistics_company_id),
+            parent: 0
+          })
+        }
+        that.list1 = logistics_companies
+                // 物品类型
+        for (let j = 0; j < arr.logistics_goods_categories.length; j++) {
+          if (j === 0) {
+            that.value2[0] = arr.logistics_goods_categories[j].logistics_goods_category_name
+            that.logisticsGoodsCategoryId = String(arr.logistics_goods_categories[j].logistics_goods_category_id)
+          }
+          logistics_goods_categories.push({
+            name: arr.logistics_goods_categories[j].logistics_goods_category_name,
+            value: String(arr.logistics_goods_categories[j].logistics_goods_category_id),
+            parent: 0
+          })
+        }
+        that.list2 = logistics_goods_categories
+        that.time_quantum = arr.service_time.start_time + '~' + arr.service_time.end_time
+        that.begin = arr.service_time.start_time
+        that.end = arr.service_time.end_time
+                // 时间段
+        that.formattedTimeInit()
+      } else {
+        that.$vux.toast.text(msg.message, 'middle', 100)
+      }
+    })
+
+    if (typeof that.ship_order_number !== 'undefined') {
+      this.http(that.configs.apiTop + '/order/ship-order-detail/' + that.ship_order_number, 'get', '', function (res) {
+        let msg = res.data
+        if (msg.code === 0) {
+          let data = msg.data
+          that.default_consignee_address = {
+            'consignee_address_id': data.consignee_address_id,
+            'consignee_name': data.consignee_name,
+            'consignee_phone': data.consignee_phone,
+            'consignee_full_address': data.consignee_full_address
+          }
+          that.default_shipper_address = {
+            'shipper_address_id': data.shipper_address_id,
+            'shipper_name': data.shipper_name,
+            'shipper_phone': data.shipper_phone,
+            'shipper_full_address': data.shipper_full_address
+          }
+          that.value1 = data.logistics_company_name
+          that.value2 = data.logistics_goods_category_name
+          that.roundValue = data.estimate_weight
+          that.remark = data.remark
+          that.checkbox = true
+          that.estimateLogisticsFee = data.estimate_logistics_fee
+        }
+      })
+    }
+  },
+  methods: {
+    // 计算时间段
+    // 时间格式化
+    formatDateTime: function (e, t) {
+      var r = function (e) {
+          return e += '', e.replace(/^(\d)$/, '0$1')
+        },
+        n = {
+          yyyy: e.getFullYear(),
+          yy: e.getFullYear().toString().substring(2),
+          M: e.getMonth() + 1,
+          MM: r(e.getMonth() + 1),
+          d: r(e.getDate()),
+          dd: r(e.getDate()),
+          hh: r(e.getHours()),
+          mm: r(e.getMinutes()),
+          ss: r(e.getSeconds()),
+          SSS: r(e.getMilliseconds())
+        }
+      return t || (t = 'yyyy-MM-dd hh:mm:ss'), t.replace(/([a-z])(\1)*/gi, function (e) {
+        return n[e]
+      })
+    },
+        // 格式化今天明天后天
+    getDateStr (AddDayCount) {
+      let dd = new Date()
+      dd.setDate(dd.getDate() + AddDayCount) // 获取AddDayCount天后的日期
+      let y = dd.getFullYear()
+      let m = dd.getMonth() + 1 // 获取当前月份的日期
+      let d = dd.getDate()
+      return y + '-' + m + '-' + d
+    },
+        // 格式时间段()
+    formattedTimeInit () {
+      let that = this
+      that.arr = [{
+        name: '今天',
+        value: '1',
+        parent: 0
+      }, {
+        name: '明天',
+        value: '2',
+        parent: 0
+      }, {
+        name: '后天',
+        value: '3',
+        parent: 0
+      }, {
+        name: '一小时内',
+        value: '-',
+        parent: '1'
+      }]
+      let newDate = that.formatDateTime(new Date(), 'yyyy/MM/dd')
+      let startDate = newDate + ' ' + that.begin + ':00'
+      let endDate = newDate + ' ' + that.end + ':00'
+      let startDateTimestamp = new Date(startDate).getTime()
+      let endDateTimestamp = new Date(endDate).getTime()
+      let step = 60 * 60 * 1000
+      let currentTimestamp = new Date().getTime()
+            // 今天
+      for (let timestamp = startDateTimestamp; timestamp <= endDateTimestamp; timestamp += step) {
+        if (timestamp >= currentTimestamp) {
+          let tmp1 = that.formatDateTime(new Date(timestamp), 'yyyy/MM/dd hh:mm:ss')
+          let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), 'yyyy/MM/dd hh:mm:ss')
+          that.arr.push({
+            name: tmp1.split(' ')[1].substring(0, 5) + '~' + tmp2.split(' ')[1].substring(0, 5),
+            value: tmp1 + '~' + tmp2,
+            parent: '1'
+          })
+        }
+      }
+      let step1 = 24 * 60 * 60 * 1000
+            // 明天
+      endDateTimestamp = endDateTimestamp + step1
+      for (let timestamp = startDateTimestamp + step1; timestamp <= endDateTimestamp; timestamp += step) {
+        let tmp1 = that.formatDateTime(new Date(timestamp), 'yyyy/MM/dd hh:mm:ss')
+        let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), 'yyyy/MM/dd hh:mm:ss')
+        that.arr.push({
+          name: tmp1.split(' ')[1].substring(0, 5) + '~' + tmp2.split(' ')[1].substring(0, 5),
+          value: tmp1 + '~' + tmp2,
+          parent: '2'
+        })
+      }
+            // 后天
+      endDateTimestamp = endDateTimestamp + step1
+      for (let timestamp = startDateTimestamp + 2 * step1; timestamp <= endDateTimestamp; timestamp += step) {
+        let tmp1 = that.formatDateTime(new Date(timestamp), 'yyyy/MM/dd hh:mm:ss')
+        let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), 'yyyy/MM/dd hh:mm:ss')
+        that.arr.push({
+          name: tmp1.split(' ')[1].substring(0, 5) + '~' + tmp2.split(' ')[1].substring(0, 5),
+          value: tmp1 + '~' + tmp2,
+          parent: '3'
+        })
+      }
+      that.list3 = that.arr
+    },
+    onChange (val) {
+    },
+    onShow () {
+    },
+    onHide (type) {
+    },
+    change (val) {
+    },
+    submitBtn () {
+      let that = this
+    //   document.getElementById('submitBtn').setAttribute('disabled', true)
+      if (typeof that.ship_order_number !== 'undefined') {
+        if (that.default_shipper_address.shipper_address_id == '') {
+          that.$vux.toast.text('请选择寄件地址', 'middle', 100)
+          return false
+        } else if (that.default_consignee_address.consignee_address_id == '') {
+          that.$vux.toast.text('请选择寄件地址', 'middle', 100)
+          return false
+        } else if (!that.checkbox) {
+          that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
+          return false
+        } else if (that.remark.lenght === 30) {
+          that.$vux.toast.text('请输入30字符内的说明', 'middle', 100)
+          return false
+        } else if (that.logisticsGoodsCategoryId <= 0) {
+          that.$vux.toast.text('请选择物品类型', 'middle', 100)
+          return false
+        }
+        let take_start_time = ''
+        let take_end_time = ''
+        if (that.timequantum == '-') { // 一小时内
+          take_start_time = that.formatDateTime(new Date(), 'yyyy/MM/dd hh:mm:00')
+          take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), 'yyyy/MM/dd hh:mm:00')
+        } else {
+          let arr = that.timequantum.split('~')
+          take_start_time = arr[0]
+          take_end_time = arr[1]
+        }
+        let data = qs.stringify({
+          'shipper_address_id': that.default_shipper_address.shipper_address_id,
+          'consignee_address_id': that.default_consignee_address.consignee_address_id,
+          'logistics_company_id': that.logisticsCompanyId,
+          'logistics_goods_category_id': that.logisticsGoodsCategoryId,
+          'estimate_weight': that.roundValue,
+          'take_start_time': take_start_time,
+          'take_end_time': take_end_time,
+          'remark': that.remark,
+          'ship_order_goods_number': that.numberCasesValue
+        })
+        this.http(that.configs.apiTop + '/ship-order/update/' + that.ship_order_number, 'post', data, function (res) {
+          let msg = res.data
+          document.getElementById('submitBtn').setAttribute('disabled', true)
+          if (msg.code == 0) {
+            that.$vux.toast.text(msg.message, 'middle', 100)
+            setTimeout(function () {
+              that.$router.push({ path: '/order' })
+            }, 200)
+          } else if (msg.code == 40004) {
+          } else {
+            if (msg.code == 40014) {
+              that.showPlugin(msg.message)
+            } else {
+              that.$vux.toast.text(msg.message, 'middle', 100)
+            }
+          }
+        })
+      } else {
+        if (that.default_shipper_address.shipper_address_id == '') {
+          that.$vux.toast.text('请选择寄件地址', 'middle', 100)
+          return false
+        } else if (that.default_consignee_address.consignee_address_id == '') {
+          that.$vux.toast.text('请选择寄件地址', 'middle', 100)
+          return false
+        } else if (!that.checkbox) {
+          that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
+          return false
+        } else if (that.remark.lenght == 30) {
+          that.$vux.toast.text('请输入30字符内的说明', 'middle', 100)
+          return false
+        } else if (that.logisticsGoodsCategoryId <= 0) {
+          that.$vux.toast.text('请选择物品类型', 'middle', 100)
+          return false
+        }
+
+        let take_start_time = ''
+        let take_end_time = ''
+        if (that.timequantum == '-') { // 一小时内
+          take_start_time = that.formatDateTime(new Date(), 'yyyy/MM/dd hh:mm:00')
+          take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), 'yyyy/MM/dd hh:mm:00')
+        } else {
+          let arr = that.timequantum.split('~')
+          take_start_time = arr[0]
+          take_end_time = arr[1]
+        }
+
+        let data = qs.stringify({
+          'shipper_address_id': that.default_shipper_address.shipper_address_id,
+          'consignee_address_id': that.default_consignee_address.consignee_address_id,
+          'logistics_company_id': that.logisticsCompanyId,
+          'logistics_goods_category_id': that.logisticsGoodsCategoryId,
+          'estimate_weight': that.roundValue,
+          'take_start_time': take_start_time,
+          'take_end_time': take_end_time,
+          'remark': that.remark,
+          'ship_order_goods_number': that.numberCasesValue
+        })
+        this.http(that.configs.apiTop + '/order/submit-ship-order', 'post', data, function (res) {
+          let msg = res.data
+          if (msg.code == 0) {
+            that.$vux.toast.text(msg.message, 'middle', 100)
+            setTimeout(function () {
+              that.$router.push({ path: '/order' })
+            }, 200)
+          } else if (msg.code == 40004) {
+          } else {
+            if (msg.code == 40014) {
+              that.showPlugin(msg.message)
+            } else {
+              that.$vux.toast.text(msg.message, 'middle', 100)
+            }
+          }
+        })
+      }
+    },
+    showPlugin (content) {
+      let that = this
+      this.$vux.confirm.show({
+        title: '提示',
+        content: content,
+        onShow () {
+        },
+        onHide () {
+        },
+        onCancel () {
+        },
+        onConfirm () {
+          that.$router.push({ path: '/open' })
+        }
+      })
+    },
+    getEstimateLogisticsFee () {
+      let that = this
+      this.http(that.configs.apiTop + '/ship-order/get-estimate-logistics-fee?logistics_company_id=' + this.logisticsCompanyId + '&estimate_weight=' + this.roundValue + '&consignee_address_id=' + that.default_consignee_address.consignee_address_id, 'get', '', function (res) {
+        let msg = res.data
+        if (msg.code == 0) {
+          let arr = msg.data
+          that.estimateLogisticsFee = arr.estimate_logistics_fee
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+    onChangeOfLogisticsGoodsCategories (values) {
+      this.logisticsGoodsCategoryId = values[0]
+    },
+    onChangeOfLogisticsCompanies (values) {
+      this.logisticsCompanyId = values[0]
+    },
+    onChangePickUpTime (values) {
+      this.timeday = values[0]
+      this.timequantum = values[1]
+    }
+  },
+  watch: {
+    roundValue: function () {
+      this.getEstimateLogisticsFee()
+    },
+    logisticsCompanyId: function () {
+      this.getEstimateLogisticsFee()
+    }
+  }
 }
 </script>
 

@@ -19,7 +19,7 @@
                 <h3>最近订单</h3>
                 <div v-if="items != ''">
                     <ul>
-                        <div v-for="(item,i) in items" :key="i">
+                        <div v-for="(item,i) in items" :key="i" v-if="i < 5">
                             <div v-if="item.express_order_type == 'ship'">
                                 <div v-for="(ship,s) in ships" :key="s">
                                     <div v-if="item.express_order_number == ship.ship_order_number">
@@ -82,156 +82,149 @@
 
 <script>
 import { Toast } from 'vux'
-import qs from 'qs'
 export default {
-    data() {
-        return {
-            odd: '',
-            items: [],
-            ships: [],
-            collections: [],
-            status:''
-        }
-    },
-    components: {
-        Toast
-    },
-    mounted: function(){
-        
-    },
-    methods: {
-        see() {
-            let that = this
-            let reg = /^[1-9]\d*$/
-            let odd = that.odd
-            if (odd == '') {
-                that.$vux.toast.text('请输入快递单号', 'middle', 100);
-                return false;
-            } else if (!reg.test(odd)) {
-                that.$vux.toast.text('请输入正确的快递单号', 'middle', 100);
-                return false;
-            }
-            that.$router.push({ path: '/result', query: { code: odd } })
-        },
-        richscan() {
-            let that = this;
-            this.wx.scanQRCode({
-                needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-                scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
-                success: function(res) {
-                    let result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-                    let str = result.split(',');
-                    let code = '';
-                    if (str.length > 1) {
-                        code = str[1]
-                    } else {
-                        code = str[0]
-                    }
-                }
-            });
-        },
-        cancel(ship_order_number) {
-            let that = this
-            this.$vux.confirm.show({
-                title: '取消订单',
-                content: '确定要取消此订单???',
-                // 组件除show外的属性
-                onCancel() {
-
-                },
-                onConfirm() {
-                    if (ship_order_number) {
-                        that.http(that.configs.apiTop + "/order/cancel-ship-order/" + ship_order_number, "post", '', function(res) {
-                            let msg = res.data
-                            if (msg.code == 0) {
-                                that.$vux.toast.text(msg.message, 'middle', 100)
-                                setTimeout(function() {
-                                    that.$router.push({ path: '/user' })
-                                }, 200);
-                            } else if (msg.code == 40004) {
-
-                            } else {
-                                that.$vux.toast.text(msg.message, 'middle', 100);
-                            }
-                        })
-                    }
-                }
-            })
-        },
-        deleteShipCode(ship_order_number) {
-            let that = this
-            this.$vux.confirm.show({
-                title: '删除订单',
-                content: '确定要删除此订单???',
-                // 组件除show外的属性
-                onCancel() {
-
-                },
-                onConfirm() {
-                    if (ship_order_number) {
-                        that.http(that.configs.apiTop + "/ship-order/user-ignore/" + ship_order_number, "post", '', function(res) {
-                            let msg = res.data
-                            if (msg.code == 0) {
-                                that.$vux.toast.text(msg.message, 'middle', 100)
-                                setTimeout(function() {
-                                    that.$router.push({ path: '/user' })
-                                }, 200);
-                            } else if (msg.code == 40004) {
-
-                            } else {
-                                that.$vux.toast.text(msg.message, 'middle', 100);
-                            }
-                        })
-                    }
-                }
-            })
-        },
-        deleteCollectionCode(collection_order_number) {
-            let that = this
-            this.$vux.confirm.show({
-                title: '删除订单',
-                content: '确定要删除此订单???',
-                // 组件除show外的属性
-                onCancel() {
-
-                },
-                onConfirm() {
-                    if (collection_order_number) {
-                        that.http(that.configs.apiTop + "/collection-order/user-ignore/" + collection_order_number, "post", '', function(res) {
-                            let msg = res.data
-                            if (msg.code == 0) {
-                                that.$vux.toast.text(msg.message, 'middle', 100)
-                                setTimeout(function() {
-                                    that.$router.push({ path: '/user' })
-                                }, 200);
-                            } else if (msg.code == 40004) {
-
-                            } else {
-                                that.$vux.toast.text(msg.message, 'middle', 100);
-                            }
-                        })
-                    }
-                }
-            })
-        }
-    },
-    created() {
-        let that = this
-        this.status = this.$route.query.status
-        this.http(that.configs.apiTop + "/order/orders", "get", '', function(res) {
-            let msg = res.data
-            if (msg.code == 0) {
-                let data = msg.data
-                that.items = data.items
-                that.ships = data.ships
-                that.collections = data.collections
-            } else if (msg.code == 40004) {
-                // location.href = that.configs.accreditUrl
-            } else {
-                that.$vux.toast.text(msg.message, 'middle', 100);
-            }
-        })
+  data () {
+    return {
+      odd: '',
+      items: [],
+      ships: [],
+      collections: [],
+      status: ''
     }
+  },
+  components: {
+    Toast
+  },
+  mounted: function () {
+
+  },
+  methods: {
+    see () {
+      let that = this
+      let reg = /^[1-9]\d*$/
+      let odd = that.odd
+      if (odd === '') {
+        that.$vux.toast.text('请输入快递单号', 'middle', 100)
+        return false
+      } else if (!reg.test(odd)) {
+        that.$vux.toast.text('请输入正确的快递单号', 'middle', 100)
+        return false
+      }
+      that.$router.push({ path: '/result', query: { code: odd } })
+    },
+    richscan () {
+      let that = this
+      that.wx.scanQRCode({
+        needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+        scanType: ['qrCode', 'barCode'], // 可以指定扫二维码还是一维码，默认二者都有
+        success: function (res) {
+          let result = res.resultStr // 当needResult 为 1 时，扫码返回的结果
+          let str = result.split(',')
+          let code = ''
+          if (str.length > 1) {
+            code = str[1]
+          } else {
+            code = str[0]
+          }
+        }
+      })
+    },
+    cancel (shipOrderNumber) {
+      let that = this
+      this.$vux.confirm.show({
+        title: '取消订单',
+        content: '确定要取消此订单???',
+                // 组件除show外的属性
+        onCancel () {
+
+        },
+        onConfirm () {
+          if (shipOrderNumber) {
+            that.http(that.configs.apiTop + '/order/cancel-ship-order/' + shipOrderNumber, 'post', '', function (res) {
+              let msg = res.data
+              if (msg.code === 0) {
+                that.$vux.toast.text(msg.message, 'middle', 100)
+                setTimeout(function () {
+                  that.$router.push({ path: '/user' })
+                }, 200)
+              } else {
+                that.$vux.toast.text(msg.message, 'middle', 100)
+              }
+            })
+          }
+        }
+      })
+    },
+    deleteShipCode (shipOrderNumber) {
+      let that = this
+      this.$vux.confirm.show({
+        title: '删除订单',
+        content: '确定要删除此订单???',
+                // 组件除show外的属性
+        onCancel () {
+
+        },
+        onConfirm () {
+          if (shipOrderNumber) {
+            that.http(that.configs.apiTop + '/ship-order/user-ignore/' + shipOrderNumber, 'post', '', function (res) {
+              let msg = res.data
+              if (msg.code == 0) {
+                that.$vux.toast.text(msg.message, 'middle', 100)
+                setTimeout(function () {
+                  that.$router.push({ path: '/user' })
+                }, 200)
+              } else if (msg.code == 40004) {
+
+              } else {
+                that.$vux.toast.text(msg.message, 'middle', 100)
+              }
+            })
+          }
+        }
+      })
+    },
+    deleteCollectionCode (collectionOrderNumber) {
+      let that = this
+      this.$vux.confirm.show({
+        title: '删除订单',
+        content: '确定要删除此订单???',
+                // 组件除show外的属性
+        onCancel () {
+
+        },
+        onConfirm () {
+          if (collectionOrderNumber) {
+            that.http(that.configs.apiTop + '/collection-order/user-ignore/' + collectionOrderNumber, 'post', '', function (res) {
+              let msg = res.data
+              if (msg.code === 0) {
+                that.$vux.toast.text(msg.message, 'middle', 100)
+                setTimeout(function () {
+                  that.$router.push({ path: '/user' })
+                }, 200)
+              } else {
+                that.$vux.toast.text(msg.message, 'middle', 100)
+              }
+            })
+          }
+        }
+      })
+    }
+  },
+  created () {
+    let that = this
+    this.status = this.$route.query.status
+    this.http(that.configs.apiTop + '/order/orders', 'get', '', function (res) {
+      let msg = res.data
+      if (msg.code === 0) {
+        let data = msg.data
+        that.items = data.items
+        that.ships = data.ships
+        that.collections = data.collections
+      } else {
+        that.$vux.toast.text(msg.message, 'middle', 100)
+      }
+    })
+  }
 }
 </script>
 

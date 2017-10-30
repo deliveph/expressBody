@@ -377,31 +377,12 @@
             this.currentAudio = null
           }
         }
-        console.log(this.currentAudio, '###2')
       },
       userMessage (msg) {
-          // this.
-        let html = `<div class="layer_warp layer_userMessage" v-if="layerUserMessage">
-                        <div class="layer_box">
-                            <div class="layer_container">
-                                <div class="user_message_main">
-                                  <div class="img">
-                                      <img :src="msg.avatar" />
-                                  </div>
-                                  <div class="right_msg">
-                                    <p class="name">{{msg.name}}</p>
-                                    <p><span>电话：</span>{{msg.phone}}</p>
-                                    <p><span>地址：</span>{{msg.address}}</p>
-                                  </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
+        this.$store.dispatch('chooseChatUser', msg)
       }
     },
     created () {
-      let that = this
-      console.log(that.msg)
     }
   }
 </script>

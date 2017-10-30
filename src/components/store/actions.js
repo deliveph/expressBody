@@ -47,6 +47,28 @@ function connectChatroom ({state, commit, dispatch}, obj) {
 }
 
 export default {
+  chooseChatUser ({
+    commit
+  }, msg) {
+    if (msg !== null) {
+      state.nim.getUser({
+        account: msg.from,
+        done: function getUserDone (error, user) {
+          if (!error) {
+            let custom = JSON.parse(user.custom)
+            commit('CHOOSECHARUSER', {
+              'avatar': user.avatar,
+              'nick': user.nick,
+              'address': custom.address,
+              'phone': custom.phone
+            })
+          }
+        }
+      })
+    } else {
+      commit('CHOOSECHARUSER', null)
+    }
+  },
   chooseShipAddress ({
     commit
   }, shipAddress) {

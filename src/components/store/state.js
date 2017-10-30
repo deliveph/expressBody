@@ -3,6 +3,7 @@ import {
   cityList
 } from './data'
 export default {
+  chooseChatUser: null,
   chooseShipAddress: {},
   chooseConsigneeAddress: {},
   chooseCoupon: {},

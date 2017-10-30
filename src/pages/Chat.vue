@@ -28,17 +28,17 @@
     </div>
 
     <!-- 用户信息 -->
-    <div class="layer_warp layer_userMessage" v-if="layerUserMessage">
-        <div class="layer_box">
+    <div class="layer_warp layer_userMessage" v-if="demo" @click="layerWarp">
+        <div class="layer_box" @click.stop="">
             <div class="layer_container">
                 <div class="user_message_main">
                    <div class="img">
-                      <img src="/static/assets/images/head_def.png" />
+                      <img :src="chooseChatUser.avatar" />
                    </div>
                    <div class="right_msg">
-                     <p class="name">萌蠢滴大河</p>
-                     <p><span>电话：</span>18681587662</p>
-                     <p><span>地址：</span>大冲国际中心501</p>
+                     <p class="name">{{ chooseChatUser.nick }}</p>
+                     <p><span>电话：</span>{{ chooseChatUser.phone }}</p>
+                     <p><span>地址：</span>{{ chooseChatUser.address }}</p>
                    </div>
                 </div>
             </div>
@@ -80,11 +80,18 @@ export default {
       leftBtnOptions: {
         backText: ' ',
         preventGoBack: true
-      },
-      layerUserMessage: false
+      }
+      // chooseChatUser: null
     }
   },
+  created () {
+    this.chooseChatUser = this.$store.state.chooseChatUser
+  },
   computed: {
+    demo () {
+      this.chooseChatUser = this.$store.state.chooseChatUser
+      return this.chooseChatUser !== null
+    },
     sessionId () {
       let sessionId = this.$route.params.sessionId
       return sessionId
@@ -157,6 +164,9 @@ export default {
         }
         location.href = `#/namecard/${account}`
       }
+    },
+    layerWarp () {
+      this.$store.dispatch('chooseChatUser', null)
     }
   }
 }

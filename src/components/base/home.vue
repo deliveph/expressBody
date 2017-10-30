@@ -40,9 +40,9 @@
             </ul>
         </div>
         <div class="hg10"></div>
-        <div class="advertisement_banner">
+        <div class="advertisement_banner" v-if="homeTipImageUrl !== ''">
             <router-link :to="{name:'Detail',query:{type:'home_tip'}}">
-                <img src="/static/assets/images/picture_fuwu.png" />
+                <img :src="homeTipImageUrl" />
             </router-link>
         </div>
         <div class="footer_btn">
@@ -119,7 +119,8 @@ export default {
             })
           }
         }
-      }]
+      }],
+      homeTipImageUrl: ''
     }
   },
   components: {
@@ -180,6 +181,7 @@ export default {
         that.dataobject = data
         that.service = data.service
         that.carousels = data.carousels
+        that.homeTipImageUrl = data.home_tip_image_url
       } else {
         that.$vux.toast.text(msg.message, 'middle', 100)
       }
