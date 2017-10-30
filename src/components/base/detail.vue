@@ -78,7 +78,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import "../../../static/assets/css/px2rem.scss";
   .detail {}
   
@@ -87,9 +87,7 @@
     font-size: px2rem(28);
     color: #333;
     text-align: left;
-    // text-indent:2em;
-    line-height: px2rem(38);
-    padding: 0 px2rem(30);
+    padding: px2rem(20) px2rem(30) px2rem(90) px2rem(30); 
     img {
       width: 100%;
     }

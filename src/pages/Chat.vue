@@ -38,7 +38,7 @@
                    <div class="right_msg">
                      <p class="name">{{ chooseChatUser.nick }}</p>
                      <p><span>电话：</span>{{ chooseChatUser.phone }}</p>
-                     <p><span>地址：</span>{{ chooseChatUser.address }}</p>
+                     <p class="address"><span>地址：</span>{{ chooseChatUser.address }}</p>
                    </div>
                 </div>
             </div>
@@ -356,7 +356,7 @@ export default {
         z-index: 10;
         &.layer_userMessage{
           .layer_box{
-            width:100%;
+            // width:100%;
             // height: px2rem(304);
             background-color: #fff;
             display: inline-block;
@@ -365,7 +365,7 @@ export default {
             border-top-right-radius: px2rem(10);
             position: absolute;
             bottom: 0;
-            padding:px2rem(56) px2rem(78);
+            padding:px2rem(56) px2rem(38);
             .user_message_main{
               display: flex;
               .img{
@@ -374,6 +374,7 @@ export default {
                 border-radius: 50%;
                 line-height:px2rem(150);
                 vertical-align: middle;
+                margin-right:px2rem(30);
                 img{
                   width: px2rem(136);
                   height:px2rem(136);
@@ -387,9 +388,12 @@ export default {
                 p{
                   font-size:px2rem(30);
                   color:#999;
-                  margin-bottom: px2rem(25);
+                  margin-bottom: px2rem(15);
                   &.name{
                     color:#666;
+                  }
+                  &.address{
+                    line-height: px2rem(45);
                   }
                 }
               }

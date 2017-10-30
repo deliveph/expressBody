@@ -277,7 +277,7 @@ export default {
             let that = this
             let stage = that.stage
             let current_service = stage.current_service
-            if (!that.defaultFalse) {
+            if (that.defaultFalse) {
                 if (stage.current_service != '') {
                     that.defaultFalse = true
                     that.realName = current_service.service_nickname
@@ -295,7 +295,7 @@ export default {
             let that = this
             let stage = that.stage
             let current_service = stage.current_service
-            if (!that.defaultFalse1) {
+            if (that.defaultFalse1) {
                 if (stage.current_service != '') {
                     that.defaultFalse1 = true
                     that.reservationName = current_service.service_nickname

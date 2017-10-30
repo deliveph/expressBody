@@ -1,12 +1,14 @@
 <template>
   <div id="app">
     <router-view v-wechat-title="$route.meta.title"></router-view>
+    <getBack></getBack>
   </div>
 </template>
 
 <script>
 // import vueDragDrop from 'vue-drag-and-drop'
 import draggable from 'vuedraggable'
+import getBack from '../src/components/getBack'
 import qs from 'qs'
 
 import Vue from 'vue'
@@ -46,7 +48,8 @@ export default {
     draggable,
     ViewBox,
     Loading,
-    FullscreenImg
+    FullscreenImg,
+    getBack
   },
   watch: {
     // 更新页面所在位置，用于判断是前进页还是后退页
