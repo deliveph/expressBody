@@ -48,12 +48,11 @@
 import Grade from '../../../components/grade'
 import { mapState } from 'vuex'
 export default {
-  props: ['headerObject'],
+  props: ['headerObject', 'express'],
   data () {
     return {
       token: '',
       userid: '',
-      express: false,
       user_avatar: '/static/assets/images/head_def.png',
       user_nickname: '共享快递哥',
       service_avatar: '/static/assets/images/head_def.png',
@@ -95,6 +94,9 @@ export default {
         let serviceLevel = service.service_level
         that.service_level_logo = serviceLevel.service_level_logo
       }
+    },
+    express () {
+      return this.express
     }
   },
   created () {

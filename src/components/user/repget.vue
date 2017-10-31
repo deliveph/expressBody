@@ -63,7 +63,7 @@
                 </div>
                 <div class="order-list-item" v-if="items.collection_order_type_id == 2">
                     <p>预约收件时间：
-                        <span>{{items.estimate_collection_start_time.substring(5, 16)}} — {{items.estimate_collection_start_time.substring(5, 16)}}</span>
+                        <span>{{items.estimate_collection_start_time.substring(5, 16)}} — {{items.estimate_collection_end_time.substring(5, 16)}}</span>
                     </p>
                 </div>
                 <div class="order-list-item">
@@ -133,7 +133,7 @@
             <div class="order-group">
                 <!-- 用户操作按纽 -->
                 <button class="disable-btn" v-if="items.collection_order_status_id == 1 && status == 'user' || items.collection_order_status_id == 2 && status == 'user'" @click="cancel(items.collection_order_number,'collection')">取消</button>
-                <button v-if="items.collection_order_status_id == 1 && status == 'user' || items.collection_order_status_id == 2 && status == 'user'" @click="editerorder(items.collection_order_number)">编辑</button>
+                <button v-if="items.collection_order_status_id == 1 && status == 'service' || items.collection_order_status_id == 2 && status == 'service'" @click="editerorder(items.collection_order_number)">编辑</button>
                 <button v-else-if="items.collection_order_status_id == 3 && status == 'user'" @click="clickModifyTime(items.collection_order_number)">修改送件时间</button>
                 <button v-else-if="items.collection_order_status_id == 4 && status == 'user'" @click="pay(items.collection_order_number)">去支付</button>
                 <button v-else-if="items.collection_order_status_id == 5 && status == 'user'" @click="evaluate(items.collection_order_number)">去评价</button>
@@ -211,312 +211,312 @@ import LayerPw from '../base/public/layer_pw'
 import { Confirm, PopupPicker } from 'vux'
 import qs from 'qs'
 export default {
-    data() {
-        return {
-            layerPwhide: false,
-            collection_order_number: '',
-            items: {},
-            user: {},
-            service_time: {},
-            status: '',
-            layerSend: false,
-            layermodifyTime:false,
+  data () {
+    return {
+      layerPwhide: false,
+      collection_order_number: '',
+      items: {},
+      user: {},
+      service_time: {},
+      status: '',
+      layerSend: false,
+      layermodifyTime: false,
             //
-            title1: '',
-            value1: ["一小时内"],
-            placeholder1:'',
-            list1: [
-            ],
-            format: function(value, name) {
-                if (name) {
-                    return `${name}`
-                } else {
-                    return `${value}`
-                }
-            },
-            begin: "00:00",
-            end: "00:00",
-            timequantum: "-",
+      title1: '',
+      value1: ['一小时内'],
+      placeholder1: '',
+      list1: [
+      ],
+      format: function (value, name) {
+        if (name) {
+          return `${name}`
+        } else {
+          return `${value}`
         }
-    },
-    created() {
-        this.getOrder()
-    },
-    components: {
-        Toast,
-        Confirm,
-        PopupPicker,
-        LayerPw
-    },
-    methods: {
+      },
+      begin: '00:00',
+      end: '00:00',
+      timequantum: '-'
+    }
+  },
+  created () {
+    this.getOrder()
+  },
+  components: {
+    Toast,
+    Confirm,
+    PopupPicker,
+    LayerPw
+  },
+  methods: {
         // 计算时间段
         // 时间格式化
-        formatDateTime: function(e, t) {
-            var r = function(e) {
-                return e += '', e.replace(/^(\d)$/, '0$1')
-            },
-                n = {
-                    yyyy: e.getFullYear(),
-                    yy: e.getFullYear().toString().substring(2),
-                    M: e.getMonth() + 1,
-                    MM: r(e.getMonth() + 1),
-                    d: r(e.getDate()),
-                    dd: r(e.getDate()),
-                    hh: r(e.getHours()),
-                    mm: r(e.getMinutes()),
-                    ss: r(e.getSeconds()),
-                    SSS: r(e.getMilliseconds())
-                }
-            return t || (t = "yyyy-MM-dd hh:mm:ss"), t.replace(/([a-z])(\1)*/gi, function(e) {
-                return n[e]
-            })
+    formatDateTime: function (e, t) {
+      var r = function (e) {
+          return e += '', e.replace(/^(\d)$/, '0$1')
         },
-        formattedTimeInit() {
-            let that = this
-            that.arr = [{
-                name: '今天',
-                value: '1',
-                parent: 0
-            }, {
-                name: '明天',
-                value: '2',
-                parent: 0
-            }, {
-                name: '后天',
-                value: '3',
-                parent: 0
-            }, {
-                name: '一小时内',
-                value: '-',
-                parent: '1'
-            }]
-            let newDate = that.formatDateTime(new Date, "yyyy/MM/dd")
-            let startDate = newDate + " " + that.begin + ":00"
-            let endDate = newDate + " " + that.end + ":00"
-            let startDateTimestamp = new Date(startDate).getTime()
-            let endDateTimestamp = new Date(endDate).getTime()
-            let step = 60 * 60 * 1000
-            let currentTimestamp = new Date().getTime()
+        n = {
+          yyyy: e.getFullYear(),
+          yy: e.getFullYear().toString().substring(2),
+          M: e.getMonth() + 1,
+          MM: r(e.getMonth() + 1),
+          d: r(e.getDate()),
+          dd: r(e.getDate()),
+          hh: r(e.getHours()),
+          mm: r(e.getMinutes()),
+          ss: r(e.getSeconds()),
+          SSS: r(e.getMilliseconds())
+        }
+      return t || (t = 'yyyy-MM-dd hh:mm:ss'), t.replace(/([a-z])(\1)*/gi, function (e) {
+        return n[e]
+      })
+    },
+    formattedTimeInit () {
+      let that = this
+      that.arr = [{
+        name: '今天',
+        value: '1',
+        parent: 0
+      }, {
+        name: '明天',
+        value: '2',
+        parent: 0
+      }, {
+        name: '后天',
+        value: '3',
+        parent: 0
+      }, {
+        name: '一小时内',
+        value: '-',
+        parent: '1'
+      }]
+      let newDate = that.formatDateTime(new Date(), 'yyyy/MM/dd')
+      let startDate = newDate + ' ' + that.begin + ':00'
+      let endDate = newDate + ' ' + that.end + ':00'
+      let startDateTimestamp = new Date(startDate).getTime()
+      let endDateTimestamp = new Date(endDate).getTime()
+      let step = 60 * 60 * 1000
+      let currentTimestamp = new Date().getTime()
             // 今天
-            for (let timestamp = startDateTimestamp; timestamp <= endDateTimestamp; timestamp += step) {
-                if (timestamp >= currentTimestamp) {
-                    let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
-                    let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
-                    that.arr.push({
-                        name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
-                        value: tmp1 + "~" + tmp2,
-                        parent: '1'
-                    })
-                }
-            }
-            let step1 = 24 * 60 * 60 * 1000
+      for (let timestamp = startDateTimestamp; timestamp <= endDateTimestamp; timestamp += step) {
+        if (timestamp >= currentTimestamp) {
+          let tmp1 = that.formatDateTime(new Date(timestamp), 'yyyy/MM/dd hh:mm:ss')
+          let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), 'yyyy/MM/dd hh:mm:ss')
+          that.arr.push({
+            name: tmp1.split(' ')[1].substring(0, 5) + '~' + tmp2.split(' ')[1].substring(0, 5),
+            value: tmp1 + '~' + tmp2,
+            parent: '1'
+          })
+        }
+      }
+      let step1 = 24 * 60 * 60 * 1000
             // 明天
-            endDateTimestamp = endDateTimestamp + step1
-            for (let timestamp = startDateTimestamp + step1; timestamp <= endDateTimestamp; timestamp += step) {
-                let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
-                let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
-                that.arr.push({
-                    name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
-                    value: tmp1 + "~" + tmp2,
-                    parent: '2'
-                })
-            }
+      endDateTimestamp = endDateTimestamp + step1
+      for (let timestamp = startDateTimestamp + step1; timestamp <= endDateTimestamp; timestamp += step) {
+        let tmp1 = that.formatDateTime(new Date(timestamp), 'yyyy/MM/dd hh:mm:ss')
+        let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), 'yyyy/MM/dd hh:mm:ss')
+        that.arr.push({
+          name: tmp1.split(' ')[1].substring(0, 5) + '~' + tmp2.split(' ')[1].substring(0, 5),
+          value: tmp1 + '~' + tmp2,
+          parent: '2'
+        })
+      }
             // 后天
-            endDateTimestamp = endDateTimestamp + step1
-            for (let timestamp = startDateTimestamp + 2 * step1; timestamp <= endDateTimestamp; timestamp += step) {
-                let tmp1 = that.formatDateTime(new Date(timestamp), "yyyy/MM/dd hh:mm:ss")
-                let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), "yyyy/MM/dd hh:mm:ss")
-                that.arr.push({
-                    name: tmp1.split(" ")[1].substring(0, 5) + "~" + tmp2.split(" ")[1].substring(0, 5),
-                    value: tmp1 + "~" + tmp2,
-                    parent: '3'
-                })
-            }
-            that.list1 = that.arr
-        },
-        getOrder(result) {
-            let that = this
-            that.collection_order_number = that.$route.query.collection_order_number
-            that.status = that.$route.query.status
-            that.http(that.configs.apiTop + "/page/collection-order-detail/" + that.collection_order_number, "get", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    let data = msg.data
-                    that.items = data.collection_order
-                    that.user = data.user
-                    that.service_time = data.service_time
-                    that.begin = that.service_time.start_time
-                    that.end = that.service_time.end_time
-                    that.formattedTimeInit()
-                } else if (msg.code === 40016) {
-                    that.layerPwhide = true
+      endDateTimestamp = endDateTimestamp + step1
+      for (let timestamp = startDateTimestamp + 2 * step1; timestamp <= endDateTimestamp; timestamp += step) {
+        let tmp1 = that.formatDateTime(new Date(timestamp), 'yyyy/MM/dd hh:mm:ss')
+        let tmp2 = that.formatDateTime(new Date(Math.min(timestamp + step, endDateTimestamp)), 'yyyy/MM/dd hh:mm:ss')
+        that.arr.push({
+          name: tmp1.split(' ')[1].substring(0, 5) + '~' + tmp2.split(' ')[1].substring(0, 5),
+          value: tmp1 + '~' + tmp2,
+          parent: '3'
+        })
+      }
+      that.list1 = that.arr
+    },
+    getOrder (result) {
+      let that = this
+      that.collection_order_number = that.$route.query.collection_order_number
+      that.status = that.$route.query.status
+      that.http(that.configs.apiTop + '/page/collection-order-detail/' + that.collection_order_number, 'get', '', function (res) {
+        let msg = res.data
+        if (msg.code == 0) {
+          let data = msg.data
+          that.items = data.collection_order
+          that.user = data.user
+          that.service_time = data.service_time
+          that.begin = that.service_time.start_time
+          that.end = that.service_time.end_time
+          that.formattedTimeInit()
+        } else if (msg.code === 40016) {
+          that.layerPwhide = true
                     // location.href = that.configs.accreditUrl
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        },
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
         // 用户编辑订单
-        editerorder(order_number) {
-            let that = this
-            let collection_order_type_id = that.items.collection_order_type_id
-            let index = ''
-            if (collection_order_type_id == 1) {
-                index = 0
-            } else if (collection_order_type_id == 2) {
-                index = 1
-            }
-            if (order_number != '') {
-                this.$router.push({ name: 'Collection', query: { collection_order_number: order_number, index: index } })
-            } else {
-                this.$router.push({ name: 'Collection' })
-            }
-        },
+    editerorder (orderNumber) {
+      let that = this
+      let collectionOrderTypeId = that.items.collection_order_type_id
+      let index = ''
+      if (collectionOrderTypeId === 1) {
+        index = 0
+      } else if (collectionOrderTypeId === 2) {
+        index = 1
+      }
+      if (orderNumber !== '') {
+        this.$router.push({ name: 'updateCollectionOrder', query: { collection_order_number: orderNumber, index: index } })
+      } else {
+        this.$router.push({ name: 'Collection' })
+      }
+    },
         // 用户取消订单
-        cancel(collection_order_number, type) {
-            let that = this
-            this.$vux.confirm.show({
-                title: '取消订单',
-                content: '确定要取消此订单???',
+    cancel (collection_order_number, type) {
+      let that = this
+      this.$vux.confirm.show({
+        title: '取消订单',
+        content: '确定要取消此订单???',
                 // 组件除show外的属性
-                onCancel() {
+        onCancel () {
 
-                },
-                onConfirm() {
-                    if (collection_order_number,type) {
-                        that.http(that.configs.apiTop + "/order/cancel-collection-order/" + collection_order_number, "post", '', function(res) {
-                            let msg = res.data
-                            if (msg.code == 0) {
-                                that.$router.push({path: '/ordercancel',query:{status:type}}) 
+        },
+        onConfirm () {
+          if (collection_order_number, type) {
+            that.http(that.configs.apiTop + '/order/cancel-collection-order/' + collection_order_number, 'post', '', function (res) {
+              let msg = res.data
+              if (msg.code == 0) {
+                that.$router.push({path: '/ordercancel', query: {status: type}})
                                 // that.$vux.toast.text(msg.message, 'middle', 100)
                                 // setTimeout(function() {
                                 //     that.$router.push({ path: '/order' })
                                 // }, 200);
-                            } else if (msg.code == 40004) {
+              } else if (msg.code == 40004) {
 
-                            } else {
-                                that.$vux.toast.text(msg.message, 'middle', 100);
-                            }
-                        })
-                    }
-                }
+              } else {
+                that.$vux.toast.text(msg.message, 'middle', 100)
+              }
             })
-        },
-        // 修改送件时间
-        modifyTimeConfirm(){
-            let that = this;
-            if (that.realLogisticFee == '') {
-                that.realLogisticFee = 0
-            }
-            let take_start_time = ''
-            let take_end_time = ''
-            if (that.timequantum == "-") { // 一小时内
-                take_start_time = that.formatDateTime(new Date(), "yyyy/MM/dd hh:mm:00")
-                take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), "yyyy/MM/dd hh:mm:00")
-            } else {
-                let arr = that.timequantum.split("~")
-                take_start_time = arr[0]
-                take_end_time = arr[1]
-            }
-            let data = qs.stringify({
-                'delivery_start_time': take_start_time,
-                'delivery_end_time': take_end_time,
-            })
-            this.http(that.configs.apiTop + "/collection-order/update-take-time/" + that.collection_order_number, "post", data, function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                    setTimeout(function() {
-                        that.$router.push({ path: '/order' })
-                    }, 200);
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        },
-        // 用户支付订单
-        pay(collection_order_number) {
-            this.$router.push({ path: '/confirm', query: { express_order_number: collection_order_number, express_order_type: 'collection' } })
-        },
-        // 去评价
-        evaluate(collection_order_number) {
-            this.$router.push({ path: '/evaluate', query: { ship_order_number: collection_order_number, type: 'collection' } })
-        },
-        // 客服接受寄件订单
-        receiveOrder(collection_order_number) {
-            let that = this
-            this.http(that.configs.apiTop + "/order/receive-collection-order/" + collection_order_number, "post", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    that.$vux.toast.text(msg.message, 'middle', 100)
-                    setTimeout(function() {
-                        that.$router.push({ path: '/serviceOrder' })
-                    }, 200);
-                } else if (msg.code == 40004) {
-
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        },
-        // 客服确定收到收件
-        affirmShip(collection_order_number) {
-            let that = this
-            this.http(that.configs.apiTop + "/collection-order/affirm-collection/" + collection_order_number, "post", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    that.$vux.toast.text(msg.message, 'middle', 100)
-                    setTimeout(function() {
-                        that.$router.push({ path: '/serviceOrder' })
-                    }, 200);
-                } else if (msg.code == 40004) {
-
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        },
-        // 客服确定送达收件
-        affirmDelivery(collection_order_number) {
-            let that = this
-            this.http(that.configs.apiTop + "/collection-order/affirm-delivery/" + collection_order_number, "post", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    that.$vux.toast.text(msg.message, 'middle', 100)
-                    setTimeout(function() {
-                        that.$router.push({ path: '/serviceOrder' })
-                    }, 200);
-                } else if (msg.code == 40004) {
-
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        },
-        sendMessage() {
-            let that = this
-            this.$router.push({ path: '/chat/p2p-user_' + that.items.user_id })
-        },
-        layerSendFun() {
-            let that = this
-            this.layerSend = true
-        },
-        layerSendFun1(){
-            let that = this
-            this.layerSend = false
-        },
-        clickModifyTime(){
-            let that = this
-            that.layermodifyTime = true
-        },
-        modifyTimeCancel() {
-            let that = this
-            that.layermodifyTime = false
-        },
-        onChangePickUpTime(values) {
-            this.timequantum = values[1]
+          }
         }
+      })
+    },
+        // 修改送件时间
+    modifyTimeConfirm () {
+      let that = this
+      if (that.realLogisticFee == '') {
+        that.realLogisticFee = 0
+      }
+      let take_start_time = ''
+      let take_end_time = ''
+      if (that.timequantum == '-') { // 一小时内
+        take_start_time = that.formatDateTime(new Date(), 'yyyy/MM/dd hh:mm:00')
+        take_end_time = that.formatDateTime(new Date(new Date().getTime() + 60 * 60 * 1000), 'yyyy/MM/dd hh:mm:00')
+      } else {
+        let arr = that.timequantum.split('~')
+        take_start_time = arr[0]
+        take_end_time = arr[1]
+      }
+      let data = qs.stringify({
+        'delivery_start_time': take_start_time,
+        'delivery_end_time': take_end_time
+      })
+      this.http(that.configs.apiTop + '/collection-order/update-take-time/' + that.collection_order_number, 'post', data, function (res) {
+        let msg = res.data
+        if (msg.code == 0) {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+          setTimeout(function () {
+            that.$router.push({ path: '/order' })
+          }, 200)
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+        // 用户支付订单
+    pay (collection_order_number) {
+      this.$router.push({ path: '/confirm', query: { express_order_number: collection_order_number, express_order_type: 'collection' } })
+    },
+        // 去评价
+    evaluate (collection_order_number) {
+      this.$router.push({ path: '/evaluate', query: { ship_order_number: collection_order_number, type: 'collection' } })
+    },
+        // 客服接受寄件订单
+    receiveOrder (collection_order_number) {
+      let that = this
+      this.http(that.configs.apiTop + '/order/receive-collection-order/' + collection_order_number, 'post', '', function (res) {
+        let msg = res.data
+        if (msg.code == 0) {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+          setTimeout(function () {
+            that.$router.push({ path: '/serviceOrder' })
+          }, 200)
+        } else if (msg.code == 40004) {
+
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+        // 客服确定收到收件
+    affirmShip (collection_order_number) {
+      let that = this
+      this.http(that.configs.apiTop + '/collection-order/affirm-collection/' + collection_order_number, 'post', '', function (res) {
+        let msg = res.data
+        if (msg.code == 0) {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+          setTimeout(function () {
+            that.$router.push({ path: '/serviceOrder' })
+          }, 200)
+        } else if (msg.code == 40004) {
+
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+        // 客服确定送达收件
+    affirmDelivery (collection_order_number) {
+      let that = this
+      this.http(that.configs.apiTop + '/collection-order/affirm-delivery/' + collection_order_number, 'post', '', function (res) {
+        let msg = res.data
+        if (msg.code == 0) {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+          setTimeout(function () {
+            that.$router.push({ path: '/serviceOrder' })
+          }, 200)
+        } else if (msg.code == 40004) {
+
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+    sendMessage () {
+      let that = this
+      this.$router.push({ path: '/chat/p2p-user_' + that.items.user_id })
+    },
+    layerSendFun () {
+      let that = this
+      this.layerSend = true
+    },
+    layerSendFun1 () {
+      let that = this
+      this.layerSend = false
+    },
+    clickModifyTime () {
+      let that = this
+      that.layermodifyTime = true
+    },
+    modifyTimeCancel () {
+      let that = this
+      that.layermodifyTime = false
+    },
+    onChangePickUpTime (values) {
+      this.timequantum = values[1]
     }
+  }
 }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>

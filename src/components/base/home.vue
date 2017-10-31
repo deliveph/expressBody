@@ -8,7 +8,7 @@
             </span>
             <span v-else>正在定位</span>
         </div>
-        <Vheader :header-object="dataobject"></Vheader>
+        <Vheader :header-object="dataobject" :express="true"></Vheader>
         <div class="hg10"></div>
         <banner :banner-object="carousels"></banner>
         <div class="entrance_list">
@@ -140,8 +140,8 @@ export default {
     },
     cancel () {
       let that = this
-      that.$parent.layerhide = false
-      that.wx.closeWindow()
+      console.log('22312312312312')
+      that.is_perfect = false
     },
     reportUserLocation () {
       let that = this
@@ -169,7 +169,7 @@ export default {
   created () {
     let that = this
     let isPerfect = this.$route.query.is_perfect
-    if (isPerfect === 0) {
+    if (isPerfect === '0') {
       that.is_perfect = true
     } else {
       that.is_perfect = false

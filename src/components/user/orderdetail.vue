@@ -64,7 +64,7 @@
                 </div>
                 <div class="order-list-item">
                     <p>取件时间：
-                        <span>{{items.take_start_time}}~{{items.take_end_time}}</span>
+                        <span>{{items.take_start_time.substring(0, 16)}}~{{items.take_end_time.substring(0, 16)}}</span>
                     </p>
                 </div>
                 <div class="order-list-item">
@@ -155,7 +155,7 @@
         <div class="order-group">
             <!-- 用户操作按纽 -->
             <button class="disable-btn" v-if="(items.ship_order_status_id == 1 && status == 'user') || (items.ship_order_status_id == 2 && status == 'user')" @click="cancel(items.ship_order_number,'ship')">取消</button>
-            <button v-if="items.ship_order_status_id == 1 && status == 'user' || items.ship_order_status_id == 2 && status == 'user'" @click="editerorder(items.ship_order_number)">编辑</button>
+            <button v-if="items.ship_order_status_id == 1 && status == 'service' || items.ship_order_status_id == 2 && status == 'service'" @click="editerorder(items.ship_order_number)">编辑</button>
             <button v-else-if="items.ship_order_status_id == 3 && status == 'user'" @click="pay(items.ship_order_number)">去支付</button>
             <button v-else-if="items.ship_order_status_id == 4 && status == 'user'" @click="evaluate(items.ship_order_number)">去评价</button>
             <button v-else-if="items.ship_order_status_id == 5 && status == 'user'" @click="editerorder()">继续下单</button>
@@ -237,223 +237,222 @@ import { Toast, Confirm, PopupPicker } from 'vux'
 import LayerPw from '../base/public/layer_pw'
 import qs from 'qs'
 export default {
-    data() {
-        return {
-            layerPwhide: false,
-            items: {},
-            user: {},
-            service_time: {},
-            ship_order_number: '',
-            status: '',
-            writelayerStorey: false,
-            layerSend: false,
-            company: '',
-            code: '',
-            title1: '',
-            list1: [],
-            value1: ['默认'],
-            placeholder1: '请选择快递公司',
-            format: function(value, name) {
-                if (name) {
-                    return `${name}`
-                } else {
-                    return `${value}`
-                }
-            }
+  data () {
+    return {
+      layerPwhide: false,
+      items: {},
+      user: {},
+      service_time: {},
+      ship_order_number: '',
+      status: '',
+      writelayerStorey: false,
+      layerSend: false,
+      company: '',
+      code: '',
+      title1: '',
+      list1: [],
+      value1: ['默认'],
+      placeholder1: '请选择快递公司',
+      format: function (value, name) {
+        if (name) {
+          return `${name}`
+        } else {
+          return `${value}`
         }
+      }
+    }
+  },
+  components: {
+    Toast,
+    Confirm,
+    PopupPicker,
+    LayerPw
+  },
+  created () {
+    this.getOrder()
+  },
+  methods: {
+    getOrder (result) {
+      let that = this
+      that.ship_order_number = that.$route.query.ship_order_number
+      that.status = that.$route.query.status
+      that.http(that.configs.apiTop + '/page/ship-order-detail/' + that.ship_order_number, 'get', '', function (res) {
+        let msg = res.data
+        if (msg.code == 0) {
+          that.items = msg.data.ship_order
+          that.user = msg.data.user
+          that.service_time = msg.data.service_time
+        } else if (msg.code === 40016) {
+          that.layerPwhide = true
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
     },
-    components: {
-        Toast,
-        Confirm,
-        PopupPicker,
-        LayerPw
-    },
-    created() {
-        this.getOrder()
-    },
-    methods: {
-        getOrder(result) {
-            let that = this
-            that.ship_order_number = that.$route.query.ship_order_number
-            that.status = that.$route.query.status
-            that.http(that.configs.apiTop + "/page/ship-order-detail/" + that.ship_order_number, "get", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    that.items = msg.data.ship_order
-                    that.user = msg.data.user
-                    that.service_time = msg.data.service_time
-                } else if (msg.code === 40016) {
-                    that.layerPwhide = true
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        },
         // 用户编辑订单
-        editerorder(order_number) {
-            let that = this
-            if (order_number != '') {
-                this.$router.push({ name: 'Send', query: { ship_order_number: order_number } })
-            } else {
-                this.$router.push({ name: 'Send' })
-            }
+    editerorder (order_number) {
+      let that = this
+      if (order_number != '') {
+        this.$router.push({ name: 'updateShipOrder', query: { ship_order_number: order_number } })
+      } else {
+        this.$router.push({ name: 'Send' })
+      }
+    },
+        // 用户取消订单
+    cancel (ship_order_number, type) {
+      let that = this
+      this.$vux.confirm.show({
+        title: '取消订单',
+        content: '确定要取消此订单???',
+                // 组件除show外的属性
+        onCancel () {
 
         },
-        // 用户取消订单
-        cancel(ship_order_number, type) {
-            let that = this
-            this.$vux.confirm.show({
-                title: '取消订单',
-                content: '确定要取消此订单???',
-                // 组件除show外的属性
-                onCancel() {
-
-                },
-                onConfirm() {
-                    if (ship_order_number,type) {
-                        that.http(that.configs.apiTop + "/order/cancel-ship-order/" + ship_order_number, "post", '', function(res) {
-                            let msg = res.data
-                            if (msg.code == 0) {
-                                that.$router.push({path: '/ordercancel',query:{status:type}}) 
+        onConfirm () {
+          if (ship_order_number, type) {
+            that.http(that.configs.apiTop + '/order/cancel-ship-order/' + ship_order_number, 'post', '', function (res) {
+              let msg = res.data
+              if (msg.code == 0) {
+                that.$router.push({path: '/ordercancel', query: {status: type}})
                                 // that.$vux.toast.text(msg.message, 'middle', 100)
                                 // setTimeout(function() {
                                 //     that.$router.push({ path: '/user' })
                                 // }, 200);
-                            } else if (msg.code == 40004) {
+              } else if (msg.code == 40004) {
 
-                            } else {
-                                that.$vux.toast.text(msg.message, 'middle', 100);
-                            }
-                        })
-                    }
-                }
+              } else {
+                that.$vux.toast.text(msg.message, 'middle', 100)
+              }
             })
-        },
-        // 用户支付订单
-        pay(ship_order_number) {
-            this.$router.push({ path: '/confirm', query: { express_order_number: ship_order_number, express_order_type: 'ship' } })
-        },
-        // 去评价
-        evaluate(ship_order_number) {
-            this.$router.push({ path: '/evaluate', query: { ship_order_number: ship_order_number, type: 'ship' } })
-        },
-        // 客服接受寄件订单
-        receiveOrder(ship_order_number) {
-            let that = this
-            this.http(that.configs.apiTop + "/order/receive-ship-order/" + ship_order_number, "post", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    that.$vux.toast.text(msg.message, 'middle', 100)
-                    setTimeout(function() {
-                        that.$router.push({ path: '/serviceOrder' })
-                    }, 200);
-                } else if (msg.code == 40004) {
-
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        },
-        // 客服确定寄件
-        affirmShip(ship_order_number) {
-            let that = this
-            this.http(that.configs.apiTop + "/order/affirm-ship-order/" + ship_order_number, "post", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    that.$vux.toast.text(msg.message, 'middle', 100)
-                    setTimeout(function() {
-                        that.$router.push({ path: '/serviceOrder' })
-                    }, 200);
-                } else if (msg.code == 40004) {
-
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        },
-        // 客服填写/修改快递单号
-        writelayer(ship_order_number) {
-            let that = this
-            that.writelayerStorey = true
-            that.value1 = that.items.logistics_company_name
-            that.code = that.items.logistics_code
-            that.logisticsCompaniesList()
-        },
-        writeConfirm() {
-            let that = this;
-            if(that.items.logistics_company_name != '默认'){
-                that.company = that.items.logistics_company_name
-            }
-            if (that.company == '') {
-                this.$vux.toast.text('请选择快递公司', 'middle', 100);
-                return false;
-            } else if (that.code == '') {
-                this.$vux.toast.text('请输入快递单号', 'middle', 100);
-                return false;
-            }
-            let data = qs.stringify({
-                'logistics_company_id': that.company,
-                'logistics_code': that.code,
-            })
-            this.http(that.configs.apiTop + "/ship-order/fill-in-logistics-code/" + that.items.ship_order_number, "post", data, function(res) {
-                let msg = res.data
-                let data = msg.data
-                if (msg.code == 0) {
-                    that.$vux.toast.text(msg.message, 'middle', 100)
-                    that.writelayerStorey = false
-                    setTimeout(function() {
-                        that.$router.push({ path: '/orderdetail' })
-                    }, 200);
-                } else if (msg.code == 40004) {
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        },
-        writeCancel() {
-            let that = this
-            that.writelayerStorey = false
-        },
-        //快递公司列表 
-        logisticsCompaniesList() {
-            let that = this
-            let logistics_companies = []
-            this.http(that.configs.apiTop + "/logistics/logistics-companies", "get", '', function(res) {
-                let msg = res.data
-                let data = msg.data
-                if (msg.code == 0) {
-                    // 快递公司
-                    for (let i = 0; i < data.length; i++) {
-                        logistics_companies.push({
-                            name: data[i].logistics_company_name,
-                            value: String(data[i].logistics_company_id),
-                            parent: 0,
-                        })
-                    }
-                    that.list1 = logistics_companies
-                } else if (msg.code == 40004) {
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        },
-        //取物流公司id 
-        onChangeOfLogisticsCompanies(values) {
-            this.company = values[0]
-        },
-        sendMessage() {
-            let that = this
-            this.$router.push({ path: '/chat/p2p-user_' + that.items.user_id })
-        },
-        layerSendFun() {
-            let that = this
-            this.layerSend = true
-        },
-        layerSendFun1(){
-            let that = this
-            this.layerSend = false
+          }
         }
+      })
+    },
+        // 用户支付订单
+    pay (ship_order_number) {
+      this.$router.push({ path: '/confirm', query: { express_order_number: ship_order_number, express_order_type: 'ship' } })
+    },
+        // 去评价
+    evaluate (ship_order_number) {
+      this.$router.push({ path: '/evaluate', query: { ship_order_number: ship_order_number, type: 'ship' } })
+    },
+        // 客服接受寄件订单
+    receiveOrder (ship_order_number) {
+      let that = this
+      this.http(that.configs.apiTop + '/order/receive-ship-order/' + ship_order_number, 'post', '', function (res) {
+        let msg = res.data
+        if (msg.code == 0) {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+          setTimeout(function () {
+            that.$router.push({ path: '/serviceOrder' })
+          }, 200)
+        } else if (msg.code == 40004) {
+
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+        // 客服确定寄件
+    affirmShip (ship_order_number) {
+      let that = this
+      this.http(that.configs.apiTop + '/order/affirm-ship-order/' + ship_order_number, 'post', '', function (res) {
+        let msg = res.data
+        if (msg.code == 0) {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+          setTimeout(function () {
+            that.$router.push({ path: '/serviceOrder' })
+          }, 200)
+        } else if (msg.code == 40004) {
+
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+        // 客服填写/修改快递单号
+    writelayer (ship_order_number) {
+      let that = this
+      that.writelayerStorey = true
+      that.value1 = that.items.logistics_company_name
+      that.code = that.items.logistics_code
+      that.logisticsCompaniesList()
+    },
+    writeConfirm () {
+      let that = this
+      if (that.items.logistics_company_name != '默认') {
+        that.company = that.items.logistics_company_name
+      }
+      if (that.company == '') {
+        this.$vux.toast.text('请选择快递公司', 'middle', 100)
+        return false
+      } else if (that.code == '') {
+        this.$vux.toast.text('请输入快递单号', 'middle', 100)
+        return false
+      }
+      let data = qs.stringify({
+        'logistics_company_id': that.company,
+        'logistics_code': that.code
+      })
+      this.http(that.configs.apiTop + '/ship-order/fill-in-logistics-code/' + that.items.ship_order_number, 'post', data, function (res) {
+        let msg = res.data
+        let data = msg.data
+        if (msg.code == 0) {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+          that.writelayerStorey = false
+          setTimeout(function () {
+            that.$router.push({ path: '/orderdetail' })
+          }, 200)
+        } else if (msg.code == 40004) {
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+    writeCancel () {
+      let that = this
+      that.writelayerStorey = false
+    },
+        // 快递公司列表
+    logisticsCompaniesList () {
+      let that = this
+      let logistics_companies = []
+      this.http(that.configs.apiTop + '/logistics/logistics-companies', 'get', '', function (res) {
+        let msg = res.data
+        let data = msg.data
+        if (msg.code == 0) {
+                    // 快递公司
+          for (let i = 0; i < data.length; i++) {
+            logistics_companies.push({
+              name: data[i].logistics_company_name,
+              value: String(data[i].logistics_company_id),
+              parent: 0
+            })
+          }
+          that.list1 = logistics_companies
+        } else if (msg.code == 40004) {
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+        // 取物流公司id
+    onChangeOfLogisticsCompanies (values) {
+      this.company = values[0]
+    },
+    sendMessage () {
+      let that = this
+      this.$router.push({ path: '/chat/p2p-user_' + that.items.user_id })
+    },
+    layerSendFun () {
+      let that = this
+      this.layerSend = true
+    },
+    layerSendFun1 () {
+      let that = this
+      this.layerSend = false
     }
+  }
 }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>

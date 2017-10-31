@@ -46,6 +46,16 @@ const router = new Router({
     }
   }, // 代收
   {
+    path: '/update-collection-order',
+    name: 'updateCollectionOrder',
+    component (resolve) {
+      require(['../components/base/updateCollectionOrder'], resolve)
+    },
+    meta: {
+      title: '代收件'
+    }
+  },
+  {
     path: '/open',
     name: 'open',
     component (resolve) {
