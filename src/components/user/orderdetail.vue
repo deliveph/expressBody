@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <div class="order-wrapper">
+        <div class="order-wrapper" v-if="JSON.stringify(items) !== '{}'">
             <div class="order-box">
                 <div class="order-list-item">
                     <p>下单时间：
@@ -58,6 +58,11 @@
                     </p>
                 </div>
                 <div class="order-list-item">
+                    <p>物品件数：
+                        <span>{{items.ship_order_goods_number}}件</span>
+                    </p>
+                </div>
+                <div class="order-list-item">
                     <p>预估重量：
                         <span>{{items.estimate_weight}}kg</span>
                     </p>
@@ -90,7 +95,7 @@
                 </div>
                 <div class="order-list-item" v-if="items.ship_order_status_id == 1 && status == 'service' || items.ship_order_status_id == 2 && status == 'service'">
                     <p>预计费用：
-                        <span class="ft-red">￥ {{items.order_fee}}</span>
+                        <span class="ft-red">￥ {{items.order_fee / 10}}</span>
                     </p>
                 </div>
                 <div class="order-list-item" v-if="items.ship_order_status_id >= 4 && status == 'user' || items.ship_order_status_id >= 4 && status == 'user'">
@@ -100,7 +105,7 @@
                 </div>
                 <div class="order-list-item" v-if="items.ship_order_status_id >= 4 && status == 'service' || items.ship_order_status_id >= 4 && status == 'service'">
                     <p>实付金额:
-                        <span class="ft-red">￥ {{items.order_fee}}</span>
+                        <span class="ft-red">￥ {{items.order_fee / 10}}</span>
                     </p>
                 </div>
                 <!--已完成-->
@@ -179,7 +184,7 @@
                         <div class="layer_container">
                             <div class="phone_register register_box">
                                 <div class="phone_number">
-                                    <popup-picker :title="title1" :data="list1" :columns="1" v-model="value1" :display-format="format" :placeholder="placeholder1" @on-change="onChangeOfLogisticsCompanies" v-if="items.logistics_company_name == '默认'"></popup-picker>
+                                    <popup-picker :title="title1" :data="list1" :columns="1" v-model="value1" :display-format="format" :placeholder="placeholder1" @on-change="onChangeOfLogisticsCompanies" v-if="items.is_default_logistics_company === 'Y'"></popup-picker>
                                     <span v-else class="logisticsCompanyName">{{items.logistics_company_name}}</span>
                                 </div>
                                 <div class="phone_code">
@@ -282,6 +287,7 @@ export default {
           that.items = msg.data.ship_order
           that.user = msg.data.user
           that.service_time = msg.data.service_time
+          that.company = that.items.logistics_company_id
         } else if (msg.code === 40016) {
           that.layerPwhide = true
         } else {
@@ -380,30 +386,28 @@ export default {
     },
     writeConfirm () {
       let that = this
-      if (that.items.logistics_company_name != '默认') {
-        that.company = that.items.logistics_company_name
-      }
-      if (that.company == '') {
-        this.$vux.toast.text('请选择快递公司', 'middle', 100)
+    //   if (that.items.is_default_logistics_company !== 'Y') {
+    //     that.company = that.items.logistics_company_id
+    //   }
+      if (that.company === '') {
+        that.$vux.toast.text('请选择快递公司', 'middle', 100)
         return false
-      } else if (that.code == '') {
-        this.$vux.toast.text('请输入快递单号', 'middle', 100)
+      } else if (that.code === '') {
+        that.$vux.toast.text('请输入快递单号', 'middle', 100)
         return false
       }
       let data = qs.stringify({
         'logistics_company_id': that.company,
         'logistics_code': that.code
       })
-      this.http(that.configs.apiTop + '/ship-order/fill-in-logistics-code/' + that.items.ship_order_number, 'post', data, function (res) {
+      that.http(that.configs.apiTop + '/ship-order/fill-in-logistics-code/' + that.items.ship_order_number, 'post', data, function (res) {
         let msg = res.data
-        let data = msg.data
-        if (msg.code == 0) {
+        if (msg.code === 0) {
           that.$vux.toast.text(msg.message, 'middle', 100)
           that.writelayerStorey = false
           setTimeout(function () {
-            that.$router.push({ path: '/orderdetail' })
+            that.$router.go(0)
           }, 200)
-        } else if (msg.code == 40004) {
         } else {
           that.$vux.toast.text(msg.message, 'middle', 100)
         }
@@ -416,21 +420,20 @@ export default {
         // 快递公司列表
     logisticsCompaniesList () {
       let that = this
-      let logistics_companies = []
+      let logisticsCompanies = []
       this.http(that.configs.apiTop + '/logistics/logistics-companies', 'get', '', function (res) {
         let msg = res.data
         let data = msg.data
-        if (msg.code == 0) {
-                    // 快递公司
+        if (msg.code === 0) {
+        // 快递公司
           for (let i = 0; i < data.length; i++) {
-            logistics_companies.push({
+            logisticsCompanies.push({
               name: data[i].logistics_company_name,
               value: String(data[i].logistics_company_id),
               parent: 0
             })
           }
-          that.list1 = logistics_companies
-        } else if (msg.code == 40004) {
+          that.list1 = logisticsCompanies
         } else {
           that.$vux.toast.text(msg.message, 'middle', 100)
         }
