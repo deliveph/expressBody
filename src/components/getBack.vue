@@ -24,9 +24,8 @@ export default {
     mounted: function () {
         let that = this
         var div1 = document.querySelector('#getBack')
-        var maxW = document.body.clientWidth - div1.offsetWidth
-        var maxH = document.body.clientHeight - div1.offsetHeight
-        console.log(maxW,maxH)
+        var maxW = window.innerWidth 
+        var maxH = window.innerHeight
         var oL, oT
         div1.addEventListener('touchstart', function (e) {
             var ev = e || window.event
@@ -55,6 +54,7 @@ export default {
             div1.style.left = oLeft + 'px'
             div1.style.top = oTop + 'px'
             div1.style.right = 'initial'
+            div1.style.position = 'absolute'
         })
         div1.addEventListener('touchend', function () {
             document.removeEventListener('touchmove', that.defaultEvent)
@@ -76,7 +76,7 @@ export default {
     .getBack{
         width:px2rem(158);
         height:px2rem(98);
-        position: absolute;
+        position:fixed;
         z-index: 10;
         bottom: 10px;
     }
