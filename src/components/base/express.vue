@@ -1,145 +1,155 @@
 <template>
-    <div id="express" v-wechat-title="$route.meta.title">
-        <div id="header" class="por express_head">
-            <ul>
-                <li class="courier_message">
-                    <div class="photo">
-                        <img :src="service.service_avatar == 'undefined' ? '/static/assets/images/head_def.png' : service.service_avatar" />
-                        <div class="grade">
-                            <grade class="icon_express_1" :src="service_level_logo"></grade>
+    <scroller lock-x scrollbar-y use-pullup use-pulldown @on-pullup-loading="onPullupLoading" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
+        <div id="express" v-wechat-title="$route.meta.title">
+            <div id="header" class="por express_head">
+                <ul>
+                    <li class="courier_message">
+                        <div class="photo">
+                            <img :src="service.service_avatar == 'undefined' ? '/static/assets/images/head_def.png' : service.service_avatar" />
+                            <div class="grade">
+                                <grade class="icon_express_1" :src="service_level_logo"></grade>
+                            </div>
                         </div>
-                    </div>
-                </li>
-            </ul>
-            <router-link class="service_message poa" :to="{path: '/session'}">
-                <i v-if="unreadLen > 0"></i>
-            </router-link>
-        </div>
-        <div class="statistics">
-            <ul>
-                <li>
-                    <P class="number">{{ result.today_receive_order_number == undefined ? '0' : result.today_receive_order_number }}</p>
-                    <p>今日接单(个)</p>
-                </li>
-                <li>
-                    <P class="number">{{ result.today_finish_order_number == undefined ? '0' : result.today_finish_order_number }}</p>
-                    <p>今日已完成(个)</p>
-                </li>
-                <li>
-                    <p class="number">{{ result.today_result == undefined ? '0' : result.today_result }}</p>
-                    <p>今日赚取(元)</p>
-                </li>
-            </ul>
-        </div>
-        <div class="hg20"></div>
-        <div class="entrance_list">
-            <ul>
-                <li>
-                    <router-link :to="{name:'serviceOrder'}">
-                        <img src="/static/assets/images/btn_me_-indent.png" />
-                        <p>我的订单</p>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name:'Inquire',query:{status:'service'}}">
-                        <img src="/static/assets/images/btn_cha.png" />
-                        <p>查询快递</p>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name:'statistics'}">
-                        <img src="/static/assets/images/btn_me_statistics.png" />
-                        <p>我的统计</p>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name:'Person',query:{type:'service'}}">
-                        <img src="/static/assets/images/btn_me.png" />
-                        <p>我的资料</p>
-                    </router-link>
-                </li>
-            </ul>
-        </div>
-        <div class="hg20"></div>
-        <div class="order_list" v-if="items != ''">
-            <ul>
-                <div v-for="(item,i) in items" :key="i">
-                    <div v-if="item.express_order_type == 'ship'">
-                        <div v-for="(ship,s) in ships" :key="s">
-                            <div v-if="item.express_order_number == ship.ship_order_number">
-                                <li class="send">
-                                    <router-link :to="{path:'orderdetail',query:{ship_order_number:ship.ship_order_number,status:'service'}}">
-                                        <i class="icon_send"></i>
-                                        <div class="odd">
-                                            <p class="order_number">订单号：
-                                                <span>{{ship.ship_order_number}}</span>
-                                            </p>
-                                            <div class="site">
-                                                <div class="starting">
-                                                    <h4>{{ship.shipper_address_city_region_name}}</h4>
-                                                    <p>{{ship.shipper_name}}</p>
-                                                </div>
-                                                <div class="center">
-                                                </div>
-                                                <div class="receipt">
-                                                    <h4>{{ship.consignee_address_city_region_name}}</h4>
-                                                    <p>{{ship.consignee_name}}</p>
+                    </li>
+                </ul>
+                <router-link class="service_message poa" :to="{path: '/session'}">
+                    <i v-if="unreadLen > 0"></i>
+                </router-link>
+            </div>
+            <div class="statistics">
+                <ul>
+                    <li>
+                        <P class="number">{{ result.today_receive_order_number == undefined ? '0' : result.today_receive_order_number }}</p>
+                        <p>今日接单(个)</p>
+                    </li>
+                    <li>
+                        <P class="number">{{ result.today_finish_order_number == undefined ? '0' : result.today_finish_order_number }}</p>
+                        <p>今日已完成(个)</p>
+                    </li>
+                    <li>
+                        <p class="number">{{ result.today_result == undefined ? '0' : result.today_result }}</p>
+                        <p>今日赚取(元)</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="hg20"></div>
+            <div class="entrance_list">
+                <ul>
+                    <li>
+                        <router-link :to="{name:'serviceOrder'}">
+                            <img src="/static/assets/images/btn_me_-indent.png" />
+                            <p>我的订单</p>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link :to="{name:'Inquire',query:{status:'service'}}">
+                            <img src="/static/assets/images/btn_cha.png" />
+                            <p>查询快递</p>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link :to="{name:'statistics'}">
+                            <img src="/static/assets/images/btn_me_statistics.png" />
+                            <p>我的统计</p>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link :to="{name:'Person',query:{type:'service'}}">
+                            <img src="/static/assets/images/btn_me.png" />
+                            <p>我的资料</p>
+                        </router-link>
+                    </li>
+                </ul>
+            </div>
+            <div class="hg20"></div>
+            <div class="order_list" v-if="items != ''">
+                <ul>
+                    <div v-for="(item,i) in items" :key="i">
+                        <div v-if="item.express_order_type == 'ship'">
+                            <div v-for="(ship,s) in ships" :key="s">
+                                <div v-if="item.express_order_number == ship.ship_order_number">
+                                    <li class="send">
+                                        <router-link :to="{path:'orderdetail',query:{ship_order_number:ship.ship_order_number,status:'service'}}">
+                                            <i class="icon_send"></i>
+                                            <div class="odd">
+                                                <p class="order_number">订单号：
+                                                    <span>{{ship.ship_order_number}}</span>
+                                                </p>
+                                                <div class="site">
+                                                    <div class="starting">
+                                                        <h4>{{ship.shipper_address_city_region_name}}</h4>
+                                                        <p>{{ship.shipper_name}}</p>
+                                                    </div>
+                                                    <div class="center">
+                                                    </div>
+                                                    <div class="receipt">
+                                                        <h4>{{ship.consignee_address_city_region_name}}</h4>
+                                                        <p>{{ship.consignee_name}}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="time">
-                                            <p>{{ship.ship_order_create_time}}</p>
-                                        </div>
-                                    </router-link>
-                                </li>
+                                            <div class="time">
+                                                <p>{{ship.ship_order_create_time}}</p>
+                                            </div>
+                                        </router-link>
+                                    </li>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div v-if="item.express_order_type == 'collection'">
-                        <div v-for="(collection,c) in collections" :key="c">
-                            <div v-if="item.express_order_number == collection.collection_order_number">
-                                <li class="put">
-                                    <router-link :to="{path:'repget',query:{collection_order_number:collection.collection_order_number,status:'service'}}">
-                                        <i class="icon_put"></i>
-                                        <div class="odd">
-                                            <p class="order_number">订单号：
-                                                <span>{{collection.collection_order_number}}</span>
-                                            </p>
-                                            <p class="express_number">快递单号：
-                                                <span>{{collection.logistics_code}}</span>
-                                            </p>
+                        <div v-if="item.express_order_type == 'collection'">
+                            <div v-for="(collection,c) in collections" :key="c">
+                                <div v-if="item.express_order_number == collection.collection_order_number">
+                                    <li class="put">
+                                        <router-link :to="{path:'repget',query:{collection_order_number:collection.collection_order_number,status:'service'}}">
+                                            <i class="icon_put"></i>
+                                            <div class="odd">
+                                                <p class="order_number">订单号：
+                                                    <span>{{collection.collection_order_number}}</span>
+                                                </p>
+                                                <p class="express_number">快递单号：
+                                                    <span>{{collection.logistics_code}}</span>
+                                                </p>
 
-                                        </div>
-                                        <div class="time">
-                                            <p>{{collection.collection_order_create_time}}</p>
-                                        </div>
-                                    </router-link>
-                                </li>
+                                            </div>
+                                            <div class="time">
+                                                <p>{{collection.collection_order_create_time}}</p>
+                                            </div>
+                                        </router-link>
+                                    </li>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </ul>
-        </div>
-        <div class="no-order" v-else>
-            <div class="no-img"></div>
-            <p>暂无订单</p>
-        </div>
-        <LayerPw v-if="layerPwhide" v-bind:Info="result" v-on:listenEvent="getInfo"></LayerPw>
-    </div>
+                </ul>
+            </div>
+            <div class="no-order" v-else>
+                <div class="no-img"></div>
+                <p>暂无订单</p>
+            </div>
+            <LayerPw v-if="layerPwhide" v-bind:Info="result" v-on:listenEvent="getInfo"></LayerPw>
+         </div>
+        <!--pullup slot-->
+        <div slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" style="position: absolute; width: 100%; height: 40px; bottom: -40px; text-align: center;">
+            <span v-show="status.pullupStatus === 'default'"></span>
+            <span class="pullup-arrow" v-show="status.pullupStatus === 'down' || status.pullupStatus === 'up'" :class="{'rotate': status.pullupStatus === 'up'}">↑</span>
+            <span v-show="status.pullupStatus === 'loading'">
+                <spinner type="ios-small"></spinner>
+            </span>
+        </div>    
+    </scroller>
 </template>
 
 <script>
 import Grade from '../../components/grade'
 import LayerPw from '../base/public/layer_pw'
+import { Scroller, Spinner, LoadMore } from 'vux'
 export default {
   components: {
     Grade,
-    LayerPw
-  },
-  methods: {
-    messageBox () {
-    }
+    LayerPw,
+    Scroller,
+    Spinner,
+    LoadMore
   },
   computed: {
     unreadLen () {
@@ -152,6 +162,12 @@ export default {
   },
   data () {
     return {
+      n: 10,
+      page: 1,
+      status: {
+        pullupStatus: 'default',
+        pulldownStatus: 'default'
+      },
       layerPwhide: true,
       is_verification: 0,
       data: {},
@@ -166,19 +182,18 @@ export default {
   },
   created () {
     let that = this
-    let data = this.$route.query.password
     this.is_verification = this.$route.query.is_verification
-    if (that.is_verification == '1') {
+    if (that.is_verification === '1') {
       that.layerPwhide = false
       this.http(that.configs.apiTop + '/page/service-home', 'get', '', function (res) {
         let msg = res.data
-        if (msg.code == 0) {
+        if (msg.code === 0) {
           let data = msg.data
           that.result = msg.data
           that.service = msg.data.service
           let service = data.service
-          let service_level = service.service_level
-          that.service_level_logo = service_level.service_level_logo
+          let serviceLevel = service.service_level
+          that.service_level_logo = serviceLevel.service_level_logo
         }
       })
       that.orderlist()
@@ -187,6 +202,51 @@ export default {
     }
   },
   methods: {
+    messageBox () {
+    },
+    onPullupLoading () {
+      let that = this
+      that.page++
+      this.http(that.configs.apiTop + '/order/orders?express_order_status=wait_order&page=' + that.page, 'get', '', function (res) {
+        let msg = res.data
+        if (msg.code === 0) {
+          let data = msg.data
+          that.$refs.scroller.donePullup()
+          that.ships = Object.assign(that.ships, data.ships)
+          that.collections = Object.assign(that.collections, data.collections)
+          if (data.items.length > that.n) {
+            data.items.pop()
+          } else {
+            that.$refs.scroller.disablePullup()
+          }
+          that.items.push(...data.items)
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+    refresh () {
+      let that = this
+      that.page = 1
+      this.http(that.configs.apiTop + '/order/orders?express_order_status=wait_order&page=' + that.page, 'get', '', function (res) {
+        let msg = res.data
+        if (msg.code === 0) {
+          let data = msg.data
+          that.$refs.scroller.donePulldown()
+          that.ships = data.ships
+          that.collections = data.collections
+          if (data.items.length > that.n) {
+            data.items.pop()
+            that.$refs.scroller.enablePullup()
+          } else {
+            that.$refs.scroller.disablePullup()
+          }
+          that.items = data.items
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
     getInfo (result) {
       let that = this
       this.http(that.configs.apiTop + '/page/service-home', 'get', '', function (res) {
@@ -197,23 +257,28 @@ export default {
           that.result = msg.data
           that.service = msg.data.service
           let service = data.service
-          let service_level = service.service_level
-          that.service_level_logo = service_level.service_level_logo
+          let serviceLevel = service.service_level
+          that.service_level_logo = serviceLevel.service_level_logo
         }
       })
       that.orderlist()
     },
     orderlist () {
       let that = this
-      this.http(that.configs.apiTop + '/order/orders?express_order_status=wait_order', 'get', '', function (res) {
+      that.http(that.configs.apiTop + '/order/orders?page=1&express_order_status=wait_order', 'get', '', function (res) {
         let msg = res.data
         if (msg.code === 0) {
           let data = msg.data
-          that.items = data.items
           that.ships = data.ships
           that.collections = data.collections
-        } else if (msg.code == 40004) {
-                    // location.href = that.configs.accreditUrl
+          if (data.items.length > that.n) {
+            data.items.pop()
+          } else {
+            that.$nextTick(() => {
+              that.$refs.scroller.disablePullup()
+            })
+          }
+          that.items = data.items
         } else {
           that.$vux.toast.text(msg.message, 'middle', 100)
         }
