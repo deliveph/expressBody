@@ -16,7 +16,6 @@ export default {
     defaultEvent (e) {
       e.preventDefault()
     },
-<<<<<<< .mine
     components: {
     },
     methods: {
@@ -41,32 +40,6 @@ export default {
             oT = touch.clientY - div1.offsetTop
             document.addEventListener('touchmove', that.defaultEvent, false)
         })
-=======
-    getBackClick () {
-      console.log(1)
-      this.$router.back(-1)
-    }
-  },
-  mounted: function () {
-    let that = this
-    var div1 = document.querySelector('#getBack')
-    var maxW = document.body.clientWidth - div1.offsetWidth
-    var maxH = document.body.clientHeight - div1.offsetHeight
-    console.log(maxW, maxH)
-    var oL, oT
-    div1.addEventListener('touchstart', function (e) {
-      var ev = e || window.event
-      var touch = ev.targetTouches[0]
-      oL = touch.clientX - div1.offsetLeft
-      oT = touch.clientY - div1.offsetTop
-      document.addEventListener('touchmove', that.defaultEvent, false)
-    })
-
-
-
-
-
->>>>>>> .theirs
 
     div1.addEventListener('touchmove', function (e) {
       var ev = e || window.event
