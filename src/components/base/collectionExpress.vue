@@ -208,7 +208,7 @@ export default {
   methods: {
     realSubmit () {
       let that = this
-      document.getElementById('submitBtn').setAttribute('disabled', true)
+      // document.getElementById('submitBtn').setAttribute('disabled', true)
       if (that.realCode == '') {
         that.$vux.toast.text('请输入快递单号', 'middle', 100)
         return false
@@ -253,7 +253,7 @@ export default {
       })
       this.http(that.configs.apiTop + '/order/submit-consignee-order', 'post', data, function (res) {
         let msg = res.data
-        document.getElementById('submitBtn').setAttribute('disabled', false)
+        // document.getElementById('submitBtn').setAttribute('disabled', false)
         if (msg.code == 0) {
           localStorage.removeItem('consignee')
           that.$vux.toast.text(msg.message, 'middle', 100)
@@ -308,7 +308,7 @@ export default {
     },
     reservationSubmit () {
       let that = this
-      document.getElementById('submitBtn').setAttribute('disabled', true)
+      // document.getElementById('submitBtn').setAttribute('disabled', true)
       if (that.reservationCode == '') {
         that.$vux.toast.text('请输入快递单号', 'middle', 100)
         return false
@@ -364,7 +364,7 @@ export default {
       })
       this.http(that.configs.apiTop + '/order/submit-estimate-consignee-order', 'post', data, function (res) {
         let msg = res.data
-        document.getElementById('submitBtn').setAttribute('disabled', false)
+        // document.getElementById('submitBtn').setAttribute('disabled', false)
         if (msg.code == 0) {
           localStorage.removeItem('estimateConsignee')
           that.$vux.toast.text(msg.message, 'middle', 100)

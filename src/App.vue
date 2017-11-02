@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view v-wechat-title="$route.meta.title"></router-view>
-    <getBack></getBack>
+    <getBack v-if="isShowGetBack"></getBack>
   </div>
 </template>
 
@@ -41,7 +41,8 @@ export default {
     return {
       tags: '',
       transitionName: 'forward',
-      loginInfo: null
+      loginInfo: null,
+      isShowGetBack: false
     }
   },
   components: {
@@ -84,26 +85,29 @@ export default {
   // 所有页面更新都会触发此函数
   updated () {
     let that = this
-    if (that.loginInfo === null) {
-      that.http(that.configs.apiTop + '/new-ease/get-im-config', 'get', '', function (res) {
-        let msg = res.data
-        let data = msg.data
-        if (msg.code === 0) {
-          config.appkey = data.net_ease_app_key
-          that.loginInfo = {
-            'uid': data.net_ease_accid,
-            'sdktoken': data.net_ease_token
+    if (that.$route.name !== 'Invite') {
+      if (that.loginInfo === null) {
+        that.http(that.configs.apiTop + '/new-ease/get-im-config', 'get', '', function (res) {
+          let msg = res.data
+          let data = msg.data
+          if (msg.code === 0) {
+            config.appkey = data.net_ease_app_key
+            that.loginInfo = {
+              'uid': data.net_ease_accid,
+              'sdktoken': data.net_ease_token
+            }
+            that.$store.dispatch('connect', that.loginInfo)
+            that.$store.dispatch('updateRefreshState')
+          } else {
+            that.$vux.toast.text(msg.message, 'middle', 100)
           }
-          that.$store.dispatch('connect', that.loginInfo)
-          that.$store.dispatch('updateRefreshState')
-        } else {
-          that.$vux.toast.text(msg.message, 'middle', 100)
-        }
-      })
-    } else {
-      that.$store.dispatch('connect', that.loginInfo)
-      that.$store.dispatch('updateRefreshState')
+        })
+      } else {
+        that.$store.dispatch('connect', that.loginInfo)
+        that.$store.dispatch('updateRefreshState')
+      }
     }
+    that.isShowGetBack = true
   },
   mounted: function () {
   },

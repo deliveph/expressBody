@@ -100,82 +100,85 @@
 <script>
 import { Tab, TabItem } from 'vux'
 export default {
-    data() {
-        return {
-            index: 0,
-            list: [
+  data () {
+    return {
+      index: 0,
+      list: [
                 { name: '我寄的', 'num': '0' },
-                { name: '代收的', 'num': '0' },
-            ],
-            items: [],
-            ships: [],
-            collections: [],
-            express_order_status: '',
-            express_order_type: ''
-        }
-    },
-    components: {
-        Tab,
-        TabItem
-    },
-    created() {
-        this.order(this.index)
-    },
-    methods: {
-        order(index) {
-            let that = this
-            that.express_order_status = this.$route.query.express_order_status
-            if (that.index == 0) {
-                that.express_order_type = 'ship'
-            } else {
-                that.express_order_type = 'collection'
-            }
-            this.http(that.configs.apiTop + "/order/orders?express_order_status=" + that.express_order_status + "&express_order_type=" + that.express_order_type, "get", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    let data = msg.data
-                    that.items = data.items
-                    that.ships = data.ships
-                    that.collections = data.collections
-                    that.list[0].num = data.total_ship_order
-                    that.list[1].num = data.total_collection_order
-                } else if (msg.code == 40004) {
-                    // location.href = that.configs.accreditUrl
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        },
-        cancel(ship_order_number,type){
-            let that = this
-            this.$vux.confirm.show({
-                title: '取消订单',
-                    content: '确定要取消此订单???',
-                // 组件除show外的属性
-                onCancel () {
-                    
-                },
-                onConfirm () {
-                    if(ship_order_number){
-                        that.http(that.configs.apiTop+"/order/cancel-ship-order/"+ship_order_number, "post", '', function(res){
-                            let msg = res.data
-                            if(msg.code == 0){
-                                // that.$vux.toast.text(msg.message, 'middle',100)
-                                that.$router.push({path: '/ordercancel',query:{status:type}}) 
-                                // setTimeout(function(){ 
-                                //     that.$router.push({path: '/ordercancel',query:{status:'user'}}) 
-                                // }, 200);
-                            }else if(msg.code == 40004){
-
-                            }else {
-                                that.$vux.toast.text(msg.message, 'middle', 100);
-                            }
-                        })
-                    }
-                }
-            })
-        }
+                { name: '代收的', 'num': '0' }
+      ],
+      items: [],
+      ships: [],
+      collections: [],
+      express_order_status: '',
+      express_order_type: ''
     }
+  },
+  components: {
+    Tab,
+    TabItem
+  },
+  created () {
+    this.order(this.index)
+  },
+  methods: {
+    order (index) {
+      let that = this
+      that.express_order_status = this.$route.query.express_order_status
+      if (that.index == 0) {
+        that.express_order_type = 'ship'
+      } else {
+        that.express_order_type = 'collection'
+      }
+      this.http(that.configs.apiTop + '/order/orders?express_order_status=' + that.express_order_status + '&express_order_type=' + that.express_order_type, 'get', '', function (res) {
+        let msg = res.data
+        if (msg.code == 0) {
+          let data = msg.data
+          that.items = data.items
+          that.ships = data.ships
+          that.collections = data.collections
+          that.list[0].num = data.total_ship_order
+          that.list[1].num = data.total_collection_order
+        } else if (msg.code == 40004) {
+                    // location.href = that.configs.accreditUrl
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+    cancel (expressOrderNumber, type) {
+      let that = this
+      this.$vux.confirm.show({
+        title: '取消订单',
+        content: '确定要取消此订单???',
+        onCancel () {
+        },
+        onConfirm () {
+          if (expressOrderNumber) {
+            if (type === 'ship') {
+              that.http(that.configs.apiTop + '/order/cancel-ship-order/' + expressOrderNumber, 'post', '', function (res) {
+                let msg = res.data
+                if (msg.code === 0) {
+                  that.$router.push({path: '/ordercancel', query: {status: type}})
+                } else {
+                  that.$vux.toast.text(msg.message, 'middle', 100)
+                }
+              })
+            } else {
+              that.http(that.configs.apiTop + '/order/cancel-collection-order/' + expressOrderNumber, 'post', '', function (res) {
+                let msg = res.data
+                if (msg.code === 0) {
+                  that.$router.push({path: '/ordercancel', query: {status: type}})
+                } else {
+                  that.$vux.toast.text(msg.message, 'middle', 100)
+                }
+              })
+            }
+          }
+        }
+      })
+    }
+  }
 }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>

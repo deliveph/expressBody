@@ -437,7 +437,7 @@ export default {
         })
         this.http(that.configs.apiTop + '/ship-order/update/' + that.ship_order_number, 'post', data, function (res) {
           let msg = res.data
-          document.getElementById('submitBtn').setAttribute('disabled', true)
+          // document.getElementById('submitBtn').setAttribute('disabled', true)
           if (msg.code == 0) {
             that.$vux.toast.text(msg.message, 'middle', 100)
             setTimeout(function () {

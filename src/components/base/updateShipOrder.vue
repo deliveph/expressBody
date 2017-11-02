@@ -282,7 +282,7 @@ export default {
     },
     submitBtn () {
       let that = this
-      document.getElementById('submitBtn').setAttribute('disabled', false)
+      // document.getElementById('submitBtn').setAttribute('disabled', false)
       if (!that.isAgreement) {
         that.$vux.toast.text('请同意共享快递哥协议', 'middle', 100)
         return false
@@ -322,7 +322,7 @@ export default {
       })
       this.http(that.configs.apiTop + '/ship-order/update/' + that.shipOrderNumber, 'post', data, function (res) {
         let msg = res.data
-        document.getElementById('submitBtn').setAttribute('disabled', true)
+        // document.getElementById('submitBtn').setAttribute('disabled', true)
         if (msg.code === 0) {
           that.$vux.toast.text(msg.message, 'middle', 100)
           setTimeout(function () {

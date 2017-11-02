@@ -40,7 +40,7 @@
                                     <div class="order-option">
                                         <span class="order-btn" v-if="ship.ship_order_status_id == -1" @click="deleteShipCode(ship.ship_order_number)">删除订单</span>
                                         <router-link class="order-btn" v-else-if="ship.ship_order_status_id == 1" :to="{path:'orderdetail',query:{ship_order_number:ship.ship_order_number,status:'service'}}" tag="span">接单</router-link>
-                                        <router-link class="order-btn" v-else-if="ship.ship_order_status_id == 2" :to="{path:'orderdetail',query:{ship_order_number:ship.ship_order_number,status:'service'}}" tag="span">取消订单</router-link>
+                                        <router-link class="order-btn" v-else-if="ship.ship_order_status_id == 2 && status === 'user'" :to="{path:'orderdetail',query:{ship_order_number:ship.ship_order_number,status:'service'}}" tag="span">取消订单</router-link>
                                         <!-- <span class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 3">去支付</span>
                                         <span class="order-btn bd-finish" v-else-if="ship.ship_order_status_id == 4">去评价</span> -->
                                         <span class="order-btn" v-else-if="ship.ship_order_status_id == 5" @click="deleteShipCode(ship.ship_order_number)">删除订单</span>
@@ -126,135 +126,134 @@
 </template>
 
 <script>
-    import qs  from 'qs'
+    import qs from 'qs'
     import { Toast } from 'vux'
     export default{
-        data() {
-            return{
-                items:[],
-                ships:[],
-                collections:[],
-                layer:false,
-                orderCode:'',
-                express_order_status:''
-            }
-        },
-        methods:{
-            searchlayer(){
-                this.layer = true
-            },
-            layerWarp(){
-                this.layer = false
-            },
-            layerMain(e){
-                // e.stopPropagation()
-            },
-            order_combos(type){
-                this.express_order_status = type
-            },
-            resetting(){
-                let that = this
-                that.orderCode = ''
-
-            },
-            success(ship_order_number){
-                let that = this
-                let data = qs.stringify({
-                    'express_order_number':that.orderCode,
-                    'express_order_status':that.express_order_status
-                })
-                that.http(that.configs.apiTop+"/order/orders?express_order_number="+that.orderCode+"&express_order_status="+that.express_order_status, "get", '', function(res){
-                    let msg = res.data
-                    if(msg.code == 0){
-                        let data = msg.data
-                        that.items = data.items
-                        that.ships = data.ships
-                        that.collections = data.collections
-                        that.layer = false
-                    }else if(msg.code == 40004){
-
-                    }else {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                    }
-                })
-            },
-            orderlist(){
-                let that = this
-                this.http(that.configs.apiTop + "/order/orders", "get", '', function(res) {
-                    let msg = res.data
-                    if (msg.code == 0) {
-                        let data = msg.data
-                        that.items = data.items
-                        that.ships = data.ships
-                        that.collections = data.collections                    
-                    } else if (msg.code == 40004) {
-                        // location.href = that.configs.accreditUrl
-                    } else {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                    }
-                })
-            },
-            deleteShipCode(ship_order_number){
-                let that = this
-                this.$vux.confirm.show({
-                    title: '删除订单',
-                     content: '确定要删除此订单???',
-                    // 组件除show外的属性
-                    onCancel () {
-                        
-                    },
-                    onConfirm () {
-                        if(ship_order_number){
-                            that.http(that.configs.apiTop+"/ship-order/service-ignore/"+ship_order_number, "post", '', function(res){
-                                let msg = res.data
-                                if(msg.code == 0){
-                                    that.$vux.toast.text(msg.message, 'middle',100)
-                                    setTimeout(function(){ 
-                                        that.$router.push({path: '/service'}) 
-                                    }, 200);
-                                }else if(msg.code == 40004){
-
-                                }else {
-                                    that.$vux.toast.text(msg.message, 'middle', 100);
-                                }
-                            })
-                        }
-                    }
-                })
-            },
-            deleteCollectionCode(collection_order_number){
-                let that = this
-                this.$vux.confirm.show({
-                    title: '删除订单',
-                     content: '确定要删除此订单???',
-                    // 组件除show外的属性
-                    onCancel () {
-                        
-                    },
-                    onConfirm () {
-                        if(collection_order_number){
-                            that.http(that.configs.apiTop+"/ship-order/service-ignore/"+collection_order_number, "post", '', function(res){
-                                let msg = res.data
-                                if(msg.code == 0){
-                                    that.$vux.toast.text(msg.message, 'middle',100)
-                                    setTimeout(function(){ 
-                                        that.$router.push({path: '/service'}) 
-                                    }, 200);
-                                }else if(msg.code == 40004){
-
-                                }else {
-                                    that.$vux.toast.text(msg.message, 'middle', 100);
-                                }
-                            })
-                        }
-                    }
-                })
-            }
-        },
-        created() {
-            let that = this
-            this.orderlist()
+      data () {
+        return {
+          items: [],
+          ships: [],
+          collections: [],
+          layer: false,
+          orderCode: '',
+          express_order_status: ''
         }
+      },
+      methods: {
+        searchlayer () {
+          this.layer = true
+        },
+        layerWarp () {
+          this.layer = false
+        },
+        layerMain (e) {
+                // e.stopPropagation()
+        },
+        order_combos (type) {
+          this.express_order_status = type
+        },
+        resetting () {
+          let that = this
+          that.orderCode = ''
+        },
+        success (ship_order_number) {
+          let that = this
+          let data = qs.stringify({
+            'express_order_number': that.orderCode,
+            'express_order_status': that.express_order_status
+          })
+          that.http(that.configs.apiTop + '/order/orders?express_order_number=' + that.orderCode + '&express_order_status=' + that.express_order_status, 'get', '', function (res) {
+            let msg = res.data
+            if (msg.code == 0) {
+              let data = msg.data
+              that.items = data.items
+              that.ships = data.ships
+              that.collections = data.collections
+              that.layer = false
+            } else if (msg.code == 40004) {
+
+            } else {
+              that.$vux.toast.text(msg.message, 'middle', 100)
+            }
+          })
+        },
+        orderlist () {
+          let that = this
+          this.http(that.configs.apiTop + '/order/orders', 'get', '', function (res) {
+            let msg = res.data
+            if (msg.code == 0) {
+              let data = msg.data
+              that.items = data.items
+              that.ships = data.ships
+              that.collections = data.collections
+            } else if (msg.code == 40004) {
+                        // location.href = that.configs.accreditUrl
+            } else {
+              that.$vux.toast.text(msg.message, 'middle', 100)
+            }
+          })
+        },
+        deleteShipCode (ship_order_number) {
+          let that = this
+          this.$vux.confirm.show({
+            title: '删除订单',
+            content: '确定要删除此订单???',
+                    // 组件除show外的属性
+            onCancel () {
+    
+            },
+            onConfirm () {
+              if (ship_order_number) {
+                that.http(that.configs.apiTop + '/ship-order/service-ignore/' + ship_order_number, 'post', '', function (res) {
+                  let msg = res.data
+                  if (msg.code == 0) {
+                    that.$vux.toast.text(msg.message, 'middle', 100)
+                    setTimeout(function () {
+                      that.$router.push({path: '/service'})
+                    }, 200)
+                  } else if (msg.code == 40004) {
+
+                  } else {
+                    that.$vux.toast.text(msg.message, 'middle', 100)
+                  }
+                })
+              }
+            }
+          })
+        },
+        deleteCollectionCode (collection_order_number) {
+          let that = this
+          this.$vux.confirm.show({
+            title: '删除订单',
+            content: '确定要删除此订单???',
+                    // 组件除show外的属性
+            onCancel () {
+    
+            },
+            onConfirm () {
+              if (collection_order_number) {
+                that.http(that.configs.apiTop + '/ship-order/service-ignore/' + collection_order_number, 'post', '', function (res) {
+                  let msg = res.data
+                  if (msg.code == 0) {
+                    that.$vux.toast.text(msg.message, 'middle', 100)
+                    setTimeout(function () {
+                      that.$router.push({path: '/service'})
+                    }, 200)
+                  } else if (msg.code == 40004) {
+
+                  } else {
+                    that.$vux.toast.text(msg.message, 'middle', 100)
+                  }
+                })
+              }
+            }
+          })
+        }
+      },
+      created () {
+        let that = this
+        this.orderlist()
+      }
     }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>
