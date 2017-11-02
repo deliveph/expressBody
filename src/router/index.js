@@ -192,7 +192,8 @@ const router = new Router({
       require(['../components/user/invite'], resolve)
     },
     meta: {
-      title: '邀请好友'
+      title: '邀请好友',
+      isNeedLogin: false
     }
   }, // 邀请好友
   {
@@ -523,26 +524,31 @@ const router = new Router({
 
 // 全局配置
 router.beforeEach((to, from, next) => {
-  let token = to.query.token
-  if (token === undefined) {
-    let tokenLocalStorage = JSON.parse(localStorage.getItem('token'))
-    if (tokenLocalStorage === null || (token = tokenLocalStorage.token) === undefined) {
-      location.href = configs.accreditUrl + '?redirect_uri=' + encodeURIComponent(location.href)
-      next(false)
-    }
-  } else {
-    localStorage.setItem('token', JSON.stringify({
-      'token': token,
-      'time': configs.curTime
+  let loginToken = to.query.token
+  if (loginToken !== undefined) {
+    // 持久化登录
+    localStorage.setItem('loginTokenData', JSON.stringify({
+      'loginToken': loginToken,
+      'time': new Date().getTime()
     }))
   }
-  configs.loginToken = token
-  console.log('configs.localToken:' + configs.loginToken)
-  next()
-// Change doc title
-// document.title = to.meta.title || 'Unknow title'
-// document.querySelector('meta[name="keywords"]').setAttribute('content', 'keywords')
-// document.querySelector('meta[name="description"]').setAttribute('content', 'description')
+  if (to.meta.isNeedLogin !== undefined && to.meta.isNeedLogin === false) {
+    next()
+  } else {
+    let loginTokenDataOfLocalStorage = JSON.parse(localStorage.getItem('loginTokenData'))
+    if (loginTokenDataOfLocalStorage === null ||
+        loginTokenDataOfLocalStorage.loginToken === undefined ||
+        loginTokenDataOfLocalStorage.time === undefined ||
+        (new Date().getTime() - loginTokenDataOfLocalStorage.time) > 7180 * 1000) {
+        // 微信授权登录
+      location.href = configs.apiDomain + '/weixin/auth-gateway?redirect_uri=' + encodeURIComponent(location.href)
+      next(false)
+    } else {
+      loginToken = loginTokenDataOfLocalStorage.loginToken
+      next()
+    }
+  }
+  configs.loginToken = loginToken
 })
 
 export default router

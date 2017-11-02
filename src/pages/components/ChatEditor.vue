@@ -125,7 +125,8 @@ export default {
       icon1: `${config.resourceUrl}/im/chat-editor-1.png`,
       icon2: `${config.resourceUrl}/im/chat-editor-2.png`,
       click_record: false,
-      loosen_record: false
+      loosen_record: false,
+      sensitiveWords: []
       // icon3: `${config.resourceUrl}/im/chat-editor-3.png`,
     }
   },
@@ -167,6 +168,9 @@ export default {
         return
       }
       this.msgToSent = this.msgToSent.trim()
+      for (let k in this.sensitiveWords) {
+        this.msgToSent = this.msgToSent.replace(new RegExp(this.sensitiveWords[k], 'g'), '*')
+      }
       if (this.type === 'session') {
         // 如果是机器人
         if (this.isRobot) {
@@ -327,6 +331,13 @@ export default {
     }
   },
   created () {
+    let that = this
+    that.http(that.configs.apiTop + '/sensitive-words', 'get', '', function (res) {
+      let msg = res.data
+      if (msg.code === 0) {
+        that.sensitiveWords = msg.data.sensitive_words
+      }
+    })
   },
   mounted: function () {
     let that = this

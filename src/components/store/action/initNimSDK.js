@@ -30,7 +30,6 @@ export function initNimSDK ({ state, commit, dispatch }, loginInfo) {
     syncRobots: true,
     autoMarkRead: true, // 默认为true
     onconnect: function onConnect (event) {
-      console.log(event)
       if (loginInfo) {
         // 连接上以后更新uid
         commit('updateUserUID', loginInfo)

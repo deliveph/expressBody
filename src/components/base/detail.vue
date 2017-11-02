@@ -18,57 +18,57 @@
 </template>
 
 <script>
-  import Shareshade from "./public/shareShade";
-  export default {
-    data() {
+  import Shareshade from './public/shareShade'
+export default {
+    data () {
       return {
         share: false,
-        type: "free",
-        htmlContent: ""
+        type: 'free',
+        htmlContent: ''
       }
     },
     components: {
       Shareshade
     },
     methods: {
-      rechargeBtn() {
+      rechargeBtn () {
         this.$router.push({
-          path: "/recharge"
+          path: '/recharge'
         })
       },
-      experience() {
+      experience () {
         this.$router.push({
-          path: "/user"
+          path: '/user'
         })
       }
     },
-    created() {
+    created () {
       let that = this
       that.type = this.$route.query.type
       switch (that.type) {
-        case "bottom_menu":
-        case "user_balance_help":
-        case "agreement":
-        case "use_help":
-        case "home_tip":
-          that.http(that.configs.apiTop + "/page/html-content?type=" + that.type, "get", "", function(res) {
-            let msg = res.data;
+        case 'bottom_menu':
+        case 'user_balance_help':
+        case 'agreement':
+        case 'use_help':
+        case 'home_tip':
+          that.http(that.configs.apiTop + '/page/html-content?type=' + that.type, 'get', '', function (res) {
+            let msg = res.data
             if (msg.code == 0) {
               that.htmlContent = msg.data.html_content
             } else {
-              that.$vux.toast.text(msg.message, "middle", 100)
+              that.$vux.toast.text(msg.message, 'middle', 100)
             }
           })
           break
-        case "user":
-          let readmeId = this.$route.query.id;
+        case 'user':
+          let readmeId = this.$route.query.id
           this.http(
-            that.configs.apiTop + "/page/readme-detail/" + readmeId, "get", "",
-            function(res) {
-              let msg = res.data;
+            that.configs.apiTop + '/page/readme-detail/' + readmeId, 'get', '',
+            function (res) {
+              let msg = res.data
               if (msg.code == 0) {
-                that.htmlContent = msg.data.readme_content;
-                document.title = msg.data.readme_title;
+                that.htmlContent = msg.data.readme_content
+                document.title = msg.data.readme_title
               }
             }
           )

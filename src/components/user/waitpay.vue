@@ -8,6 +8,7 @@
         <div class="order-container" v-model="index">
             <div class="order-con-box" v-if="index == 0">
                 <div class="order-list" v-if="items != ''">
+                    <scroller lock-x scrollbar-y use-pullup use-pulldown @on-pullup-loading="onPullupLoading" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
                     <ul>
                         <div v-for="(item,i) in items" :key="i">
                             <div v-if="item.express_order_type == 'ship'">
@@ -51,6 +52,15 @@
                             </div>
                         </div>
                     </ul>
+                    <!--pullup slot-->
+                    <div slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" style="position: absolute; width: 100%; height: 40px; bottom: -40px; text-align: center;">
+                        <span v-show="status.pullupStatus === 'default'"></span>
+                        <span class="pullup-arrow" v-show="status.pullupStatus === 'down' || status.pullupStatus === 'up'" :class="{'rotate': status.pullupStatus === 'up'}">↑</span>
+                        <span v-show="status.pullupStatus === 'loading'">
+                            <spinner type="ios-small"></spinner>
+                        </span>
+                    </div>
+                    </scroller>
                 </div>
                 <div class="no-order" v-else>
                     <div class="no-img"></div>
@@ -59,6 +69,7 @@
             </div>
             <div class="order-con-box" v-else>
                 <div class="order-list" v-if="items != ''">
+                    <scroller lock-x scrollbar-y use-pullup use-pulldown @on-pullup-loading="onPullupLoading" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
                     <ul>
                         <div v-for="(item,i) in items" :key="i">
                             <div v-if="item.express_order_type == 'collection'">
@@ -92,6 +103,15 @@
                             </div>
                         </div>
                     </ul>
+                    <!--pullup slot-->
+                    <div slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" style="position: absolute; width: 100%; height: 40px; bottom: -40px; text-align: center;">
+                        <span v-show="status.pullupStatus === 'default'"></span>
+                        <span class="pullup-arrow" v-show="status.pullupStatus === 'down' || status.pullupStatus === 'up'" :class="{'rotate': status.pullupStatus === 'up'}">↑</span>
+                        <span v-show="status.pullupStatus === 'loading'">
+                            <spinner type="ios-small"></spinner>
+                        </span>
+                    </div>
+                    </scroller>
                 </div>
                 <div class="no-order" v-else>
                     <div class="no-img"></div>
@@ -102,56 +122,124 @@
     </div>
 </template>
 <script>
-import { Tab, TabItem } from 'vux'
-const list = () => ['我寄的', '代收的']
+import { Tab, TabItem, Scroller, Spinner, LoadMore } from 'vux'
 export default {
-    data() {
-        return {
-            list: [
-                { name: '我寄的', 'num': '0' },
-                { name: '代收的', 'num': '0' },
-            ],
-            index: 0,
-            items: [],
-            ships: [],
-            collections: [],
-            express_order_status: '',
-            express_order_type: ''
-        }
-    },
-    components: {
-        Tab,
-        TabItem
-    },
-    created() {
-        this.order(this.index)
-    },
-    methods: {
-        order(index) {
-            let that = this
-            that.express_order_status = this.$route.query.express_order_status
-            if (that.index == 0) {
-                that.express_order_type = 'ship'
-            } else {
-                that.express_order_type = 'collection'
-            }
-            this.http(that.configs.apiTop + "/order/orders?express_order_status=" + that.express_order_status + "&express_order_type=" + that.express_order_type, "get", '', function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    let data = msg.data
-                    that.items = data.items
-                    that.ships = data.ships
-                    that.collections = data.collections
-                    that.list[0].num = data.total_ship_order
-                    that.list[1].num = data.total_collection_order
-                } else if (msg.code == 40004) {
-                    // location.href = that.configs.accreditUrl
-                } else {
-                    that.$vux.toast.text(msg.message, 'middle', 100);
-                }
-            })
-        }
+  data () {
+    return {
+      n: 10,
+      page: 1,
+      status: {
+        pullupStatus: 'default',
+        pulldownStatus: 'default'
+      },
+      list: [
+        { name: '我寄的', 'num': '0' },
+        { name: '代收的', 'num': '0' }
+      ],
+      index: 0,
+      items: [],
+      ships: [],
+      collections: [],
+      express_order_status: '',
+      express_order_type: ''
     }
+  },
+  components: {
+    Tab,
+    TabItem,
+    Scroller,
+    Spinner,
+    LoadMore
+  },
+  created () {
+    this.order(this.index)
+  },
+  methods: {
+    onPullupLoading () {
+      let that = this
+      that.page++
+      that.express_order_status = this.$route.query.express_order_status
+      if (that.index === 0) {
+        that.express_order_type = 'ship'
+      } else {
+        that.express_order_type = 'collection'
+      }
+      that.http(that.configs.apiTop + '/order/orders?page=' + that.page + '&express_order_status=' + that.express_order_status + '&express_order_type=' + that.express_order_type, 'get', '', function (res) {
+        let msg = res.data
+        if (msg.code === 0) {
+          let data = msg.data
+          that.$refs.scroller.donePullup()
+          that.ships = Object.assign(that.ships, data.ships)
+          that.collections = Object.assign(that.collections, data.collections)
+          if (data.items.length > that.n) {
+            data.items.pop()
+          } else {
+            that.$refs.scroller.disablePullup()
+          }
+          that.items.push(...data.items)
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+    refresh () {
+      let that = this
+      that.page = 1
+      that.express_order_status = this.$route.query.express_order_status
+      if (that.index === 0) {
+        that.express_order_type = 'ship'
+      } else {
+        that.express_order_type = 'collection'
+      }
+      that.http(that.configs.apiTop + '/order/orders?page=' + that.page + '&express_order_status=' + that.express_order_status + '&express_order_type=' + that.express_order_type, 'get', '', function (res) {
+        let msg = res.data
+        if (msg.code === 0) {
+          let data = msg.data
+          that.$refs.scroller.donePulldown()
+          that.ships = data.ships
+          that.collections = data.collections
+          if (data.items.length > that.n) {
+            data.items.pop()
+            that.$refs.scroller.enablePullup()
+          } else {
+            that.$refs.scroller.disablePullup()
+          }
+          that.items = data.items
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+    order (index) {
+      let that = this
+      that.express_order_status = that.$route.query.express_order_status
+      if (that.index === 0) {
+        that.express_order_type = 'ship'
+      } else {
+        that.express_order_type = 'collection'
+      }
+      that.http(that.configs.apiTop + '/order/orders?page=' + that.page + '&express_order_status=' + that.express_order_status + '&express_order_type=' + that.express_order_type, 'get', '', function (res) {
+        let msg = res.data
+        if (msg.code === 0) {
+          let data = msg.data
+          that.ships = data.ships
+          that.collections = data.collections
+          that.list[0].num = data.total_ship_order
+          that.list[1].num = data.total_collection_order
+          if (data.items.length > that.n) {
+            data.items.pop()
+          } else {
+            that.$nextTick(() => {
+              that.$refs.scroller.disablePullup()
+            })
+          }
+          that.items = data.items
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    }
+  }
 }
 </script>
 <style lang="scss" scoped src="../../../static/assets/css/user.scss"></style>
