@@ -1,6 +1,6 @@
 <template>
     <!--密码弹出层  -->
-    <div class="layer_warp layer_pw">
+    <div class="layer_warp layer_pw" v-if="layerPwhide1">
         <div class="layer_table">
             <div class="layer_table_cell">
                 <div class="layer_box">
@@ -32,46 +32,48 @@
 import { Toast } from 'vux'
 import qs from 'qs'
 export default {
-    // props: ["Info"],
-    data() {
-        return {
-            password: ''
-        }
-    },
-    created() {},
-    components: {
-        Toast
-    },
-    methods: {
-        pwConfirm() {
-            let that = this;
-            if (that.password == '') {
-                this.$vux.toast.text('请输入密码', 'middle', 100);
-                return false;
-            }
-            let data = qs.stringify({
-                'password': that.password
-            })
-            this.http(that.configs.apiTop + "/service/verify-password", "post", data, function(res) {
-                let msg = res.data
-                if (msg.code == 0) {
-                    that.$parent.layerPwhide = false
-                    that.$vux.toast.text(msg.message, 'middle', 100); 
-                    that.$emit('listenEvent',"is_verification=1")
-                } else if (msg.code == 40004) {
-                } else{
-                    that.$vux.toast.text(msg.message, 'middle', 100);1
-                }
-            })
-        },
-        cancel() {
-            let that = this;
-            that.$parent.layerPwhide = false
-            localStorage.clear("token")
-            that.wx.closeWindow()
-        }
-
+  props: ['layerPwhide'],
+  data () {
+    return {
+      password: '',
+      layerPwhide1: true
     }
+  },
+  created () {
+    this.layerPwhide1 = this.layerPwhide
+  },
+  components: {
+    Toast
+  },
+  methods: {
+    pwConfirm () {
+      let that = this
+      if (that.password === '') {
+        this.$vux.toast.text('请输入密码', 'middle', 100)
+        return false
+      }
+      let data = qs.stringify({
+        'password': that.password
+      })
+      that.http(that.configs.apiTop + '/service/verify-password', 'post', data, function (res) {
+        let msg = res.data
+        if (msg.code === 0) {
+          that.layerPwhide1 = false
+          that.$vux.toast.text(msg.message, 'middle', 100)
+          that.$emit('listenEvent', 'is_verification=1')
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100); 1
+        }
+      })
+    },
+    cancel () {
+      let that = this
+      that.layerPwhide1 = false
+      localStorage.clear('token')
+      that.wx.closeWindow()
+    }
+
+  }
 }
 </script>
 

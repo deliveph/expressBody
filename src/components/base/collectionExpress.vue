@@ -37,7 +37,7 @@
                         <input type="text" name="address" placeholder="请输入收货详细地址" value="" v-model="realAddress">
                     </div>
                     <div class="default" v-if="stage.current_service != undefined">
-                        <input type="checkbox" v-model="defaultFalse" @click="defaultMsg">
+                        <input type="checkbox" @click="defaultMsg">
                         <span>默认共享快递哥</span>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                     </div>
 
                     <div class="default" v-if="stage.current_service != undefined">
-                        <input type="checkbox" v-model="defaultFalse1" @click="defaultMsg1">
+                        <input type="checkbox" @click="defaultMsg1">
                         <span>默认共享快递哥</span>
                     </div>
                 </div>
@@ -550,13 +550,19 @@ export default {
     let estimateConsignee = localStorage.getItem('estimateConsignee')
     this.http(that.configs.apiTop + '/page/user-collection', 'get', '', function (res) {
       let msg = res.data
-      if (msg.code == 0) {
+      if (msg.code === 0) {
         that.items = msg.data
         that.stage = msg.data.stage
+        that.realName = msg.data.user.user_nickname
+        that.realPhone = msg.data.user.user_phone
+        that.realAddress = msg.data.user.user_full_address
+        that.reservationName = msg.data.user.user_nickname
+        that.reservationPhone = msg.data.user.user_phone
+        that.reservationAddress = msg.data.user.user_full_address
         that.service_time = msg.data.service_time.start_time + '-' + msg.data.service_time.end_time
         that.begin = msg.data.service_time.start_time
         that.end = msg.data.service_time.end_time
-                // 时间段
+        // 时间段
         that.formattedTimeInit()
       } else if (msg.code == 40004) {
       } else {
