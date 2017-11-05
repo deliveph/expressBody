@@ -4,9 +4,9 @@ let config = {
   tokenId: '',
   localToken: '',
   curTime: new Date().getTime(),
-  accreditUrl: 'http://test.menory.com/weixin/auth-gateway',
-  apiTop: 'http://test.menory.com',
-  apiUpload: 'http://static.menory.top',
+  accreditUrl: 'http://api.1kgx.com/weixin/auth-gateway',
+  apiTop: 'http://api.1kgx.com',
+  apiUpload: 'http://static.1kgx.com',
 
   // 用户自定义的登录注册地址
   loginUrl: '/',

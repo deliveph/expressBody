@@ -91,6 +91,8 @@ import VueAMap from 'vue-amap'
 import { Toast } from 'vux'
 import qs from 'qs'
 import draggable from '..//base/public/draggable'
+import Data from '../../configs/data'
+
 // let map
 export default {
   data () {
@@ -167,6 +169,7 @@ export default {
   computed: {
   },
   created () {
+    console.log('datadata1', Data)
     let that = this
     let isPerfect = this.$route.query.is_perfect
     if (isPerfect === '0') {

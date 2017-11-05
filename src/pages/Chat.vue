@@ -85,6 +85,35 @@ export default {
     }
   },
   created () {
+    window.nim.getHistoryMsgs({
+      scene: 'p2p',
+      to: 'service_80003',
+      limit: 2,
+      // lastMsgId: '7930704966',
+      done: function (error, obj) {
+        console.log(error, obj.msgs.length, obj)
+        let i = 0
+        for (let k in obj.msgs) {
+          i++
+          console.log('#' + obj.msgs[k].text + ' ' + obj.msgs[k].idServer)
+          if (i === obj.msgs.length) {
+            window.nim.getHistoryMsgs({
+              scene: 'p2p',
+              to: 'service_80003',
+              limit: 2,
+              endTime: obj.msgs[k - 1].time,
+              // lastMsgId: obj.msgs[k].idServer,
+              done: function (error, obj) {
+                console.log('#######')
+                for (let k in obj.msgs) {
+                  console.log('#' + obj.msgs[k].text + ' ' + obj.msgs[k].idServer, error)
+                }
+              }
+            })
+          }
+        }
+      }
+    })
     this.chooseChatUser = this.$store.state.chooseChatUser
   },
   computed: {

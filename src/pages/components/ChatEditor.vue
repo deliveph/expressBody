@@ -70,6 +70,8 @@ import ChatEmoji from './ChatEmoji'
 import config from '../../configs'
 import $ from 'jquery'
 import { Toast } from 'vux'
+import Data from '../../configs/data'
+
 export default {
   components: {
     ChatEmoji,
@@ -126,7 +128,8 @@ export default {
       icon2: `${config.resourceUrl}/im/chat-editor-2.png`,
       click_record: false,
       loosen_record: false,
-      sensitiveWords: []
+      sensitiveWords: [],
+      taskId: 0
       // icon3: `${config.resourceUrl}/im/chat-editor-3.png`,
     }
   },
@@ -156,6 +159,7 @@ export default {
       }
     },
     sendTextMsg () {
+      let that = this
       if (/^\s*$/.test(this.msgToSent)) {
         this.$vux.alert.show({
           title: '请不要刷屏'
@@ -227,7 +231,7 @@ export default {
               scene: this.scene,
               to: this.to,
               text: this.msgToSent
-            })
+            }).then(this.messageSuccessCallback)
           }
         }
       } else if (this.type === 'chatroom') {
@@ -237,6 +241,28 @@ export default {
         })
       }
       this.msgToSent = ''
+    },
+    messageSuccessCallback (msg) {
+      let that = this
+      if (msg.isLocal === false) {
+        if (Data[msg.from] !== undefined) {
+          clearTimeout(Data[msg.from])
+        }
+        Data[msg.from] = setTimeout(() => {
+          let isMsgRemoteRead = window.nim.isMsgRemoteRead(msg)
+          console.log(Data, msg, that, isMsgRemoteRead)
+          if (isMsgRemoteRead === false) {
+            // 远端短时间内没有收到消息上报服务器
+            that.http(that.configs.apiTop + '/weixin/unread-notice', 'post', '', function (res) {
+              let msg = res.data
+              if (msg.code === 0) {
+              } else {
+                that.$vux.toast.text(msg.message, 'middle', 100)
+              }
+            })
+          }
+        }, 10000)
+      }
     },
     sendPlayMsg () {
       // 发送猜拳消息
@@ -331,6 +357,7 @@ export default {
     }
   },
   created () {
+    console.log('datadata2', Data)
     let that = this
     that.http(that.configs.apiTop + '/sensitive-words', 'get', '', function (res) {
       let msg = res.data

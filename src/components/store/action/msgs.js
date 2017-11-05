@@ -1,6 +1,7 @@
 import store from '../../store'
 import config from '../../../configs'
 import util from '../../../utils'
+import { fail } from 'assert'
 
 function formatMsg (msg) {
   const nim = store.state.nim
@@ -95,6 +96,7 @@ export function onRevocateMsg (error, msg) {
     tip,
     time: msg.time,
     done: function sendTipMsgDone (error, tipMsg) {
+      console.log(error)
       let idClient = msg.deletedIdClient || msg.idClient
       store.commit('replaceMsg', {
         sessionId: msg.sessionId,
@@ -140,13 +142,19 @@ export function sendMsg ({
   store.dispatch('showLoading')
   switch (type) {
     case 'text':
-      nim.sendText({
-        scene: obj.scene,
-        to: obj.to,
-        text: obj.text,
-        done: onSendMsgDone
+      return new Promise((resolve, reject) => {
+        nim.sendText({
+          scene: obj.scene,
+          to: obj.to,
+          text: obj.text,
+          done: (error, msg) => {
+            onSendMsgDone(error, msg)
+            if (error === null) {
+              resolve(msg)
+            }
+          }
+        })
       })
-      break
     case 'custom':
       nim.sendCustomMsg({
         scene: obj.scene,
@@ -222,7 +230,6 @@ export function sendAudioMsg ({
         // console.log('上传进度文本: ' + obj.percentageText)
     },
     done: function (error, file) {
-      console.log(file, error)
       // console.log('上传image' + (!error?'成功':'失败'));
       // let file1 = {
       //   url: file.url,
