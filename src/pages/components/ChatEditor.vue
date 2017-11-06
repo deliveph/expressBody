@@ -71,6 +71,7 @@ import config from '../../configs'
 import $ from 'jquery'
 import { Toast } from 'vux'
 import Data from '../../configs/data'
+import qs from 'qs'
 
 export default {
   components: {
@@ -149,7 +150,6 @@ export default {
   },
   methods: {
     changeChat (obj) {
-      console.log(obj)
       if (obj.video === 'hide') {
         this.classObject.video = ''
         this.classObject.txt = 'hide'
@@ -242,18 +242,20 @@ export default {
       }
       this.msgToSent = ''
     },
-    messageSuccessCallback (msg) {
+    messageSuccessCallback (params) {
+      let data = qs.stringify({
+        to: params.to
+      })
       let that = this
-      if (msg.isLocal === false) {
-        if (Data[msg.from] !== undefined) {
-          clearTimeout(Data[msg.from])
+      if (params.msg.isLocal === false) {
+        if (Data[params.msg.from] !== undefined) {
+          clearTimeout(Data[params.msg.from])
         }
-        Data[msg.from] = setTimeout(() => {
-          let isMsgRemoteRead = window.nim.isMsgRemoteRead(msg)
-          console.log(Data, msg, that, isMsgRemoteRead)
+        Data[params.msg.from] = setTimeout(() => {
+          let isMsgRemoteRead = window.nim.isMsgRemoteRead(params.msg)
           if (isMsgRemoteRead === false) {
             // 远端短时间内没有收到消息上报服务器
-            that.http(that.configs.apiTop + '/weixin/unread-notice', 'post', '', function (res) {
+            that.http(that.configs.apiTop + '/weixin/unread-notice', 'post', data, function (res) {
               let msg = res.data
               if (msg.code === 0) {
               } else {
@@ -357,7 +359,6 @@ export default {
     }
   },
   created () {
-    console.log('datadata2', Data)
     let that = this
     that.http(that.configs.apiTop + '/sensitive-words', 'get', '', function (res) {
       let msg = res.data

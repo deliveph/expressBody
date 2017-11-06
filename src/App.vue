@@ -2,6 +2,7 @@
   <div id="app">
     <router-view v-wechat-title="$route.meta.title"></router-view>
     <getBack v-if="isShowGetBack"></getBack>
+    <loading></loading>
   </div>
 </template>
 
@@ -9,7 +10,6 @@
 // import vueDragDrop from 'vue-drag-and-drop'
 import draggable from 'vuedraggable'
 import getBack from '../src/components/getBack'
-import qs from 'qs'
 
 import Vue from 'vue'
 import { Group, Cell, XHeader, XInput, XButton, XSwitch, Datetime, ViewBox, Search, ButtonTab, ButtonTabItem, Divider, AlertPlugin, ConfirmPlugin, Toast } from 'vux'

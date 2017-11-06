@@ -1,6 +1,7 @@
 let config = {
   isAllowRecord: false,
   loginToken: '',
+  roleType: 'none',
   tokenId: '',
   localToken: '',
   curTime: new Date().getTime(),
@@ -24,7 +25,7 @@ let config = {
   // 我的手机图标
   myPhoneIcon: 'http://yx-web.nos.netease.com/webdoc/h5/im/my-phone.png',
   // 本地消息显示数量，会影响性能
-  localMsglimit: 36
+  localMsglimit: 50
 }
 
 const env = 'online'

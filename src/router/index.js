@@ -13,6 +13,16 @@ const router = new Router({
     },
     meta: {
       title: '共享快递哥'
+    },
+    beforeEnter: (to, from, next) => {
+      if (configs.roleType === 'none') {
+        next()
+      } else {
+        next({
+          name: configs.roleType,
+          query: to.query
+        })
+      }
     }
   }, /* 首次进入未登录页面 */
   {
@@ -525,14 +535,20 @@ const router = new Router({
 // 全局配置
 router.beforeEach((to, from, next) => {
   let loginToken = to.query.token
+  let roleType = 'none'
   if (loginToken !== undefined) {
-    // 持久化登录
+    let loginTokens = loginToken.split('.')
+    let loginTokens1Object = JSON.parse(atob(loginTokens[1]))
+    roleType = loginTokens1Object.role_type || 'none'
     localStorage.setItem('loginTokenData', JSON.stringify({
-      'loginToken': loginToken,
-      'time': new Date().getTime()
+      loginToken: loginToken,
+      time: new Date().getTime(),
+      roleType: roleType
     }))
   }
   if (to.meta.isNeedLogin !== undefined && to.meta.isNeedLogin === false) {
+    configs.loginToken = loginToken
+    configs.roleType = roleType
     next()
   } else {
     let loginTokenDataOfLocalStorage = JSON.parse(localStorage.getItem('loginTokenData'))
@@ -545,10 +561,12 @@ router.beforeEach((to, from, next) => {
       next(false)
     } else {
       loginToken = loginTokenDataOfLocalStorage.loginToken
+      roleType = loginTokenDataOfLocalStorage.roleType
+      configs.loginToken = loginToken
+      configs.roleType = roleType
       next()
     }
   }
-  configs.loginToken = loginToken
 })
 
 export default router

@@ -1,13 +1,6 @@
 <template>
   <div class="g-window">
-    <div class="g-inherit m-article">
-      <!-- <x-header class="m-tab" :left-options="leftBtnOptions" @on-click-back = "onClickBack">
-        <h1 class="m-tab-top" @click="enterNameCard">{{sessionName}}</h1>
-        <a slot="left"></a>
-        <group class="m-tab-right" slot="right">
-          <a :href="'#/chathistory/'+sessionId">历史消息</a>
-        </group>
-      </x-header> -->
+    <div class="g-inherit m-article p-chat-history">
       <div class="m-chat-main">
         <chat-list
           type="session"
@@ -17,6 +10,8 @@
           :myInfo="myInfo"
           :isRobot="isRobot"
           @msgs-loaded="msgsLoaded"
+          :canLoadMore="canLoadMore"
+          v-touch:swipedown="loadMore"
         ></chat-list>
         <chat-editor
           type="session"
@@ -69,7 +64,7 @@ export default {
     }, 1000)
   },
   updated () {
-    pageUtil.scrollChatListDown()
+    // pageUtil.scrollChatListDown()
   },
   // 离开该页面，此时重置当前会话
   destroyed () {
@@ -85,38 +80,14 @@ export default {
     }
   },
   created () {
-    window.nim.getHistoryMsgs({
-      scene: 'p2p',
-      to: 'service_80003',
-      limit: 2,
-      // lastMsgId: '7930704966',
-      done: function (error, obj) {
-        console.log(error, obj.msgs.length, obj)
-        let i = 0
-        for (let k in obj.msgs) {
-          i++
-          console.log('#' + obj.msgs[k].text + ' ' + obj.msgs[k].idServer)
-          if (i === obj.msgs.length) {
-            window.nim.getHistoryMsgs({
-              scene: 'p2p',
-              to: 'service_80003',
-              limit: 2,
-              endTime: obj.msgs[k - 1].time,
-              // lastMsgId: obj.msgs[k].idServer,
-              done: function (error, obj) {
-                console.log('#######')
-                for (let k in obj.msgs) {
-                  console.log('#' + obj.msgs[k].text + ' ' + obj.msgs[k].idServer, error)
-                }
-              }
-            })
-          }
-        }
-      }
-    })
     this.chooseChatUser = this.$store.state.chooseChatUser
+    this.$store.dispatch('resetNoMoreHistoryMsgs')
+    this.getHistoryMsgs()
   },
   computed: {
+    canLoadMore () {
+      return !this.$store.state.noMoreHistoryMsgs
+    },
     demo () {
       this.chooseChatUser = this.$store.state.chooseChatUser
       return this.chooseChatUser !== null
@@ -143,7 +114,6 @@ export default {
       }
     },
     scene () {
-      console.log(util.parseSession(this.sessionId), 'sessionId')
       return util.parseSession(this.sessionId).scene
     },
     to () {
@@ -172,17 +142,12 @@ export default {
     },
     msglist () {
       let msgs = this.$store.state.currSessionMsgs
-      console.log(msgs)
       return msgs
     }
   },
   methods: {
-    onClickBack () {
-      // location.href = '#/contacts'
-      window.history.go(-1)
-    },
     msgsLoaded () {
-      pageUtil.scrollChatListDown()
+      // pageUtil.scrollChatListDown()
     },
     enterNameCard () {
       if (/^p2p-/.test(this.sessionId)) {
@@ -196,6 +161,21 @@ export default {
     },
     layerWarp () {
       this.$store.dispatch('chooseChatUser', null)
+    },
+    loadMore () {
+      console.log('pageUtil.getChatListScroll()', pageUtil.getChatListScroll())
+      if (pageUtil.getChatListScroll() <= 20) {
+        this.getHistoryMsgs()
+      }
+    },
+    getHistoryMsgs () {
+      console.log(this.canLoadMore)
+      if (this.canLoadMore) {
+        this.$store.dispatch('getHistoryMsgs', {
+          scene: this.scene,
+          to: this.to
+        })
+      }
     }
   }
 }
@@ -212,6 +192,7 @@ export default {
 <style lang="scss">
   @import '../../static/assets/css/px2rem.scss';
   #app .g-window .m-chat-main{
+    padding-top:px2rem(10);
     padding-bottom:px2rem(100);
     background-color: #f0f0f0;
   }

@@ -150,7 +150,10 @@ export function sendMsg ({
           done: (error, msg) => {
             onSendMsgDone(error, msg)
             if (error === null) {
-              resolve(msg)
+              resolve({
+                msg: msg,
+                to: obj.to
+              })
             }
           }
         })

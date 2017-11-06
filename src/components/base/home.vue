@@ -91,7 +91,6 @@ import VueAMap from 'vue-amap'
 import { Toast } from 'vux'
 import qs from 'qs'
 import draggable from '..//base/public/draggable'
-import Data from '../../configs/data'
 
 // let map
 export default {
@@ -106,7 +105,6 @@ export default {
       user: [],
       carousels: [],
       dataobject: {},
-      result: [],
       is_perfect: false,
       plugin: [{
         pName: 'Geolocation',
@@ -116,7 +114,22 @@ export default {
             o.getCurrentPosition((status, result) => {
               self.result = result
               if (result && result.position) {
-                self.reportUserLocation()
+                let that = self
+                let data = qs.stringify({
+                  'province_region_name': result.addressComponent.province,
+                  'city_region_name': result.addressComponent.city,
+                  'district_region_name': result.addressComponent.district,
+                  'community_region_name': result.addressComponent.township,
+                  'full_address': result.formattedAddress,
+                  'latitude': result.position.lng,
+                  'longitude': result.position.lat
+                })
+                that.http(that.configs.apiTop + '/user/report-user-location', 'post', data, function (res) {
+                  let msg = res.data
+                  if (msg.code !== 0) {
+                    that.$vux.toast.text(msg.message, 'middle', 100)
+                  }
+                })
               }
             })
           }
@@ -144,32 +157,11 @@ export default {
       let that = this
       console.log('22312312312312')
       that.is_perfect = false
-    },
-    reportUserLocation () {
-      let that = this
-      let data = qs.stringify({
-        'province_region_name': that.result.addressComponent.province,
-        'city_region_name': that.result.addressComponent.city,
-        'district_region_name': that.result.addressComponent.district,
-        'community_region_name': that.result.addressComponent.township,
-        'full_address': that.result.formattedAddress,
-        'latitude': that.result.position.lng,
-        'longitude': that.result.province.lat
-      })
-      this.http(that.configs.apiTop + '/user/report-user-location', 'post', data, function (res) {
-        let msg = res.data
-        if (msg.code === 0) {
-          that.$vux.toast.text(msg.message, 'middle', 100)
-        } else {
-          that.$vux.toast.text(msg.message, 'middle', 100)
-        }
-      })
     }
   },
   computed: {
   },
   created () {
-    console.log('datadata1', Data)
     let that = this
     let isPerfect = this.$route.query.is_perfect
     if (isPerfect === '0') {
