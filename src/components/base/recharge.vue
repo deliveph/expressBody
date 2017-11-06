@@ -1,7 +1,7 @@
 <template>
     <div class="recharge_warp">
         <div class="recharge_main">
-            <label for="" class="title">选择充值金额</label>
+            <label for="" class="title">选择充值金额（元）</label>
             <div class="rechargeNumber_list">
                 <ul>
                     <li v-for="(item,k) in items" :key="k" @click="recharge_combos(item.recharge_combo_id)" :class="{active: id == item.recharge_combo_id}" v-model="id">

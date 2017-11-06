@@ -18,7 +18,7 @@
                     <img src="/static/assets/images/succeed.png" alt="">
                 </div>
                 <h6 class="pay-status">支付成功</h6>
-                <p>快去给快递宝宝给个好评吧！</p>
+                <p>快去给共享快递哥给个好评吧！</p>
                 <div class="go-eval">
                     <router-link :to="{path:'/evaluate',query:{ship_order_number:ship_order_number,type:condition}}" class="commit-btn dis t-c">去评价</router-link>
                 </div>
