@@ -47,6 +47,11 @@ function connectChatroom ({state, commit, dispatch}, obj) {
 }
 
 export default {
+  isVerifyServiceStatus ({
+    commit
+  }, verifyServiceStatus) {
+    commit('ISVERIFYSERVICESTATUS', verifyServiceStatus)
+  },
   chooseShipOrderCurrentConsigneeAddress ({
     commit
   }, consigneeAddress) {

@@ -557,7 +557,7 @@ router.beforeEach((to, from, next) => {
         loginTokenDataOfLocalStorage.time === undefined ||
         (new Date().getTime() - loginTokenDataOfLocalStorage.time) > 7180 * 1000) {
         // 微信授权登录
-      location.href = configs.apiDomain + '/weixin/auth-gateway?redirect_uri=' + encodeURIComponent(location.href)
+      location.href = configs.apiTop + '/weixin/auth-gateway?redirect_uri=' + encodeURIComponent(location.href)
       next(false)
     } else {
       loginToken = loginTokenDataOfLocalStorage.loginToken

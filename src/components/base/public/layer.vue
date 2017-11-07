@@ -41,107 +41,104 @@
 </template>
 
 <script>
-    import { Toast } from 'vux'
-    import qs from 'qs'
-    import $ from 'jquery'
-    const TIME_COUNT = 60
-    export default{
-        data(){
-            return{
-                phone:'',
-                code:'',
-                sendMsgDisabled: true,
-                count:0,
-                timer: null
-            }
-        },
-        components: {
-            Toast
-        },
-        created() {
-        },
-        methods: {
-            confirm() {
-                let that = this
-                let reg = /^1[0-9]{10}$/
-                if(that.phone == ''){
-                    this.$vux.toast.text('请输入手机号码', 'middle',100);
-                    return false;
-                }else if(that.code == ''){
-                    this.$vux.toast.text('请输入验证码', 'middle',100);
-                    return false;
-                }else if(!reg.test(that.phone)){
-                    this.$vux.toast.text('请输入正确的手机号码', 'middle',100);
-                    return false;
-                }
-                let data = qs.stringify({
-                    'phone':that.phone,
-                    'captcha':that.code,
-                })
-                this.http(that.configs.apiTop + "/weixin/binding-role", "post", data, function (res) {
-                    let msg = res.data
-                    let data = msg.data
-                    if(msg.code == 0){
-                        if(data.role_type == 'user'){
-                            that.$router.push({path: '/user',query: {is_perfect: "0"}}); 
-                        }else if(data.role_type == 'service'){
-                            that.$router.push({path: '/service'}); 
-                        }
-                    }else if(msg.code == 40004){
-                        localStorage.clear("token")
-                        that.wx.closeWindow()
-                    }else{
-                        that.$vux.toast.text(msg.message, 'middle',100);
-                    }
-                })
-            },
-            cancel(){
-                let that = this
-                that.$parent.layerhide = false
-                that.wx.closeWindow()
-            },
-            sendCode(){
-                let that = this
-                if(that.phone == ''){
-                    this.$vux.toast.text('请输入手机号码', 'middle',100);
-                    return false;
-                }
-                let data = qs.stringify({
-                    'phone':that.phone
-                })
-                this.http(that.configs.apiTop + "/captcha/sms-captcha", "post", data, function(res) {
-                    let msg = res.data
-                    if (msg.code == 0) {
-                        if (!that.timer) {
-                            that.count = TIME_COUNT
-                            that.sendMsgDisabled = false
-                            that.timer = setInterval(() => {
-                                if (that.count > 0 && that.count <= TIME_COUNT) {
-                                    that.count--;
-                                } else {
-                                    that.sendMsgDisabled = true
-                                    clearInterval(that.timer)
-                                    that.timer = null
-                                }
-                            }, 1000)
-                        }
-                    } else if (msg.code == 40004) {
-                        // location.href = that.configs.accreditUrl
-                    } else {
-                        that.$vux.toast.text(msg.message, 'middle', 100);
-                    }
-                })
-                
-            }
-        },
-        mounted: function () {
-            $('.phone_register input').bind('focus',function(){  
-                $('.layer_phone').css('position','absolute');  
-            }).bind('blur',function(){  
-                $('.layer_phone').css({'position':'fixed'});   
-            });  
-        }
+import { Toast } from 'vux'
+import qs from 'qs'
+import $ from 'jquery'
+import config from '../../../configs'
+
+const TIME_COUNT = 60
+export default{
+  data () {
+    return {
+      phone: '',
+      code: '',
+      sendMsgDisabled: true,
+      count: 0,
+      timer: null
     }
+  },
+  components: {
+    Toast
+  },
+  created () {
+  },
+  methods: {
+    confirm () {
+      let that = this
+      let reg = /^1[0-9]{10}$/
+      if (that.phone === '') {
+        this.$vux.toast.text('请输入手机号码', 'middle', 100)
+        return false
+      } else if (that.code === '') {
+        this.$vux.toast.text('请输入验证码', 'middle', 100)
+        return false
+      } else if (!reg.test(that.phone)) {
+        this.$vux.toast.text('请输入正确的手机号码', 'middle', 100)
+        return false
+      }
+      let data = qs.stringify({
+        'phone': that.phone,
+        'captcha': that.code
+      })
+      this.http(that.configs.apiTop + '/weixin/binding-role', 'post', data, function (res) {
+        let msg = res.data
+        // let data = msg.data
+        if (msg.code === 0) {
+          location.href = config.apiTop + '/weixin/auth-gateway'
+            //   if (data.role_type == 'user') {
+            //     that.$router.push({path: '/user', query: {is_perfect: '0'}})
+            //   } else if (data.role_type == 'service') {
+            //     that.$router.push({path: '/service'})
+            //   }
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    },
+    cancel () {
+      let that = this
+      that.$parent.layerhide = false
+      that.wx.closeWindow()
+    },
+    sendCode () {
+      let that = this
+      if (that.phone === '') {
+        this.$vux.toast.text('请输入手机号码', 'middle', 100)
+        return false
+      }
+      let data = qs.stringify({
+        'phone': that.phone
+      })
+      this.http(that.configs.apiTop + '/captcha/sms-captcha', 'post', data, function (res) {
+        let msg = res.data
+        if (msg.code == 0) {
+          if (!that.timer) {
+            that.count = TIME_COUNT
+            that.sendMsgDisabled = false
+            that.timer = setInterval(() => {
+              if (that.count > 0 && that.count <= TIME_COUNT) {
+                that.count--
+              } else {
+                that.sendMsgDisabled = true
+                clearInterval(that.timer)
+                that.timer = null
+              }
+            }, 1000)
+          }
+        } else {
+          that.$vux.toast.text(msg.message, 'middle', 100)
+        }
+      })
+    }
+  },
+  mounted: function () {
+    $('.phone_register input').bind('focus', function () {
+      $('.layer_phone').css('position', 'absolute')
+    }).bind('blur', function () {
+      $('.layer_phone').css({'position': 'fixed'})
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

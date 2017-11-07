@@ -63,7 +63,7 @@
                     </ul>
                 </div>
                 <div class="hg20"></div>
-                <div class="order_list" v-if="items != ''">
+                <div class="order_list" v-if="isShow && items.length > 0">
                     <ul>
                         <div v-for="(item,i) in items" :key="i">
                             <div v-if="item.express_order_type == 'ship'">
@@ -137,7 +137,7 @@
                 </span>
             </div>    
         </scroller>
-        <LayerPw :layer-pwhide="layerPwhide" v-bind:Info="result" v-on:listenEvent="getInfo"></LayerPw>
+        <LayerPw v-bind:Info="result"></LayerPw>
     </div>
 </template>
 
@@ -145,6 +145,8 @@
 import Grade from '../../components/grade'
 import LayerPw from '../base/public/layer_pw'
 import { Scroller, Spinner, LoadMore } from 'vux'
+import Config from '../../configs'
+
 export default {
   components: {
     Grade,
@@ -160,6 +162,26 @@ export default {
         unRead += this.$store.state.sessionlist[k].unread
       }
       return unRead
+    },
+    isShow () {
+      let that = this
+      if (that.$store.state.isVerifyServiceStatus) {
+        that.http(that.configs.apiTop + '/page/service-home', 'get', '', function (res) {
+          let msg = res.data
+          if (msg.code === 0) {
+            let data = msg.data
+            that.result = msg.data
+            that.service = msg.data.service
+            let service = data.service
+            let serviceLevel = service.service_level
+            that.service_level_logo = serviceLevel.service_level_logo
+          }
+        })
+        that.orderlist()
+        return true
+      } else {
+        return true
+      }
     }
   },
   data () {
@@ -171,37 +193,17 @@ export default {
         pulldownStatus: 'default'
       },
       layerPwhide: true,
-      is_verification: 0,
       data: {},
       result: {},
       service: {},
       items: [],
       ships: [],
       collections: [],
-      service_level_logo: 'http://static.menory.top/images/service_levels/1_liebing_s.png',
+      service_level_logo: Config.apiUpload + '/images/service_levels/1_liebing_s.png',
       unread: 0
     }
   },
   created () {
-    let that = this
-    this.is_verification = this.$route.query.is_verification
-    if (that.is_verification === '1') {
-      that.layerPwhide = false
-      this.http(that.configs.apiTop + '/page/service-home', 'get', '', function (res) {
-        let msg = res.data
-        if (msg.code === 0) {
-          let data = msg.data
-          that.result = msg.data
-          that.service = msg.data.service
-          let service = data.service
-          let serviceLevel = service.service_level
-          that.service_level_logo = serviceLevel.service_level_logo
-        }
-      })
-      that.orderlist()
-    } else {
-      that.layerPwhide = true
-    }
   },
   methods: {
     messageBox () {
@@ -249,22 +251,6 @@ export default {
         }
       })
     },
-    getInfo (result) {
-      let that = this
-      this.http(that.configs.apiTop + '/page/service-home', 'get', '', function (res) {
-        let msg = res.data
-        if (msg.code === 0) {
-          that.$router.push({ path: '/service', query: { 'is_verification': '1' } })
-          let data = msg.data
-          that.result = msg.data
-          that.service = msg.data.service
-          let service = data.service
-          let serviceLevel = service.service_level
-          that.service_level_logo = serviceLevel.service_level_logo
-        }
-      })
-      that.orderlist()
-    },
     orderlist () {
       let that = this
       that.http(that.configs.apiTop + '/order/orders?page=1&express_order_status=wait_order', 'get', '', function (res) {
@@ -288,8 +274,6 @@ export default {
     }
   },
   updated: function () {
-  },
-  watch: {
   }
 }
 </script>

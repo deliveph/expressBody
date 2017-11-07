@@ -1,6 +1,6 @@
 <template>
     <!--密码弹出层  -->
-    <div class="layer_warp layer_pw" v-if="layerPwhide1">
+    <div class="layer_warp layer_pw" v-if="!isVerifyServiceStatus">
         <div class="layer_table">
             <div class="layer_table_cell">
                 <div class="layer_box">
@@ -32,15 +32,13 @@
 import { Toast } from 'vux'
 import qs from 'qs'
 export default {
-  props: ['layerPwhide'],
+  props: [],
   data () {
     return {
-      password: '',
-      layerPwhide1: true
+      password: ''
     }
   },
   created () {
-    this.layerPwhide1 = this.layerPwhide
   },
   components: {
     Toast
@@ -58,21 +56,26 @@ export default {
       that.http(that.configs.apiTop + '/service/verify-password', 'post', data, function (res) {
         let msg = res.data
         if (msg.code === 0) {
-          that.layerPwhide1 = false
           that.$vux.toast.text(msg.message, 'middle', 100)
-          that.$emit('listenEvent', 'is_verification=1')
+          that.$store.dispatch('isVerifyServiceStatus', true)
         } else {
-          that.$vux.toast.text(msg.message, 'middle', 100); 1
+          that.$vux.toast.text(msg.message, 'middle', 100)
         }
       })
     },
     cancel () {
       let that = this
-      that.layerPwhide1 = false
       localStorage.clear('token')
       that.wx.closeWindow()
     }
 
+  },
+  computed: {
+    isVerifyServiceStatus: {
+      get () {
+        return this.$store.state.isVerifyServiceStatus
+      }
+    }
   }
 }
 </script>

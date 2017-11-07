@@ -30,7 +30,7 @@
           <div class="no-session" v-else>
             <div class="no-img"></div>
             <p>暂无消息</p>
-            <router-link :to="{path:'/service',query:{'is_verification':1}}" tag="button">返回首页</router-link>
+            <router-link :to="{path:'/service'}" tag="button">返回首页</router-link>
         </div>
         </div>
       </transition>

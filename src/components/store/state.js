@@ -3,6 +3,7 @@ import {
   cityList
 } from './data'
 export default {
+  isVerifyServiceStatus: false,
   // #####################################################
   shipOrderCurrentShiperAddress: null,
   shipOrderCurrentConsignessAddress: null,
