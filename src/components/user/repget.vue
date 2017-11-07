@@ -388,12 +388,6 @@ export default {
               let msg = res.data
               if (msg.code == 0) {
                 that.$router.push({path: '/ordercancel', query: {status: type}})
-                                // that.$vux.toast.text(msg.message, 'middle', 100)
-                                // setTimeout(function() {
-                                //     that.$router.push({ path: '/order' })
-                                // }, 200);
-              } else if (msg.code == 40004) {
-
               } else {
                 that.$vux.toast.text(msg.message, 'middle', 100)
               }
@@ -402,7 +396,7 @@ export default {
         }
       })
     },
-        // 修改送件时间
+    // 修改送件时间
     modifyTimeConfirm () {
       let that = this
       if (that.realLogisticFee == '') {
@@ -529,7 +523,7 @@ export default {
     top: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 10;
+    z-index: 2;
     .layer_table {
         width: 100%;
         height: 100%;

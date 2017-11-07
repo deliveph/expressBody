@@ -32,7 +32,7 @@
                         <input type="text" name="address" placeholder="请输入收货详细地址" value="" v-model="currentConsigneeAddress">
                     </div>
                     <div class="default" v-if="stage.current_service != undefined">
-                        <input type="checkbox" v-model="defaultFalse" @click="defaultMsg">
+                        <input type="checkbox" @click="defaultMsg">
                         <span>默认共享快递哥</span>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                         <input type="text" name="add" placeholder="请输入收货详细地址" v-model="currentConsigneeAddress">
                     </div>
                     <div class="default" v-if="stage.current_service != undefined">
-                        <input type="checkbox" v-model="defaultFalse1" @click="defaultMsg">
+                        <input type="checkbox" @click="defaultMsg">
                         <span>默认共享快递哥</span>
                     </div>
                 </div>
@@ -116,75 +116,6 @@
 import { Tab, TabItem, Swiper, SwiperItem, PopupPicker, XNumber, Toast } from 'vux'
 import qs from 'qs'
 export default {
-//   data () {
-//     return {
-//       list2: list(),
-//       demo2: '即时代件',
-//       index: 0,
-//       title1: '预约代件时间',
-//       title2: '预约代件时间',
-//       title3: '约定送件上门时间',
-//       list3: [],
-//       value1: ['一小时内'],
-//       value2: ['一小时内'],
-//       value3: ['一小时内'],
-//       placeholder2: '请选择预约代件时间',
-//       placeholder3: '请选择约定送件上门时间',
-//       format: function (value, name) {
-//         if (name) {
-//           return `${name}`
-//         } else {
-//           return `${value}`
-//         }
-//       },
-//       collection_order_number: '',
-//             // 即时收件
-//       realCode: '',
-//       realExpressPhone: '',
-//       realLogisticFee: '',
-//       realName: '',
-//       realPhone: '',
-//       realAddress: '',
-//       defaultFalse: false,
-//             // 预约收件
-//       reservationCode: '',
-//       reservationExpressPhone: '',
-//       reservationLogisticFee: '',
-//       reservationName: '',
-//       reservationPhone: '',
-//       reservationAddress: '',
-//       defaultFalse1: false,
-//             //
-//       items: [],
-//       stage: {},
-//       service_time: '',
-
-//             // 时间
-//       begin: '08:00',
-//       end: '21:00',
-//       benginTm1: '',
-//       benginTm: '',
-//       endTm1: '',
-//       endTm: '',
-//       len: '',
-//       itemList: new Array(),
-//       timeList: new Array(),
-//       formatTm: new Array(),
-//       timeList1: new Array(),
-//       timeList2: new Array(),
-//       estimateLogisticsFee: 0,
-//       logisticsGoodsCategoryId: 0,
-//       logisticsCompanyId: 0,
-//       pickUpTime: '',
-//             // 期望上门时间
-//       timeday: '',
-//       timequantum: '-',
-//             // 预约上门时间
-//       timeday1: '',
-//       timequantum1: '-',
-//       arr: []
-//     }
-//   },
   data () {
     return {
       collectionOrderNumber: null,
@@ -262,10 +193,8 @@ export default {
         'consignee_phone': that.currentConsigneePhone,
         'consignee_address': that.currentConsigneeAddress
       })
-      // document.getElementById('submitBtn').setAttribute('disabled', false)
       that.http(that.configs.apiTop + '/collection-order/update/' + that.collectionOrderNumber, 'post', data, function (res) {
         let msg = res.data
-        // document.getElementById('submitBtn').setAttribute('disabled', true)
         if (msg.code === 0) {
           localStorage.removeItem('consignee')
           that.$vux.toast.text(msg.message, 'middle', 100)
@@ -284,9 +213,9 @@ export default {
     defaultMsg () {
       let that = this
       let stage = that.stage
-      let currentService = stage.current_service
-      if (that.defaultFalse) {
+      if (!that.defaultFalse) {
         if (stage.current_service !== undefined) {
+          let currentService = stage.current_service
           that.defaultFalse = true
           that.currentConsigneeName = currentService.service_nickname
           that.currentConsigneePhone = currentService.service_phone
@@ -349,10 +278,8 @@ export default {
         'estimate_collection_start_time': that.estimateCollectionStartTime,
         'estimate_collection_end_time': that.estimateCollectionEndTime
       })
-      // document.getElementById('submitBtn').setAttribute('disabled', false)
       that.http(that.configs.apiTop + '/estimate-collection-order/update/' + that.collectionOrderNumber, 'post', data, function (res) {
         let msg = res.data
-        // document.getElementById('submitBtn').setAttribute('disabled', true)
         if (msg.code === 0) {
           localStorage.removeItem('consignee')
           that.$vux.toast.text(msg.message, 'middle', 100)
@@ -577,74 +504,6 @@ export default {
       }
     })
   }
-    //     that.items = msg.data
-    //     that.stage = msg.data.stage
-    //     that.service_time = msg.data.service_time.start_time + '-' + msg.data.service_time.end_time
-    //     that.begin = msg.data.service_time.start_time
-    //     that.end = msg.data.service_time.end_time
-    //             // 时间段
-    //     that.formattedTimeInit()
-    //   } else if (msg.code == 40004) {
-    //   } else {
-    //     that.$vux.toast.text(msg.message, 'middle', 100)
-    //   }
-    // })
-    // if (typeof index !== 'undefined') {
-    //   that.index = parseInt(index)
-    // }
-    // if (typeof that.collection_order_number !== 'undefined') {
-    //   this.http(that.configs.apiTop + '/order/collection-order-detail/' + that.collection_order_number, 'get', '', function (res) {
-    //     let msg = res.data
-    //     if (msg.code == 0) {
-    //       let data = msg.data
-    //       // 即时收件
-    //       if (that.index == 0) {
-    //         that.realCode = parseInt(data.logistics_code)
-    //         that.realExpressPhone = parseInt(data.courier_phone)
-    //         that.realLogisticFee = data.collection_logistics_fee
-    //         that.realName = data.consignee_name
-    //         that.realPhone = data.consignee_phone
-    //         that.realAddress = data.consignee_address
-    //       } else if (that.index == 1) {
-    //       // 预约收件
-    //         that.reservationCode = parseInt(data.logistics_code)
-    //         that.reservationExpressPhone = parseInt(data.courier_phone)
-    //         that.realLogisticFee = data.reservationLogisticFee
-    //         that.reservationName = data.consignee_name
-    //         that.reservationPhone = data.consignee_phone
-    //         that.reservationAddress = data.consignee_address
-    //       } else {
-    //         that.items = msg.data
-    //         that.stage = msg.data.stage
-    //         that.service_time = msg.data.service_time.start_time + '-' + msg.data.service_time.end_time
-    //         that.begin = msg.data.service_time.start_time
-    //         that.end = msg.data.service_time.end_time
-    //       }
-    //     } else if (msg.code == 40004) {
-    //     } else {
-    //       that.$vux.toast.text(msg.message, 'middle', 100)
-    //   }
-    // }
-    // if (JSON.parse(consignee) != '') {
-    //   let obj = JSON.parse(consignee)
-    //   that.realCode = obj.logistics_code
-    //   that.realExpressPhone = obj.courier_phone
-    //   that.realLogisticFee = obj.collection_logistics_fee
-    //   that.realName = obj.consignee_name
-    //   that.realPhone = obj.consignee_phone
-    //   that.realAddress = obj.consignee_address
-    //   that.defaultFalse = obj.defaultFalse
-    // } else if (JSON.parse(estimateConsignee) != '') {
-    //   let obj = JSON.parse(estimateConsignee)
-    //   that.reservationCode = obj.logistics_code
-    //   that.reservationExpressPhone = obj.courier_phone
-    //   that.reservationLogisticFee = obj.collection_logistics_fee
-    //   that.reservationName = obj.consignee_name
-    //   that.reservationPhone = obj.consignee_phone
-    //   that.reservationAddress = obj.consignee_address
-    //   that.defaultFalse1 = obj.defaultFalse1
-    // }
-  // }
 }
 </script>
 

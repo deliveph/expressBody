@@ -31,47 +31,47 @@
 <script>
     import Grade from '../../components/grade'
     export default {
-        data() {
-            return {
-                existing: 0,
-                difference: 0,
-                exp_min: 0,
-                exp_max: 1,
-                exp_item: 0,
-                htmlContent: '',
-                user_level_logo: '/static/assets/images/user_level/icon_1_shaowei.png',
-            }
-        },
-        components: {
-            Grade
-        },
-        created() {
-            let that = this
-            if (that.$route.query.user_level !== undefined) {
-                that.exp_min = that.$route.query.user_level
-            }
-            if (that.$route.query.next_user_level !== undefined) {
-                that.exp_max = that.$route.query.next_user_level
-            }
-            if (that.$route.query.current_user_exp !== undefined) {
-                that.existing = that.$route.query.current_user_exp
-            }
-            if (that.$route.query.next_user_level_exp !== undefined) {
-                that.difference = Math.max(0, that.$route.query.next_user_level_exp - that.existing)
-            }
-            if (that.$route.query.user_level_logo !== undefined) {
-                that.user_level_logo = that.$route.query.user_level_logo
-            }
-            that.exp_item = Math.min(100, (that.existing / that.$route.query.next_user_level_exp) * 100)
-            that.http(that.configs.apiTop + "/page/html-content?type=user_level", "get", "", function(res) {
-                let msg = res.data;
-                if (msg.code == 0) {
-                    that.htmlContent = msg.data.html_content
-                } else {
-                    that.$vux.toast.text(msg.message, "middle", 100)
-                }
-            })
+      data () {
+        return {
+          existing: 0,
+          difference: 0,
+          exp_min: 0,
+          exp_max: 1,
+          exp_item: 0,
+          htmlContent: '',
+          user_level_logo: '/static/assets/images/user_level/icon_1_shaowei.png'
         }
+      },
+      components: {
+        Grade
+      },
+      created () {
+        let that = this
+        if (that.$route.query.user_level !== undefined) {
+          that.exp_min = that.$route.query.user_level
+        }
+        if (that.$route.query.next_user_level !== undefined) {
+          that.exp_max = that.$route.query.next_user_level
+        }
+        if (that.$route.query.current_user_exp !== undefined) {
+          that.existing = that.$route.query.current_user_exp
+        }
+        if (that.$route.query.next_user_level_exp !== undefined) {
+          that.difference = Math.max(0, that.$route.query.next_user_level_exp - that.existing)
+        }
+        if (that.$route.query.user_level_logo !== undefined) {
+          that.user_level_logo = that.$route.query.user_level_logo
+        }
+        that.exp_item = Math.min(100, (that.existing / that.$route.query.next_user_level_exp) * 100)
+        that.http(that.configs.apiTop + '/page/html-content?type=user_level', 'get', '', function (res) {
+          let msg = res.data
+          if (msg.code == 0) {
+            that.htmlContent = msg.data.html_content
+          } else {
+            that.$vux.toast.text(msg.message, 'middle', 100)
+          }
+        })
+      }
     }
 </script>
 
@@ -150,7 +150,6 @@
                 font-size: px2rem(26);
                 color: #999;
                 min-height: px2rem(478);
-                line-height: px2rem(48);
                 margin-right: px2rem(30);
                 padding-top: px2rem(26);
             }

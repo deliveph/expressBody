@@ -23,7 +23,7 @@
             </li>
             <li class="courier_message" v-if="express">
                 <h4 class="identify">您的专属快递哥</h4>
-                <router-link :to="{path:'/chat/p2p-service_' + service_id }">
+                <router-link to="" href="javascript:;">
                     <div class="photo">
                         <img :src="service_avatar" />
                         <div class="grade">
