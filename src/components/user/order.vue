@@ -250,7 +250,9 @@ export default {
           if (data.items.length > that.n) {
             data.items.pop()
           } else {
-            that.$refs.scroller.disablePullup()
+            that.$nextTick(() => {
+              that.$refs.scroller.disablePullup()
+            })
           }
           that.items.push(...data.items)
         } else {
@@ -272,7 +274,9 @@ export default {
             data.items.pop()
             that.$refs.scroller.enablePullup()
           } else {
-            that.$refs.scroller.disablePullup()
+            that.$nextTick(() => {
+              that.$refs.scroller.disablePullup()
+            })
           }
           that.items = data.items
         } else {
