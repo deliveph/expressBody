@@ -47,7 +47,6 @@
                 </div>
             </div>
         </div>
-        <shareshade v-show="share" @click.native="share = !share"></shareshade>
         <!--pullup slot-->
         <div slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" style="position: absolute; width: 100%; height: 40px; bottom: -40px; text-align: center;">
             <span v-show="status.pullupStatus === 'default'"></span>
@@ -57,6 +56,7 @@
             </span>
         </div>    
         </scroller>
+        <shareshade v-show="share" @click.native="share = !share"></shareshade>
     </div>
 </template>
 

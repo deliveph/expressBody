@@ -126,6 +126,7 @@ export default {
           } else {
             code = str[0]
           }
+          that.$router.push({path: '/result', query: {code: code}})
         }
       })
     },

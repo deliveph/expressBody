@@ -232,7 +232,7 @@ Vue.prototype.$weChat = function () {
       })
     })
     that.wx.error(function (res) {
-      alert('that.wx.error')
+      that.$router.go(0)
     })
     setTimeout(() => {
       that.wx.config({

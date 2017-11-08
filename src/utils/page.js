@@ -62,7 +62,7 @@ var page = {
   },
   getChatListScroll: () => {
     return document.getElementById('chat-list').scrollTop
-  },
+  }
 }
 
 export default page

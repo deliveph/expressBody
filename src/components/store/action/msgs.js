@@ -27,17 +27,17 @@ function formatMsg (msg) {
 }
 
 export function onRoamingMsgs (obj) {
-  let msgs = obj.msgs.map(msg => {
-    return formatMsg(msg)
-  })
-  store.commit('updateMsgs', msgs)
+  // let msgs = obj.msgs.map(msg => {
+  //   return formatMsg(msg)
+  // })
+  // store.commit('updateMsgs', msgs)
 }
 
 export function onOfflineMsgs (obj) {
-  let msgs = obj.msgs.map(msg => {
-    return formatMsg(msg)
-  })
-  store.commit('updateMsgs', msgs)
+  // let msgs = obj.msgs.map(msg => {
+  //   return formatMsg(msg)
+  // })
+  // store.commit('updateMsgs', msgs)
 }
 
 export function onMsg (msg) {

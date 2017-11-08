@@ -64,7 +64,15 @@ export default {
     }, 1000)
   },
   updated () {
-    // pageUtil.scrollChatListDown()
+    if (this.isBottom === true) {
+      pageUtil.scrollChatListDown()
+      this.currPagePos = pageUtil.getChatListHeight()
+    } else {
+      let tempPagePos = pageUtil.getChatListHeight()
+      pageUtil.scrollChatListDown(tempPagePos - this.currPagePos)
+      this.currPagePos = tempPagePos
+    }
+    this.isBottom = true
   },
   // 离开该页面，此时重置当前会话
   destroyed () {
@@ -75,8 +83,9 @@ export default {
       leftBtnOptions: {
         backText: ' ',
         preventGoBack: true
-      }
-      // chooseChatUser: null
+      },
+      isBottom: true,
+      currPagePos: 0
     }
   },
   created () {
@@ -163,13 +172,12 @@ export default {
       this.$store.dispatch('chooseChatUser', null)
     },
     loadMore () {
-      console.log('pageUtil.getChatListScroll()', pageUtil.getChatListScroll())
+      this.isBottom = false
       if (pageUtil.getChatListScroll() <= 20) {
         this.getHistoryMsgs()
       }
     },
     getHistoryMsgs () {
-      console.log(this.canLoadMore)
       if (this.canLoadMore) {
         this.$store.dispatch('getHistoryMsgs', {
           scene: this.scene,

@@ -29,7 +29,7 @@
       <span v-else-if="msg.type==='image'" class="msg-text" ref="mediaMsg" @click.stop="showFullImg(msg.originLink)"></span>
       <span v-else-if="msg.type==='video'" class="msg-text" ref="mediaMsg"></span>
       
-      <span v-else-if="msg.type==='audio'" class="msg-text msg-audio" @click="playAudio(msg)"><em>{{Math.ceil(msg.file.dur / 1000)}}"</em><i></i></span>
+      <span v-else-if="msg.type==='audio'" class="msg-text msg-audio" @click="playAudio(msg)"><em>{{Math.min(60, Math.ceil(msg.file.dur / 1000))}}"</em><i></i></span>
       <span v-else-if="msg.type==='file'" class="msg-text"><a :href="msg.fileLink" target="_blank"><i class="u-icon icon-file"></i>{{msg.showText}}</a></span>
       <span v-else-if="msg.type==='robot'" class="msg-text" :class="{'msg-robot': msg.robotFlow!=='out' && !isRobot}">
         <div v-if="msg.robotFlow==='out'">{{msg.showText}}</div>

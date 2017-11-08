@@ -375,6 +375,7 @@ export default {
       localId: ''
     }
     let recordTimer
+    let isStartRecord = false
     // 假设全局变量已经在外部定义
     // 按下开始录音
     let recordStatus = 0 // 0 未录音 1 开始录音 -1 取消录音
@@ -389,71 +390,90 @@ export default {
       }
       recordStatus = 1
       START = new Date().getTime()
-      that.click_record = true
+      that.wx.onVoiceRecordEnd({
+        complete: function (res) {
+          that.click_record = false
+          that.loosen_record = false
+          voice.localId = res.localId
+          that.$vux.toast.text('录音时间太长已自动发送', 'middle', 100)
+          uploadVoice()
+        }
+      })
       recordTimer = setTimeout(function () {
-        that.wx.onVoiceRecordEnd({
-          complete: function (res) {
-            that.click_record = false
-            that.loosen_record = false
-            voice.localId = res.localId
-            that.$vux.toast.text('录音时间太长已自动发送', 'middle', 100)
-            uploadVoice()
-          }
-        })
         that.wx.startRecord({
           success: function () {
+            that.click_record = true
+            isStartRecord = true
             startRecordTime = new Date().getTime()
           },
           cancel: function () {
             that.$vux.toast.text('用户拒绝授权录音', 'middle', 100)
+          },
+          fail: function (res) {
+            if (res.errMsg === 'startRecord:recording') {
+              that.click_record = true
+              isStartRecord = true
+              startRecordTime = new Date().getTime()
+            } else {
+              that.$vux.toast.text('开启录音失败请重试' + res.errMsg, 'middle', 100)
+            }
           }
         })
-      }, 300)
+      }, 1000)
     })
     $('.u-editor-video').on('touchmove', function (event) {
       let targetTouches = event.originalEvent.targetTouches[0]
       let touchmoveY = targetTouches.pageY
-      if (touchmoveY - touchstartY < -40) {
-        if (config.isAllowRecord === true) {
-          that.click_record = false
-          that.loosen_record = true
-          recordStatus = -1
+      if (isStartRecord === true) {
+        if (touchmoveY - touchstartY < -40) {
+          if (config.isAllowRecord === true) {
+            that.click_record = false
+            that.loosen_record = true
+            recordStatus = -1
+          }
+        } else {
+          that.click_record = true
+          that.loosen_record = false
+          recordStatus = 1
         }
-      } else {
-        that.click_record = true
-        that.loosen_record = false
-        recordStatus = 1
       }
     })
     // 松手结束录音
     $('.u-editor-video').on('touchend', function (event) {
       event.preventDefault()
-      that.click_record = false
-      that.loosen_record = false
       if (recordStatus === 1) {
         END = new Date().getTime()
-        // 小于300ms，不录音
-        if ((END - START) < 300) {
+        // 小于500ms，不录音
+        if ((END - START) < 990) {
+          that.click_record = false
           END = 0
           START = 0
           clearTimeout(recordTimer)
         } else {
-          that.wx.stopRecord({
-            success: function (res) {
-              if ((new Date().getTime() - startRecordTime) < 500) {
-                that.$vux.toast.text('录音时间太短', 'middle', 100)
-                return
-              }
-              voice.localId = res.localId
-              uploadVoice()
-            },
-            fail: function (res) {
-              alert(JSON.stringify(res))
+          setTimeout(() => {
+            that.click_record = false
+            if (isStartRecord === true) {
+              that.wx.stopRecord({
+                success: function (res) {
+                  isStartRecord = false
+                  if ((new Date().getTime() - startRecordTime) < 1000) {
+                    that.$vux.toast.text('录音时间太短', 'middle', 100)
+                    return
+                  }
+                  voice.localId = res.localId
+                  uploadVoice()
+                },
+                fail: function (res) {
+                  isStartRecord = false
+                  that.$vux.toast.text('网络异常，请重新录音', 'middle', 100)
+                }
+              })
             }
-          })
+          }, 500)
         }
       } else if (recordStatus === -1) {
         that.wx.stopRecord()
+        that.loosen_record = false
       }
       recordStatus = 0
     })

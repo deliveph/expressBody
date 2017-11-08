@@ -26,36 +26,33 @@
 <script>
 import { Toast } from 'vux'
 export default {
-    data() {
-        return {
-            company_name: '暂无',
-            code: '暂无',
-            items: []
-        }
-    },
-    components: {
-        Toast
-    },
-    methods: {
-
-    },
-    created() {
-        let that = this
-        let logistics_code = this.$route.query.code
-        this.http(that.configs.apiTop + "/logistics/query-logistics?logistics_code=" + logistics_code, "get", '', function(res) {
-            let msg = res.data
-            if (msg.code == 0) {
-                that.company_name = msg.data.logistics_company_name
-                that.code = msg.data.logistics_code
-                that.items = msg.data.logistics_log
-                // location.reload();
-            } else if (msg.code == 40004) {
-                // location.href = that.configs.accreditUrl
-            } else {
-                that.$vux.toast.text(msg.message, 'middle', 100);
-            }
-        })
+  data () {
+    return {
+      company_name: '暂无',
+      code: '暂无',
+      items: []
     }
+  },
+  components: {
+    Toast
+  },
+  methods: {
+
+  },
+  created () {
+    let that = this
+    let logisticsCode = this.$route.query.code
+    this.http(that.configs.apiTop + '/logistics/query-logistics?logistics_code=' + logisticsCode, 'get', '', function (res) {
+      let msg = res.data
+      if (msg.code === 0) {
+        that.company_name = msg.data.logistics_company_name
+        that.code = msg.data.logistics_code
+        that.items = msg.data.logistics_log
+      } else {
+        that.$vux.toast.text(msg.message, 'middle', 100)
+      }
+    })
+  }
 }
 </script>
 
