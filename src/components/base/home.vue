@@ -10,7 +10,7 @@
         </div>
         <Vheader :header-object="dataobject" :express="true"></Vheader>
         <div class="hg10"></div>
-        <banner :banner-object="carousels"></banner>
+        <banner :carousel-category-id="1"></banner>
         <div class="entrance_list">
             <ul>
                 <li>

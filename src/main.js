@@ -155,6 +155,7 @@ Vue.prototype.$weChat = function () {
             title: data.title, // 分享标题
             link: data.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: data.image_url, // 分享图标
+            desc: data.description,
             success: function () {
               // 用户确认分享后执行的回调函数
               that.http(that.configs.apiTop + '/user/share-success-callback', 'post', '', function (res) {

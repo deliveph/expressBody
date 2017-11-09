@@ -106,8 +106,8 @@ export default {
         that.$store.dispatch('connect', that.loginInfo)
         that.$store.dispatch('updateRefreshState')
       }
+      that.isShowGetBack = true
     }
-    that.isShowGetBack = true
   },
   mounted: function () {
   },
